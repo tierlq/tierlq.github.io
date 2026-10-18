@@ -11,11 +11,6 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`. `key` = tên tướng bỏ dấu, chữ thường,
   chỉ giữ a–z (Triệu Vân → `trieuvan`, D'Arcy → `darcy`, Flowborn có `flowborn-mid` và `flowborn-ad`).
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
-- `a/<key>.webp`: bản đồ dòng chảy cho ảnh động kiểu live wallpaper ở sân khấu "Mạnh nhất mỗi đường" (khối `ANIM` trong `assets/app.js`,
-  WebGL vẽ lại ảnh bìa: tóc, áo choàng, hào quang quanh tướng chảy như gió; lửa năng lượng màu của đường bốc lên quanh tướng; hạt sáng bay).
-  Tạo bằng `python3 tools/anim/make.py <key> …` (mặt nạ tướng lưu ở `tools/anim/mask/`; tướng mới cần
-  `pip install --break-system-packages "rembg[cpu]" opencv-python-headless`), xem thử rồi thêm key vào `A_KEYS`. Tướng ngoài `A_KEYS` hiện ảnh tĩnh.
-  Khi tướng đứng đầu một đường đổi, nên tạo bản đồ cho tướng mới (việc làm tay, lịch tự cập nhật không cần làm).
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
 - `sw.js` — bộ nhớ đệm: ảnh (`p/`, `s/`, `b/`) lưu lâu, trang luôn lấy bản mới; tệp `assets/*.js?v=…` dùng ngay bản đã lưu và lấy bản mới ở nền

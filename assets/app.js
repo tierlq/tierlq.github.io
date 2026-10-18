@@ -377,9 +377,6 @@ const TORD={S:0,A:1,B:2,C:3,D:4};
 function imgOf(h){return pKey(h)?`p/${pKey(h)}.webp`:""}
 /* Ảnh bìa: s/ rộng 960 (máy nhỏ), s2/ bản gốc rộng 1386 (màn lớn, điện thoại mật độ điểm ảnh cao) — trình duyệt tự chọn qua srcset */
 const sp2=u=>u.replace(/^s\//,"s2/");
-/* Ảnh động kiểu live wallpaper ở sân khấu: tướng có bản đồ dòng chảy a/<key>.webp (tạo bằng tools/anim/make.py) thì tóc, áo choàng,
-   hào quang quanh tướng chảy như gió thổi + hạt sáng bay (khối ANIM bên dưới). Tướng khác hiện ảnh tĩnh như cũ. */
-const A_KEYS=new Set(["ryoma","billow","zata","elandorr","ybneth"]);
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
@@ -387,7 +384,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&A_KEYS.has(ck)&&!reduce.matches?`<div class="anim" data-flow="a/${ck}.webp"></div>`:""})()}
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
@@ -414,9 +411,8 @@ function buildStage(){
     try{new IntersectionObserver(([en])=>{sVisible=en.isIntersecting;sVisible?schedule():clearTimeout(sTimer)}).observe(st)}catch(e){}
     schedule()}
 }
-function loadSlide(i){const sl=$("stage").querySelectorAll(".slide")[i],im=sl&&sl.querySelector("img.bg");if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}
-  if(im&&ANIM){im.complete?ANIM.wake():im.addEventListener("load",ANIM.wake,{once:true})}}
-function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);ANIM&&setTimeout(ANIM.wake);
+function loadSlide(i){const im=$("stage").querySelectorAll(".slide img.bg")[i];if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}}
+function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
   st.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===i);k===i?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});
   st.querySelectorAll(".tabs button").forEach((b,k)=>b.setAttribute("aria-selected",k===i));
   sLeft=DUR;if(!reduce.matches)schedule()}
@@ -652,91 +648,6 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
-/* ===== Ảnh động kiểu live wallpaper (WebGL) cho tướng đứng đầu mỗi đường =====
-   Một canvas dùng chung, gắn vào slide đang hiện, vẽ lại đúng ảnh bìa đang hiện (img.bg) rồi:
-   - cho tóc, áo choàng, lửa, khói quanh tướng chảy theo bản đồ a/<key>.webp (flow map: hai pha lấy mẫu lệch đan xen → chảy liên tục),
-     mặt, da, thân giữa và nền xa đứng yên;
-   - ánh sáng lấp lánh chạy qua chỗ sáng; hạt sáng màu của đường bay lên.
-   Không có WebGL / lỗi / giảm chuyển động: giữ ảnh tĩnh. */
-const ANIM=(()=>{if(reduce.matches)return null;
-  const cv=document.createElement("canvas");cv.setAttribute("aria-hidden","true");
-  const gl=cv.getContext("webgl",{alpha:false,antialias:false,premultipliedAlpha:false});if(!gl)return null;
-  const small=matchMedia("(max-width:719px)").matches,dprMax=small?1.25:1.5,NP=small?50:110;
-  const VS="attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}";
-  const FS=`#ifdef GL_FRAGMENT_PRECISION_HIGH
-    precision highp float;
-    #else
-    precision mediump float;
-    #endif
-    uniform sampler2D uI,uF;uniform float uT;uniform vec2 uL;uniform vec3 uC;varying vec2 v;
-    float hs(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-    float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
-      return mix(mix(hs(i),hs(i+vec2(1,0)),f.x),mix(hs(i+vec2(0,1)),hs(i+1.),f.x),f.y);}
-    float fb(vec2 p){return .55*vn(p)+.3*vn(p*2.03+7.1)+.15*vn(p*4.1+3.7);}
-    void main(){vec3 fm=texture2D(uF,v).rgb;vec2 f=(fm.rg-.5)*2.;
-      float p0=fract(uT*.55+vn(v*5.)),p1=fract(p0+.5);                                    // chu kỳ ~1,8 s, lệch pha theo chỗ
-      vec3 a=texture2D(uI,v-f*p0*uL).rgb,b=texture2D(uI,v-f*p1*uL).rgb;
-      vec3 c=mix(a,b,abs(1.-2.*p0));
-      float l=dot(c,vec3(.299,.587,.114));
-      c+=c*smoothstep(.55,1.,l)*(.05+.06*sin(uT*1.6+v.x*7.-v.y*5.));                      // lấp lánh chạy qua chỗ sáng
-      // lửa năng lượng: các dải mảnh uốn lượn bốc lên quanh tướng (nhiễu "gờ" + uốn miền)
-      vec2 q=v*vec2(11.,3.2);q.y+=uT*.42;q.x+=(fb(q*.55+vec2(0.,uT*.25))-.5)*3.2;
-      float r=1.-abs(2.*fb(q)-1.),fl=pow(r,7.)*smoothstep(.0,.6,fm.b)*1.3;
-      fl+=smoothstep(.55,.9,fb(q*.6+3.))*fm.b*.35;                                          // màn khói sáng nhẹ phía sau
-      fl*=.8+.2*sin(uT*1.1+v.y*6.);
-      c+=uC*fl+vec3(1.)*pow(fl,3.)*.35;
-      gl_FragColor=vec4(c,1.);}`;
-  const PVS=`attribute vec4 a;uniform float uT,uS;varying float vA;
-    void main(){float s=a.w,u=fract(a.y+uT*.028*a.z);
-      float x=a.x*2.2-1.1+.06*sin(uT*.7*a.z+s*40.)+.18*u,y=u*2.4-1.2;
-      vA=smoothstep(0.,.15,u)*(1.-smoothstep(.75,1.,u))*(.55+.45*sin(uT*(1.5+2.*s)+s*90.));
-      gl_Position=vec4(x,y,0.,1.);gl_PointSize=(2.+6.*s*s*s+(s>.93?10.:0.))*uS;}`;   // vài hạt to như đốm sáng nhoè
-  const PFS=`precision mediump float;uniform vec3 uC;varying float vA;
-    void main(){float d=length(gl_PointCoord-.5);float k=smoothstep(.5,0.,d);k*=k;gl_FragColor=vec4(mix(uC,vec3(1.),k*k)*k*vA,1.);}`;
-  const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw 0;return o};
-  const prog=(a,b)=>{const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,a));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,b));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw 0;return p};
-  let P1,P2;try{P1=prog(VS,FS);P2=prog(PVS,PFS)}catch(e){return null}
-  const quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-  const pd=new Float32Array(NP*4);for(let i=0;i<NP;i++){pd[i*4]=Math.random();pd[i*4+1]=Math.random();pd[i*4+2]=.6+Math.random()*.9;pd[i*4+3]=Math.random()}
-  const pts=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pts);gl.bufferData(gl.ARRAY_BUFFER,pd,gl.STATIC_DRAW);
-  const L1=gl.getAttribLocation(P1,"p"),L2=gl.getAttribLocation(P2,"a");
-  const u1={T:gl.getUniformLocation(P1,"uT"),L:gl.getUniformLocation(P1,"uL"),C:gl.getUniformLocation(P1,"uC")},u2={T:gl.getUniformLocation(P2,"uT"),S:gl.getUniformLocation(P2,"uS"),C:gl.getUniformLocation(P2,"uC")};
-  gl.useProgram(P1);gl.uniform1i(gl.getUniformLocation(P1,"uI"),0);gl.uniform1i(gl.getUniformLocation(P1,"uF"),1);
-  const mk=src=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
-    for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,k,v);
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);return t};
-  const hex=c=>{const m=/#([0-9a-f]{6})/i.exec(c||"");if(!m)return [1,.85,.6];const n=parseInt(m[1],16);return [(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
-  const cache=new WeakMap();let host=null,cur=null,visible=true,raf=0,t0=performance.now(),last=0;
-  function fit(){if(!host||!cur)return;const W=host.clientWidth,H=host.clientHeight,iw=cur.w,ih=cur.h,k=Math.max(W/iw,H/ih),dw=iw*k,dh=ih*k;
-    cv.style.cssText=`left:${((W-dw)*.6).toFixed(1)}px;top:${((H-dh)*.3).toFixed(1)}px;width:${dw.toFixed(1)}px;height:${dh.toFixed(1)}px`;   // như object-fit:cover; object-position:60% 30%
-    const bw=Math.round(Math.min(iw,dw*Math.min(devicePixelRatio||1,dprMax))),bh=Math.round(bw*ih/iw);if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh}cur.ps=bw/dw*(small?1:1.2)}
-  function attach(){const sl=document.querySelector("#stage .slide.on");const an=sl&&sl.querySelector(".anim");if(!an)return false;
-    if(host!==an){const im=sl.querySelector("img.bg");if(!im||!im.complete||!im.naturalWidth||im.dataset.src)return false;
-      let c=cache.get(an);if(!c){if(!an._fl){an._fl=new Image();an._fl.onload=wake;an._fl.onerror=()=>an.remove();an._fl.src=an.dataset.flow;return false}
-        if(!an._fl.complete||!an._fl.naturalWidth)return false;
-        const rw=/\/s2\//.test(im.currentSrc||im.src)?1386:960;   // naturalWidth của ảnh srcset là cỡ đã quy đổi, không phải số điểm ảnh thật
-        try{c={i:mk(im),f:mk(an._fl),w:rw,h:rw*im.naturalHeight/im.naturalWidth,col:hex(getComputedStyle(sl).getPropertyValue("--lc"))}}catch(e){return false}cache.set(an,c)}
-      document.querySelectorAll("#stage .slide.gl").forEach(s=>s.classList.remove("gl"));
-      an.appendChild(cv);host=an;cur=c;fit();sl.classList.add("gl")}
-    return true}
-  function frame(now){raf=0;if(!visible||document.hidden)return;
-    if(small&&now-last<30){raf=requestAnimationFrame(frame);return}last=now;    // điện thoại ~30 hình/giây cho đỡ pin
-    if(!attach())return;                                                        // slide không có ảnh động / chưa tải xong: dừng, chờ wake
-    {const T=(now-t0)/1000;gl.viewport(0,0,cv.width,cv.height);gl.disable(gl.BLEND);
-      gl.useProgram(P1);gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.enableVertexAttribArray(L1);gl.vertexAttribPointer(L1,2,gl.FLOAT,false,0,0);
-      gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,cur.i);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,cur.f);
-      gl.uniform1f(u1.T,T);gl.uniform2f(u1.L,26/1386,26/852);gl.uniform3f(u1.C,...cur.col);   // chảy tối đa 26 px (theo ảnh gốc) mỗi chu kỳ
-      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);gl.disableVertexAttribArray(L1);
-      gl.useProgram(P2);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);gl.bindBuffer(gl.ARRAY_BUFFER,pts);gl.enableVertexAttribArray(L2);gl.vertexAttribPointer(L2,4,gl.FLOAT,false,0,0);
-      gl.uniform1f(u2.T,T);gl.uniform1f(u2.S,cur.ps);gl.uniform3f(u2.C,...cur.col);gl.drawArrays(gl.POINTS,0,NP);gl.disableVertexAttribArray(L2)}
-    raf=requestAnimationFrame(frame)}
-  function wake(){if(!raf&&visible&&!document.hidden)raf=requestAnimationFrame(frame)}
-  try{new IntersectionObserver(([e])=>{visible=e.isIntersecting;wake()}).observe($("stage"))}catch(e){}
-  try{new ResizeObserver(fit).observe($("stage"))}catch(e){addEventListener("resize",fit)}
-  document.addEventListener("visibilitychange",wake);
-  cv.addEventListener("webglcontextlost",e=>{e.preventDefault();document.querySelectorAll("#stage .slide.gl").forEach(s=>s.classList.remove("gl"));cv.remove();host=null;visible=false});
-  return {wake}})();
-
 buildFilters();buildStage();paintPP();setMode(mode);measure();
 openFromHash();
 requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(()=>fitNames());
