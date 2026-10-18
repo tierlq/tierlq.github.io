@@ -11,6 +11,10 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`. `key` = tên tướng bỏ dấu, chữ thường,
   chỉ giữ a–z (Triệu Vân → `trieuvan`, D'Arcy → `darcy`, Flowborn có `flowborn-mid` và `flowborn-ad`).
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
+- `c/<key>.webp` (tướng đã tách nền) + `c/<key>-bg.webp` (nền đã xoá tướng): hiệu ứng ảnh nổi khối ở sân khấu "Mạnh nhất mỗi đường"
+  (rê chuột / cuộn thì tướng và nền lệch nhau). Tạo bằng `python3 tools/cutout/make.py <key> …` (cần `pip install --break-system-packages "rembg[cpu]" opencv-python-headless`),
+  xem ảnh tạo ra rồi thêm key vào `C_KEYS` ở `assets/app.js`. Tướng không có trong `C_KEYS` hiện ảnh phẳng như cũ (không lỗi).
+  Khi tướng đứng đầu một đường đổi, nên tạo lớp cho tướng mới (việc làm tay, lịch tự cập nhật không cần làm).
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
 - `sw.js` — bộ nhớ đệm: ảnh (`p/`, `s/`, `b/`) lưu lâu, trang luôn lấy bản mới; tệp `assets/*.js?v=…` dùng ngay bản đã lưu và lấy bản mới ở nền

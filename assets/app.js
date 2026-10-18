@@ -377,6 +377,9 @@ const TORD={S:0,A:1,B:2,C:3,D:4};
 function imgOf(h){return pKey(h)?`p/${pKey(h)}.webp`:""}
 /* Ảnh bìa: s/ rộng 960 (máy nhỏ), s2/ bản gốc rộng 1386 (màn lớn, điện thoại mật độ điểm ảnh cao) — trình duyệt tự chọn qua srcset */
 const sp2=u=>u.replace(/^s\//,"s2/");
+/* Ảnh nổi khối ở sân khấu: tướng có lớp tách nền c/<key>.webp + nền đã xoá tướng c/<key>-bg.webp (tạo bằng tools/cutout/make.py).
+   Tướng không có trong danh sách thì hiện ảnh phẳng như cũ. */
+const C_KEYS=new Set(["ryoma","billow","zata","elandorr","ybneth"]);
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
@@ -384,7 +387,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&C_KEYS.has(ck)&&!reduce.matches?`<img class="bgc" data-src="c/${ck}-bg.webp" alt="" decoding="async"><img class="fgc" data-src="c/${ck}.webp" alt="" decoding="async">`:""})()}
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
@@ -411,7 +414,9 @@ function buildStage(){
     try{new IntersectionObserver(([en])=>{sVisible=en.isIntersecting;sVisible?schedule():clearTimeout(sTimer)}).observe(st)}catch(e){}
     schedule()}
 }
-function loadSlide(i){const im=$("stage").querySelectorAll(".slide img.bg")[i];if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}}
+function loadSlide(i){const sl=$("stage").querySelectorAll(".slide")[i],im=sl&&sl.querySelector("img.bg");if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}
+  // Lớp nổi khối: chỉ bật khi cả nền lẫn tướng đã tải xong (lỗi một lớp thì giữ ảnh phẳng)
+  const ly=sl?[...sl.querySelectorAll("img.bgc[data-src],img.fgc[data-src]")]:[];if(ly.length===2)Promise.all(ly.map(x=>new Promise((ok,no)=>{x.onload=ok;x.onerror=no;x.src=x.dataset.src;x.removeAttribute("data-src")}))).then(()=>sl.classList.add("lay"),()=>ly.forEach(x=>x.remove()))}
 function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
   st.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===i);k===i?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});
   st.querySelectorAll(".tabs button").forEach((b,k)=>b.setAttribute("aria-selected",k===i));
@@ -580,6 +585,13 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
   }
   const req=()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}};
+  // Ảnh nổi khối: rê chuột trên sân khấu thì tướng và nền lệch nhau (--mx, --my từ -1 đến 1, làm mượt)
+  if(!reduce.matches&&matchMedia("(hover:hover)").matches){let tx=0,ty2=0,cx2=0,cy2=0,run=false;
+    const step=()=>{cx2+=(tx-cx2)*0.08;cy2+=(ty2-cy2)*0.08;stage.style.setProperty("--mx",cx2.toFixed(4));stage.style.setProperty("--my",cy2.toFixed(4));
+      if(Math.abs(tx-cx2)+Math.abs(ty2-cy2)>0.001)requestAnimationFrame(step);else run=false};
+    const go=()=>{if(!run){run=true;requestAnimationFrame(step)}};
+    stage.addEventListener("pointermove",e=>{const r=stage.getBoundingClientRect();tx=((e.clientX-r.left)/r.width)*2-1;ty2=((e.clientY-r.top)/r.height)*2-1;go()},{passive:true});
+    stage.addEventListener("pointerleave",()=>{tx=ty2=0;go()})}
   addEventListener("scroll",req,{passive:true});addEventListener("resize",()=>{measureDoc();req()});
   try{new ResizeObserver(()=>{measureDoc();req()}).observe(document.body)}catch(e){}
   measureDoc();update();

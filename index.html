@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610181655"></script>
+<script defer src="assets/boot.js?v=202610181735"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -138,7 +138,10 @@ a{color:inherit}
 .stage{--gut:max(20px,calc((100vw - 1320px) / 2));position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:16/7;min-height:460px;max-height:780px;background:#000;color:#f3f2ef}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1.1s var(--ease),visibility 0s 1.1s}
 .slide.on{opacity:1;visibility:visible;transition:opacity 1.1s var(--ease)}
-.slide img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--fp,60% 30%);max-width:none}
+.slide img.bg,.slide img.bgc,.slide img.fgc{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--fp,60% 30%);max-width:none}
+.slide img.bgc,.slide img.fgc{opacity:0;transition:opacity .6s var(--ease)}
+.slide.lay img.bgc,.slide.lay img.fgc{opacity:1}
+.slide.lay img.bg{visibility:hidden;transition:visibility 0s .6s}
 .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.35) 46%,rgba(0,0,0,0) 70%),linear-gradient(0deg,rgba(0,0,0,.9) 0%,transparent 45%)}
 .slide-c{position:absolute;z-index:1;left:calc(var(--gut) + clamp(0px,4vw,56px));transform:translate3d(0,var(--tc,0px),0);bottom:clamp(96px,14vh,140px);max-width:min(620px,90%);display:flex;flex-direction:column;gap:18px}
 .slide-c .over{color:rgba(243,242,239,.7);display:flex;align-items:center;gap:12px}
@@ -494,7 +497,11 @@ a{color:inherit}
   /* Sân khấu: mở khung kiểu điện ảnh + thị sai */
   .hero-c,.slide img.bg,.slide-c,.band-row{will-change:transform}
   .slide.on img.bg{animation:none}
-  .slide img.bg{transform:translate3d(0,var(--ty,0px),0) scale(var(--s,1.12))}
+  .slide img.bg,.slide img.bgc{transform:translate3d(calc(var(--mx,0) * -8px),var(--ty,0px),0) scale(var(--s,1.12))}
+  /* Lớp tướng trôi chậm hơn nền khi cuộn, lệch theo chuột và bồng bềnh nhẹ → cảm giác nổi khối. Biên độ nhỏ hơn phần ảnh thừa ngoài khung nên không hở mép. */
+  .slide img.fgc{transform:translate3d(calc(var(--mx,0) * 16px),calc(var(--ty,0px) * .55 + var(--my,0) * 8px),0) scale(var(--s,1.12));animation:fgfloat 6s ease-in-out infinite alternate;will-change:transform}
+  .slide img.bgc{will-change:transform}
+  @keyframes fgfloat{from{translate:0 3px}to{translate:0 -4px}}
   /* Tiêu đề mục: hiện theo dòng */
   .sec-h.in h2{animation:mask 1.1s var(--ease) both}
   .sec-h.in .over{animation:up .8s var(--ease) both}
@@ -951,7 +958,7 @@ html.lock{overflow:hidden}
 <div class="pickbar" id="pickbar" role="status" hidden><span id="pickTxt"></span><button class="btn" id="pickX" type="button">Huỷ</button></div>
 <div id="modalRoot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
-<script defer src="assets/data.js?v=202610181655"></script>
-<script defer src="assets/app.js?v=202610181655"></script>
+<script defer src="assets/data.js?v=202610181735"></script>
+<script defer src="assets/app.js?v=202610181735"></script>
 </body>
 </html>
