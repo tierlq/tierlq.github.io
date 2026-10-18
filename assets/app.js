@@ -568,9 +568,9 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     if(vis.hero){const hp=clamp(y/((hero.offsetHeight||1)*0.75));
       heroC.style.transform=`translate3d(0,${(-140*hp).toFixed(1)}px,0)`;heroC.style.opacity=(1-hp*1.5).toFixed(3);
       heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
-    // Sân khấu luôn tràn đủ chiều ngang (không thu nhỏ khi cuộn tới: nền sáng sẽ lộ hai dải kem hai bên); chỉ ảnh và chữ bên trong chuyển động
+    // Sân khấu là khung cố định thẳng lề nội dung (không thu nhỏ khi cuộn); ảnh bên trong trôi và thu nhẹ dần, chữ trôi ngược
     if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height));
-      const on=stage.querySelector(".slide.on");if(on){on.querySelector("img.bg").style.transform=`translate3d(0,${((sp-.5)*-80).toFixed(1)}px,0) scale(1.12)`;on.querySelector(".slide-c").style.transform=`translate3d(0,${((sp-.5)*40).toFixed(1)}px,0)`}}
+      const on=stage.querySelector(".slide.on");if(on){on.querySelector("img.bg").style.transform=`translate3d(0,${((sp-.5)*-80).toFixed(1)}px,0) scale(${(1.2-sp*0.08).toFixed(4)})`;on.querySelector(".slide-c").style.transform=`translate3d(0,${((sp-.5)*40).toFixed(1)}px,0)`}}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
   }
