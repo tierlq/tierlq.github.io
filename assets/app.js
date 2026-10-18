@@ -548,7 +548,7 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
   const root=document.documentElement,hero=$("hero"),stage=$("stage"),band=$("band"),totop=$("totop"),bar=$("sprog"),ring=$("topRing");
   const heroC=hero.querySelector(".hero-c"),heroF=hero.querySelector(".hero-foot"),heroS=hero.querySelector(".hero-stats"),r1=band.querySelector(".r1"),r2=band.querySelector(".r2");
   const vis={hero:true,stage:false,band:false};
-  try{const io=new IntersectionObserver(es=>es.forEach(en=>{vis[en.target.dataset.fx]=en.isIntersecting}),{rootMargin:"100px"});
+  try{const io=new IntersectionObserver(es=>{es.forEach(en=>{vis[en.target.dataset.fx]=en.isIntersecting});req()},{rootMargin:"100px"});
     hero.dataset.fx="hero";stage.dataset.fx="stage";band.dataset.fx="band";[hero,stage,band].forEach(el=>io.observe(el))}catch(e){vis.stage=vis.band=true}
   let ticking=false,maxS=1,vh=innerHeight,lastY=scrollY,acc=0,dirUp=false,stickY=0;
   const barEl=$("bar"),qEl=$("q"),filt=$("filters");
@@ -568,9 +568,11 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     if(vis.hero){const hp=clamp(y/((hero.offsetHeight||1)*0.75));
       heroC.style.transform=`translate3d(0,${(-140*hp).toFixed(1)}px,0)`;heroC.style.opacity=(1-hp*1.5).toFixed(3);
       heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
-    // Sân khấu là khung cố định thẳng lề nội dung (không thu nhỏ khi cuộn); ảnh bên trong trôi và thu nhẹ dần, chữ trôi ngược
-    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height));
-      const on=stage.querySelector(".slide.on");if(on){on.querySelector("img.bg").style.transform=`translate3d(0,${((sp-.5)*-80).toFixed(1)}px,0) scale(${(1.2-sp*0.08).toFixed(4)})`;on.querySelector(".slide-c").style.transform=`translate3d(0,${((sp-.5)*40).toFixed(1)}px,0)`}}
+    // Sân khấu tràn mép, nền đen. Máy tính: ảnh mở dần từ khung thẳng lề nội dung ra tràn mép khi cuộn tới (hai bên là nền đen
+    // của sân khấu nên không lộ dải nền trang); ảnh trôi và thu nhẹ, chữ trôi ngược. Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
+    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ow=clamp(1-(vh-sr.top)/(vh*0.8)),oe=ow*ow*(3-2*ow);
+      const cx=m?0:Math.max(20,(innerWidth-1320)/2)*oe,ss=stage.style;
+      ss.setProperty("--cx",cx.toFixed(1)+"px");ss.setProperty("--s",(1.2-sp*0.08).toFixed(4));ss.setProperty("--ty",((sp-.5)*-80).toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
   }

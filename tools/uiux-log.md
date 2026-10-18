@@ -4,7 +4,7 @@ Việc định kỳ mỗi Thứ Bảy (7:45 giờ Việt Nam) đọc tệp này 
 Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng để lần sau.
 
 ## Đã chốt, không làm ngược lại
-- Sân khấu "Mạnh nhất mỗi đường" là khung cố định thẳng lề nội dung (như tiêu đề mục), không thu nhỏ khi cuộn (viền kem mỏng thay đổi trông kỳ) và không tràn sát mép (trông thô) — chủ web 18/10/2026. Chỉ ảnh/chữ bên trong chuyển động.
+- Sân khấu "Mạnh nhất mỗi đường" tràn mép kiểu Bugatti, nền đen. Không thu nhỏ cả khung khi cuộn (lộ viền nền trang hai bên) và không để tĩnh (trông thô): ảnh bên trong mở từ khung thẳng lề nội dung ra tràn mép (`--cx` + `clip-path`), hai bên là nền đen của sân khấu — chủ web 18/10/2026.
 - Đầu trang đen tan dần vào nền trang (`.hero-fade`), không để mép cứng đen → kem ở nền sáng (chủ web yêu cầu 18/10/2026).
 - Phong cách lấy cảm hứng Bugatti: nền đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm.
 - Tên tướng không xuống dòng trên thẻ (chủ web yêu cầu). Tên dài trên điện thoại thu chữ nhẹ (lớp `.card.ln`).
@@ -64,3 +64,4 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Nền sáng: chủ web thấy chỗ nối đầu trang đen → nền kem quá tách bạch. Thêm `.hero-fade` (dải chuyển dần kiểu scrim, cao 1,6× khoảng cách đầu mục, chồng lên phần đệm của mục sau nên bố cục chỉ dài thêm ~0,6×). Nền tối không thấy khác. Khi mở "Cách đọc bảng" dải không chồng lên hộp.
 - Bỏ hiệu ứng thu nhỏ sân khấu khi cuộn (scale 0,94 → 1) vì ở nền sáng lộ hai viền kem hai bên ảnh; giữ chuyển động ảnh nền và chữ bên trong. Bỏ `will-change` của `.stage`.
 - Tràn sát mép thì chủ web thấy thô → sân khấu thành khung thẳng lề nội dung (1320px, cách mép 20/16px như phần còn lại); ảnh trong khung trôi kèm thu nhẹ (1,2 → 1,12) khi cuộn qua để vẫn có chuyển động. Đã thử phương án ảnh tan vào nền kem ở mép trên: trông bạc màu, bỏ.
+- Chủ web: khung thẳng lề làm mất cảm giác tràn ra kiểu Bugatti → sân khấu lại tràn mép (nền đen), máy tính: ảnh mở dần từ khung thẳng lề nội dung ra tràn mép khi cuộn tới (biến `--cx`, `--s`, `--ty`, `--tc` đặt trên `#stage`, `clip-path` bù theo tỉ lệ phóng ảnh); chữ và nút tạm dừng thẳng lề nội dung (`--gut`). Điện thoại tràn mép luôn. IntersectionObserver của hiệu ứng cuộn gọi cập nhật ngay khi khối hiện ra (trước đây nhảy thẳng tới bằng link thì chưa áp hiệu ứng tới lần cuộn sau).
