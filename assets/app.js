@@ -568,11 +568,12 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     if(vis.hero){const hp=clamp(y/((hero.offsetHeight||1)*0.75));
       heroC.style.transform=`translate3d(0,${(-140*hp).toFixed(1)}px,0)`;heroC.style.opacity=(1-hp*1.5).toFixed(3);
       heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
-    // Sân khấu tràn mép, nền đen. Máy tính: ảnh mở dần từ khung thẳng lề nội dung ra tràn mép khi cuộn tới (hai bên là nền đen
-    // của sân khấu nên không lộ dải nền trang); ảnh trôi và thu nhẹ, chữ trôi ngược. Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
-    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ow=clamp(1-(vh-sr.top)/(vh*0.8)),oe=ow*ow*(3-2*ow);
-      const cx=m?0:Math.max(20,(innerWidth-1320)/2)*oe,ss=stage.style;
-      ss.setProperty("--cx",cx.toFixed(1)+"px");ss.setProperty("--s",(1.2-sp*0.08).toFixed(4));ss.setProperty("--ty",((sp-.5)*-80).toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
+    // Sân khấu luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào (chủ web không muốn viền kem hay viền đen hai bên).
+    // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,22 xuống ~1,08 và trôi dọc, chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
+    // (không lộ mép ảnh). Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
+    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-80;
+      const s=Math.max(1.22-sp*0.14,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height)),ss=stage.style;
+      ss.setProperty("--s",s.toFixed(4));ss.setProperty("--ty",ty.toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
   }
