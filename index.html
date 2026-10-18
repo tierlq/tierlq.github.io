@@ -31,9 +31,9 @@
 <title>Bảng Tier Liên Quân</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" media="print">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610181725"></script>
+<link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<script defer src="assets/boot.js?v=202610181745"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -781,6 +781,43 @@ html.lock{overflow:hidden}
   @keyframes sideR{from{opacity:.3;transform:translateX(48px)}}
   @keyframes sideL{from{opacity:.3;transform:translateX(-48px)}}
 }
+
+/* ===== Phong cách Bugatti 2026 (chủ web chọn 18/10/2026) =====
+   Nút dạng viên thuốc, khung ảnh/hộp bo góc nhẹ, chữ phụ kiểu đánh máy (monospace), logo giữa thanh trên,
+   tiêu đề và hộp nội dung hiện từ mờ sang nét khi cuộn. Sân khấu và đầu trang vẫn tràn mép, không bo. */
+:root{--f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--r:12px;--r-s:8px}
+.over,.hero .over,.slide-c .over,.cta,.btn,.hero-go,.hero-about,.tabs button,.seg button,.hero-stats dt,.tag,.hero-links a,.lg,.por .secl,.foot{font-family:var(--f-mono)}
+.over,.hero .over,.slide-c .over{letter-spacing:.14em;font-weight:400}
+.cta,.btn,.hero-go,.hero-about,.seg button,.tabs button,.hero-links a{letter-spacing:.1em}
+.hero-stats dt{letter-spacing:.12em}
+.tag{letter-spacing:.06em}
+/* nút viên thuốc */
+.cta,.btn,.hero-go,.ic,.tag,.runners button,.minebar .btn{border-radius:999px}
+.cta{padding-inline:24px}
+.hero-about{border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:0 20px;min-height:44px;display:inline-flex;align-items:center}
+.theme,.stage-pp,.totop{border-radius:50%}
+.lg,.ls-tier{border-radius:999px}
+.ls-tier b{border-radius:50%}
+/* khung bo góc nhẹ */
+.por{border-radius:var(--r-s)}
+.modal{border-radius:var(--r);overflow:auto}
+.m-ban{border-radius:var(--r) var(--r) 0 0}
+.minebar,.filters .ic{border-radius:var(--r)}
+.filters .ic{border-radius:999px}
+.minebar{border-radius:var(--r)}
+.search input{border-radius:0}
+/* logo giữa thanh trên (máy tính) */
+@media (min-width:720px){
+  .hero-nav .brand{grid-column:2;grid-row:1;justify-self:center;font-size:13px;font-weight:500;letter-spacing:.5em}
+  .hero-nav .hero-links{grid-column:1;grid-row:1;justify-self:start}
+}
+/* hiện từ mờ sang nét khi cuộn tới */
+@media (prefers-reduced-motion:no-preference){
+  .sec-h.in,.box.in,.legend-strip.in{animation:blurin 1.3s var(--ease) both}
+  .slide.on .slide-c>*{animation-name:upblur}
+  @keyframes blurin{from{opacity:0;filter:blur(14px)}to{opacity:1;filter:none}}
+  @keyframes upblur{from{opacity:0;filter:blur(10px);transform:translateY(18px)}}
+}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -951,7 +988,7 @@ html.lock{overflow:hidden}
 <div class="pickbar" id="pickbar" role="status" hidden><span id="pickTxt"></span><button class="btn" id="pickX" type="button">Huỷ</button></div>
 <div id="modalRoot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
-<script defer src="assets/data.js?v=202610181725"></script>
-<script defer src="assets/app.js?v=202610181725"></script>
+<script defer src="assets/data.js?v=202610181745"></script>
+<script defer src="assets/app.js?v=202610181745"></script>
 </body>
 </html>
