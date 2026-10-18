@@ -51,3 +51,12 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Bảng chi tiết trên máy tính: chữ tên đồ trong phần build khá nhỏ (12.5px), cân nhắc tăng nhẹ.
   - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính, xem có cách đỡ trống ở cột ngắn.
   - Link "trang Học viện của Garena" cuối Bộ chiêu thức chỉ cao 15px trên điện thoại, cân nhắc nới vùng chạm.
+
+## 2026-10-18 (làm tay theo yêu cầu chủ web: nền sáng đầu trang liền mạch hơn)
+- Thiên hà WebGL: thêm lớp sương mờ (hạt to, rất nhạt; 360 hạt máy tính / 150 điện thoại, máy yếu ×0,6) lấp khoảng tối giữa các vòng và tạo quầng sáng quanh lõi; hạt lõi nhạt bớt để không thành cục trắng.
+- Canvas chuyển sang `premultipliedAlpha:true`: trước đây màu bị nhân alpha hai lần nên chỗ ít hạt tối gắt, chỗ nhiều hạt chói đột ngột; giờ ánh sáng cộng đều. Sao thường giảm alpha bù lại độ sáng.
+- Quầng nền CSS của `.hero` dùng `var(--gy)` do JS đặt đúng tâm thiên hà (trước cố định 62%, trên điện thoại lệch xuống dưới tâm ~15%).
+- Nghiêng/phóng theo cuộn được làm mượt (nội suy theo thời gian), không giật khi cuộn bằng bánh xe.
+- Kích thước điểm giới hạn theo `ALIASED_POINT_SIZE_RANGE` của máy.
+- Kiểm tra: 1440/390 không lỗi JS, 5 slide, không tràn ngang; so ảnh trước/sau (swiftshader).
+- Ý tưởng để lần sau: nền sáng (light) vẫn có mép cứng đen → kem dưới đầu trang (chủ ý kiểu khối Bugatti); hỏi chủ web nếu muốn chuyển mềm.

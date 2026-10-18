@@ -433,19 +433,20 @@ paintTheme();
 /* ===== Thiên hà hạt (WebGL) ===== */
 (function galaxy(){
   const cv=$("galaxy"),hero=$("hero");
-  const gl=cv.getContext("webgl",{antialias:false,alpha:true,premultipliedAlpha:false});
+  const gl=cv.getContext("webgl",{antialias:false,alpha:true,premultipliedAlpha:true});
   if(!gl){hero.classList.add("nogl");return}
   const small=matchMedia("(max-width:719px)").matches;
   const lowEnd=(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4;
   const N=Math.round((TOTAL_PICK+TOTAL_BAN)*(small?2.6:6)*(lowEnd?0.6:1));   // mỗi lượt chọn/cấm → vài hạt
   const ARMS=5;                                               // 5 nhánh = 5 đường
   const laneCol=[[0.89,0.42,0.28],[0.25,0.70,0.47],[0.56,0.50,0.95],[0.91,0.65,0.28],[0.31,0.64,0.90]];
-  const data=new Float32Array(N*8);let o=0;
+  const NH=Math.round((small?150:360)*(lowEnd?0.6:1));          // lớp sương mờ: hạt to, rất nhạt, lấp khoảng tối giữa các vòng
+  const data=new Float32Array((N+NH)*8);let o=0;
   const gauss=()=>{let a=0;for(let k=0;k<3;k++)a+=Math.random();return a/3-.5};
   const RINGS=[0.34,0.6,0.88];
   for(let i=0;i<N;i++){
     const arm=i%ARMS,kind=Math.random();let r,theta;
-    if(kind<0.07){r=Math.abs(gauss())*0.26;theta=Math.random()*Math.PI*2}                       // lõi sáng
+    if(kind<0.07){r=Math.abs(gauss())*0.26;theta=Math.random()*Math.PI*2}                       // lõi sáng (nhạt bớt, sương lõi lo phần toả sáng)
     else if(kind<0.70){const R=RINGS[(Math.random()*3)|0];r=R+gauss()*0.09;theta=Math.random()*Math.PI*2} // các vòng
     else{const t=Math.pow(Math.random(),.7);r=0.12+t*0.95;theta=arm*(Math.PI*2/ARMS)+r*3.4+gauss()*0.5}  // 5 nhánh xoắn = 5 đường
     const y=gauss()*0.05*(1.1-Math.min(1,r));
@@ -455,18 +456,28 @@ paintTheme();
     let cr=0.62-0.45*t+lc[0]*0.25*t, cg=0.55+0.30*t+lc[1]*0.15*t, cb=1.0-0.35*t+lc[2]*0.10*t;
     cr+=core*0.25;cg+=core*0.2;cb+=core*0.1;
     const sparkle=Math.random()<0.015?1:0;
-    data[o++]=Math.max(0.02,r);data[o++]=theta;data[o++]=y;data[o++]=(1.0+Math.random()*2.2+core*1.2+sparkle*3.5);
-    data[o++]=sparkle?1.0:cr;data[o++]=sparkle?0.9:cg;data[o++]=sparkle?0.6:cb;data[o++]=0.45+Math.random()*0.55;
+    data[o++]=Math.max(0.02,r);data[o++]=theta;data[o++]=y;data[o++]=(1.0+Math.random()*2.2+core*0.6+sparkle*3.5);
+    data[o++]=sparkle?1.0:cr;data[o++]=sparkle?0.9:cg;data[o++]=sparkle?0.6:cb;data[o++]=(0.36+Math.random()*0.44)*(1-core*0.45);
+  }
+  const HS=small?34:66;
+  for(let i=0;i<NH;i++){
+    const kind=Math.random(),arm=i%ARMS;let r,theta,sz=HS*(0.8+Math.random()*0.7),al=0.028+Math.random()*0.022;
+    if(kind<0.14){r=Math.abs(gauss())*0.3;theta=Math.random()*Math.PI*2;sz*=1.35;al*=1.3}            // quầng lõi
+    else if(kind<0.75){r=RINGS[(Math.random()*3)|0]+gauss()*0.16;theta=Math.random()*Math.PI*2}
+    else{const t=Math.pow(Math.random(),.7);r=0.12+t*0.95;theta=arm*(Math.PI*2/ARMS)+r*3.4+gauss()*0.7}
+    r=Math.max(0.02,r);const t=Math.min(1,r/0.95),lc=laneCol[arm];
+    data[o++]=r;data[o++]=theta;data[o++]=gauss()*0.06;data[o++]=sz;
+    data[o++]=0.5-0.28*t+lc[0]*0.18*t;data[o++]=0.46+0.2*t+lc[1]*0.12*t;data[o++]=0.98-0.3*t;data[o++]=al;
   }
   const vs=`attribute float aR,aT,aY,aS;attribute vec3 aC;attribute float aA;
-    uniform float uTime,uTilt,uAsp,uDpr,uZoom,uOff;uniform vec2 uMouse;uniform float uStir;varying vec3 vC;varying float vA;
+    uniform float uTime,uTilt,uAsp,uDpr,uZoom,uOff,uMaxPt;uniform vec2 uMouse;uniform float uStir;varying vec3 vC;varying float vA;
     void main(){float w=0.55/pow(aR+0.12,1.25);float th=aT+uTime*w*0.22;
       vec3 p=vec3(cos(th)*aR,aY,sin(th)*aR);
       float c=cos(uTilt),s=sin(uTilt);p=vec3(p.x,p.y*c-p.z*s,p.y*s+p.z*c);
       float z=p.z+2.6;vec2 q=p.xy*uZoom/z*2.7;q.x/=uAsp;q.y+=uOff;
       vec2 d=q-uMouse;d.x*=uAsp;float dist=length(d);float f=exp(-dist*dist*28.0)*uStir;
       q+=normalize(d+1e-4)*f*vec2(1.0/uAsp,1.0)*0.12;
-      gl_Position=vec4(q,0.0,1.0);gl_PointSize=aS*uDpr*1.7*(2.6/z)*(1.0+f*0.7);
+      gl_Position=vec4(q,0.0,1.0);gl_PointSize=min(uMaxPt,aS*uDpr*1.7*(2.6/z)*(1.0+f*0.7));
       vC=aC*(1.0+f*0.6);vA=aA*(0.7+0.3*smoothstep(1.1,0.0,aR));}`;
   const fs=`precision mediump float;varying vec3 vC;varying float vA;
     void main(){vec2 c=gl_PointCoord-0.5;float d=length(c);float a=smoothstep(0.5,0.0,d);a=a*a*1.1;gl_FragColor=vec4(vC*a*vA,a*vA);}`;
@@ -476,15 +487,17 @@ paintTheme();
   const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);
   const at=(n,size,off)=>{const l=gl.getAttribLocation(pr,n);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,size,gl.FLOAT,false,32,off*4)};
   at("aR",1,0);at("aT",1,1);at("aY",1,2);at("aS",1,3);at("aC",3,4);at("aA",1,7);
-  const U=n=>gl.getUniformLocation(pr,n);const uOff=U("uOff"),uTime=U("uTime"),uTilt=U("uTilt"),uAsp=U("uAsp"),uDpr=U("uDpr"),uMouse=U("uMouse"),uStir=U("uStir"),uZoom=U("uZoom");
+  const U=n=>gl.getUniformLocation(pr,n);gl.uniform1f(U("uMaxPt"),(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)||[1,64])[1]);const uOff=U("uOff"),uTime=U("uTime"),uTilt=U("uTilt"),uAsp=U("uAsp"),uDpr=U("uDpr"),uMouse=U("uMouse"),uStir=U("uStir"),uZoom=U("uZoom");
   gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);gl.clearColor(0,0,0,0);
   let W=0,H=0,dpr=1,gOff=small?-0.12:-0.36;
   const hc=hero.querySelector(".hero-c"),hf=hero.querySelector(".hero-foot");
-  function center(){if(!small)return;const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
+  // quầng nền CSS (.hero background) đặt đúng tâm thiên hà để hai lớp sáng khớp nhau
+  function center(){if(small){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
+    hero.style.setProperty("--gy",((1-gOff)*50).toFixed(1)+"%")}
   try{const ro=new ResizeObserver(center);ro.observe(hc);ro.observe(hf)}catch(e){}
   function size(){center();dpr=Math.min(devicePixelRatio||1,1.5);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
   size();try{new ResizeObserver(size).observe(cv)}catch(e){addEventListener("resize",size)}
-  let mx=9,my=9,tmx=9,tmy=9,stir=0,tstir=0,t=0,last=performance.now(),visible=true,spin=1;
+  let mx=9,my=9,tmx=9,tmy=9,stir=0,tstir=0,t=0,last=performance.now(),visible=true,spin=1,scS=-1;
   function setPt(cx,cy){const r=cv.getBoundingClientRect();tmx=((cx-r.left)/r.width)*2-1;tmy=-(((cy-r.top)/r.height)*2-1);tstir=1;spin=Math.min(spin+0.08,3)}
   hero.addEventListener("pointermove",e=>setPt(e.clientX,e.clientY),{passive:true});
   hero.addEventListener("pointerdown",e=>{setPt(e.clientX,e.clientY);spin=3},{passive:true});
@@ -493,11 +506,11 @@ paintTheme();
     const dt=Math.min(0.05,(now-last)/1000);last=now;
     spin+= (1-spin)*Math.min(1,dt*1.5);t+=dt*spin;
     mx+=(tmx-mx)*Math.min(1,dt*8);my+=(tmy-my)*Math.min(1,dt*8);stir+=(tstir-stir)*Math.min(1,dt*4);
-    const sc=Math.min(1,Math.max(0,scrollY/ (hero.offsetHeight||1)));
+    const sc0=Math.min(1,Math.max(0,scrollY/(hero.offsetHeight||1)));scS=scS<0||reduce.matches?sc0:scS+(sc0-scS)*Math.min(1,dt*7);const sc=scS;   // nghiêng/phóng theo cuộn có làm mượt
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uTime,t);gl.uniform1f(uTilt,0.36+sc*0.55+Math.max(-1,Math.min(1,my))*0.05*stir);gl.uniform1f(uAsp,W/H);gl.uniform1f(uDpr,dpr);
     gl.uniform1f(uOff,gOff);gl.uniform2f(uMouse,mx,my);gl.uniform1f(uStir,stir);gl.uniform1f(uZoom,(small?0.56:0.95)*(1+sc*0.25));
-    gl.drawArrays(gl.POINTS,0,N);
+    gl.drawArrays(gl.POINTS,0,N+NH);
   }
   if(reduce.matches){frame(performance.now());addEventListener("resize",()=>frame(performance.now()));return}
   function loop(now){if(visible&&!document.hidden)frame(now);else last=now;requestAnimationFrame(loop)}
