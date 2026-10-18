@@ -651,6 +651,23 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+/* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
+(function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
+  const cards=()=>$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
+    return `<button class="menu-card" data-open="${h.id}"><img src="${sp}" alt="" loading="lazy" decoding="async"><span><small>${LANES[l]} · Hạng 1</small><b>${h.name}</b></span></button>`}).join("");
+  const open=()=>{cards();clearTimeout(t);m.hidden=false;document.documentElement.style.overflow="hidden";btn.setAttribute("aria-expanded","true");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));m.querySelector(".menu-x").focus()};
+  const close=back=>{m.classList.remove("open");document.documentElement.style.overflow="";btn.setAttribute("aria-expanded","false");
+    t=setTimeout(()=>{m.hidden=true},reduce.matches?0:550);if(back)btn.focus()};
+  btn.onclick=open;
+  m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
+    const a=e.target.closest(".menu-l a");if(a){close(false);return}
+    const o=e.target.closest("[data-open]");if(o){close(false);openModal(o.dataset.open)}});
+  m.addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();close(true)}
+    if(e.key==="Tab"){const f=[...m.querySelectorAll("button,a")],i=f.indexOf(document.activeElement);
+      if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}}});
+})();
+
 buildFilters();buildStage();paintPP();setMode(mode);measure();
 openFromHash();
 requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(()=>fitNames());
