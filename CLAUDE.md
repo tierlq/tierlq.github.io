@@ -8,7 +8,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `assets/data.js` — **toàn bộ dữ liệu**: số liệu giải (`SRC`), danh sách tướng theo đường (`RAW`),
   ghi chú bản cập nhật (`P`), chỉnh tay (`MANUAL`), đường phụ (`SECONDARY`) và công thức chấm điểm.
 - `assets/app.js` — giao diện và tương tác. Không cần sửa khi chỉ cập nhật số liệu.
-- `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px. `key` = tên tướng bỏ dấu, chữ thường,
+- `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`. `key` = tên tướng bỏ dấu, chữ thường,
   chỉ giữ a–z (Triệu Vân → `trieuvan`, D'Arcy → `darcy`, Flowborn có `flowborn-mid` và `flowborn-ad`).
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
@@ -84,7 +84,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 3. Cập nhật ngày "Cập nhật …" và tên mùa/bản trong `index.html` (tìm `17/10/2026`, `S4 2026`, `Vết Nứt Thời Không`, `15/10`)
    và `<lastmod>` trong `sitemap.xml` khi có thay đổi thật.
 4. Tướng mới: thêm vào `RAW`, tạo `p/<key>.webp` (176×176, WebP chất lượng 72) và `s/<key>.webp` (rộng 960, chất lượng 60),
-   rồi thêm key vào `P_KEYS`/`S_KEYS` ở đầu `assets/app.js`.
+   chép ảnh gốc avix vào `s2/<key>.webp`, rồi thêm key vào `P_KEYS`/`S_KEYS` ở đầu `assets/app.js`.
    Thêm luôn build `@<đường>` vào `tools/builds/vn.txt` (nguồn chưa có thì lấy bài hướng dẫn tiếng Việt khác, ghi `NOTE`) và bộ chiêu vào `tools/skills/garena.json`.
    Chủ web đổi đường tướng trong `RAW` thì cũng phải có build cho đường mới (`node tools/builds/check.js` báo thiếu).
 5. Kiểm tra trước khi đẩy: `node --check assets/data.js && node --check assets/app.js`, rồi mở `index.html`

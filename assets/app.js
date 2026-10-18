@@ -297,7 +297,7 @@ function openModal(id,dir){
   const vis=visibleOrder(),order=vis.includes(id)?vis:TIERS.flatMap(t=>HEROES.filter(x=>x.lane===h.lane&&x.tier===t)).map(x=>x.id),i=order.indexOf(id);
   $("modalRoot").innerHTML=`<div class="veil${nav?" nav":""}" id="veil"><div class="modal${dir>0?" from-r":dir<0?" from-l":""}" role="dialog" aria-modal="true" aria-label="${h.name}">
     <div class="mtop"><button id="mshare" aria-label="Chia sẻ tướng này" title="Chia sẻ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button><button id="mprev" aria-label="Tướng trước" ${i<=0?"disabled":""}>‹</button><button id="mnext" aria-label="Tướng sau" ${i<0||i>=order.length-1?"disabled":""}>›</button><button id="mx" aria-label="Đóng">×</button></div>
-    <div class="m-ban${splOf(h)?"":" noimg"}">${splOf(h)?`<img src="${splOf(h)}" alt="" decoding="async">`:""}</div>
+    <div class="m-ban${splOf(h)?"":" noimg"}">${splOf(h)?`<img src="${splOf(h)}" srcset="${splOf(h)} 960w, ${sp2(splOf(h))} 1386w" sizes="(max-width:760px) 100vw, 760px" alt="" decoding="async">`:""}</div>
     <div class="m-body"><div class="card" data-t="${h.tier}">${portrait(h)}</div>
     <div><h3>${h.name}</h3>
       <div class="tags"><span class="tag" style="color:var(--t-${h.tier.toLowerCase()})">Tier ${h.tier} · ${TNAME[h.tier]}</span><span class="tag">${LANES[h.lane]}${h.sec?" (đường phụ)":""}</span><span class="tag">${CLASSES[h.cls]}</span>${b?`<span class="tag mv ${b[1]}">${b[2]}</span>`:""}</div>
@@ -375,6 +375,8 @@ $("log").onclick=e=>{const b=e.target.closest("[data-open]");if(b)openModal(b.da
 /* Nổi bật mỗi đường */
 const TORD={S:0,A:1,B:2,C:3,D:4};
 function imgOf(h){return pKey(h)?`p/${pKey(h)}.webp`:""}
+/* Ảnh bìa: s/ rộng 960 (máy nhỏ), s2/ bản gốc rộng 1386 (màn lớn, điện thoại mật độ điểm ảnh cao) — trình duyệt tự chọn qua srcset */
+const sp2=u=>u.replace(/^s\//,"s2/");
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
@@ -382,7 +384,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}" alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
@@ -409,7 +411,7 @@ function buildStage(){
     try{new IntersectionObserver(([en])=>{sVisible=en.isIntersecting;sVisible?schedule():clearTimeout(sTimer)}).observe(st)}catch(e){}
     schedule()}
 }
-function loadSlide(i){const im=$("stage").querySelectorAll(".slide img.bg")[i];if(im&&im.dataset.src){im.src=im.dataset.src;im.removeAttribute("data-src")}}
+function loadSlide(i){const im=$("stage").querySelectorAll(".slide img.bg")[i];if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}}
 function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
   st.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===i);k===i?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});
   st.querySelectorAll(".tabs button").forEach((b,k)=>b.setAttribute("aria-selected",k===i));
@@ -569,10 +571,10 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
       heroC.style.transform=`translate3d(0,${(-140*hp).toFixed(1)}px,0)`;heroC.style.opacity=(1-hp*1.5).toFixed(3);
       heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
     // Sân khấu luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào (chủ web không muốn viền kem hay viền đen hai bên).
-    // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,22 xuống ~1,08 và trôi dọc, chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
+    // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,14 xuống ~1,1 và trôi dọc (phóng ít để ảnh nét), chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
     // (không lộ mép ảnh). Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
-    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-80;
-      const s=Math.max(1.22-sp*0.14,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height)),ss=stage.style;
+    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
+      const s=Math.max(1.14-sp*0.08,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height)),ss=stage.style;
       ss.setProperty("--s",s.toFixed(4));ss.setProperty("--ty",ty.toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
