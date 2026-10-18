@@ -8,7 +8,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `assets/data.js` — **toàn bộ dữ liệu**: số liệu giải (`SRC`), danh sách tướng theo đường (`RAW`),
   ghi chú bản cập nhật (`P`), chỉnh tay (`MANUAL`), đường phụ (`SECONDARY`) và công thức chấm điểm.
 - `assets/app.js` — giao diện và tương tác. Không cần sửa khi chỉ cập nhật số liệu.
-- `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`. `key` = tên tướng bỏ dấu, chữ thường,
+- `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`; `s3/<key>.webp` bản siêu nét rộng 2772 (Real-ESRGAN ×2, `tools/upscale/up.py`), chỉ sân khấu dùng, key ghi trong `S3_KEYS`. `key` = tên tướng bỏ dấu, chữ thường,
   chỉ giữ a–z (Triệu Vân → `trieuvan`, D'Arcy → `darcy`, Flowborn có `flowborn-mid` và `flowborn-ad`).
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.

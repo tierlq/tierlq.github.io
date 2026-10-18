@@ -377,6 +377,9 @@ const TORD={S:0,A:1,B:2,C:3,D:4};
 function imgOf(h){return pKey(h)?`p/${pKey(h)}.webp`:""}
 /* Ảnh bìa: s/ rộng 960 (máy nhỏ), s2/ bản gốc rộng 1386 (màn lớn, điện thoại mật độ điểm ảnh cao) — trình duyệt tự chọn qua srcset */
 const sp2=u=>u.replace(/^s\//,"s2/");
+/* s3/: bản siêu nét rộng 2772 (Real-ESRGAN ×2 từ s2/, tools/upscale/up.py) chỉ dùng ở sân khấu, cho màn lớn / mật độ điểm ảnh cao */
+const S3_KEYS=new Set(["ryoma","billow","zata","elandorr","ybneth"]);
+const s3Of=u=>{const k=u.slice(2,-5);return S3_KEYS.has(k)?`, s3/${k}.webp 2772w`:""};
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
@@ -384,7 +387,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w${s3Of(sp)}" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
