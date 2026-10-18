@@ -651,25 +651,46 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
-/* ===== Cuộn trôi (kiểu Bugatti / Lenis) =====
-   Máy tính có chuột: mỗi lần lăn chuột trang không nhảy cóc mà trôi tới vị trí mới rồi chậm dần (nội suy ~0,7 s).
-   Điện thoại, màn cảm ứng, giảm chuyển động: cuộn gốc của máy. Vùng tự cuộn bên trong (bảng chi tiết, menu, bộ lọc) vẫn cuộn riêng. */
-(function glide(){if(reduce.matches||!matchMedia("(hover:hover) and (pointer:fine)").matches)return;
-  let target=scrollY,cur=scrollY,raf=0,last=0;const H=document.documentElement;
-  const max=()=>H.scrollHeight-innerHeight;
-  const inner=(el,dy)=>{for(;el&&el!==document.body&&el!==H;el=el.parentElement){const o=getComputedStyle(el).overflowY;
-    if((o==="auto"||o==="scroll")&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0))return true}return false};
+/* ===== Cuộn trôi + dừng ở thông tin quan trọng (kiểu Bugatti) =====
+   Điểm dừng: đầu trang, sân khấu "Mạnh nhất mỗi đường" (giữa màn), đầu bảng tier, mục "Cách xếp và nguồn".
+   Máy tính có chuột: lăn chuột thì trang trôi mượt (~0,7 s); đi ngang qua điểm dừng thì dừng lại ở đó, đứng yên một nhịp,
+   lăn tiếp mới đi qua. Giữa các điểm (trong bảng tier dài) trôi tự do.
+   Điện thoại / cảm ứng: cuộn gốc của máy; khi dừng tay gần một điểm dừng (trong ~20% chiều cao màn) thì nhẹ nhàng hút vào.
+   Giảm chuyển động: tắt hết. Vùng tự cuộn bên trong (bảng chi tiết, menu, bộ lọc) cuộn riêng. */
+(function glide(){if(reduce.matches)return;const H=document.documentElement;
+  const stops=()=>{const vh=innerHeight,y=scrollY,o=[0],st=$("stage"),bt=$("boardTitle"),me=$("method");
+    if(st){const r=st.getBoundingClientRect();o.push(Math.round(r.top+y+r.height/2-vh/2))}
+    if(bt){o.push(Math.round(bt.closest(".sec").getBoundingClientRect().top+y))}
+    if(me){o.push(Math.round(me.getBoundingClientRect().top+y-24))}
+    const m=H.scrollHeight-vh;return o.filter(v=>v>=0&&v<=m)};
+  const busyUI=()=>document.getElementById("veil")||!$("menu").hidden||document.body.classList.contains("picking");
   const jump=y=>scrollTo({top:y,behavior:"instant"});
-  function step(now){const dt=Math.min(.05,(now-(last||now))/1000)||1/60;last=now;
-    cur+=(target-cur)*(1-Math.pow(.9,dt*60));
-    if(Math.abs(target-cur)<.5){cur=target;jump(cur);raf=0;last=0;return}
-    jump(cur);raf=requestAnimationFrame(step)}
-  addEventListener("wheel",e=>{if(e.ctrlKey||e.defaultPrevented||document.getElementById("veil")||!$("menu").hidden)return;
-    const dy=e.deltaY*(e.deltaMode===1?40:e.deltaMode===2?innerHeight:1);if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||inner(e.target,dy))return;
-    e.preventDefault();if(!raf)target=cur=scrollY;target=Math.max(0,Math.min(max(),target+dy));if(!raf)raf=requestAnimationFrame(step)},{passive:false});
-  // cuộn bằng bàn phím, thanh cuộn, link tới mục: bỏ hoạt ảnh đang chạy, theo vị trí mới
-  addEventListener("keydown",()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}},true);
-  addEventListener("mousedown",()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}},true);
+  if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+    let target=scrollY,cur=scrollY,raf=0,last=0,stopAt=null,holdUntil=0;
+    const max=()=>H.scrollHeight-innerHeight;
+    const inner=(el,dy)=>{for(;el&&el!==document.body&&el!==H;el=el.parentElement){const o=getComputedStyle(el).overflowY;
+      if((o==="auto"||o==="scroll")&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0))return true}return false};
+    const halt=()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0;stopAt=null}};
+    function step(now){const dt=Math.min(.05,(now-(last||now))/1000)||1/60;last=now;
+      cur+=(target-cur)*(1-Math.pow(.9,dt*60));
+      if(Math.abs(target-cur)<.5){cur=target;jump(cur);raf=0;last=0;if(stopAt!==null){holdUntil=now+450;stopAt=null}return}
+      jump(cur);raf=requestAnimationFrame(step)}
+    addEventListener("wheel",e=>{if(e.ctrlKey||e.defaultPrevented||busyUI())return;
+      const dy=e.deltaY*(e.deltaMode===1?40:e.deltaMode===2?innerHeight:1);if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||inner(e.target,dy))return;
+      e.preventDefault();const now=performance.now();
+      if(stopAt!==null||now<holdUntil){if(now<holdUntil)holdUntil=now+250;return}      // đang dừng ở thông tin quan trọng: đứng yên một nhịp
+      if(!raf)target=cur=scrollY;
+      const from=target,to=Math.max(0,Math.min(max(),target+dy));
+      const s=stops().filter(v=>Math.abs(v-from)>2&&(dy>0?v>from&&v<=to:v<from&&v>=to));
+      if(s.length){target=dy>0?Math.min(...s):Math.max(...s);stopAt=target}else target=to;
+      if(!raf)raf=requestAnimationFrame(step)},{passive:false});
+    addEventListener("keydown",halt,true);addEventListener("mousedown",halt,true);
+  }else{
+    let t=0,lock=0;
+    addEventListener("scroll",()=>{if(lock)return;clearTimeout(t);t=setTimeout(()=>{if(busyUI()||document.activeElement===$("q"))return;
+      const y=scrollY,vh=innerHeight,n=stops().reduce((a,v)=>Math.abs(v-y)<Math.abs(a-y)?v:a,-1e9);
+      if(Math.abs(n-y)>2&&Math.abs(n-y)<vh*.2){lock=1;scrollTo({top:n,behavior:"smooth"});setTimeout(()=>lock=0,800)}},180)},{passive:true});
+  }
 })();
 
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
