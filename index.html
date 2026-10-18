@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610181815"></script>
+<script defer src="assets/boot.js?v=202610181905"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -138,14 +138,10 @@ a{color:inherit}
 .stage{--gut:max(20px,calc((100vw - 1320px) / 2));position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:16/7;min-height:460px;max-height:780px;background:#000;color:#f3f2ef}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1.1s var(--ease),visibility 0s 1.1s}
 .slide.on{opacity:1;visibility:visible;transition:opacity 1.1s var(--ease)}
-.slide .fgc{position:absolute;inset:0}
-.slide .fgc canvas{position:absolute;max-width:none;pointer-events:none}
-.slide .fgc.gl img,.slide.gl .fgc img{visibility:hidden}
-.slide img.bg,.slide img.bgc,.slide .fgc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--fp,60% 30%);max-width:none}
-.slide img.bgc,.slide .fgc{opacity:0;transition:opacity .6s var(--ease)}
-.slide.lay img.bgc,.slide.lay .fgc{opacity:1}
-.slide.lay img.bg{visibility:hidden;transition:visibility 0s .6s}
-.slide .fgw{position:absolute;inset:0;transform-origin:50% 100%;pointer-events:none}
+.slide img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--fp,60% 30%);max-width:none}
+.slide .anim{position:absolute;inset:0;pointer-events:none}
+.slide .anim canvas{position:absolute;max-width:none}
+.slide.gl img.bg{visibility:hidden}    /* canvas ảnh động đang vẽ thay ảnh tĩnh */
 .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.35) 46%,rgba(0,0,0,0) 70%),linear-gradient(0deg,rgba(0,0,0,.9) 0%,transparent 45%)}
 .slide-c{position:absolute;z-index:1;left:calc(var(--gut) + clamp(0px,4vw,56px));transform:translate3d(0,var(--tc,0px),0);bottom:clamp(96px,14vh,140px);max-width:min(620px,90%);display:flex;flex-direction:column;gap:18px}
 .slide-c .over{color:rgba(243,242,239,.7);display:flex;align-items:center;gap:12px}
@@ -501,16 +497,7 @@ a{color:inherit}
   /* Sân khấu: mở khung kiểu điện ảnh + thị sai */
   .hero-c,.slide img.bg,.slide-c,.band-row{will-change:transform}
   .slide.on img.bg{animation:none}
-  .slide img.bg,.slide img.bgc{transform:translate3d(calc(var(--mx,0) * -8px),var(--ty,0px),0) scale(var(--s,1.12))}
-  /* Lớp tướng trôi chậm hơn nền khi cuộn, lệch theo chuột và bồng bềnh nhẹ → cảm giác nổi khối. Biên độ nhỏ hơn phần ảnh thừa ngoài khung nên không hở mép. */
-  .slide .fgc{transform:translate3d(calc(var(--mx,0) * 16px),calc(var(--ty,0px) * .55 + var(--my,0) * 8px),0) scale(var(--s,1.12));will-change:transform}
-  .slide img.bgc{will-change:transform}
-  /* Nhân vật "thở": lớp tướng phồng nhẹ theo chiều dọc quanh mép dưới khung (vai, đầu nhích lên vài px), hít vào nhanh, thở ra chậm.
-     Chỉ chạy ở slide đang hiện. */
-  .slide.on.lay:not(.gl) .fgw{animation:breathe 4.6s infinite}   /* dự phòng khi không có WebGL; có WebGL thì shader lo cả thở */
-  @keyframes breathe{0%{transform:scale(1,1);animation-timing-function:cubic-bezier(.4,0,.6,1)}
-    38%{transform:scale(1.004,1.013);animation-timing-function:cubic-bezier(.45,0,.3,1)}
-    100%{transform:scale(1,1)}}
+  .slide img.bg,.slide .anim{transform:translate3d(0,var(--ty,0px),0) scale(var(--s,1.12))}
   /* Tiêu đề mục: hiện theo dòng */
   .sec-h.in h2{animation:mask 1.1s var(--ease) both}
   .sec-h.in .over{animation:up .8s var(--ease) both}
@@ -967,7 +954,7 @@ html.lock{overflow:hidden}
 <div class="pickbar" id="pickbar" role="status" hidden><span id="pickTxt"></span><button class="btn" id="pickX" type="button">Huỷ</button></div>
 <div id="modalRoot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
-<script defer src="assets/data.js?v=202610181815"></script>
-<script defer src="assets/app.js?v=202610181815"></script>
+<script defer src="assets/data.js?v=202610181905"></script>
+<script defer src="assets/app.js?v=202610181905"></script>
 </body>
 </html>
