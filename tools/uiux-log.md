@@ -4,6 +4,7 @@ Việc định kỳ mỗi Thứ Bảy (7:45 giờ Việt Nam) đọc tệp này 
 Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng để lần sau.
 
 ## Đã chốt, không làm ngược lại
+- Đầu trang đen tan dần vào nền trang (`.hero-fade`), không để mép cứng đen → kem ở nền sáng (chủ web yêu cầu 18/10/2026).
 - Phong cách lấy cảm hứng Bugatti: nền đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm.
 - Tên tướng không xuống dòng trên thẻ (chủ web yêu cầu). Tên dài trên điện thoại thu chữ nhẹ (lớp `.card.ln`).
 - Hover chỉ đặt trong `@media (hover:hover)` (tránh nút "dính" màu sau khi chạm trên điện thoại).
@@ -59,4 +60,4 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Nghiêng/phóng theo cuộn được làm mượt (nội suy theo thời gian), không giật khi cuộn bằng bánh xe.
 - Kích thước điểm giới hạn theo `ALIASED_POINT_SIZE_RANGE` của máy.
 - Kiểm tra: 1440/390 không lỗi JS, 5 slide, không tràn ngang; so ảnh trước/sau (swiftshader).
-- Ý tưởng để lần sau: nền sáng (light) vẫn có mép cứng đen → kem dưới đầu trang (chủ ý kiểu khối Bugatti); hỏi chủ web nếu muốn chuyển mềm.
+- Nền sáng: chủ web thấy chỗ nối đầu trang đen → nền kem quá tách bạch. Thêm `.hero-fade` (dải chuyển dần kiểu scrim, cao 1,6× khoảng cách đầu mục, chồng lên phần đệm của mục sau nên bố cục chỉ dài thêm ~0,6×). Nền tối không thấy khác. Khi mở "Cách đọc bảng" dải không chồng lên hộp.
