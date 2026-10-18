@@ -651,6 +651,26 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+/* ===== Cuộn dừng tại từng khối (kiểu Bugatti) =====
+   Đoạn đầu trang → sân khấu → đầu bảng tier: mỗi lần cuộn dừng lại ở khối kế tiếp theo hướng cuộn.
+   Từ đầu bảng tier trở xuống cuộn tự do (bảng dài). Không dùng CSS scroll-snap vì Chrome hút ngược về đầu trang, không cuộn qua được. */
+(function snap(){if(reduce.matches)return;const st=$("stage"),bt=$("boardTitle");if(!st||!bt)return;
+  let y0=scrollY,busy=0,timer=0,dir=0;
+  const pts=()=>{const vh=innerHeight,r=st.getBoundingClientRect(),b=bt.closest(".sec").getBoundingClientRect();
+    return [0,Math.round(r.top+scrollY+r.height/2-vh/2),Math.round(b.top+scrollY)]};
+  const blocked=()=>document.getElementById("veil")||!$("menu").hidden||document.body.classList.contains("picking")||document.activeElement===$("q");
+  function settle(){timer=0;if(busy||blocked())return;const y=scrollY,p=pts(),last=p[2];
+    if(y>=last-2){y0=y;return}                                     // trong bảng tier: tự do
+    let t=dir>0?p.find(v=>v>=y+2):[...p].reverse().find(v=>v<=y-2);
+    if(t===undefined)t=p.reduce((a,v)=>Math.abs(v-y)<Math.abs(a-y)?v:a,p[0]);
+    y0=t;if(Math.abs(t-y)<3)return;busy=1;scrollTo({top:t,behavior:"smooth"});
+    const done=()=>{busy=0;y0=scrollY};("onscrollend" in window)?addEventListener("scrollend",done,{once:true}):setTimeout(done,700)}
+  addEventListener("scroll",()=>{if(busy)return;const y=scrollY;if(y!==y0)dir=y>y0?1:-1;
+    clearTimeout(timer);timer=setTimeout(settle,("onscrollend" in window)?160:200)},{passive:true});
+  // bấm link/nút cuộn tới mục (Xem bảng tier, menu…) thì không kéo ngược lại
+  document.addEventListener("click",e=>{if(e.target.closest('a[href^="#"],.hero-go,.totop')){busy=1;setTimeout(()=>{busy=0;y0=scrollY},1200)}},true);
+})();
+
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
 (function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
   const cards=()=>$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
