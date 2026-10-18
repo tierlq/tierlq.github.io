@@ -489,7 +489,7 @@ ENCH: Rừng nguyên sinh: Canh gác, Bơm máu, Du hiệp | Thành khởi nguy�
 
 ## tachi@jg
 SRC: https://aov-builds.com/tuong/tachi/
-ITEMS: Kiếm Truy Hồn | Giày Hộ Vệ | Thương Khung Kiếm | Nanh Fenrir | Giáp Cuồng Nộ | Huân Chương Troy
+ITEMS: Kiếm Truy Hồn | Giày Hộ Vệ | Thương Khung Kiếm | Nanh Fenrir | Giáp Cuồng Nộ | Giáp Gaia
 RUNES: Đỏ Tốc đánh-Máu-Giáp x10 | Tím Máu tối đa x5 | Tím Tốc đánh-Tốc chạy x5 | Xanh Máu tối đa-Giảm hồi chiêu x10
 SPELL: Trừng Trị
 ENCH: Rừng nguyên sinh: Canh gác, Bơm máu, Du hiệp | Thành khởi nguyên: Siêu hồi máu | Vực hỗn mang: Hấp huyết
