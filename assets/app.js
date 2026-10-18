@@ -387,7 +387,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&C_KEYS.has(ck)&&!reduce.matches?`<img class="bgc" data-src="c/${ck}-bg.webp" alt="" decoding="async"><img class="fgc" data-src="c/${ck}.webp" alt="" decoding="async">`:""})()}
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&C_KEYS.has(ck)&&!reduce.matches?`<img class="bgc" data-src="c/${ck}-bg.webp" alt="" decoding="async"><div class="fgw"><img class="fgc" data-src="c/${ck}.webp" alt="" decoding="async"></div>`:""})()}
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
