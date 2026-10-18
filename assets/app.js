@@ -387,7 +387,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&C_KEYS.has(ck)&&!reduce.matches?`<img class="bgc" data-src="c/${ck}-bg.webp" alt="" decoding="async"><div class="fgw"><img class="fgc" data-src="c/${ck}.webp" alt="" decoding="async"></div>`:""})()}
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} 1386w" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>${(()=>{const ck=sp?sp.slice(2,-5):"";return ck&&C_KEYS.has(ck)&&!reduce.matches?`<img class="bgc" data-src="c/${ck}-bg.webp" alt="" decoding="async"><div class="fgw"><div class="fgc" data-flex="c/${ck}-flex.webp"><img class="fgi" data-src="c/${ck}.webp" alt="" decoding="async"></div></div>`:""})()}
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng 1</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
@@ -416,8 +416,8 @@ function buildStage(){
 }
 function loadSlide(i){const sl=$("stage").querySelectorAll(".slide")[i],im=sl&&sl.querySelector("img.bg");if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}
   // Lớp nổi khối: chỉ bật khi cả nền lẫn tướng đã tải xong (lỗi một lớp thì giữ ảnh phẳng)
-  const ly=sl?[...sl.querySelectorAll("img.bgc[data-src],img.fgc[data-src]")]:[];if(ly.length===2)Promise.all(ly.map(x=>new Promise((ok,no)=>{x.onload=ok;x.onerror=no;x.src=x.dataset.src;x.removeAttribute("data-src")}))).then(()=>sl.classList.add("lay"),()=>ly.forEach(x=>x.remove()))}
-function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
+  const ly=sl?[...sl.querySelectorAll("img.bgc[data-src],img.fgi[data-src]")]:[];if(ly.length===2)Promise.all(ly.map(x=>new Promise((ok,no)=>{x.onload=ok;x.onerror=no;x.src=x.dataset.src;x.removeAttribute("data-src")}))).then(()=>{sl.classList.add("lay");ALIVE&&ALIVE.wake()},()=>ly.forEach(x=>x.remove()))}
+function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);ALIVE&&setTimeout(ALIVE.wake);
   st.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===i);k===i?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});
   st.querySelectorAll(".tabs button").forEach((b,k)=>b.setAttribute("aria-selected",k===i));
   sLeft=DUR;if(!reduce.matches)schedule()}
@@ -660,6 +660,58 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+/* ===== Cử động toàn thân (WebGL) cho lớp tướng đã tách nền =====
+   Một canvas dùng chung, gắn vào slide đang hiện. Ảnh tướng được "uốn" trong shader:
+   thở (phồng dọc từ mép dưới), lắc người (phần trên lắc nhiều hơn), tóc/áo choàng lay theo sóng (theo bản đồ mềm c/<key>-flex.webp).
+   Lỗi gì thì bỏ qua: slide giữ ảnh tách nền tĩnh + nhịp thở bằng CSS. */
+const ALIVE=(()=>{if(reduce.matches)return null;
+  const cv=document.createElement("canvas");cv.setAttribute("aria-hidden","true");
+  const gl=cv.getContext("webgl",{alpha:true,premultipliedAlpha:true,antialias:false});if(!gl)return null;
+  const vs="attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}";
+  const fs=`precision mediump float;uniform sampler2D uF,uM;uniform float uT;uniform vec2 uPx;uniform vec3 uA;varying vec2 v;
+    void main(){vec2 uv=v;float h=1.-uv.y;float m=texture2D(uM,uv).r;
+      float br=.5-.5*cos(uT*1.366);                                        // thở, chu kỳ ~4,6 s
+      vec2 d=vec2(sin(uT*.71)*uA.y*pow(h,1.7)*uPx.x, br*uA.x*h);           // lắc người + thở (lấy mẫu thấp hơn → hình nhích lên)
+      vec2 w=vec2(sin(uv.y*10.+uT*1.6)+.5*sin(uv.x*17.-uT*1.25),cos(uv.x*9.+uT*1.35)+.5*sin(uv.y*13.+uT*1.9));
+      d+=m*w*uA.z*uPx;                                                     // tóc, áo choàng
+      vec2 q=uv+d;vec4 c=texture2D(uF,q);
+      c*=step(0.,q.x)*step(q.x,1.)*step(0.,q.y)*step(q.y,1.);gl_FragColor=c;}`;
+  const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw 0;return o};
+  let pr;try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw 0}catch(e){return null}
+  gl.useProgram(pr);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const lp=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+  const U=n=>gl.getUniformLocation(pr,n),uT=U("uT"),uPx=U("uPx"),uA=U("uA");gl.uniform1i(U("uF"),0);gl.uniform1i(U("uM"),1);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
+  const mk=src=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+    for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,k,v);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);return t};
+  const cache=new Map();let host=null,cur=null,visible=true,raf=0,t0=performance.now(),last=0;
+  const small=matchMedia("(max-width:719px)").matches,dprMax=small?1.25:1.5;
+  function fit(){if(!host||!cur)return;const W=host.clientWidth,H=host.clientHeight,iw=cur.w,ih=cur.h,k=Math.max(W/iw,H/ih),dw=iw*k,dh=ih*k;
+    cv.style.cssText=`left:${((W-dw)*.6).toFixed(1)}px;top:${((H-dh)*.3).toFixed(1)}px;width:${dw.toFixed(1)}px;height:${dh.toFixed(1)}px`;   // giống object-fit:cover; object-position:60% 30%
+    const bw=Math.round(Math.min(iw,dw*Math.min(devicePixelRatio||1,dprMax))),bh=Math.round(bw*ih/iw);if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh;gl.viewport(0,0,bw,bh)}}
+  function attach(){const sl=document.querySelector("#stage .slide.on.lay");const fc=sl&&sl.querySelector(".fgc");if(!fc)return false;
+    if(host!==fc){const im=fc.querySelector("img.fgi");if(!im||!im.complete||!im.naturalWidth)return false;
+      let c=cache.get(fc);if(!c){if(!fc.dataset.flex)return false;
+        if(!fc._fl){fc._fl=new Image();fc._fl.onload=wake;fc._fl.onerror=()=>{delete fc.dataset.flex};fc._fl.src=fc.dataset.flex;return false}
+        if(!fc._fl.complete||!fc._fl.naturalWidth)return false;
+        try{c={f:mk(im),m:mk(fc._fl),w:im.naturalWidth,h:im.naturalHeight}}catch(e){return false}cache.set(fc,c)}
+      document.querySelectorAll("#stage .slide.gl").forEach(s=>s.classList.remove("gl"));
+      fc.appendChild(cv);host=fc;cur=c;fit();sl.classList.add("gl")}
+    return true}
+  function frame(now){raf=0;if(!visible||document.hidden)return;
+    if(small&&now-last<30){raf=requestAnimationFrame(frame);return}last=now;   // điện thoại ~30 hình/giây cho đỡ pin
+    if(attach()){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,cur.f);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,cur.m);
+      gl.uniform1f(uT,(now-t0)/1000);gl.uniform2f(uPx,1/cur.w,1/cur.h);gl.uniform3f(uA,.012,10,7);   // thở 1,2% chiều cao; lắc 10px; lay 7px (theo điểm ảnh gốc)
+      gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+    raf=requestAnimationFrame(frame)}
+  function wake(){if(!raf&&visible&&!document.hidden)raf=requestAnimationFrame(frame)}
+  try{new IntersectionObserver(([e])=>{visible=e.isIntersecting;wake()}).observe($("stage"))}catch(e){}
+  try{new ResizeObserver(fit).observe($("stage"))}catch(e){addEventListener("resize",fit)}
+  document.addEventListener("visibilitychange",wake);
+  cv.addEventListener("webglcontextlost",e=>{e.preventDefault();document.querySelectorAll("#stage .slide.gl").forEach(s=>s.classList.remove("gl"));cv.remove();host=null;visible=false});
+  return {wake}})();
+
 buildFilters();buildStage();paintPP();setMode(mode);measure();
 openFromHash();
 requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(()=>fitNames());
