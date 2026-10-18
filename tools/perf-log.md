@@ -40,3 +40,42 @@ mở bảng chi tiết ~0,5–0,7 giây trên điện thoại chậm (dựng HTM
   trên điện thoại chậm (1333 → 1684 ms), nên đổi sang để app.js tự tải builds.js 1,2 giây sau khi trang tải xong (hoặc khi mở bảng chi tiết).
 - Điện thoại (giả lập chậm, trung vị 5 lần): bảng có thẻ 1260 ms, tải tới lúc bảng hiện 50 kB / 4 yêu cầu, TBT 342 ms, LCP 504 ms.
 - Máy tính: bảng có thẻ 551 ms, LCP 108 ms.
+
+## 2026-10-18 — việc định kỳ Chủ nhật
+Đo bằng `tools/perf` (trung vị 5 lần, chạy 2 lượt xen kẽ bản cũ/bản mới trên cùng máy). Không tính Google Fonts và Google Analytics.
+Máy đo tuần này chậm hơn tuần trước: bản 12/10 (61c0ff6) đo lại cho bảng có thẻ 1584 ms (tuần trước ghi 1260 ms), nên chỉ so trước/sau trong cùng lần chạy.
+
+| Điện thoại (giả lập chậm) | Trước (432b91a) | Sau |
+|---|---|---|
+| LCP (= lần vẽ đầu, chữ ở đầu trang) | 552–616 ms | 428 ms |
+| Bảng tier có thẻ tướng | 1908–1998 ms | 1301–1347 ms |
+| TBT | 715–829 ms | 591–789 ms |
+| CLS | 0,000 | 0,001 (nhiễu, cùng nguồn: hiệu ứng chữ tiêu đề) |
+| Mở bảng chi tiết (tới khi hiện ảnh đồ) | 905–929 ms | 841–922 ms |
+| Tải lần đầu | 52 kB / 4 yêu cầu tới lúc bảng hiện; 163 kB / 17 yêu cầu sau 3 giây | không đổi |
+Máy tính: không đổi (LCP 120–148 ms, bảng có thẻ 505–600 ms, TBT 143–210 ms, mở bảng chi tiết 278–389 ms — trong mức dao động).
+Lần mở sau (đã có service worker, máy chủ thử trễ 150 ms mỗi yêu cầu): boot/data/app.js lấy từ bộ nhớ đệm ~15 ms thay vì ~200 ms mỗi tệp;
+bảng có thẻ 766–826 → 635–668 ms.
+
+Đã làm:
+- `boot.js`, `data.js`, `app.js` nạp bằng `defer`. Trước đây `boot.js` là script chặn trong `<head>`: trang phải chờ thêm một lượt tải
+  (~150 ms trên mạng yếu) mới vẽ được chữ đầu tiên. Thứ tự chạy giữ nguyên (boot → data → app, trước DOMContentLoaded), GA vẫn nhận sự kiện,
+  chống nhúng iframe vẫn ẩn trang (thử bằng iframe khác cổng). Riêng trong iframe, trang có thể hiện thoáng chốc trước khi bị ẩn.
+- `fmt` (số "Lượt chọn"/"Lượt cấm") không dùng `toLocaleString("vi-VN")` nữa: lần gọi đầu nạp dữ liệu ngôn ngữ Intl mất ~50–130 ms
+  (CPU chậm 4 lần) ngay trên đường dựng bảng. Kết quả giống hệt ("2.140", "1.710").
+- `sw.js`: tệp `assets/*.js?v=…` dùng ngay bản đã lưu, lấy bản mới ở nền (tên có `?v=` đổi mỗi lần sửa nên không bị cũ);
+  ảnh đồ/ngọc/phép trong `b/` lưu lâu như ảnh tướng (trước đây mỗi lần mở bảng chi tiết lại hỏi mạng). Không đổi `V` (không thay ảnh).
+
+Kiểm tra: 1440/390, sáng/tối: 5 slide, bảng có thẻ, không tràn ngang, 147/147 bảng chi tiết mở được (build + Bộ chiêu thức đủ),
+link `#tuong-…` mở bảng chi tiết, tải ảnh tier list ra tệp (cùng kích thước với bản cũ), không lỗi JS, không vi phạm CSP, không ảnh 404,
+mất mạng vẫn mở được trang. Ảnh chụp trước/sau giống từng điểm ảnh, trừ thiên hà (hạt sinh ngẫu nhiên mỗi lần tải).
+
+Đã xem rồi bỏ:
+- Hoãn dựng thiên hà WebGL (~100 ms CPU chậm) tới sau lần vẽ đầu: thiên hà sẽ hiện trễ một nhịp, nhìn thấy được.
+- Dừng thiên hà khi mở bảng chi tiết: lớp phủ chỉ tối 72%, thiên hà vẫn nhìn thấy sau lớp phủ.
+- `measure()` và `fitOne` ép tính bố cục (~70–200 ms / ~90 ms CPU chậm) nhưng đó là lần bố cục đầu, bỏ đi thì trình duyệt vẫn phải làm.
+Ý tưởng để lần sau:
+- TBT trên điện thoại phần lớn là từng khung hình thiên hà (~60 ms mỗi khung khi không có GPU); trên máy thật nhẹ hơn nhiều. Cân nhắc giảm số hạt
+  khi `deviceMemory`/`hardwareConcurrency` thấp hơn nữa, hoặc vẽ 30 khung/giây trên điện thoại (cần so mắt độ mượt).
+- `data.js` dòng sắp xếp `HEROES` (`localeCompare(…, "vi")`) tốn ~70 ms CPU chậm lần đầu; không sửa vì thuộc dữ liệu/cách xếp.
+- Lần bố cục đầu trang (~120 ms CPU chậm cho 144 phần tử) phần lớn do dò font hệ thống trong môi trường đo, có thể không đúng trên điện thoại.

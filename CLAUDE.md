@@ -13,11 +13,12 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
-- `sw.js` — bộ nhớ đệm: ảnh lưu lâu, trang và dữ liệu luôn lấy bản mới. **Nếu thay ảnh trong `p/` hoặc `s/` mà giữ nguyên tên tệp, tăng `V` trong `sw.js`.**
+- `sw.js` — bộ nhớ đệm: ảnh (`p/`, `s/`, `b/`) lưu lâu, trang luôn lấy bản mới; tệp `assets/*.js?v=…` dùng ngay bản đã lưu và lấy bản mới ở nền
+  (nên sửa JS nào, kể cả `skills.js`, cũng phải đổi `?v=`). **Nếu thay ảnh trong `p/`, `s/` hoặc `b/` mà giữ nguyên tên tệp, tăng `V` trong `sw.js`.**
 - `404.html` — trang báo link sai.
 - Bảo mật: `index.html` và `404.html` có thẻ `Content-Security-Policy` (chỉ cho chạy mã của web và Google Analytics, font Google).
   Không viết mã `<script>` nội tuyến hay thuộc tính `onclick=`/`onload=` trong HTML — đặt vào tệp JS. Thêm dịch vụ ngoài mới thì phải thêm tên miền vào CSP.
-  `assets/boot.js` (nạp trong `<head>`): khởi tạo Google Analytics, chống nhúng web vào iframe, bật font. Đổi `?v=` của nó cùng các script cuối trang.
+  `assets/boot.js` (nạp trong `<head>` bằng `defer`, giống `data.js`/`app.js` cuối trang: cả ba chạy theo thứ tự sau khi đọc xong HTML, không chặn trang hiện lên): khởi tạo Google Analytics, chống nhúng web vào iframe, bật font. Đổi `?v=` của nó cùng các script cuối trang.
   Khi kiểm tra bằng Playwright mà cần chèn script (ví dụ axe-core), tạo context với `bypassCSP: true`.
   Dữ liệu đọc từ bộ nhớ trình duyệt (bảng Tự xếp) được lọc lại trước khi dùng (`loadMine`). `.well-known/security.txt` hết hạn 2027-10-12, nhớ gia hạn.
 - Google Analytics `G-5WRPCM36GN` khởi tạo trong `assets/boot.js`, gắn ở `<head>` của `index.html` và `404.html`. Sự kiện riêng: `xem_tuong`, `tai_anh`, `chia_se`, `doi_che_do` (hàm `track` trong `assets/app.js`).

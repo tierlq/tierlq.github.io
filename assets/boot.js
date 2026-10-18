@@ -1,4 +1,5 @@
-/* Chạy sớm trong <head>. Tách khỏi HTML để chính sách bảo mật (CSP) không phải cho phép mã nội tuyến.
+/* Nạp trong <head> với defer (không chặn trang hiện lên; chạy ngay khi đọc xong HTML, trước data.js và app.js).
+   Tách khỏi HTML để chính sách bảo mật (CSP) không phải cho phép mã nội tuyến.
    1. Google Analytics G-5WRPCM36GN (tắt chia sẻ dữ liệu quảng cáo của Google).
    2. Chống nhúng web vào khung (iframe) của trang khác để lừa bấm: nếu bị nhúng thì ẩn trang và thử mở ra ngoài.
    3. Bật font Google sau khi tải xong (thay cho onload nội tuyến). */
