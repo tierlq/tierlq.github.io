@@ -382,8 +382,6 @@ const S3_KEYS=new Set(["ryoma","billow","zata","elandorr","ybneth"]);
 const s3Of=u=>{const k=u.slice(2,-5);return S3_KEYS.has(k)?`, s3/${k}.webp 2772w`:""};
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
-/* SCROLLY: sân khấu ghim, đổi slide theo vị trí cuộn (tắt khi giảm chuyển động). Khi bật thì không tự chuyển theo giờ. */
-const SCROLLY=!reduce.matches;
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
 function buildStage(){
   const lanes=Object.keys(LANES);
@@ -417,12 +415,11 @@ function buildStage(){
     schedule()}
 }
 function loadSlide(i){const im=$("stage").querySelectorAll(".slide img.bg")[i];if(im&&im.dataset.src){if(im.dataset.srcset){im.srcset=im.dataset.srcset;im.removeAttribute("data-srcset")}im.src=im.dataset.src;im.removeAttribute("data-src")}}
-function stepTo(i){const pin=$("pin"),n=5,step=(pin.offsetHeight-innerHeight)/n;scrollTo({top:Math.round(pin.getBoundingClientRect().top+scrollY+step*(i+.5)),behavior:"smooth"})}
-function goSlide(i,user){if(SCROLLY&&user){stepTo(i);return}if(i===sIdx&&SCROLLY)return;const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
+function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)%5);
   st.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===i);k===i?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});
   st.querySelectorAll(".tabs button").forEach((b,k)=>b.setAttribute("aria-selected",k===i));
   sLeft=DUR;if(!reduce.matches)schedule()}
-function schedule(){clearTimeout(sTimer);if(SCROLLY||sPaused||!sVisible||reduce.matches)return;sStart=performance.now();sTimer=setTimeout(()=>goSlide((sIdx+1)%5),sLeft)}
+function schedule(){clearTimeout(sTimer);if(sPaused||!sVisible||reduce.matches)return;sStart=performance.now();sTimer=setTimeout(()=>goSlide((sIdx+1)%5),sLeft)}
 let userPaused=false;
 const PAUSE='<svg viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12"/><rect x="8.5" y="1" width="3.5" height="12"/></svg>',PLAY='<svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 1l10 6-10 6z"/></svg>';
 function paintPP(){const b=$("stagePP");if(!b)return;b.innerHTML=userPaused?PLAY:PAUSE;b.setAttribute("aria-label",userPaused?"Tiếp tục trình chiếu":"Tạm dừng trình chiếu")}
@@ -553,7 +550,7 @@ function observeRows(){if(!revIO)return;document.querySelectorAll("#board .trow"
   if(seenRows.has(mode+r.dataset.t))return;revIO.observe(r)})}
 if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach(el=>revIO.observe(el));
 (function scrollFx(){
-  const root=document.documentElement,hero=$("hero"),stage=$("stage"),pin=$("pin"),band=$("band"),totop=$("totop"),bar=$("sprog"),ring=$("topRing");
+  const root=document.documentElement,hero=$("hero"),stage=$("stage"),band=$("band"),totop=$("totop"),bar=$("sprog"),ring=$("topRing");
   const heroC=hero.querySelector(".hero-c"),heroF=hero.querySelector(".hero-foot"),heroS=hero.querySelector(".hero-stats"),r1=band.querySelector(".r1"),r2=band.querySelector(".r2");
   const vis={hero:true,stage:false,band:false};
   try{const io=new IntersectionObserver(es=>{es.forEach(en=>{vis[en.target.dataset.fx]=en.isIntersecting});req()},{rootMargin:"100px"});
@@ -561,14 +558,14 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
   let ticking=false,maxS=1,vh=innerHeight,lastY=scrollY,acc=0,dirUp=false,stickY=0;
   const barEl=$("bar"),qEl=$("q"),filt=$("filters");
   const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
-  const measureDoc=()=>{vh=innerHeight;if(SCROLLY&&!pin.classList.contains("on")){pin.classList.add("on");stage.classList.add("scrolly")}maxS=Math.max(1,root.scrollHeight-vh);stickY=sentinel.getBoundingClientRect().top+scrollY};
+  const measureDoc=()=>{vh=innerHeight;maxS=Math.max(1,root.scrollHeight-vh);stickY=sentinel.getBoundingClientRect().top+scrollY};
   function update(){ticking=false;
     const y=scrollY,pp=clamp(y/maxS);
     bar.style.transform=`scaleX(${pp.toFixed(4)})`;ring.style.strokeDashoffset=(125.7*(1-pp)).toFixed(1);
     const dy=y-lastY;lastY=y;if(dy&&Math.sign(dy)!==Math.sign(acc))acc=0;acc+=dy;if(acc<-12)dirUp=true;else if(acc>12)dirUp=false;
     const m=mq.matches;
     // Điện thoại: chỉ hiện nút lên đầu trang khi đang cuộn ngược lên và không che sân khấu
-    const showTop=m?dirUp&&y>vh*1.5&&!vis.stage&&!document.body.classList.contains("picking"):y>vh*0.9&&!(SCROLLY&&vis.stage);if(totop.hidden===showTop)totop.hidden=!showTop;
+    const showTop=m?dirUp&&y>vh*1.5&&!vis.stage&&!document.body.classList.contains("picking"):y>vh*0.9;if(totop.hidden===showTop)totop.hidden=!showTop;
     // Điện thoại: cuộn xuống trong bảng thì ẩn hàng chế độ/tìm/lọc, cuộn lên thì hiện lại
     const cp=m&&!dirUp&&y>stickY+160&&document.activeElement!==qEl&&!filt.classList.contains("open");
     if(barEl.classList.contains("compact")!==cp)barEl.classList.toggle("compact",cp);
@@ -579,11 +576,7 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     // Sân khấu luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào (chủ web không muốn viền kem hay viền đen hai bên).
     // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,14 xuống ~1,1 và trôi dọc (phóng ít để ảnh nét), chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
     // (không lộ mép ảnh). Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
-    if(SCROLLY&&vis.stage){const pr=pin.getBoundingClientRect(),run=Math.max(1,pin.offsetHeight-vh),p=clamp(-pr.top/run),f=p*5,i=Math.min(4,Math.floor(f)),q=clamp(f-i);
-      if(i!==sIdx)goSlide(i);
-      const pg=stage.querySelectorAll(".tabs .pg");pg.forEach((g,k)=>g.style.transform=`scaleX(${k<i?1:k===i?q.toFixed(3):0})`);
-      const ss=stage.style;ss.setProperty("--s",(1.1-q*.06).toFixed(4));ss.setProperty("--ty","0px");ss.setProperty("--tc",((.5-q)*24).toFixed(1)+"px")}
-    else if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
+    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
       const s=Math.max(1.14-sp*0.08,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height)),ss=stage.style;
       ss.setProperty("--s",s.toFixed(4));ss.setProperty("--ty",ty.toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));

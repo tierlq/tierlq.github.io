@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610181915"></script>
+<script defer src="assets/boot.js?v=202610181930"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -850,14 +850,6 @@ html.lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.menu-p,.menu-bg{transition:none}}
 /* hàng tab đường trên sân khấu: kính mờ như bảng chú thích của Bugatti */
 .tabs{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-
-/* Sân khấu ghim kiểu Bugatti (trang Destrier: khung h-screen dính, cuộn thì nội dung bên trong đổi theo từng chặng).
-   Khi cuộn tới, sân khấu đứng yên toàn màn hình; mỗi chặng cuộn đổi sang tướng của đường kế tiếp; hết 5 đường thì nhả ra. */
-.pin{position:relative}
-.pin.on{height:calc(100vh + 4 * 80vh);height:calc(100svh + 4 * 80svh)}   /* 5 chặng, mỗi chặng ~80% chiều cao màn */
-.stage.scrolly{position:sticky;top:0;height:100vh;height:100svh;max-height:none;min-height:0;aspect-ratio:auto}
-.stage.scrolly .stage-pp{display:none}
-.stage.scrolly .tabs button .pg{animation:none!important;transition:none}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -927,7 +919,7 @@ html.lock{overflow:hidden}
   <section class="sec" aria-labelledby="spotTitle">
     <div class="sec-h rise" style="--i:1"><div><span class="over">Nổi bật</span><h2 id="spotTitle">Mạnh nhất mỗi đường</h2></div><p>Tướng đứng đầu từng đường theo điểm tổng hợp. Chọn đường ở dưới, hoặc để sân khấu tự chuyển.</p></div>
   </section>
-  <div class="pin" id="pin"><section class="stage" id="stage" aria-roledescription="trình chiếu" aria-label="Tướng mạnh nhất mỗi đường"></section></div>
+  <section class="stage" id="stage" aria-roledescription="trình chiếu" aria-label="Tướng mạnh nhất mỗi đường"></section>
 
   <section class="sec" aria-labelledby="boardTitle">
     <div class="sec-h"><div><span class="over">Toàn bộ</span><h2 id="boardTitle">Bảng tier theo đường</h2></div><div class="sec-r"><p>Bấm vào tướng để xem điểm từng nguồn.<span class="dk"> Trên máy tính, rê chuột để xem nhanh.</span><span class="mb"> Vuốt ngang trên bảng để đổi đường.</span></p>
@@ -1039,7 +1031,7 @@ html.lock{overflow:hidden}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610181915"></script>
-<script defer src="assets/app.js?v=202610181915"></script>
+<script defer src="assets/data.js?v=202610181930"></script>
+<script defer src="assets/app.js?v=202610181930"></script>
 </body>
 </html>
