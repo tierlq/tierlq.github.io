@@ -651,6 +651,27 @@ $("dlMine").onclick=()=>exportImage("mine");
 
 /* ===== Cài như ứng dụng + dùng khi mạng yếu ===== */
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+/* ===== Cuộn trôi (kiểu Bugatti / Lenis) =====
+   Máy tính có chuột: mỗi lần lăn chuột trang không nhảy cóc mà trôi tới vị trí mới rồi chậm dần (nội suy ~0,7 s).
+   Điện thoại, màn cảm ứng, giảm chuyển động: cuộn gốc của máy. Vùng tự cuộn bên trong (bảng chi tiết, menu, bộ lọc) vẫn cuộn riêng. */
+(function glide(){if(reduce.matches||!matchMedia("(hover:hover) and (pointer:fine)").matches)return;
+  let target=scrollY,cur=scrollY,raf=0,last=0;const H=document.documentElement;
+  const max=()=>H.scrollHeight-innerHeight;
+  const inner=(el,dy)=>{for(;el&&el!==document.body&&el!==H;el=el.parentElement){const o=getComputedStyle(el).overflowY;
+    if((o==="auto"||o==="scroll")&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0))return true}return false};
+  const jump=y=>scrollTo({top:y,behavior:"instant"});
+  function step(now){const dt=Math.min(.05,(now-(last||now))/1000)||1/60;last=now;
+    cur+=(target-cur)*(1-Math.pow(.9,dt*60));
+    if(Math.abs(target-cur)<.5){cur=target;jump(cur);raf=0;last=0;return}
+    jump(cur);raf=requestAnimationFrame(step)}
+  addEventListener("wheel",e=>{if(e.ctrlKey||e.defaultPrevented||document.getElementById("veil")||!$("menu").hidden)return;
+    const dy=e.deltaY*(e.deltaMode===1?40:e.deltaMode===2?innerHeight:1);if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||inner(e.target,dy))return;
+    e.preventDefault();if(!raf)target=cur=scrollY;target=Math.max(0,Math.min(max(),target+dy));if(!raf)raf=requestAnimationFrame(step)},{passive:false});
+  // cuộn bằng bàn phím, thanh cuộn, link tới mục: bỏ hoạt ảnh đang chạy, theo vị trí mới
+  addEventListener("keydown",()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}},true);
+  addEventListener("mousedown",()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}},true);
+})();
+
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
 (function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
   const cards=()=>$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
