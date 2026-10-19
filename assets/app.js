@@ -667,15 +667,15 @@ if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("
   const busyUI=()=>document.getElementById("veil")||!$("menu").hidden||document.body.classList.contains("picking");
   const jump=y=>scrollTo({top:y,behavior:"instant"});
   if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-    // Tới điểm dừng thì không khoá cứng: lăn tiếp chỉ "nhún" nhẹ (trang nhích ~12% lượng lăn như có lực cản),
-    // lăn đủ mạnh (~260px) mới vượt qua; ngừng lăn thì trôi êm về đúng điểm. Nhờ vậy không bị khựng.
-    let target=scrollY,cur=scrollY,raf=0,last=0,at=null,push=0,decay=0;const TH=260;
+    // Tới điểm dừng thì không khoá cứng: lăn tiếp chỉ "nhún" nhẹ (trang nhích ~25% lượng lăn như có lực cản),
+    // lăn thêm ~1 nấc (90px) là vượt qua; ngừng lăn thì trôi êm về đúng điểm. Nhờ vậy không bị khựng.
+    let target=scrollY,cur=scrollY,raf=0,last=0,at=null,push=0,decay=0;const TH=90;
     const max=()=>H.scrollHeight-innerHeight;
     const inner=(el,dy)=>{for(;el&&el!==document.body&&el!==H;el=el.parentElement){const o=getComputedStyle(el).overflowY;
       if((o==="auto"||o==="scroll")&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0))return true}return false};
     const halt=()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}at=null;push=0};
     function step(now){const dt=Math.min(.05,(now-(last||now))/1000)||1/60;last=now;
-      cur+=(target-cur)*(1-Math.pow(1-.075,dt*60));                 // ~0,8 s, chậm dần đều
+      cur+=(target-cur)*(1-Math.pow(1-.11,dt*60));                  // ~0,55 s, chậm dần đều
       if(Math.abs(target-cur)<.4){cur=target;jump(cur);raf=0;last=0;return}
       jump(cur);raf=requestAnimationFrame(step)}
     const go=()=>{if(!raf)raf=requestAnimationFrame(step)};
@@ -683,7 +683,7 @@ if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("
       const dy=e.deltaY*(e.deltaMode===1?40:e.deltaMode===2?innerHeight:1);if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||inner(e.target,dy))return;
       e.preventDefault();if(!raf&&at===null)target=cur=scrollY;
       if(at!==null){push+=dy;clearTimeout(decay);
-        if(Math.abs(push)<TH){target=Math.max(0,Math.min(max(),at+push*.12));decay=setTimeout(()=>{push=0;target=at;go()},220);go();return}
+        if(Math.abs(push)<TH){target=Math.max(0,Math.min(max(),at+push*.25));decay=setTimeout(()=>{push=0;target=at;go()},140);go();return}
         const over=push-Math.sign(push)*TH;target=at;at=null;push=0;e=null;
         return move(over)}
       move(dy)},{passive:false});
