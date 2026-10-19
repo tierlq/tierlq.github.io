@@ -532,5 +532,8 @@ for(const l of Object.keys(LANES)){
     const man=MANUAL[h.key+"-"+h.lane]||MANUAL[h.key];if(man){h.tier=man;h.floor="manual"}
   });
 }
+// Hạng trong đường: xếp theo tier cuối cùng (sau sàn ĐTDV và chỉnh tay của chủ web) rồi mới tới điểm,
+// để hạng ghi trong bảng chi tiết khớp với bảng tier và sân khấu "Mạnh nhất mỗi đường"
+for(const l of Object.keys(LANES)){const TO="SABCD";HEROES.filter(h=>h.lane===l).sort((a,b)=>TO.indexOf(a.tier)-TO.indexOf(b.tier)||b.adj-a.adj).forEach((h,i)=>h.rank=i+1)}
 const picksOf=h=>{const a=aogOf(h.key,h.lane);return a?a[3]:0};
 HEROES.sort((a,b)=>picksOf(b)-picksOf(a)||b.score-a.score||a.name.localeCompare(b.name,"vi"));

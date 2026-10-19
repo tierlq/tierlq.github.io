@@ -4,7 +4,7 @@ Phóng to s2/<key>.webp ×2 bằng Real-ESRGAN x2plus (AI làm nét, xoá vệt 
 Cài: pip install --break-system-packages spandrel   (kéo theo torch, chạy CPU được, ~80 giây/ảnh với 2 nhân)
 Trọng số: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth  → truyền đường dẫn bằng --model
 Chạy: python3 tools/upscale/up.py --model /đường/dẫn/RealESRGAN_x2plus.pth ryoma billow …   (bỏ qua key đã có s3/, trừ khi --force)
-Sau khi tạo, thêm key vào S3_KEYS ở assets/app.js. Tamyn bỏ qua (nguồn chỉ 600px)."""
+Web dùng s3/ cho mọi tướng trừ S3_NO (Tamyn, nguồn chỉ 600px); ảnh khác cỡ 2772 thì ghi độ rộng vào S3_W ở assets/app.js."""
 import sys, os, time, argparse
 import numpy as np, torch
 from PIL import Image
