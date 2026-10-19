@@ -475,7 +475,7 @@ const RAW=[
 ];
 const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/gi,"d").toLowerCase().replace(/[^a-z]/g,"");
 const HEROES=[];
-// Điểm tổng hợp: ĐTDV mùa Đông 35% · RoV Pro League 15% · rank cộng đồng 25% · báo game VN (đã chỉnh theo bản 29/09 và 15/10) 25%
+// Điểm tổng hợp (trọng số chuẩn hoá): ĐTDV mùa Đông 46% · mùa trước 17% · RoV Pro League 14% · rank cộng đồng 23%. Đã bỏ tier list báo game VN (19/10/2026).
 const VNS={S:5,A:4,B:3,C:2,D:1}, RMS={"S+":5,S:4.5,A:3.5,B:2.5,C:1.5};
 function proScore(r){if(!r)return null;const [w,p,b]=r,P=p+b;let s=P>=50?5:P>=30?4.5:P>=20?4:P>=10?3.5:P>=5?3:2.5;
   if(w!=null&&p>=5){if(w>=55)s+=.5;else if(w<=45)s-=.5}return Math.max(1,Math.min(5,s))}
@@ -484,7 +484,7 @@ function aogScore(a){if(!a)return 1.5;const [w,p,bn]=a;let s=p>=30?5:p>=25?4.5:p
   if(bn>=40)s+=.5;else if(bn>=20)s+=.25;
   if(p>=5){if(w>=55)s+=.5;else if(w<=45)s-=.5}return Math.max(1,Math.min(5,s))}
 const prevOf=(k,lane)=>SRC.prev[k+"-"+lane]||(k==="flowborn"?null:SRC.prev[k]);
-function score(k,vn,lane){const parts=[];if(VNS[vn])parts.push([VNS[vn],.1]);
+function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ khỏi điểm (chủ web yêu cầu 19/10/2026)
   // ĐTDV (đủ 214 trận) là nguồn nặng nhất, ưu tiên số trận được CHỌN; cấm nhiều chỉ cộng thêm
   const a=aogOf(k,lane);parts.push([aogScore(a),.4]);
   // Mùa trước (299 trận): cùng cách tính, trọng số nhẹ hơn vì đã qua nhiều bản cập nhật

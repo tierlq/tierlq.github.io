@@ -69,7 +69,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   Tướng chưa có trong `rm` (ví dụ tướng mới) thì để trống, không tự thêm.
 - Tên quốc tế → tên Việt: Riktor = Richter, Zanis = Triệu Vân, Wukong = Ngộ Không, Lu Bu = Lữ Bố,
   Diao Chan = Điêu Thuyền, Jinnar = Jinna, Terri = Teeri, Sinestra = Sinestrea.
-- `RAW` — `[đường, lớp, tier báo VN, "Tên1,Tên2"]`. Đường: `top` Tà Thần, `jg` Rừng, `mid` Giữa, `ad` Rồng, `sp` Trợ thủ.
+- `RAW` — `[đường, lớp, tier báo VN (không còn tính vào điểm từ 19/10/2026, chủ web bỏ nguồn này), "Tên1,Tên2"]`. Đường: `top` Tà Thần, `jg` Rừng, `mid` Giữa, `ad` Rồng, `sp` Trợ thủ.
 - `P` — thay đổi của bản cập nhật gần nhất: `key: ["up"|"down"|"mix"|"new", "ghi chú", true nếu đã chỉnh tier báo VN theo bản này]`.
   Key có thể kèm đường khi thay đổi chỉ áp cho một dạng (ví dụ `"flowborn-ad"`). `PATCH` (ngay trên `P`) là ngày bản, hiện ở chữ "bản …" trong bảng chi tiết.
   `"new"` = tướng mới hoặc làm lại bộ kỹ năng.
