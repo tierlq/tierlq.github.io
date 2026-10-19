@@ -654,8 +654,8 @@ $("dlMine").onclick=()=>exportImage("mine");
 if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 /* ===== Cuộn trôi + dừng ở thông tin quan trọng (kiểu Bugatti) =====
    Điểm dừng: đầu trang, sân khấu "Mạnh nhất mỗi đường" (giữa màn), đầu bảng tier, mục "Cách xếp và nguồn".
-   Máy tính có chuột: lăn chuột thì trang trôi mượt (~0,7 s); đi ngang qua điểm dừng thì dừng lại ở đó, đứng yên một nhịp,
-   lăn tiếp mới đi qua. Giữa các điểm (trong bảng tier dài) trôi tự do.
+   Máy tính có chuột: lăn chuột thì trang trôi mượt (~0,8 s); đi ngang qua điểm dừng thì trôi êm vào đó và có lực cản,
+   lăn tiếp đủ mạnh mới đi qua. Giữa các điểm (trong bảng tier dài) trôi tự do.
    Điện thoại / cảm ứng: cuộn gốc của máy; khi dừng tay gần một điểm dừng (trong ~20% chiều cao màn) thì nhẹ nhàng hút vào.
    Giảm chuyển động: tắt hết. Vùng tự cuộn bên trong (bảng chi tiết, menu, bộ lọc) cuộn riêng. */
 (function glide(){if(reduce.matches)return;const H=document.documentElement;
@@ -667,24 +667,29 @@ if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("
   const busyUI=()=>document.getElementById("veil")||!$("menu").hidden||document.body.classList.contains("picking");
   const jump=y=>scrollTo({top:y,behavior:"instant"});
   if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-    let target=scrollY,cur=scrollY,raf=0,last=0,stopAt=null,holdUntil=0;
+    // Tới điểm dừng thì không khoá cứng: lăn tiếp chỉ "nhún" nhẹ (trang nhích ~12% lượng lăn như có lực cản),
+    // lăn đủ mạnh (~260px) mới vượt qua; ngừng lăn thì trôi êm về đúng điểm. Nhờ vậy không bị khựng.
+    let target=scrollY,cur=scrollY,raf=0,last=0,at=null,push=0,decay=0;const TH=260;
     const max=()=>H.scrollHeight-innerHeight;
     const inner=(el,dy)=>{for(;el&&el!==document.body&&el!==H;el=el.parentElement){const o=getComputedStyle(el).overflowY;
       if((o==="auto"||o==="scroll")&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop+el.clientHeight<el.scrollHeight-1:el.scrollTop>0))return true}return false};
-    const halt=()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0;stopAt=null}};
+    const halt=()=>{if(raf){cancelAnimationFrame(raf);raf=0;last=0}at=null;push=0};
     function step(now){const dt=Math.min(.05,(now-(last||now))/1000)||1/60;last=now;
-      cur+=(target-cur)*(1-Math.pow(.9,dt*60));
-      if(Math.abs(target-cur)<.5){cur=target;jump(cur);raf=0;last=0;if(stopAt!==null){holdUntil=now+450;stopAt=null}return}
+      cur+=(target-cur)*(1-Math.pow(1-.075,dt*60));                 // ~0,8 s, chậm dần đều
+      if(Math.abs(target-cur)<.4){cur=target;jump(cur);raf=0;last=0;return}
       jump(cur);raf=requestAnimationFrame(step)}
+    const go=()=>{if(!raf)raf=requestAnimationFrame(step)};
     addEventListener("wheel",e=>{if(e.ctrlKey||e.defaultPrevented||busyUI())return;
       const dy=e.deltaY*(e.deltaMode===1?40:e.deltaMode===2?innerHeight:1);if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||inner(e.target,dy))return;
-      e.preventDefault();const now=performance.now();
-      if(stopAt!==null||now<holdUntil){if(now<holdUntil)holdUntil=now+250;return}      // đang dừng ở thông tin quan trọng: đứng yên một nhịp
-      if(!raf)target=cur=scrollY;
-      const from=target,to=Math.max(0,Math.min(max(),target+dy));
+      e.preventDefault();if(!raf&&at===null)target=cur=scrollY;
+      if(at!==null){push+=dy;clearTimeout(decay);
+        if(Math.abs(push)<TH){target=Math.max(0,Math.min(max(),at+push*.12));decay=setTimeout(()=>{push=0;target=at;go()},220);go();return}
+        const over=push-Math.sign(push)*TH;target=at;at=null;push=0;e=null;
+        return move(over)}
+      move(dy)},{passive:false});
+    function move(dy){const from=target,to=Math.max(0,Math.min(max(),from+dy));
       const s=stops().filter(v=>Math.abs(v-from)>2&&(dy>0?v>from&&v<=to:v<from&&v>=to));
-      if(s.length){target=dy>0?Math.min(...s):Math.max(...s);stopAt=target}else target=to;
-      if(!raf)raf=requestAnimationFrame(step)},{passive:false});
+      if(s.length){target=dy>0?Math.min(...s):Math.max(...s);at=target;push=0}else target=to;go()}
     addEventListener("keydown",halt,true);addEventListener("mousedown",halt,true);
   }else{
     let t=0,lock=0;
