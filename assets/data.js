@@ -440,12 +440,12 @@ const TR={up:["↑ Tăng","up","Được tăng sức mạnh"],down:["↓ Giảm"
 // key: [xu hướng, ghi chú, true nếu phần báo VN đã chỉnh theo bản này]; key có thể kèm đường (flowborn-ad)
 const PATCH="15/10";
 const P={
- gildur:["down","Giảm sức mạnh: sát thương chiêu 2 còn 350 (+70/cấp, +0,5 SMPT), trước là 380 (+76/cấp, +0,55); sát thương duy trì tăng nhẹ lên 35 (+7/cấp); hồi chiêu 3 thành 45s (−5s/cấp). Phần báo VN hạ từ S xuống A.",true],
- "flowborn-ad":["down","Giảm sức mạnh (dạng Xạ thủ): sát thương cơ bản chiêu 3 còn 64 (+32/cấp, +0,26 công vật lý), trước là 70 (+35/cấp, +0,28). Phần báo VN hạ từ S xuống A.",true],
+ gildur:["down","Giảm sức mạnh: sát thương chiêu 2 còn 350 (+70/cấp, +0,5 SMPT), trước là 380 (+76/cấp, +0,55); sát thương duy trì tăng nhẹ lên 35 (+7/cấp); hồi chiêu 3 thành 45s (−5s/cấp).",true],
+ "flowborn-ad":["down","Giảm sức mạnh (dạng Xạ thủ): sát thương cơ bản chiêu 3 còn 64 (+32/cấp, +0,26 công vật lý), trước là 70 (+35/cấp, +0,28).",true],
  raz:["up","Tăng sức mạnh: hồi chiêu 1 còn 8s (−0,3s/cấp), trước là 10s; chiêu 2 gây 450 (+90/cấp, +0,9 SMPT) và giảm giáp phép 100 (+20/cấp)."],
  kriknak:["up","Tăng sức mạnh: sát thương chiêu 1 lên 325 (+65/cấp, +1,5 công vật lý cộng thêm), trước là 300 (+50/cấp, +1,4)."],
  trieuvan:["up","Tăng sức mạnh: đòn đánh cường hóa của chiêu 1 lướt tới mục tiêu; không có mục tiêu thì lướt về phía trước."],
- evita:["new","Tướng mới (Pháp sư, đường giữa), ra mắt 15/10. Chưa có số liệu giải đấu, rank và báo VN; tier do người biên tập xếp."],
+ evita:["new","Tướng mới (Pháp sư, đường giữa), ra mắt 15/10. Chưa có số liệu giải đấu và rank; tier do người biên tập xếp."],
  dirak:["mix","Điều chỉnh: Pháo tử quang tách khỏi chiêu 3 thành chiêu 4 riêng (500 +250/cấp +0,8 SMPT, hồi 50s); chiêu 2 rơi thẳng xuống nếu đặt trong vòng trong của chiêu 1, hồi chiêu 2 thành 12,5s."],
  ngokhong:["mix","Điều chỉnh: đòn đánh cường hóa của nội tại gây 450 (+1,0 công vật lý) thay vì 340–508 tăng theo cấp, nên mạnh hơn đầu trận, nhẹ hơn cuối trận."],
  errol:["mix","Điều chỉnh: tầng nội tại mất dần từng tầng một, mỗi tầng giữ lâu thêm 1 giây."]

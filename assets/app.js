@@ -698,6 +698,8 @@ if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("
   }
 })();
 
+document.addEventListener("click",e=>{if(e.target.closest("[data-tt]"))track("mo_tiktok",{noi:e.target.closest(".menu")?"menu":"cuoi_trang"})});
+
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
 (function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
   const cards=()=>$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
