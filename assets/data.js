@@ -509,7 +509,7 @@ function addHero(lane,cls,vn,n,sec){const k=slug(n),p=P[k+"-"+lane]||P[k]||[],sc
 RAW.forEach(([lane,cls,vn,names])=>names.split(",").forEach(n=>addHero(lane,cls,vn,n)));
 // Đường phụ: tướng thường được đưa sang đường khác ngoài đường chính (đã bỏ Toro và Marja)
 const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],Qi:["jg"],Airi:["jg"],"Triệu Vân":["jg"],
-  Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Mina:["top"],Arthur:["sp"],Arduin:["top"]};
+  Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Arthur:["sp"],Arduin:["top"]};
 for(const [n,lanes] of Object.entries(SECONDARY)){const base=HEROES.find(h=>h.name===n&&!h.sec);if(!base)continue;
   lanes.forEach(l=>{if(!HEROES.some(h=>h.key===base.key&&h.lane===l))addHero(l,base.cls,base.vn,n,true)})}
 HEROES.filter(h=>h.lane==="mid"&&["annette","rouie"].includes(h.key)).forEach(h=>h.sec=true);
