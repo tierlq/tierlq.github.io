@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610202010"></script>
+<script defer src="assets/boot.js?v=202610240800"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -437,6 +437,7 @@ a{color:inherit}
 .bdbar i{top:0;height:4px}
 .tag{font:500 12.5px var(--f-body);letter-spacing:0;text-transform:none;padding:6px 12px}
 .modal .tags .tag:first-child{background:color-mix(in srgb,currentColor 14%,transparent);border-color:currentColor}
+.modal .tags .tag.tt{color:color-mix(in srgb,var(--tg,var(--fg)) 70%,var(--fg))}   /* chữ tier pha thêm màu chữ chính: đủ tương phản 4.5:1 trên nền nhuộm, cả sáng lẫn tối */
 .modal .other span,.modal .other button{font:500 13px var(--f-body);letter-spacing:0;text-transform:none}
 .tip{font-size:13.5px}
 .tip h4{font:500 16px var(--f-body);letter-spacing:0;text-transform:none}
@@ -763,13 +764,14 @@ html.lock{overflow:hidden}
 .sk-t b{font-weight:500;font-size:14px}
 .modal .sk-d{margin:4px 0 0;font-size:13px;line-height:1.55}
 .modal .sk-src{margin:18px 0 0;font-size:12px;line-height:1.5;color:var(--faint)}
-.sk-src a{color:var(--muted);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px}
+.sk-src a{color:var(--muted);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px;padding:6px 0}   /* vùng chạm cao ~28px, không đổi dòng chữ */
 @media (max-width:719px){
   .bld-items{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 8px}
   .bi-ic{width:60px;height:60px}
   .bld-row{grid-template-columns:1fr}
   .en-row{grid-template-columns:1fr}
 }
+@media (min-width:720px){.bi-n{font-size:13.5px}}   /* tên đồ trong build dễ đọc hơn trên máy tính */
 @media (prefers-reduced-motion:reduce){.bar{transition:none}}
 @media (max-width:719px) and (prefers-reduced-motion:no-preference){
   .fveil:not([hidden]){animation:fade .3s var(--ease)}
@@ -1043,7 +1045,7 @@ html.lock{overflow:hidden}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610202010"></script>
-<script defer src="assets/app.js?v=202610202010"></script>
+<script defer src="assets/data.js?v=202610240800"></script>
+<script defer src="assets/app.js?v=202610240800"></script>
 </body>
 </html>

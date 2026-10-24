@@ -81,3 +81,18 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Điểm dừng khi cuộn bị chê khựng → bỏ khoá cứng 0,45s: tới điểm dừng thì trôi êm vào (nội suy 7,5%/khung ~0,8s), lăn tiếp chỉ nhún nhẹ (12% lượng lăn, như có lực cản), lăn tổng ~260px mới vượt qua, ngừng lăn thì trôi về đúng điểm.
 - Chủ web: dừng hơi lâu, khó cuộn đi → ngưỡng vượt 260→90px (~1 nấc chuột), nhún 25%, trôi nhanh hơn (11%/khung ~0,55s).
 - Zalo (Android): thanh dính (Meta/Tìm/Lọc + hàng đường) dính cách mép trên một khoảng, nội dung lộ phía trên → do trình duyệt trong Zalo báo `safe-area-inset-top` khác 0. Giờ chỉ dùng vùng an toàn phía trên khi web được cài như ứng dụng (`display-mode: standalone`, biến `--sat`); trình duyệt thường và trong app dính sát mép 0.
+
+## 2026-10-24 (việc định kỳ Thứ Bảy)
+- Sửa tương phản nhãn tier ("Tier S · Rất mạnh") trong bảng chi tiết: chữ màu tier trên nền nhuộm 14% chỉ đạt 3,6–4,2:1 ở giao diện sáng
+  (S, A, B, D) và 4,37:1 với tier D ở giao diện tối. Nay chữ pha 70% màu tier + 30% màu chữ chính (`.tag.tt`, biến `--tg`): giữ sắc màu tier,
+  đạt ≥ 4,5:1 ở cả 10 trường hợp. Nhìn gần như cũ, chỉ đậm hơn một chút.
+- Link "trang Học viện của Garena" cuối Bộ chiêu thức: vùng chạm 15px → 27px (padding dọc trên chữ nội dòng, dòng chữ không xê dịch).
+- Máy tính (≥ 720px): tên đồ trong build 12,5px → 13,5px cho dễ đọc. Đã quét 146 bảng chi tiết: không tên đồ nào bị cắt bởi giới hạn 2 dòng.
+- Kiểm tra: 1440/390/360, sáng/tối; 146 bảng chi tiết mở không lỗi (build + Bộ chiêu thức), 5 slide, không tràn ngang, không ảnh 404,
+  không vi phạm CSP. axe-core 4.10: trang chính sạch, bảng chi tiết hết lỗi color-contrast (trước có ở giao diện sáng). So ảnh trước/sau:
+  chỉ khác ở nhãn tier, tên đồ (máy tính), còn lại là nhiễu chuyển động.
+- Ghi chú môi trường kiểm tra: ảnh chiêu Garena, font Google, GA bị chặn trong máy kiểm tra (hiện chữ cái đầu thay ảnh chiêu) — bình thường.
+- Ý tưởng để lần sau:
+  - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính, xem có cách đỡ trống ở cột ngắn.
+  - Danh sách nguồn trong mục Cách xếp và nguồn: link cao 17px trên máy tính (điện thoại đã đủ), có thể nới khoảng cách dòng.
+  - Tên tướng trong danh sách "Thay đổi theo bản" trên máy tính cao 18px; đủ chuẩn 24px nhờ khoảng cách, chỉ cân nhắc nếu thấy khó bấm.
