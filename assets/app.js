@@ -580,7 +580,10 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,14 xuống ~1,1 và trôi dọc (phóng ít để ảnh nét), chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
     // (không lộ mép ảnh). Ghi thẳng transform lên ảnh nền và khối chữ của cả 5 slide (slide mới chuyển tới cũng khớp), cùng công thức với CSS
     // (.slide img.bg / .slide-c). Trước đây đặt biến CSS trên #stage: mỗi khung hình trình duyệt phải tính lại kiểu cho mọi phần tử trong sân khấu.
-    if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
+    // Điện thoại: không làm thị sai cho sân khấu. transform 3D trên ảnh 5 slide giữ 5 lớp ảnh lớn trong bộ nhớ đồ hoạ suốt lúc xem trang,
+    // Chrome Android thiếu bộ nhớ nên vẽ hỏng thẻ tướng ở bảng tier (ô đen/tím).
+    if(m&&vis.stage){if(lastTi!=="m"){lastTi="m";lastTt="";stage.querySelectorAll(".slide img.bg,.slide-c").forEach(e=>e.style.transform="")}}
+    else if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
       const s=Math.max(1.14-sp*0.08,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height));
       if(!sImg||!sImg.length){sImg=stage.querySelectorAll(".slide img.bg");sTxt=stage.querySelectorAll(".slide-c")}
       const ti=`translate3d(0,${ty.toFixed(1)}px,0) scale(${s.toFixed(4)})`,tt=`translate3d(0,${((sp-.5)*40).toFixed(1)}px,0)`;
@@ -762,7 +765,7 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
     requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));m.querySelector(".menu-x").focus()};
   const close=back=>{m.classList.remove("open");unlock();btn.setAttribute("aria-expanded","false");
     t=setTimeout(()=>{m.hidden=true},reduce.matches?0:550);if(back)btn.focus({preventScroll:true})};
-  btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});setTimeout(cards,4000);
+  btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});if(!mq.matches)setTimeout(cards,4000);
   m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
     const a=e.target.closest(".menu-l a");if(a){close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
       if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>goTo(el,id==="spotTitle"?24:null))}return}
