@@ -96,3 +96,4 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính, xem có cách đỡ trống ở cột ngắn.
   - Danh sách nguồn trong mục Cách xếp và nguồn: link cao 17px trên máy tính (điện thoại đã đủ), có thể nới khoảng cách dòng.
   - Tên tướng trong danh sách "Thay đổi theo bản" trên máy tính cao 18px; đủ chuẩn 24px nhờ khoảng cách, chỉ cân nhắc nếu thấy khó bấm.
+- Chrome Android "Tự động làm tối trang web" (auto dark) đảo màu cả trang: đầu trang đen thành kem, nút sáng thành tối, vùng số liệu thành trắng. Thêm `<meta name="color-scheme" content="dark light only">` và `color-scheme: only dark / only light` ở :root (index, 404) để trình duyệt không tự đảo màu; web tự lo giao diện sáng/tối.
