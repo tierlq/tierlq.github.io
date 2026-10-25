@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610252345"></script>
+<script defer src="assets/boot.js?v=202610260010"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -885,6 +885,21 @@ html.lock{overflow:hidden}
   .hero h1{animation:qfade .9s var(--ease) both}
   @keyframes qfade{from{opacity:.01;transform:translateY(10px)}}
 }
+
+/* Rà lỗi điện thoại 25/10: màn rất hẹp (≤380px), điện thoại xoay ngang, máy cảm ứng */
+@media (max-width:380px){
+  .hero-nav{gap:8px}
+  .hero-nav .brand{font-size:11px;letter-spacing:.2em}
+  .menu-b{gap:8px}
+  .fhead b{letter-spacing:.12em;white-space:nowrap}
+}
+.hero-links a{white-space:nowrap}
+@media (max-width:1040px){.hero-links{display:none}}          /* đã có MENU; tránh chữ điều hướng xuống 2 dòng khi xoay ngang */
+@media (pointer:coarse){.search input{font-size:16px}}        /* iPhone không tự phóng to trang khi chạm ô tìm (cả lúc xoay ngang) */
+@media (max-height:500px) and (orientation:landscape){
+  .stage{height:auto;min-height:100vh;min-height:100svh}
+  .slide-c{bottom:84px}
+}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1068,7 +1083,7 @@ html.lock{overflow:hidden}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610252345"></script>
-<script defer src="assets/app.js?v=202610252345"></script>
+<script defer src="assets/data.js?v=202610260010"></script>
+<script defer src="assets/app.js?v=202610260010"></script>
 </body>
 </html>

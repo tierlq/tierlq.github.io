@@ -529,7 +529,7 @@ const setPh=()=>{$("q").placeholder=mq.matches?"Tìm…":"Tìm tướng"};setPh(
 function fitOne(el){el.style.fontSize="";const max=el.parentElement.clientWidth;let fs=parseFloat(getComputedStyle(el).fontSize),n=0;
   while(el.scrollWidth>max&&fs>14&&n++<40){fs-=1;el.style.fontSize=fs+"px"}}
 function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3").forEach(fitOne)}
-addEventListener("resize",()=>fitNames());
+{let lw=innerWidth;addEventListener("resize",()=>{if(innerWidth!==lw){lw=innerWidth;fitNames()}})}
 
 /* Cách xếp: danh sách chỉnh tay và đường phụ lấy thẳng từ dữ liệu */
 (function notes(){const ord=Object.keys(LANES),by=(a,b)=>ord.indexOf(a.lane)-ord.indexOf(b.lane)||a.name.localeCompare(b.name,"vi");
