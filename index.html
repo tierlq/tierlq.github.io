@@ -34,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610251000"></script>
+<script defer src="assets/boot.js?v=202610252330"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -82,7 +82,7 @@ a{color:inherit}
 
 /* ===== Hero ===== */
 .hero{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);min-height:clamp(600px,92vh,960px);display:flex;flex-direction:column;
-  background:radial-gradient(110% 80% at 50% var(--gy,62%),#0d1230 0%,#05060d 52%,#000 100%);color:#f3f2ef;--h-muted:rgba(243,242,239,.6);--h-line:rgba(255,255,255,.14)}
+  background:radial-gradient(110% 80% at 50% var(--gy,62%),#0d1230 0%,#05060d 52%,#000 100%) #000;color:#f3f2ef;--h-muted:rgba(243,242,239,.6);--h-line:rgba(255,255,255,.14)}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
 .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;z-index:-1;background:linear-gradient(180deg,transparent,#000);pointer-events:none}
 .hero.nogl{background:radial-gradient(50% 30% at 50% 62%,rgba(150,130,255,.32),transparent 70%),radial-gradient(80% 50% at 50% 62%,rgba(80,200,170,.14),transparent 70%),#000}
@@ -105,7 +105,7 @@ a{color:inherit}
 .scrollcue{display:flex;align-items:center;gap:14px;font:400 10.5px var(--f-display);letter-spacing:.3em;text-transform:uppercase;color:var(--h-muted);text-decoration:none}
 .scrollcue span{position:relative;width:1px;height:46px;background:rgba(255,255,255,.2);overflow:hidden}
 .scrollcue span::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:#fff}
-.hero-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border-top:1px solid var(--h-line)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border-top:1px solid var(--h-line);background:#000;position:relative}
 .hero-stats>div{padding:22px clamp(20px,4vw,56px);border-left:1px solid var(--h-line);display:flex;flex-direction:column-reverse;gap:6px;min-width:0}
 .hero-stats>div:first-child{border-left:0}
 .hero-stats dd{margin:0;font:200 clamp(1.5rem,3vw,2.4rem) var(--f-display);letter-spacing:.04em;font-variant-numeric:tabular-nums;line-height:1}
@@ -863,6 +863,14 @@ html.lock{overflow:hidden}
 .menu-tt{display:inline-flex!important;align-items:center;gap:10px}.menu-tt svg{width:18px;height:18px}
 @media (hover:hover){.tt-go:hover{opacity:.85}.tt-go:hover i{transform:translateX(4px)}}
 @media (max-width:719px){.tt-go{width:100%;justify-content:center}}
+
+/* Điện thoại: bớt lớp GPU để Chrome Android không bị ô trắng/xanh khi cuộn hoặc lúc tải (thiếu bộ nhớ đồ hoạ):
+   không giữ will-change thường trực, hàng tab sân khấu không dùng kính mờ (backdrop-filter rất tốn). */
+@media (max-width:719px){
+  .hero-c,.slide img.bg,.slide-c,.band-row,.sprog i{will-change:auto!important}
+  .tabs{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(0,0,0,.62)}
+  .stage,.hero{background-color:#000}
+}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1046,7 +1054,7 @@ html.lock{overflow:hidden}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610251000"></script>
-<script defer src="assets/app.js?v=202610251000"></script>
+<script defer src="assets/data.js?v=202610252330"></script>
+<script defer src="assets/app.js?v=202610252330"></script>
 </body>
 </html>

@@ -387,7 +387,7 @@ function buildStage(){
   const lanes=Object.keys(LANES);
   const slides=lanes.map((l,i)=>{const top=laneTop(l),h=top[0];if(!h)return"";const a=aogOf(h.key,h.lane),sp=splOf(h);
     return `<div class="slide${i===0?" on":""}" role="group" aria-roledescription="trang" aria-label="${LANES[l]}: ${h.name}" style="--lc:var(--l-${l})"${i?' aria-hidden="true"':""}>
-      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} ${S2_W[sp.slice(2,-5)]||1386}w${s3Of(sp)}" sizes="(max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
+      <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} ${S2_W[sp.slice(2,-5)]||1386}w${s3Of(sp)}" sizes="(max-width:719px) 440px, (max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng ${h.rank}</div>
         <h3>${h.name}</h3>
         <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
@@ -572,7 +572,7 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
     if(reduce.matches)return;
     if(vis.hero){const hp=clamp(y/((hero.offsetHeight||1)*0.75));
       heroC.style.transform=`translate3d(0,${(-140*hp).toFixed(1)}px,0)`;heroC.style.opacity=(1-hp*1.5).toFixed(3);
-      heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
+      heroF.style.opacity=(1-hp*2.2).toFixed(3);if(!m)heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
     // Sân khấu luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào (chủ web không muốn viền kem hay viền đen hai bên).
     // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,14 xuống ~1,1 và trôi dọc (phóng ít để ảnh nét), chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
     // (không lộ mép ảnh). Ghi thẳng transform lên ảnh nền và khối chữ của cả 5 slide (slide mới chuyển tới cũng khớp), cùng công thức với CSS
