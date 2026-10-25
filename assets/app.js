@@ -306,10 +306,11 @@ function openModal(id,dir){
       ${breakdown(h)}
       <p>${h.note||`Không có thay đổi ở bản ${PATCH}.`}</p>
       ${skillHTML(h)}
+      ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">→</i></button>`:""})()}
     </div></div></div></div>`;
   document.documentElement.classList.add("lock");hideTip();hideItip();setHash("tuong-"+id);track("xem_tuong",{tuong:h.name,duong:LANES[h.lane],tier:h.tier});
   $("mshare").onclick=()=>shareLink(`${h.name} · Tier ${h.tier} ${LANES[h.lane]}`,`${h.name} đang ở tier ${h.tier} đường ${LANES[h.lane]} trên Bảng Tier Liên Quân`,pageUrl()+"#tuong-"+id);
-  const close=()=>{hideItip();setHash("");$("modalRoot").innerHTML="";document.documentElement.classList.remove("lock");document.removeEventListener("keydown",key);
+  const close=()=>{hideItip();setHash("");$("modalRoot").innerHTML="";document.documentElement.classList.remove("lock");drawRecent();INST&&INST.maybe();document.removeEventListener("keydown",key);
     const back=document.querySelector(`#board .card[data-id="${id}"]`)||lastFocus;back&&back.focus&&back.focus(mq.matches?{preventScroll:true}:undefined)};
   const go=d=>{const n=order[i+d];if(n){document.removeEventListener("keydown",key);openModal(n,d)}};
   const key=e=>{if(e.key==="Escape")close();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1);
@@ -317,7 +318,8 @@ function openModal(id,dir){
       if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}};
   document.addEventListener("keydown",key);
   $("veil").onclick=e=>{if(e.target.id==="veil")close()};$("mx").onclick=close;
-  $("mprev").onclick=()=>go(-1);$("mnext").onclick=()=>go(1);
+  $("mprev").onclick=()=>go(-1);$("mnext").onclick=()=>go(1);if($("mnext2"))$("mnext2").onclick=()=>{track("tuong_tiep",{tuong:h.name});go(1)};
+  pushRecent(id);
   $("modalRoot").querySelectorAll("[data-go]").forEach(bt=>bt.onclick=()=>{document.removeEventListener("keydown",key);openModal(bt.dataset.go)});
   fitNames($("modalRoot"));$("mx").focus({preventScroll:true});
   /* Điện thoại: vuốt xuống để đóng, vuốt ngang để sang tướng trước/sau */
@@ -618,7 +620,7 @@ async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":
     const tierOfX=h=>which==="mine"?mine[h.id]:h.tier;
     const lanes=Object.keys(LANES),W=1680,PAD=56,LBL=130,CW=Math.floor((W-PAD*2-LBL)/5),CARD=80,GAP=10,NAMEH=22,PER=Math.max(1,Math.floor((CW-20+GAP)/(CARD+GAP)));
     const rowsH={};TIERS.forEach(t=>{const mx=Math.max(1,...lanes.map(l=>Math.ceil(HEROES.filter(h=>h.lane===l&&tierOfX(h)===t).length/PER)));rowsH[t]=mx*(CARD+NAMEH+GAP)+28});
-    const HEAD=210,LANEH=56,FOOT=86,H=HEAD+LANEH+TIERS.reduce((s,t)=>s+rowsH[t]+12,0)+FOOT;
+    const HEAD=210,LANEH=56,FOOT=150,H=HEAD+LANEH+TIERS.reduce((s,t)=>s+rowsH[t]+12,0)+FOOT;
     const cv=document.createElement("canvas"),sc=2;cv.width=W*sc;cv.height=H*sc;const c=cv.getContext("2d");c.scale(sc,sc);
     const disp='"Lexend Exa","Be Vietnam Pro",sans-serif',body='"Be Vietnam Pro",system-ui,sans-serif';
     c.fillStyle="#000";c.fillRect(0,0,W,H);
@@ -642,8 +644,12 @@ async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":
           if(h.sec){c.fillStyle="rgba(0,0,0,.72)";c.fillRect(cx,cy+CARD-16,CARD,16);c.fillStyle="#fff";c.font=`500 9px ${disp}`;c.textAlign="center";c.fillText("PHỤ",cx+CARD/2,cy+CARD-5);c.textAlign="left"}
           c.fillStyle="#f3f2ef";c.font=`500 12.5px ${body}`;let nm=h.name;while(c.measureText(nm).width>CARD+GAP-2&&nm.length>3)nm=nm.slice(0,-2)+"…";c.fillText(nm,cx,cy+CARD+16)})});
       y+=rh+12}
-    c.fillStyle="rgba(243,242,239,.55)";c.font=`400 14px ${disp}`;spaced("TIERLQ.GITHUB.IO",PAD,H-38,2.5);
-    c.textAlign="right";c.font=`400 14px ${body}`;const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}\/\d{4}/)||[""])[0];c.fillText(upd?"Cập nhật "+upd:"",W-PAD,H-38);c.textAlign="left";
+    // Chân ảnh: địa chỉ web to + mã QR để người xem ảnh được chia sẻ quét vào web (GA ghi nguồn anh_tier_list)
+    const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}\/\d{4}/)||[""])[0];
+    c.fillStyle="#f3f2ef";c.font=`300 30px ${disp}`;spaced("TIERLQ.GITHUB.IO",PAD,H-74,3);
+    c.fillStyle="rgba(243,242,239,.6)";c.font=`400 15px ${body}`;c.fillText(`Xem build, bảng ngọc, phù hiệu từng tướng${upd?" · Cập nhật "+upd:""}`,PAD,H-44);
+    const qr=await loadImg("qr.png"),QS=112;if(qr){const qx=W-PAD-QS,qy=H-FOOT+18;c.fillStyle="#fff";c.fillRect(qx-6,qy-6,QS+12,QS+12);c.imageSmoothingEnabled=false;c.drawImage(qr,qx,qy,QS,QS);c.imageSmoothingEnabled=true;
+      c.textAlign="right";c.fillStyle="rgba(243,242,239,.6)";c.font=`400 13px ${body}`;c.fillText("Quét để xem bảng mới nhất",qx-18,qy+QS-4);c.textAlign="left"}
     const blob=await new Promise(r=>cv.toBlob(r,"image/jpeg",0.9));const name=which==="mine"?"tier-list-cua-toi.jpg":"bang-tier-lien-quan.jpg";
     const file=new File([blob],name,{type:"image/jpeg"});
     if(mq.matches&&navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:"Bảng Tier Liên Quân"});toast("Đã tạo ảnh");return}catch(e){if(e&&e.name==="AbortError")return}}
@@ -705,6 +711,45 @@ if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("
 if(matchMedia("(pointer:coarse)").matches)document.querySelectorAll("[data-tt]").forEach(a=>a.removeAttribute("target"));
 document.addEventListener("click",e=>{if(e.target.closest("[data-tt]"))track("mo_tiktok",{noi:e.target.closest(".menu")?"menu":"cuoi_trang"})});
 
+/* ===== Giữ chân người xem (theo số liệu GA 10/2026: ~6% quay lại, 51% mở bảng chi tiết) ===== */
+// Cuộn tới một mục: bố cục phía trên có thể đổi trong lúc cuộn (ảnh, bảng hiện dần) nên kiểm lại khi dừng và chỉnh cho đúng
+function goTo(el,off){if(!el)return;const want=()=>Math.max(0,el.getBoundingClientRect().top+scrollY-(off==null?($("bar").offsetHeight||0)+20:off));
+  window.__noMag=Date.now()+2500;const sm=reduce.matches?"auto":"smooth";scrollTo({top:want(),behavior:sm});
+  let n=0;const fix=()=>{const d=want()-scrollY;if(Math.abs(d)>4&&n++<3){window.__noMag=Date.now()+1500;scrollTo({top:want(),behavior:sm});setTimeout(fix,700)}};setTimeout(fix,900)}
+// 1) Dải "bản cập nhật" ở đầu trang: cho thấy bảng luôn mới, bấm tới danh sách thay đổi
+(function heroUpd(){const el=$("heroUpd");if(!el||typeof PATCH==="undefined")return;const keys=new Set(),c={up:0,down:0,new:0,mix:0};
+  HEROES.forEach(h=>{if(h.trend&&!h.sec&&!keys.has(h.key)){keys.add(h.key);c[h.trend]++}});
+  const parts=[c.up&&`${c.up} tăng`,c.down&&`${c.down} giảm`,c.mix&&`${c.mix} điều chỉnh`,c.new&&`${c.new} tướng mới`].filter(Boolean);
+  if(!parts.length)return;const sh=[c.up&&`${c.up} tăng`,c.down&&`${c.down} giảm`,c.new&&`${c.new} mới`].filter(Boolean);
+  el.innerHTML=`<i aria-hidden="true"></i><span class="dk">Theo bản ${PATCH} · ${parts.join(" · ")}</span><span class="mb">Bản ${PATCH} · ${sh.join(" · ")}</span><b aria-hidden="true">→</b>`;el.hidden=false;
+  el.onclick=e=>{e.preventDefault();track("xem_thay_doi",{noi:"dau_trang"});goTo($("logTitle"))}})();
+// 2) Tướng xem gần đây (lưu trên máy người xem)
+function pushRecent(id){let r=store("lq-recent")||[];if(!Array.isArray(r))r=[];r=[id,...r.filter(x=>x!==id&&typeof x==="string")].slice(0,10);store("lq-recent",r);
+  const n=(+store("lq-views")||0)+1;store("lq-views",n)}
+function drawRecent(){const el=$("recent");if(!el)return;const r=(store("lq-recent")||[]).filter(id=>HEROES.some(h=>h.id===id)).slice(0,8);
+  if(mode!=="meta"||r.length<2){el.hidden=true;return}
+  el.innerHTML=`<span class="over">Xem gần đây</span><div class="recent-l">${r.map(id=>{const h=HEROES.find(x=>x.id===id);const im=imgOf(h);
+    return `<button type="button" data-open="${id}" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy">`:""}<span>${h.name}<small>${LANES[h.lane]} · ${h.tier}</small></span></button>`}).join("")}</div>`;
+  el.hidden=false}
+{const sm=setMode;setMode=m=>{sm(m);drawRecent()}}
+$("recent")&&($("recent").onclick=e=>{const b=e.target.closest("[data-open]");if(b){track("xem_gan_day",{});openModal(b.dataset.open)}});
+drawRecent();
+// 3) Mời thêm vào màn hình chính sau khi đã xem từ 3 tướng (Android: nút cài; iPhone: hướng dẫn); tắt thì 14 ngày sau mới hỏi lại
+const INST=(()=>{const bar=$("instbar");if(!bar)return null;
+  const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+  const ua=navigator.userAgent,ios=/iP(hone|ad|od)/.test(ua)&&/Safari/.test(ua)&&!/CriOS|FxiOS|FBAN|FBAV|Zalo|Instagram|Line/i.test(ua);
+  let evt=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();evt=e});
+  addEventListener("appinstalled",()=>{track("cai_dat_xong",{});bar.hidden=true;document.body.classList.remove("inst")});
+  const hide=()=>{bar.hidden=true;document.body.classList.remove("inst");store("lq-inst-off",Date.now())};
+  $("instX").onclick=()=>{track("cai_dat_dong",{});hide()};
+  $("instGo").onclick=async()=>{track("cai_dat_bam",{});if(evt){evt.prompt();try{await evt.userChoice}catch(e){}evt=null;hide()}else hide()};
+  return {maybe(){if(standalone||bar.hidden===false)return;const off=+store("lq-inst-off")||0;if(Date.now()-off<14*864e5)return;
+    if((+store("lq-views")||0)<3)return;
+    if(evt){$("instTxt").innerHTML="<b>Thêm Bảng Tier vào màn hình chính</b>Mở nhanh như ứng dụng, xem bản cập nhật mới.";$("instGo").hidden=false}
+    else if(ios){$("instTxt").innerHTML="<b>Thêm vào màn hình chính</b>Bấm nút Chia sẻ <span aria-hidden=\"true\">⬆</span> ở dưới rồi chọn “Thêm vào MH chính”.";$("instGo").hidden=true}
+    else return;
+    bar.hidden=false;document.body.classList.add("inst");track("cai_dat_hien",{})}}})();
+
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
 (function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
   let built=0;const cards=()=>{if(built)return;built=1;$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
@@ -719,7 +764,7 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-tt]"))track("mo
   btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});setTimeout(cards,4000);
   m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
     const a=e.target.closest(".menu-l a");if(a){close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
-      if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>{const bh=$("bar").offsetHeight||0,y=el.getBoundingClientRect().top+scrollY-(id==="spotTitle"?24:bh+20);window.__noMag=Date.now()+2000;scrollTo({top:Math.max(0,y),behavior:reduce.matches?"auto":"smooth"})})}return}
+      if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>goTo(el,id==="spotTitle"?24:null))}return}
     const o=e.target.closest("[data-open]");if(o){close(false);openModal(o.dataset.open)}});
   m.addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();close(true)}
     if(e.key==="Tab"){const f=[...m.querySelectorAll("button,a")],i=f.indexOf(document.activeElement);

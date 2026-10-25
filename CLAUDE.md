@@ -11,6 +11,9 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `p/<key>.webp` ảnh chân dung 176px, `s/<key>.webp` ảnh bìa 960px, `s2/<key>.webp` ảnh bìa bản gốc avix (rộng 1386, chép nguyên tệp, không nén lại; Tamyn nguồn chỉ 600px nên dùng bản 960) cho màn lớn qua `srcset`; `s3/<key>.webp` bản siêu nét rộng 2772 (Real-ESRGAN ×2, `tools/upscale/up.py`), chỉ sân khấu dùng; mọi tướng đều có trừ Tamyn (`S3_NO`), ảnh khác cỡ ghi trong `S3_W` ở `assets/app.js`. Tướng mới: chạy up.py cho key đó. `key` = tên tướng bỏ dấu, chữ thường,
   chỉ giữ a–z (Triệu Vân → `trieuvan`, D'Arcy → `darcy`, Flowborn có `flowborn-mid` và `flowborn-ad`).
   Nguồn ảnh: https://github.com/AoV-IndeX/avix-assets (`heroes/avatars`, `heroes/splashes`).
+- `tuong/<key>-<đường>/index.html` — trang riêng từng ô tướng cho Google/trợ lý AI đọc (tier, điểm, build, phù hiệu, bộ chiêu, link mở bảng chi tiết),
+  mục "Hỏi nhanh" (FAQ) trong `index.html` giữa `<!--FAQ-->…<!--/FAQ-->` + JSON-LD giữa `<!--FAQLD-->…<!--/FAQLD-->`, và `sitemap.xml`:
+  **tạo tự động bằng `node tools/seo/build.js`, đừng sửa tay. Chạy lại mỗi khi đổi `assets/data.js`, `assets/builds.js`, `assets/skills.js` hoặc ngày cập nhật.** Kiểu chữ ở `assets/page.css`.
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
 - `sw.js` — bộ nhớ đệm: ảnh (`p/`, `s/`, `b/`) lưu lâu, trang luôn lấy bản mới; tệp `assets/*.js?v=…` dùng ngay bản đã lưu và lấy bản mới ở nền
@@ -21,7 +24,8 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   `assets/boot.js` (nạp trong `<head>` bằng `defer`, giống `data.js`/`app.js` cuối trang: cả ba chạy theo thứ tự sau khi đọc xong HTML, không chặn trang hiện lên): khởi tạo Google Analytics, chống nhúng web vào iframe, bật font. Đổi `?v=` của nó cùng các script cuối trang.
   Khi kiểm tra bằng Playwright mà cần chèn script (ví dụ axe-core), tạo context với `bypassCSP: true`.
   Dữ liệu đọc từ bộ nhớ trình duyệt (bảng Tự xếp) được lọc lại trước khi dùng (`loadMine`). `.well-known/security.txt` hết hạn 2027-10-12, nhớ gia hạn.
-- Google Analytics `G-5WRPCM36GN` khởi tạo trong `assets/boot.js`, gắn ở `<head>` của `index.html` và `404.html`. Sự kiện riêng: `xem_tuong`, `tai_anh`, `chia_se`, `doi_che_do` (hàm `track` trong `assets/app.js`).
+- Google Analytics `G-5WRPCM36GN` khởi tạo trong `assets/boot.js`, gắn ở `<head>` của `index.html` và `404.html`. Sự kiện riêng: `xem_tuong`, `tai_anh`, `chia_se`, `doi_che_do`, `mo_tiktok`, `xem_thay_doi`, `tuong_tiep`, `xem_gan_day`, `cai_dat_hien`/`cai_dat_bam`/`cai_dat_dong`/`cai_dat_xong` (hàm `track` trong `assets/app.js`).
+  Nguồn có gắn sẵn: mở từ màn hình chính `utm_source=man_hinh_chinh` (manifest), quét QR trên ảnh tier list `utm_source=anh_tier_list` (`qr.png`, tạo bằng thư viện Python qrcode).
 - Link riêng từng tướng: `…/#tuong-<key>-<đường>` (ví dụ `#tuong-zata-mid`) tự mở bảng chi tiết.
 - `assets/builds.js` — build tham khảo (đồ, bảng ngọc, phép bổ trợ) hiện trong bảng chi tiết khi bấm vào tướng. **Tạo tự động, đừng sửa tay.**
   Không có thẻ `<script>` cho builds.js trong HTML: `app.js` tự tải nó 1,2 giây sau khi trang tải xong (hoặc ngay khi mở bảng chi tiết),
@@ -87,7 +91,8 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
    chép ảnh gốc avix vào `s2/<key>.webp`, rồi thêm key vào `P_KEYS`/`S_KEYS` ở đầu `assets/app.js`.
    Thêm luôn build `@<đường>` vào `tools/builds/vn.txt` (nguồn chưa có thì lấy bài hướng dẫn tiếng Việt khác, ghi `NOTE`) và bộ chiêu vào `tools/skills/garena.json`.
    Chủ web đổi đường tướng trong `RAW` thì cũng phải có build cho đường mới (`node tools/builds/check.js` báo thiếu).
-5. Kiểm tra trước khi đẩy: `node --check assets/data.js && node --check assets/app.js`, rồi mở `index.html`
+5. Chạy `node tools/seo/build.js` (FAQ, trang từng tướng, sitemap theo dữ liệu mới).
+   Kiểm tra trước khi đẩy: `node --check assets/data.js && node --check assets/app.js`, rồi mở `index.html`
    bằng Playwright (Chromium có sẵn) ở 1440px và 390px: không lỗi JS, có 5 slide, bảng có thẻ tướng, không tràn ngang.
 6. Mỗi lần sửa `assets/data.js`, `assets/builds.js`, `assets/app.js` hoặc `assets/boot.js`, đổi số `?v=` ở các thẻ `<script>` của `index.html` (dùng ngày giờ, ví dụ `?v=202610150846`) để trình duyệt người xem tải bản mới.
 7. Commit tiếng Việt, mô tả ngắn những gì đổi (tướng nào lên/xuống tier và vì sao). Đẩy thẳng lên `main`.

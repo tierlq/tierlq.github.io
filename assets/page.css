@@ -1,0 +1,25 @@
+/* Trang riêng từng tướng (tuong/<key>-<đường>/), tạo bằng tools/seo/build.js */
+:root{--bg:#000;--fg:#f3f2ef;--muted:#a9a8ae;--line:rgba(255,255,255,.14);--gold:#e7cf9a;color-scheme:only dark}
+@media (prefers-color-scheme: light){:root{--bg:#f2f1ed;--fg:#0b0b0c;--muted:#4f4e54;--line:rgba(0,0,0,.14);--gold:#85611a;color-scheme:only light}}
+html.framed body{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+header,main,footer{max-width:760px;margin:0 auto;padding:0 20px}
+header{padding-top:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.home{color:var(--fg);text-decoration:none;font:500 12px ui-monospace,Menlo,monospace;letter-spacing:.3em;text-transform:uppercase}
+.ban{margin:0 -20px;aspect-ratio:16/8;overflow:hidden;background:#000}
+.ban img{width:100%;height:100%;object-fit:cover;object-position:60% 30%;display:block}
+.over{margin:24px 0 4px;font:400 12px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font-weight:300;font-size:clamp(2rem,8vw,3.4rem);letter-spacing:.04em;text-transform:uppercase;line-height:1.1}
+h1 span{font-size:.45em;color:var(--gold);letter-spacing:.1em;vertical-align:middle}
+h2{margin:36px 0 10px;font-weight:400;font-size:1.05rem;letter-spacing:.12em;text-transform:uppercase}
+p{margin:0 0 12px}
+.lead{font-size:1.05rem}
+.go{display:inline-flex;align-items:center;min-height:48px;margin:12px 0 8px;padding:0 24px;border-radius:999px;background:var(--fg);color:var(--bg);text-decoration:none;font:500 13px ui-monospace,Menlo,monospace;letter-spacing:.06em}
+.items{padding-left:22px}.items li{margin:2px 0}
+.sk dt{font-weight:600;margin-top:10px}.sk dd{margin:2px 0 0;color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+.links a{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:999px;color:var(--fg);text-decoration:none;font-size:14px}
+.src{font-size:13px;color:var(--muted)}.src a,.sk a{color:inherit}
+footer{margin-top:48px;padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer a{color:var(--fg)}

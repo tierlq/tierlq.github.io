@@ -3,7 +3,7 @@
   "short_name": "Tier LQ",
   "description": "Tier list tướng Liên Quân theo từng đường, chấm điểm từ số liệu giải đấu.",
   "lang": "vi",
-  "start_url": "./",
+  "start_url": "./?utm_source=man_hinh_chinh&utm_medium=app",
   "scope": "./",
   "display": "standalone",
   "background_color": "#000000",
