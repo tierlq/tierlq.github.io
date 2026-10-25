@@ -556,7 +556,7 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
   try{const io=new IntersectionObserver(es=>{es.forEach(en=>{vis[en.target.dataset.fx]=en.isIntersecting});req()},{rootMargin:"100px"});
     hero.dataset.fx="hero";stage.dataset.fx="stage";band.dataset.fx="band";[hero,stage,band].forEach(el=>io.observe(el))}catch(e){vis.stage=vis.band=true}
   let ticking=false,maxS=1,vh=innerHeight,lastY=scrollY,acc=0,dirUp=false,stickY=0;
-  const barEl=$("bar"),qEl=$("q"),filt=$("filters");
+  const barEl=$("bar"),qEl=$("q"),filt=$("filters");let sImg=null,sTxt=null,lastTi="",lastTt="";
   const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
   const measureDoc=()=>{vh=innerHeight;maxS=Math.max(1,root.scrollHeight-vh);stickY=sentinel.getBoundingClientRect().top+scrollY};
   function update(){ticking=false;
@@ -575,10 +575,14 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
       heroF.style.opacity=(1-hp*2.2).toFixed(3);heroS.style.transform=`translate3d(0,${(-18*hp).toFixed(1)}px,0)`}
     // Sân khấu luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào (chủ web không muốn viền kem hay viền đen hai bên).
     // Chuyển động chỉ ở bên trong: ảnh thu dần từ 1,14 xuống ~1,1 và trôi dọc (phóng ít để ảnh nét), chữ trôi ngược. Tỉ lệ phóng luôn đủ phủ phần trôi
-    // (không lộ mép ảnh). Biến CSS đặt trên #stage nên slide mới chuyển tới cũng khớp.
+    // (không lộ mép ảnh). Ghi thẳng transform lên ảnh nền và khối chữ của cả 5 slide (slide mới chuyển tới cũng khớp), cùng công thức với CSS
+    // (.slide img.bg / .slide-c). Trước đây đặt biến CSS trên #stage: mỗi khung hình trình duyệt phải tính lại kiểu cho mọi phần tử trong sân khấu.
     if(vis.stage){const sr=stage.getBoundingClientRect(),sp=clamp((vh-sr.top)/(vh+sr.height)),ty=(sp-.5)*-50;
-      const s=Math.max(1.14-sp*0.08,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height)),ss=stage.style;
-      ss.setProperty("--s",s.toFixed(4));ss.setProperty("--ty",ty.toFixed(1)+"px");ss.setProperty("--tc",((sp-.5)*40).toFixed(1)+"px")}
+      const s=Math.max(1.14-sp*0.08,1+(2*Math.abs(ty)+6)/Math.max(1,sr.height));
+      if(!sImg||!sImg.length){sImg=stage.querySelectorAll(".slide img.bg");sTxt=stage.querySelectorAll(".slide-c")}
+      const ti=`translate3d(0,${ty.toFixed(1)}px,0) scale(${s.toFixed(4)})`,tt=`translate3d(0,${((sp-.5)*40).toFixed(1)}px,0)`;
+      if(ti!==lastTi){lastTi=ti;sImg.forEach(e=>e.style.transform=ti)}
+      if(tt!==lastTt){lastTt=tt;sTxt.forEach(e=>e.style.transform=tt)}}
     if(vis.band){const br=band.getBoundingClientRect(),bp=clamp((vh-br.top)/(vh+br.height));
       r1.style.transform=`translate3d(${(-38*bp).toFixed(2)}%,0,0)`;r2.style.transform=`translate3d(${(-40+38*bp).toFixed(2)}%,0,0)`}
   }

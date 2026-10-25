@@ -79,3 +79,40 @@ mất mạng vẫn mở được trang. Ảnh chụp trước/sau giống từng
   khi `deviceMemory`/`hardwareConcurrency` thấp hơn nữa, hoặc vẽ 30 khung/giây trên điện thoại (cần so mắt độ mượt).
 - `data.js` dòng sắp xếp `HEROES` (`localeCompare(…, "vi")`) tốn ~70 ms CPU chậm lần đầu; không sửa vì thuộc dữ liệu/cách xếp.
 - Lần bố cục đầu trang (~120 ms CPU chậm cho 144 phần tử) phần lớn do dò font hệ thống trong môi trường đo, có thể không đúng trên điện thoại.
+
+## 2026-10-25 — việc định kỳ Chủ nhật
+Đo bằng `tools/perf` (trung vị 5 lần, 2 lượt xen kẽ bản cũ 062552d / bản mới trên cùng máy). Không tính Google Fonts và Google Analytics.
+Thêm phép đo độ mượt khi cuộn qua sân khấu "Mạnh nhất mỗi đường" (điện thoại 390px, CPU chậm 4 lần, cuộn 20px mỗi khung, trace Chromium, trung vị 5 lần).
+
+| Điện thoại (giả lập chậm) | Trước | Sau |
+|---|---|---|
+| Tính lại kiểu (style) mỗi khung khi cuộn qua sân khấu | 11,3–11,7 ms | 1,8–2,4 ms |
+| Tổng việc luồng chính mỗi khung (style + layout + paint + JS) | 17,4–17,5 ms | 6,9–8,1 ms |
+| Khung hình trung bình / số khung > 34 ms (≈ 80 khung) | 36,7–37,2 ms / 27 | 28,6–30,0 ms / 13–17 |
+| LCP / CLS | 400–436 ms / 0 | 396–404 ms / 0 |
+| Bảng tier có thẻ tướng | 1151–1273 ms | 1157–1193 ms |
+| TBT | 247–289 ms | 273–288 ms (trong mức dao động, đoạn mã sửa không chạy lúc mở trang) |
+| Mở bảng chi tiết | 556–689 ms | 519–684 ms |
+| Tải lần đầu | 58 kB / 4 yêu cầu tới lúc bảng hiện; 108 kB / 14 yêu cầu sau 3 giây | không đổi |
+Máy tính: LCP 120–140 ms, bảng có thẻ 544–581 ms, mở bảng chi tiết 373–400 ms — như cũ. TBT máy tính 245–330 ms dao động mạnh vì phần lớn là
+từng khung thiên hà WebGL vẽ bằng CPU (máy đo không có GPU).
+Cuộn hết trang trên điện thoại tải tổng 574 kB / 53 yêu cầu (2 ảnh sân khấu s3/ 307 kB, 46 ảnh chân dung 194 kB); máy tính 936 kB / 137 yêu cầu.
+
+Đã làm:
+- Hiệu ứng thị sai sân khấu khi cuộn (`scrollFx` trong app.js): trước đây mỗi khung đặt 3 biến CSS (`--s`, `--ty`, `--tc`) trên `#stage`; biến CSS được kế thừa
+  nên trình duyệt phải tính lại kiểu cho mọi phần tử trong 5 slide mỗi khung. Nay ghi thẳng `transform` (cùng công thức, cùng chuỗi số) lên 5 ảnh nền
+  và 5 khối chữ, chỉ ghi khi giá trị đổi. Đã so `getComputedStyle(...).transform` ở 3 vị trí cuộn: giống hệt; ảnh chụp 390px sáng/tối giống từng điểm ảnh,
+  1440px chỉ khác vài điểm ảnh khử răng cưa ở chữ (nhiễu hiệu ứng chữ hiện dần).
+
+Kiểm tra: 1440/390, sáng/tối: 5 slide, bảng có thẻ, không tràn ngang, 146/146 bảng chi tiết mở được (build + Bộ chiêu thức), link `#tuong-zata-mid`
+mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), không lỗi JS, không vi phạm CSP, không ảnh 404.
+
+Đã thử rồi bỏ:
+- Vệt chạy của nút "Khám phá" ở đầu trang (máy tính) đang hoạt ảnh thuộc tính `top` → mỗi khung phải bố cục + vẽ lại (60 lần layout, 116 lần paint / 3 giây khi
+  đứng yên ở đầu trang). Đổi sang `transform:translateY(350%)` (cùng quãng đường) thì hết layout/paint, nhưng TBT máy tính trong môi trường đo xấu đi rõ
+  (trung vị 242–331 → 413–428 ms, đo 2 lượt × 7 lần), có lẽ do lớp hợp thành thêm tranh CPU với thiên hà vẽ bằng phần mềm. Không đạt điều kiện "không chỉ số nào xấu đi"
+  nên bỏ; có thể thử lại nếu có cách đo trên máy có GPU.
+Ý tưởng để lần sau:
+- Đầu trang (thiên hà) vẫn là chỗ khung hình nặng nhất khi cuộn (mọi khung > 50 ms đều ở 900px đầu), nhưng phần lớn do máy đo không có GPU.
+- Điện thoại 390px DPR 3 chọn ảnh sân khấu s3/ (2772px, 114–193 kB/ảnh) vì `sizes` là 1040px; s2/ (1386px) đã đủ ~1170px điểm ảnh cần cho màn 390px.
+  Không đổi vì chủ web muốn sân khấu nét nhất (mục "Đã chốt" uiux-log) — chỉ hỏi chủ web nếu cần tiết kiệm dữ liệu di động.
