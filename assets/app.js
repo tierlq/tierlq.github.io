@@ -96,7 +96,8 @@ let firstDraw=true,vtOn=false;
 const TDESC={S:"Nên cấm hoặc chọn sớm",A:"Chọn an toàn khi leo rank",B:"Dùng tốt",C:"Cần đội hình phù hợp",D:"Đang yếu",X:"Chưa đặt vào tier"};
 function draw(){
   const n=(mq.matches?HEROES.filter(h=>h.lane===mLane&&match(h)):HEROES.filter(h=>(!F.lane.size||F.lane.has(h.lane))&&match(h))).length;
-  vtOn=n<=60;
+  // Điện thoại: không dùng View Transition (chụp lại mọi thẻ tướng thành lớp đồ hoạ; Chrome Android thiếu bộ nhớ thì hiện ô đen/tím thay ảnh)
+  vtOn=n<=60&&!mq.matches&&!matchMedia("(pointer:coarse)").matches;
   if(!firstDraw&&vtOn&&document.startViewTransition&&!reduce.matches){document.startViewTransition(()=>render());}else render();
   firstDraw=false;
 }
