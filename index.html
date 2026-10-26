@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610260730"></script>
+<script defer src="assets/boot.js?v=202610262200"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -853,7 +853,7 @@ html.lock{overflow:hidden}
 @media (max-width:719px){.menu-c{grid-template-columns:1fr;gap:28px}.menu-cards{grid-template-columns:1fr}.menu-card{aspect-ratio:2/1}}
 @media (prefers-reduced-motion:reduce){.menu-p,.menu-bg{transition:none}}
 /* hàng tab đường trên sân khấu: kính mờ như bảng chú thích của Bugatti */
-.tabs{background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.tabs{background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.42))}   /* bỏ kính mờ: phải làm mờ lại mỗi khung hình khi ảnh sân khấu trôi theo cuộn (giật trên máy tính yếu) */
 
 /* Kênh TikTok của chủ web */
 .social{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 40px;flex-wrap:wrap;border-top:1px solid var(--line);padding:clamp(40px,6vw,72px) 0;margin-top:clamp(40px,6vw,72px)}
@@ -1151,7 +1151,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610260730"></script>
-<script defer src="assets/app.js?v=202610260730"></script>
+<script defer src="assets/data.js?v=202610262200"></script>
+<script defer src="assets/app.js?v=202610262200"></script>
 </body>
 </html>

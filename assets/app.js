@@ -521,7 +521,13 @@ paintTheme();
   function center(){if(small){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
     hero.style.setProperty("--gy",((1-gOff)*50).toFixed(1)+"%")}
   try{const ro=new ResizeObserver(center);ro.observe(hc);ro.observe(hf)}catch(e){}
-  function size(){center();dpr=Math.min(devicePixelRatio||1,small?1.25:1.5);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
+  /* Tự hạ chất lượng khi máy vẽ không kịp (card đồ hoạ yếu, màn độ phân giải cao, Chrome tắt tăng tốc phần cứng → vẽ bằng CPU):
+     Q0 đầy đủ · Q1 bớt ~45% hạt, độ phân giải 1× · Q2 ~30% hạt, 0,75×, 30 hình/giây · Q3 ~20% hạt, 0,6×, 24 hình/giây.
+     Vẽ bằng phần mềm thì vào thẳng Q2; mỗi giây đo lại, vẫn chậm thì hạ tiếp. */
+  const soft=(()=>{try{const x=gl.getExtension("WEBGL_debug_renderer_info");return /swiftshader|llvmpipe|software|basic render/i.test(gl.getParameter(x?x.UNMASKED_RENDERER_WEBGL:gl.RENDERER)||"")}catch(e){return false}})();
+  let Q=soft?2:0,heroH=hero.offsetHeight||1;
+  const nMain=()=>Math.round(N*[1,.55,.3,.2][Q]),nHaze=()=>Math.round(NH*[1,.6,.4,.3][Q]);
+  function size(){center();heroH=hero.offsetHeight||1;dpr=Math.min(devicePixelRatio||1,[small?1.25:1.5,1,.75,.6][Q]);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
   size();try{new ResizeObserver(size).observe(cv)}catch(e){addEventListener("resize",size)}
   let mx=9,my=9,tmx=9,tmy=9,stir=0,tstir=0,t=0,last=performance.now(),visible=true,spin=1,scS=-1;
   function setPt(cx,cy){const r=cv.getBoundingClientRect();tmx=((cx-r.left)/r.width)*2-1;tmy=-(((cy-r.top)/r.height)*2-1);tstir=1;spin=Math.min(spin+0.08,3)}
@@ -532,17 +538,23 @@ paintTheme();
     const dt=Math.min(0.05,(now-last)/1000);last=now;
     spin+= (1-spin)*Math.min(1,dt*1.5);t+=dt*spin;
     mx+=(tmx-mx)*Math.min(1,dt*8);my+=(tmy-my)*Math.min(1,dt*8);stir+=(tstir-stir)*Math.min(1,dt*4);
-    const sc0=Math.min(1,Math.max(0,scrollY/(hero.offsetHeight||1)));scS=scS<0||reduce.matches?sc0:scS+(sc0-scS)*Math.min(1,dt*7);const sc=scS;   // nghiêng/phóng theo cuộn có làm mượt
+    const sc0=Math.min(1,Math.max(0,scrollY/heroH));scS=scS<0||reduce.matches?sc0:scS+(sc0-scS)*Math.min(1,dt*7);const sc=scS;   // nghiêng/phóng theo cuộn có làm mượt
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uTime,t);gl.uniform1f(uTilt,0.36+sc*0.55+Math.max(-1,Math.min(1,my))*0.05*stir);gl.uniform1f(uAsp,W/H);gl.uniform1f(uDpr,dpr);
     gl.uniform1f(uOff,gOff);gl.uniform2f(uMouse,mx,my);gl.uniform1f(uStir,stir);gl.uniform1f(uZoom,(small?0.56:0.95)*(1+sc*0.25));
-    gl.drawArrays(gl.POINTS,0,N+NH);
+    gl.drawArrays(gl.POINTS,0,nMain());gl.drawArrays(gl.POINTS,N,nHaze());
   }
   if(reduce.matches){frame(performance.now());addEventListener("resize",()=>frame(performance.now()));return}
   // Điện thoại: vẽ ~30 hình/giây (hạt sáng chuyển động chậm nên mắt không thấy khác), đỡ pin và bộ nhớ đồ hoạ; khuất màn hình thì dừng hẳn
-  let lastDraw=0,raf=0;const FPS_GAP=small?30:0;
-  function loop(now){raf=0;if(!visible||document.hidden){last=now;return}
-    if(now-lastDraw>=FPS_GAP){lastDraw=now;frame(now)}raf=requestAnimationFrame(loop)}
+  let lastDraw=0,raf=0,win=[],prev=0,ws=0,hold=performance.now()+800;
+  const gap=()=>Q>=3?40:(small||Q>=2)?30:0;
+  function loop(now){raf=0;if(!visible||document.hidden){last=now;prev=0;win=[];return}
+    if(now-lastDraw>=gap()){
+      if(prev&&now>hold){const d=now-prev;if(d<400){if(!win.length)ws=now;win.push(d)}
+        if(win.length>=8&&now-ws>1000){const avg=win.reduce((a,b)=>a+b,0)/win.length;win=[];
+          if(Q<3&&avg>(gap()?gap()*1.5:24)){Q++;hold=now+600;size()}}}
+      prev=now;lastDraw=now;frame(now)}
+    raf=requestAnimationFrame(loop)}
   const wake=()=>{if(!raf&&visible&&!document.hidden){last=performance.now();raf=requestAnimationFrame(loop)}};
   document.addEventListener("visibilitychange",wake);
   try{new IntersectionObserver(([e])=>{visible=e.isIntersecting;wake()}).observe(hero)}catch(e){}

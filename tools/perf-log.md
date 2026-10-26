@@ -120,3 +120,9 @@ mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), khô
 ## 2026-10-26 (làm tay theo yêu cầu chủ web: tối ưu điện thoại)
 - Thiên hà trên điện thoại: ~30 hình/giây, dpr tối đa 1,25, dừng vòng vẽ khi khuất màn hình hoặc tab ẩn (trước vẫn chạy requestAnimationFrame rỗng).
 - Điện thoại (giả lập chậm): TBT 595 → 434 ms; mở bảng chi tiết 939 → 613 ms; LCP 424 → 432 ms (dao động); bảng có thẻ 1399 → 1429 ms (dao động). Máy tính không đổi đáng kể.
+
+## 2026-10-26 tối (làm tay: chủ web thấy máy tính hơi lag)
+- Đo khi lăn chuột trên máy tính: gần như toàn bộ giật đến từ thiên hà WebGL lúc đầu trang còn trên màn (ẩn thiên hà thì hết khung hình >50 ms). Máy tắt tăng tốc phần cứng / card yếu vẽ bằng CPU (SwiftShader) nên rất nặng.
+- Thêm tự hạ chất lượng thiên hà: Q0 đầy đủ → Q1 (55% hạt, 1×) → Q2 (30%, 0,75×, 30 hình/giây) → Q3 (20%, 0,6×, 24 hình/giây); vẽ bằng phần mềm vào thẳng Q2; mỗi giây đo khoảng cách khung hình, chậm thì hạ tiếp. Máy có GPU tốt giữ nguyên Q0. Chiều cao đầu trang lưu sẵn (không đọc offsetHeight mỗi khung).
+- Bỏ kính mờ (backdrop-filter) ở hàng tab sân khấu: phải làm mờ lại mỗi khung khi ảnh trôi theo cuộn (p95 khung hình 33 → 17 ms khi cuộn qua sân khấu).
+- Cùng lúc đo bản trước/sau: máy tính TBT 1954 → 67 ms, mở bảng chi tiết 689 → 298 ms; điện thoại TBT 786 → 696 ms, mở bảng chi tiết 1171 → 489 ms (môi trường đo hôm nay chậm hơn các tuần trước, chỉ so trong cùng lần đo).
