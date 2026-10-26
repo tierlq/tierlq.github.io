@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610270150"></script>
+<script defer src="assets/boot.js?v=202610270250"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -267,7 +267,7 @@ a{color:inherit}
 .stats td .dl.up{color:var(--up)}.stats td .dl.down{color:var(--down)}
 .stats td.c-wr.hi b{color:var(--up)}.stats td.c-wr.lo b{color:var(--down)}.stats td.c-wr.few b{color:var(--muted)}
 .stats td.na{color:var(--faint,var(--muted));font:400 13px var(--f-mono,ui-monospace,monospace)}
-.stats tr.none .st-n b{color:var(--muted)}
+.stats tr.nodata .st-n b{color:var(--muted)}
 .st-h{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;border:0;background:none;padding:0;color:var(--fg);text-align:left;cursor:pointer;font:inherit}
 .st-i{flex:none;width:22px;font:400 11px var(--f-mono,ui-monospace,monospace);color:var(--faint,var(--muted));text-align:right}
 .st-p{flex:none;width:36px;height:36px;border-radius:7px;overflow:hidden;background:linear-gradient(160deg,var(--lc),#000);display:grid;place-items:center;color:#fff;font:300 13px var(--f-display)}
@@ -975,6 +975,7 @@ html.lock{overflow:hidden}
 
 /* Giữ chân người xem: dải bản cập nhật, xem gần đây, tướng tiếp theo, mời thêm vào màn hình chính */
 .hero-upd{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;margin:0 0 14px;padding:8px 14px 8px 12px;border:1px solid var(--h-line);border-radius:999px;color:#f3f2ef;text-decoration:none;font:400 11px var(--f-mono);letter-spacing:.06em;background:rgba(0,0,0,.45)}
+.hero-upd{vertical-align:top}.hero-upd[hidden]{display:inline-flex!important;visibility:hidden}  /* giữ chỗ trước khi JS điền chữ: không đẩy đầu trang (CLS) */
 .hero-upd i{width:7px;height:7px;border-radius:50%;background:#5cc496;box-shadow:0 0 0 3px rgba(92,196,150,.2)}
 .hero-upd b{font-weight:400;transition:transform .4s var(--ease)}
 @media (hover:hover){.hero-upd:hover{border-color:rgba(255,255,255,.5)}.hero-upd:hover b{transform:translateX(3px)}}
@@ -1023,6 +1024,8 @@ body.picking .instbar{display:none}
   .por img{transition:none}
   .por.has::after{display:none}
 }
+/* Màn cảm ứng (điện thoại, máy tính bảng): mọi nút đủ 44px để chạm */
+@media (pointer:coarse){.mvrow button{min-height:44px}.filters .ic{min-height:44px}.log li button{position:relative}.log li button::after{content:"";position:absolute;inset:-12px -8px}}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1225,7 +1228,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610270150"></script>
-<script defer src="assets/app.js?v=202610270150"></script>
+<script defer src="assets/data.js?v=202610270250"></script>
+<script defer src="assets/app.js?v=202610270250"></script>
 </body>
 </html>

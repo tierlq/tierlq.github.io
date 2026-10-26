@@ -60,8 +60,11 @@ for (const h of HEROES) {
   const others = HEROES.filter(x => x.key === h.key && x.id !== h.id);
   const peers = HEROES.filter(x => x.lane === h.lane && x.tier === h.tier && x.id !== h.id).slice(0, 12);
   const title = `${h.name} ${L} – tier ${h.tier} ${season} | Bảng Tier Liên Quân`;
-  const desc = `${h.name} đi ${L}${h.sec ? ' (đường phụ)' : ''}: tier ${h.tier} (${TNAME[h.tier]}), hạng ${h.rank}/${h.laneN} đường ${L}.` +
-    (items.length ? ` Build: ${items.slice(0, 4).join(', ')}…` : '') + (spells.length ? ` Phép: ${spells.join(', ')}.` : '') + ` Cập nhật ${upd}.`;
+  // Mô tả cho Google: tối đa ~160 ký tự (dài hơn bị cắt trên trang kết quả) → bớt dần số món đồ trong build
+  const mkDesc = n => `${h.name} đi ${L}${h.sec ? ' (đường phụ)' : ''}: tier ${h.tier} (${TNAME[h.tier]}), hạng ${h.rank}/${h.laneN} đường ${L}.` +
+    (items.length && n ? ` Build: ${items.slice(0, n).join(', ')}…` : '') + (spells.length ? ` Phép: ${spells.join(', ')}.` : '') + ` Cập nhật ${upd}.`;
+  let desc = mkDesc(4);
+  for (let n = 3; desc.length > 160 && n >= 0; n--) desc = mkDesc(n);
   const img = has('s', h) ? `${SITE}/s/${skey(h)}.webp` : `${SITE}/og.jpg`;
   const ban = has('s2', h) ? `/s2/${skey(h)}.webp` : has('s', h) ? `/s/${skey(h)}.webp` : '';
   const ld = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [

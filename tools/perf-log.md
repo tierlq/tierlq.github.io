@@ -126,3 +126,11 @@ mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), khô
 - Thêm tự hạ chất lượng thiên hà: Q0 đầy đủ → Q1 (55% hạt, 1×) → Q2 (30%, 0,75×, 30 hình/giây) → Q3 (20%, 0,6×, 24 hình/giây); vẽ bằng phần mềm vào thẳng Q2; mỗi giây đo khoảng cách khung hình, chậm thì hạ tiếp. Máy có GPU tốt giữ nguyên Q0. Chiều cao đầu trang lưu sẵn (không đọc offsetHeight mỗi khung).
 - Bỏ kính mờ (backdrop-filter) ở hàng tab sân khấu: phải làm mờ lại mỗi khung khi ảnh trôi theo cuộn (p95 khung hình 33 → 17 ms khi cuộn qua sân khấu).
 - Cùng lúc đo bản trước/sau: máy tính TBT 1954 → 67 ms, mở bảng chi tiết 689 → 298 ms; điện thoại TBT 786 → 696 ms, mở bảng chi tiết 1171 → 489 ms (môi trường đo hôm nay chậm hơn các tuần trước, chỉ so trong cùng lần đo).
+
+## 2026-10-27 (làm tay: chủ web nhờ kiểm tra tổng thể)
+- Đo (tools/perf/measure.js, 3 lần): điện thoại giả lập chậm LCP 520 ms · CLS 0 · TBT 753 ms · bảng có thẻ 1574 ms · mở bảng chi tiết 479 ms · 74 kB / 5 yêu cầu tới lúc bảng hiện;
+  máy tính LCP 140 ms · CLS 0,017 · TBT 97 ms · bảng có thẻ 522 ms · mở bảng chi tiết 354 ms. Tải trước khi bảng hiện tăng 58 → 74 kB do data.js có thêm mốc tier (PREV_T) và app.js có chế độ Số liệu.
+- CLS máy tính: dải "Bản 15/10" ở đầu trang hiện ra sau khi JS chạy làm khối dưới đầu trang dịch 54 px (0,0075). Giữ chỗ sẵn (`.hero-upd[hidden]` vẫn chiếm chỗ, `vertical-align:top`) → hết dịch.
+  Phần CLS còn lại (≈0,001 mỗi lần) là vệt chạy của nút "Khám phá" (hoạt ảnh `top`), đã ghi ở mục trước là để nguyên.
+- Kiểm tra: 8 máy/khổ màn (1440, 1280, iPhone 13, iPhone SE, Pixel 7, Galaxy S9+, xoay ngang 844, máy tính bảng 820), sáng/tối: không lỗi JS, không vi phạm CSP, không ảnh 404, không tràn ngang;
+  147/147 bảng chi tiết mở được; link #tuong-, nút Quay lại, menu, 3 chế độ, tìm kiếm, tải ảnh (máy tính + điện thoại) đều chạy; axe-core không lỗi; mất mạng vẫn mở được trang, ảnh và build (service worker).
