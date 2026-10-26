@@ -58,13 +58,16 @@ const P_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omeg
 const pKey=h=>{const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return P_KEYS.has(k)?k:""};
 /* Dấu trên ảnh tướng (góc phải trên, kiểu Prydwen): ô đặc mũi tên = lên/xuống bậc so với lần cập nhật trước,
    ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản mới, MỚI = tướng mới */
-const MKI={up:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 11 6.4H7.7V11H4.3V6.4H1z"/></svg>',down:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 11 1 5.6h3.3V1h3.4v4.6H11z"/></svg>',
-  pu:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.8 1.5h2.4v3.3h3.3v2.4H7.2v3.3H4.8V7.2H1.5V4.8h3.3z"/></svg>',pd:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 4.8h9v2.4h-9z"/></svg>',
-  pm:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M5.1 .8h1.8v2.4h2.4V5H6.9v2.4H5.1V5H2.7V3.2h2.4zM2.7 9h6.6v1.8H2.7z"/></svg>'};
+const mkS=d=>`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+// Đường vẽ (lưới 12): mũi tên kiểu chữ V, hai chữ V khi đổi từ 2 bậc trở lên; dấu + / − / ± nét mảnh
+const MKD={up:"M3 7.6 6 4.6l3 3",up2:"M3 6 6 3l3 3M3 9.6l3-3 3 3",down:"M3 4.4l3 3 3-3",down2:"M3 2.4l3 3 3-3M3 6l3 3 3-3",pu:"M6 3v6M3 6h6",pd:"M3 6h6",pm:"M6 2.6v4.6M3.7 4.9h4.6M3.6 9.4h4.8"};
+const MKI=Object.fromEntries(Object.entries(MKD).map(([k,d])=>[k,mkS(d)]));
+const ui=(d,extra="")=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${extra}<path d="${d}"/></svg>`;
+const moveN=h=>h.move?Math.abs(TIERS.indexOf(h.prev)-TIERS.indexOf(h.tier)):0;
 const moveTxt=h=>h.move?`${h.move==="up"?"Lên":"Xuống"} bậc từ ${h.prev} (so với ${PREV_DATE})`:"";
-function mkMove(m){return `<span class="mk ${m==="up"?"rise":"fall"}">${MKI[m]}</span>`}
+function mkMove(m,n){return `<span class="mk ${m==="up"?"rise":"fall"}">${MKI[m+(n>1?"2":"")]}</span>`}
 function mkTrend(t){return t==="new"?`<span class="mk new">MỚI</span>`:`<span class="mk p${t[0]}">${MKI["p"+t[0]]}</span>`}
-function marks(h){const m=(h.move?mkMove(h.move):"")+(h.trend?mkTrend(h.trend):"");return m?`<span class="mks">${m}</span>`:""}
+function marks(h){const m=(h.move?mkMove(h.move,moveN(h)):"")+(h.trend?mkTrend(h.trend):"");return m?`<span class="mks">${m}</span>`:""}
 function portrait(h){
   const src=imgOf(h);
   return `<div class="por${src?" has":""}" aria-hidden="true" style="--lc:var(--l-${h.lane})">${src?`<img src="${src}" alt="" loading="lazy" decoding="async" width="88" height="88">`:`<span class="ini">${initials(h.name)}</span>`}<span class="cls" title="${CLASSES[h.cls]}">${ICON[h.cls]}</span>${marks(h)}${h.sec?`<span class="secl">Phụ</span>`:""}</div>`;
@@ -314,18 +317,18 @@ function openModal(id,dir,via){
   // Tướng không có trên bảng đang hiện (điện thoại đang xem đường khác, hoặc bị bộ lọc ẩn): ‹ › đi theo thứ tự đường của tướng đó
   const vis=visibleOrder(),order=vis.includes(id)?vis:TIERS.flatMap(t=>HEROES.filter(x=>x.lane===h.lane&&x.tier===t)).map(x=>x.id),i=order.indexOf(id);
   $("modalRoot").innerHTML=`<div class="veil${nav?" nav":""}" id="veil"><div class="modal${dir>0?" from-r":dir<0?" from-l":""}" role="dialog" aria-modal="true" aria-label="${h.name}">
-    <div class="mtop"><button id="mshare" aria-label="Chia sẻ tướng này" title="Chia sẻ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button><button id="mprev" aria-label="Tướng trước" ${i<=0?"disabled":""}>‹</button><button id="mnext" aria-label="Tướng sau" ${i<0||i>=order.length-1?"disabled":""}>›</button><button id="mx" aria-label="Đóng">×</button></div>
+    <div class="mtop"><button id="mshare" aria-label="Chia sẻ tướng này" title="Chia sẻ">${ui("m8.3 10.9 7.4-3.8M8.3 13.1l7.4 3.8",'<circle cx="17.5" cy="6" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18" r="2.5"/>')}</button><button id="mprev" aria-label="Tướng trước" ${i<=0?"disabled":""}>${ui("M14.5 6 8.5 12l6 6")}</button><button id="mnext" aria-label="Tướng sau" ${i<0||i>=order.length-1?"disabled":""}>${ui("m9.5 6 6 6-6 6")}</button><button id="mx" aria-label="Đóng">${ui("m6.5 6.5 11 11m0-11-11 11")}</button></div>
     <div class="m-ban${splOf(h)?"":" noimg"}">${splOf(h)?`<img src="${splOf(h)}" srcset="${splOf(h)} 960w, ${sp2(splOf(h))} 1386w" sizes="(max-width:760px) 100vw, 760px" alt="" decoding="async">`:""}</div>
     <div class="m-body"><div class="card" data-t="${h.tier}">${portrait(h)}</div>
     <div><h3>${h.name}</h3>
-      <div class="tags"><span class="tag tt" style="--tg:var(--t-${h.tier.toLowerCase()})">Tier ${h.tier} · ${TNAME[h.tier]}</span><span class="tag">${LANES[h.lane]}${h.sec?" (đường phụ)":""}</span><span class="tag">${CLASSES[h.cls]}</span>${h.move?`<span class="tag mv ${h.move==="up"?"rise":"fall"}">${h.move==="up"?"↑ Lên":"↓ Xuống"} bậc · ${h.prev} → ${h.tier}<small> so với ${PREV_DATE}</small></span>`:""}${b?`<span class="tag mv ${b[1]}">${b[2]}</span>`:""}</div>
+      <div class="tags"><span class="tag tt" style="--tg:var(--t-${h.tier.toLowerCase()})">Tier ${h.tier} · ${TNAME[h.tier]}</span><span class="tag">${LANES[h.lane]}${h.sec?" (đường phụ)":""}</span><span class="tag">${CLASSES[h.cls]}</span>${h.move?`<span class="tag mv ${h.move==="up"?"rise":"fall"}">${mkMove(h.move,moveN(h))}${h.move==="up"?"Lên":"Xuống"} bậc · ${h.prev} → ${h.tier}<small> so với ${PREV_DATE}</small></span>`:""}${b?`<span class="tag mv ${b[1]}">${mkTrend(h.trend)}${b[2]}</span>`:""}</div>
       ${others.length?`<div class="other"><span>Còn đi:</span>${others.map(x=>`<button data-go="${x.id}" style="--lc:var(--l-${x.lane})"><i></i>${LANES[x.lane]}${x.sec?" (phụ)":""} · ${x.tier}</button>`).join("")}</div>`:""}
       ${buildHTML(h)}
       <h4 class="bds-h">Vì sao tier ${h.tier}</h4>
       ${breakdown(h)}
       <p>${h.note||`Không có thay đổi ở bản ${PATCH}.`}</p>
       ${skillHTML(h)}
-      ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">→</i></button>`:""})()}
+      ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">${ui("M5 12h14m-5.5-5.5L19 12l-5.5 5.5")}</i></button>`:""})()}
     </div></div></div></div>`;
   document.documentElement.classList.add("lock");hideTip();hideItip();track("xem_tuong",{tuong:h.name,duong:LANES[h.lane],tier:h.tier});
   $("mshare").onclick=()=>shareLink(`${h.name} · Tier ${h.tier} ${LANES[h.lane]}`,`${h.name} đang ở tier ${h.tier} đường ${LANES[h.lane]} trên Bảng Tier Liên Quân`,pageUrl()+"#tuong-"+id);
@@ -393,7 +396,7 @@ mq.addEventListener?mq.addEventListener("change",()=>{draw();measure()}):mq.addL
 
 /* Danh sách thay đổi bản cập nhật gần nhất (PATCH trong data.js, mỗi tướng một dòng) */
 const seen=new Set();
-$("log").innerHTML=HEROES.filter(h=>h.trend&&!h.sec&&!seen.has(h.key)&&seen.add(h.key)).sort((a,b)=>"down up new mix".indexOf(a.trend)-"down up new mix".indexOf(b.trend)).map(h=>`<li><span class="mv ${TR[h.trend][1]}">${TR[h.trend][0]}</span><span><button data-open="${h.id}">${h.name}</button> · ${h.note.replace(/^[^:]+: /,"")}</span></li>`).join("");
+$("log").innerHTML=HEROES.filter(h=>h.trend&&!h.sec&&!seen.has(h.key)&&seen.add(h.key)).sort((a,b)=>"down up new mix".indexOf(a.trend)-"down up new mix".indexOf(b.trend)).map(h=>`<li><span class="mv ${TR[h.trend][1]}">${mkTrend(h.trend)}${{up:"Tăng",down:"Giảm",mix:"Điều chỉnh",new:""}[h.trend]}</span><span><button data-open="${h.id}">${h.name}</button> · ${h.note.replace(/^[^:]+: /,"")}</span></li>`).join("");
 $("log").onclick=e=>{const b=e.target.closest("[data-open]");if(b)openModal(b.dataset.open)};
 /* Lên / xuống bậc so với lần cập nhật trước (PREV_T trong data.js) */
 (function moves(){const el=$("moves"),hd=$("moveTitle"),hs=HEROES.filter(h=>h.move);if(!el||!hd||!hs.length)return;const L=Object.keys(LANES);
@@ -456,13 +459,13 @@ function goSlide(i,user){const st=$("stage");sIdx=i;loadSlide(i);loadSlide((i+1)
   sLeft=DUR;if(!reduce.matches)schedule()}
 function schedule(){clearTimeout(sTimer);if(sPaused||!sVisible||reduce.matches)return;sStart=performance.now();sTimer=setTimeout(()=>goSlide((sIdx+1)%5),sLeft)}
 let userPaused=false;
-const PAUSE='<svg viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12"/><rect x="8.5" y="1" width="3.5" height="12"/></svg>',PLAY='<svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 1l10 6-10 6z"/></svg>';
+const PAUSE=ui("M9 6.5v11m6-11v11"),PLAY=ui("M8.5 6.3v11.4L18 12z");
 function paintPP(){const b=$("stagePP");if(!b)return;b.innerHTML=userPaused?PLAY:PAUSE;b.setAttribute("aria-label",userPaused?"Tiếp tục trình chiếu":"Tạm dừng trình chiếu")}
 function pauseStage(p){if(!p&&userPaused)return;sPaused=p;$("stage").classList.toggle("paused",p);if(p){clearTimeout(sTimer);sLeft=Math.max(400,sLeft-(performance.now()-sStart))}else schedule()}
 
 /* Sáng / tối */
-const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
-const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+const SUN=ui("M12 3.2V5m0 14v1.8M3.2 12H5m14 0h1.8M5.8 5.8l1.3 1.3m9.8 9.8 1.3 1.3M5.8 18.2l1.3-1.3m9.8-9.8 1.3-1.3",'<circle cx="12" cy="12" r="3.6"/>');
+const MOON=ui("M19.5 14.6A7.8 7.8 0 1 1 9.4 4.5a6.2 6.2 0 0 0 10.1 10.1z");
 function curTheme(){return document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark")}
 function paintTheme(){const t=curTheme();$("themeBtn").innerHTML=t==="dark"?SUN:MOON;$("themeBtn").setAttribute("aria-label",t==="dark"?"Chuyển sang giao diện sáng":"Chuyển sang giao diện tối")}
 const savedTheme=store("lq-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme;
@@ -668,13 +671,15 @@ const TCOL={S:"#d9b56c",A:"#b9a9ff",B:"#86d0c3",C:"#8ea3cc",D:"#7a797f"};
 const LCOL={top:"#e8805f",jg:"#5cc496",mid:"#a597ff",ad:"#e9b766",sp:"#6fb6ee"};
 const loadImg=src=>new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src});
 // Dấu lên/xuống bậc và tăng/giảm sức mạnh trên ảnh tải về: vẽ giống hệt dấu trên web (cùng đường vẽ SVG)
-function drawMarks(c,h,x1,y,font){const S=19,ls=[];if(h.move)ls.push(h.move==="up"?["#7cde97","#0d2415",MKI.up]:["#ee5757","#fff",MKI.down]);
-  if(h.trend==="new")ls.push(["#e2c27e","#1d1405","MỚI"]);else if(h.trend)ls.push(["rgba(12,12,16,.85)",{up:"#7cde97",down:"#ff7d7d",mix:"#ecebe7"}[h.trend],MKI["p"+h.trend[0]]]);
-  ls.forEach(([bg,fg,ic])=>{c.save();const txt=!ic.startsWith("<");c.font=`700 9.5px ${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+10:S,x=x1-w;
-    c.fillStyle=bg;c.beginPath();c.roundRect?c.roundRect(x,y,w,S,3):c.rect(x,y,w,S);c.fill();c.fillStyle=fg;
-    if(txt){c.textAlign="center";c.textBaseline="middle";c.fillText(ic,x+w/2,y+S/2+.5)}
-    else{const d=ic.match(/ d="([^"]+)"/)[1],k=10.5/12;c.translate(x+(S-10.5)/2,y+(S-10.5)/2);c.scale(k,k);c.fill(new Path2D(d))}
-    c.restore();y+=S+2})}
+function drawMarks(c,h,x1,y,font){const S=19,ls=[];x1-=3;y+=3;
+  if(h.move)ls.push(h.move==="up"?["#5fd398","#05170c",MKD[moveN(h)>1?"up2":"up"]]:["#ff7466","#2b0804",MKD[moveN(h)>1?"down2":"down"]]);
+  if(h.trend==="new")ls.push(["#d9b56c","#1d1405","MỚI",1]);else if(h.trend)ls.push(["rgba(8,8,10,.8)",{up:"#5fd398",down:"#ff8a7d",mix:"#e9e7e2"}[h.trend],MKD["p"+h.trend[0]]]);
+  ls.forEach(([bg,fg,ic,txt])=>{c.save();c.font=`600 8.5px "JetBrains Mono",${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+9:S,x=x1-w;
+    c.fillStyle=bg;c.beginPath();c.roundRect?c.roundRect(x,y,w,S,5):c.rect(x,y,w,S);c.fill();
+    if(!txt&&bg.startsWith("rgba")){c.strokeStyle="rgba(255,255,255,.14)";c.lineWidth=1;c.beginPath();c.roundRect?c.roundRect(x+.5,y+.5,w-1,S-1,4.5):c.rect(x+.5,y+.5,w-1,S-1);c.stroke()}
+    if(txt){c.fillStyle=fg;c.textAlign="center";c.textBaseline="middle";c.fillText(ic,x+w/2,y+S/2+.5)}
+    else{const k=11/12;c.translate(x+(S-11)/2,y+(S-11)/2);c.scale(k,k);c.strokeStyle=fg;c.lineWidth=1.7;c.lineCap=c.lineJoin="round";c.stroke(new Path2D(ic))}
+    c.restore();y+=S+3})}
 async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":"meta"});
   const btn=which==="mine"?$("dlMine"):$("dlImg");btn.setAttribute("aria-busy","true");toast("Đang tạo ảnh…");
   try{

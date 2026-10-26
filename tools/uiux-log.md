@@ -8,7 +8,8 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Đầu trang đen tan dần vào nền trang (`.hero-fade`), không để mép cứng đen → kem ở nền sáng (chủ web yêu cầu 18/10/2026).
 - Phong cách theo Bugatti 2026 (chủ web chọn 18/10/2026): nền đen tuyền, chữ tiêu đề in hoa giãn rộng, chữ phụ/nút kiểu đánh máy (JetBrains Mono), nút viên thuốc, khung ảnh/hộp bo góc nhẹ (8–12px), logo giữa thanh trên, hiện từ mờ sang nét khi cuộn, đường kẻ mảnh, chuyển động chậm. Sân khấu và đầu trang vẫn tràn mép, không bo.
 - Tên tướng không xuống dòng trên thẻ (chủ web yêu cầu). Tên dài trên điện thoại thu chữ nhẹ (lớp `.card.ln`).
-- Dấu trên ảnh tướng kiểu Prydwen (chủ web yêu cầu 26/10/2026): cột ô vuông nhỏ ở góc phải trên. Ô đặc xanh mũi tên lên / đỏ mũi tên xuống = lên/xuống bậc so với lần cập nhật trước (`PREV_T`); ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản Garena; ô vàng MỚI = tướng mới. Không đổi lại thành nhãn chữ "↑ Tăng".
+- Dấu trên ảnh tướng kiểu Prydwen (chủ web yêu cầu 26/10/2026): cột ô vuông nhỏ ở góc phải trên. Ô đặc xanh chữ V lên / đỏ chữ V xuống (hai chữ V khi đổi từ 2 bậc) = lên/xuống bậc so với lần cập nhật trước (`PREV_T`); ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản Garena; ô vàng MỚI = tướng mới. Ô nổi cách mép 3px, bo 5px. Không đổi lại thành nhãn chữ "↑ Tăng".
+- Icon dùng một bộ nét mảnh (lưới 24, nét 1,6, đầu nét tròn, lớp `svg.i`); biểu tượng lớp tướng cũng nét mảnh (khiên, kiếm chéo, dao găm, sao bốn cánh, tâm ngắm, trái tim). Trợ thủ không dùng dấu + để khỏi lẫn với dấu tăng sức mạnh.
 - Hover chỉ đặt trong `@media (hover:hover)` (tránh nút "dính" màu sau khi chạm trên điện thoại).
 - Thanh dính (tìm kiếm, chọn đường) và hàng tên đường dùng nền đặc `var(--bg)`, không để trong suốt.
 - Thẻ tướng hiện ngay khi cuộn tới; không dùng lại hiệu ứng bật lên lần lượt (từng làm bảng mờ hơn 1 giây).
@@ -112,3 +113,9 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Ảnh tướng: thay nhãn chữ cũ bằng cột ô vuông 20px góc phải trên (giống prydwen.gg/star-rail/tier-list): lên bậc / xuống bậc (mũi tên, ô đặc) tách khỏi tăng / giảm sức mạnh (dấu + / −, ô tối).
 - Mốc so sánh: tier ngày 17/10 (`PREV_T` trong data.js, tạo bằng `tools/tiers/snapshot.js`). 13 ô lên bậc, 9 ô xuống bậc.
 - Thêm danh sách "Đổi bậc so với ngày 17/10" dưới mục thay đổi bản; bộ lọc có thêm "Lên bậc"/"Xuống bậc"; bảng chi tiết ghi "Lên bậc · B → A"; ảnh tải về cũng có dấu; trang riêng từng tướng ghi lên/xuống bậc.
+
+## 2026-10-27 (làm tay theo yêu cầu chủ web: làm đẹp icon)
+- Dấu trên ảnh tướng: đổi mũi tên khối sang chữ V nét mảnh, hai chữ V khi đổi từ 2 bậc (ví dụ Rourke B → D); ô nổi cách mép 3px, bo 5px, màu theo bảng màu web (#5fd398 / #ff7466 / vàng tier S); MỚI dùng chữ JetBrains Mono.
+- Biểu tượng lớp tướng vẽ lại thành bộ nét mảnh; ô lớp ở góc trái cùng kiểu ô với dấu bên phải. Biểu tượng Trợ thủ đổi từ dấu + sang trái tim.
+- Icon giao diện (tìm, lọc, tải ảnh, chia sẻ, sáng/tối, dừng/chạy, đóng menu, lên đầu trang, nút ‹ › × trong bảng chi tiết, mũi tên "Tiếp theo") chuyển về cùng một bộ nét 1,6.
+- Danh sách thay đổi bản và thẻ trong bảng chi tiết dùng chung ô dấu với ảnh tướng; ảnh tải về vẽ dấu y như web.

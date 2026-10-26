@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610262355"></script>
+<script defer src="assets/boot.js?v=202610270025"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -189,7 +189,7 @@ a{color:inherit}
 .fgroup>span{font:400 10.5px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-right:10px}
 .ic{height:34px;padding:0 14px;border:1px solid var(--line);background:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font:400 13px var(--f-body);transition:background .3s,color .3s,border-color .3s}
 @media (hover:hover){.ic:hover{color:var(--fg);border-color:var(--line-2)}}
-.ic svg{width:14px;height:14px;flex:none}
+.ic svg{width:15px;height:15px;flex:none;stroke-width:1.7}
 .ic[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .ic .d{width:7px;height:7px;border-radius:50%;flex:none}
 .lanes-m{display:none}
@@ -232,18 +232,29 @@ a{color:inherit}
 .por img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none;transition:transform 1s var(--ease),filter .6s}
 .por.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.5))}
 .por .ini{position:absolute;inset:0;display:grid;place-items:center;font:200 26px var(--f-display);color:#fff;background:linear-gradient(160deg,var(--lc),#000)}
-.por .cls{position:absolute;left:0;top:0;width:20px;height:20px;background:rgba(0,0,0,.6);display:grid;place-items:center;color:#fff;z-index:2}
-.por .cls svg{width:11px;height:11px}
+.por .cls{position:absolute;left:3px;top:3px;width:19px;height:19px;border-radius:5px;background:rgba(8,8,10,.66);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);display:grid;place-items:center;color:#fff;z-index:2}
+.por .cls svg{width:12px;height:12px;stroke-width:2.1}
 /* Dấu trên ảnh tướng kiểu Prydwen: cột ô vuông ở góc phải trên */
-.por .mks{position:absolute;top:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:2px;pointer-events:none}
-.mk{display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;border-radius:3px;font:700 9.5px/1 var(--f-body);letter-spacing:.03em}
-.mk svg{width:11px;height:11px;fill:currentColor;display:block}
-.mk.rise{background:#7cde97;color:#0d2415}
-.mk.fall{background:#ee5757;color:#fff}
-.mk.pu,.mk.pd,.mk.pm{background:rgba(12,12,16,.8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-.mk.pu{color:#7cde97}.mk.pd{color:#ff7d7d}.mk.pm{color:#ecebe7}
-.mk.new{width:auto!important;padding:0 5px;background:#e2c27e;color:#1d1405}
-.modal .por .mk{width:24px;height:24px}.modal .por .mk svg{width:13px;height:13px}.modal .por .mk.new{font-size:11px}
+.por .mks{position:absolute;top:3px;right:3px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:3px;pointer-events:none}
+.mk{display:inline-flex;align-items:center;justify-content:center;flex:none;width:19px;height:19px;border-radius:5px;font:600 8.5px/1 var(--f-mono,ui-monospace,monospace);letter-spacing:.04em}
+.mk svg{width:11px;height:11px;display:block}
+.mk.rise{background:#5fd398;color:#05170c}
+.mk.fall{background:#ff7466;color:#2b0804}
+.mk.pu,.mk.pd,.mk.pm{background:rgba(8,8,10,.74);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.mk.pu{color:#5fd398}.mk.pd{color:#ff8a7d}.mk.pm{color:#e9e7e2}
+.mk.new{width:auto!important;padding:0 4.5px;background:#d9b56c;color:#1d1405}
+.modal .por .cls{width:23px;height:23px;border-radius:6px}.modal .por .cls svg{width:14px;height:14px}
+.modal .por .mk{width:23px;height:23px;border-radius:6px}.modal .por .mk svg{width:13px;height:13px}.modal .por .mk.new{font-size:10px;padding:0 6px}
+.tag.mv{display:inline-flex;align-items:center;gap:8px}.tag .mk{width:17px;height:17px;border-radius:4px}.tag .mk svg{width:10px;height:10px}.tag .mk.new{font-size:8px;padding:0 4px}
+.log .mv{display:inline-flex;align-items:center;gap:8px}
+/* Bộ icon nét mảnh dùng chung (lưới 24, nét 1,6, đầu nét tròn) */
+svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.modal .mtop button .i{width:18px;height:18px}
+.m-next i .i{width:22px;height:22px;display:block}
+.stage-pp .i{width:18px;height:18px}
+.theme .i{width:18px;height:18px}
+.totop span .i{position:static;inset:auto;width:18px;height:18px;transform:none;display:block}
+.menu-x .i{width:17px;height:17px;stroke-width:1.4}
 .ls-b .mk,.ic .mk{width:18px;height:18px}.ls-b .mk svg,.ic .mk svg{width:10px;height:10px}.ic .mk.new{font-size:8.5px;padding:0 4px}
 .moves{display:grid;gap:14px;margin-top:6px}
 .mvrow{display:grid;gap:8px}
@@ -446,8 +457,6 @@ a{color:inherit}
 .card[data-t=S]{--tcard:var(--t-s)}.card[data-t=A]{--tcard:var(--t-a)}.card[data-t=B]{--tcard:var(--t-b)}.card[data-t=C]{--tcard:var(--t-c)}.card[data-t=D]{--tcard:var(--t-d)}
 .card[data-t=S] .por{border-color:var(--t-s);box-shadow:0 0 18px -4px color-mix(in srgb,var(--t-s) 60%,transparent)}
 .card .nm{font:500 13px var(--f-body);letter-spacing:.01em;text-transform:none;opacity:1}
-.por .cls{width:22px;height:22px}
-.por .cls svg{width:12px;height:12px}
 .por .secl{font-size:9px;letter-spacing:.16em;line-height:18px}
 /* Hộp chi tiết + tooltip: chữ to hơn */
 .bd span{font:500 12.5px var(--f-body);letter-spacing:0;text-transform:none}
@@ -662,7 +671,6 @@ html.lock{overflow:hidden}
   .minebar .btn{height:44px;font-size:12px;letter-spacing:.1em;padding:0 8px}
   /* Thẻ tướng */
   .por .secl{font-size:11px;font-weight:500;letter-spacing:.14em;line-height:17px}
-  .por .mk{width:19px;height:19px}.por .mk svg{width:10.5px;height:10.5px}
   .card:active .por{transform:scale(.95);transition:transform .15s}
   /* Luôn đủ 3 thẻ mỗi hàng: máy hẹp thì thu ảnh lại một chút */
   .hrow,.trow{grid-template-columns:var(--tlw,78px) 1fr}
@@ -1034,7 +1042,7 @@ body.picking .instbar{display:none}
 
   <section class="sec" aria-labelledby="boardTitle">
     <div class="sec-h"><div><span class="over">Toàn bộ</span><h2 id="boardTitle">Bảng tier theo đường</h2></div><div class="sec-r"><p>Bấm vào tướng để xem điểm từng nguồn.<span class="dk"> Trên máy tính, rê chuột để xem nhanh.</span><span class="mb"> Vuốt ngang trên bảng để đổi đường.</span></p>
-      <div class="sec-acts"><button class="cta" id="dlImg" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Tải ảnh<span class="long"> tier list</span></button><button class="cta" id="sharePage" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg>Chia sẻ</button></div></div></div>
+      <div class="sec-acts"><button class="cta" id="dlImg" type="button"><svg class="i" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/></svg>Tải ảnh<span class="long"> tier list</span></button><button class="cta" id="sharePage" type="button"><svg class="i" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="17.5" cy="6" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18" r="2.5"/><path d="m8.3 10.9 7.4-3.8M8.3 13.1l7.4 3.8"/></svg>Chia sẻ</button></div></div></div>
   </section>
 
   <div class="boardwrap">
@@ -1045,10 +1053,10 @@ body.picking .instbar{display:none}
         <button id="m-mine" aria-pressed="false">Tự xếp</button>
       </div>
       <label class="search"><span class="sr">Tìm tướng</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 4.4 4.4"/></svg>
         <input type="search" id="q" placeholder="Tìm tướng" autocomplete="off"><kbd>/</kbd>
       </label>
-      <button class="btn" id="ftoggle" aria-expanded="false" aria-controls="filters"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M6 12h12M10 18h4"/></svg>Lọc <span class="n" id="fcount" hidden>0</span></button>
+      <button class="btn" id="ftoggle" aria-expanded="false" aria-controls="filters"><svg class="i" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 7h16M7 12h10M10 17h4"/></svg>Lọc <span class="n" id="fcount" hidden>0</span></button>
       <button class="btn ghost" id="freset" hidden>Xoá lọc</button>
     </div>
     <div class="lanes-m" id="lanesM" role="group" aria-label="Chọn đường"></div>
@@ -1124,7 +1132,7 @@ body.picking .instbar{display:none}
     </div>
   </div>
 
-  <button class="totop" id="totop" aria-label="Lên đầu trang" hidden><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" class="tr"/><circle cx="22" cy="22" r="20" class="pr" id="topRing"/></svg><span>↑</span></button>
+  <button class="totop" id="totop" aria-label="Lên đầu trang" hidden><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" class="tr"/><circle cx="22" cy="22" r="20" class="pr" id="topRing"/></svg><span><svg class="i" viewBox="0 0 24 24"><path d="M12 18.5v-13M6.5 11 12 5.5l5.5 5.5"/></svg></span></button>
 </main>
   <!--FAQ-->
   <section class="faq" aria-labelledby="faqTitle">
@@ -1154,14 +1162,14 @@ body.picking .instbar{display:none}
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <div class="menu-bg" data-close></div>
   <aside class="menu-p">
-    <button class="menu-x" data-close aria-label="Đóng menu"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></button>
+    <button class="menu-x" data-close aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6.5 6.5 11 11m0-11-11 11"/></svg></button>
     <div class="menu-c">
       <nav class="menu-l" aria-label="Mục trên trang"><span class="over">Trên trang</span><a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a href="#method">Cách xếp và nguồn</a><a class="menu-tt" href="https://www.tiktok.com/@bangtierlienquan" target="_blank" rel="noopener" data-tt><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z"/></svg>TikTok</a></nav>
       <div class="menu-g"><span class="over">Mạnh nhất mỗi đường</span><div class="menu-cards" id="menuCards"></div></div>
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610262355"></script>
-<script defer src="assets/app.js?v=202610262355"></script>
+<script defer src="assets/data.js?v=202610270025"></script>
+<script defer src="assets/app.js?v=202610270025"></script>
 </body>
 </html>

@@ -431,13 +431,14 @@ const SRC = {
 const LANES={top:"Tà Thần",jg:"Rừng",mid:"Giữa",ad:"Rồng",sp:"Trợ thủ"};
 const LANEDESC={top:"Đường Caesar",jg:"Đi rừng",mid:"Đường giữa",ad:"Đường Rồng",sp:"Hỗ trợ"};
 const CLASSES={tank:"Đỡ đòn",fighter:"Đấu sĩ",assassin:"Sát thủ",mage:"Pháp sư",marksman:"Xạ thủ",support:"Trợ thủ"};
+// Biểu tượng lớp tướng: nét mảnh cùng một bộ (lưới 24, nét tròn), độ dày nét đặt bằng CSS theo chỗ hiện
 const ICON={
- tank:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z"/></svg>',
- fighter:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h5l9 9-2 2-9-9V3zm18 0v5l-5 5-2-2 5-5V3h2zM5 17l3-3 2 2-3 3 1 2-2 1-1-2-2-1 1-2 1 0z"/></svg>',
- assassin:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2 9 13l2 2L22 4V2h-2zM8 14l-3 3 2 2 3-3-2-2zm-4 4-2 4 4-2-2-2z"/></svg>',
- mage:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 2.2 6.6L21 9l-5.4 4 2 7L12 16l-5.6 4 2-7L3 9l6.8-.4z"/></svg>',
- marksman:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 1v5M12 18v5M1 12h5M18 12h5"/></svg>',
- support:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>'
+ tank:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6.3v5c0 4.2 2.9 7.6 7 9.2 4.1-1.6 7-5 7-9.2v-5z"/><path d="M12 8.5v7"/></svg>',
+ fighter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 5 9.5 9.5M12.5 16.5l4-4M14.5 14.5 19 19M19 5l-9.5 9.5M7.5 12.5l4 4M9.5 14.5 5 19"/></svg>',
+ assassin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 4.5 14.1 12.4 10.9 14.9 9.1 13.1 11.6 9.9z"/><path d="m7.6 11.6 4.8 4.8M10 14l-5 5"/></svg>',
+ mage:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c.7 4.5 3.5 7.3 8 8-4.5.7-7.3 3.5-8 8-.7-4.5-3.5-7.3-8-8 4.5-.7 7.3-3.5 8-8z"/></svg>',
+ marksman:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v4.2M12 17.3v4.2M2.5 12h4.2M17.3 12h4.2"/><circle cx="12" cy="12" r=".6"/></svg>',
+ support:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19.5s-7.5-4.4-7.5-10a4 4 0 0 1 7.5-2 4 4 0 0 1 7.5 2c0 5.6-7.5 10-7.5 10z"/></svg>'
 };
 const TIERS=["S","A","B","C","D"];
 const TNAME={S:"Rất mạnh",A:"Mạnh",B:"Ổn",C:"Tình huống",D:"Yếu"};
