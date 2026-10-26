@@ -882,6 +882,14 @@ RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy
 SPELL: Tốc Biến / Gầm Thét
 ENCH: Tháp quang minh: Thánh châu, Xuyên tâm, Tinh linh | Vực hỗn mang: Ma Hỏa, Cường công
 
+## boltbaron@ad
+SRC: https://aov-builds.com/tuong/bolt-baron/
+ITEMS: Giày Du Mục | Thập Tự Kiếm | Thương Khung Kiếm | Ma Pháp Trường Bào | Sách Thánh | Gươm Hiền Triết
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến / Gầm Thét
+ENCH: Tháp quang minh: Thánh châu, Xuyên tâm, Tinh linh | Vực hỗn mang: Ma Hỏa, Cường công
+NOTE: Nguồn chưa có build riêng cho đường Rồng, ở đây dùng build đi đường (Top/Mid) cùng trang.
+
 ## helen@sp
 SRC: https://aov-builds.com/tuong/helen/
 ITEMS: Liệt Hoả Mở Trói | Giày Kiên Cường | Dây Chuyền Lục Bảo | Băng Nhẫn Skadi | Huân Chương Troy | Khiên Thất Truyền
