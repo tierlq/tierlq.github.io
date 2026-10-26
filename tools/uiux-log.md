@@ -119,3 +119,10 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Biểu tượng lớp tướng vẽ lại thành bộ nét mảnh; ô lớp ở góc trái cùng kiểu ô với dấu bên phải. Biểu tượng Trợ thủ đổi từ dấu + sang trái tim.
 - Icon giao diện (tìm, lọc, tải ảnh, chia sẻ, sáng/tối, dừng/chạy, đóng menu, lên đầu trang, nút ‹ › × trong bảng chi tiết, mũi tên "Tiếp theo") chuyển về cùng một bộ nét 1,6.
 - Danh sách thay đổi bản và thẻ trong bảng chi tiết dùng chung ô dấu với ảnh tướng; ảnh tải về vẽ dấu y như web.
+
+## 2026-10-27 (làm tay theo yêu cầu chủ web: học các web thống kê lớn)
+- Tham khảo OP.GG, U.GG, Lolalytics, Mobalytics, Prydwen. Điểm chung web mình còn thiếu: bảng số liệu sắp xếp được theo cột, có số chênh lệch so với kỳ trước, ngưỡng số trận tối thiểu cho tỉ lệ thắng.
+- Thêm chế độ "Số liệu" (nút thứ ba cạnh Meta / Tự xếp): mỗi tướng một dòng với Thắng / Chọn / Cấm / Có mặt / Trận ở ĐTDV, số nhỏ bên dưới là chênh lệch so với mùa trước; bấm tên cột để sắp xếp (mặc định Có mặt); tướng dưới 10 trận chữ xám và xếp sau khi sắp theo tỉ lệ thắng; dùng chung bộ lọc đường, lớp, thay đổi, tìm kiếm; bấm dòng mở bảng chi tiết. Hàng tiêu đề bảng dính dưới thanh lọc.
+- Điện thoại ≤480px: nút Lọc chỉ còn biểu tượng (44×44) để ô tìm đủ rộng; ≤374px bảng số liệu ẩn ảnh đại diện cho vừa 4 cột.
+- Sửa lỗi cũ: gõ tên tướng rồi Enter, bảng chi tiết mở ra rồi đóng ngay (Enter "bấm" luôn nút × vừa được focus).
+- Không làm: "Khắc chế" (weak against) như OP.GG vì chưa có nguồn số liệu đối đầu.

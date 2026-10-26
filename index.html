@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610270025"></script>
+<script defer src="assets/boot.js?v=202610270150"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -247,6 +247,61 @@ a{color:inherit}
 .modal .por .mk{width:23px;height:23px;border-radius:6px}.modal .por .mk svg{width:13px;height:13px}.modal .por .mk.new{font-size:10px;padding:0 6px}
 .tag.mv{display:inline-flex;align-items:center;gap:8px}.tag .mk{width:17px;height:17px;border-radius:4px}.tag .mk svg{width:10px;height:10px}.tag .mk.new{font-size:8px;padding:0 4px}
 .log .mv{display:inline-flex;align-items:center;gap:8px}
+/* Bảng số liệu giải (chế độ "Số liệu") */
+.board.is-stats{min-width:0}
+.scroller:has(>.board.is-stats){overflow:visible}
+.st-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;padding:0 0 14px;font:400 11.5px/1.5 var(--f-mono,ui-monospace,monospace);letter-spacing:.04em;color:var(--muted)}
+.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.stats thead th{position:sticky;top:calc(var(--sat,0px) + var(--barh));z-index:2;background:var(--bg);border-bottom:1px solid var(--line-2);padding:0;text-align:right;font-weight:400}
+.stats thead th.c-hero{text-align:left;font:400 11px var(--f-mono,ui-monospace,monospace);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:12px 0}
+.stats thead th.c-hero small{margin-left:6px;color:var(--faint,var(--muted));letter-spacing:0}
+.stats thead button{display:inline-flex;align-items:center;justify-content:flex-end;gap:4px;width:100%;min-height:44px;padding:0 4px;border:0;background:none;color:var(--muted);font:400 11px var(--f-mono,ui-monospace,monospace);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.stats thead th[aria-sort="descending"] button,.stats thead th[aria-sort="ascending"] button{color:var(--fg)}
+.stats thead button .i{width:13px;height:13px}
+.stats tbody tr{border-bottom:1px solid var(--line);cursor:pointer}
+.stats tbody th,.stats tbody td{padding:9px 4px;vertical-align:middle}
+.stats tbody th{text-align:left;font-weight:400;padding-left:0}
+.stats td{position:relative;text-align:right;white-space:nowrap}
+.stats td b{display:block;font:500 14px var(--f-mono,ui-monospace,monospace);letter-spacing:0;color:var(--fg)}
+.stats td .dl{display:block;font:400 10.5px var(--f-mono,ui-monospace,monospace);color:var(--faint,var(--muted));margin-top:2px}
+.stats td .dl.up{color:var(--up)}.stats td .dl.down{color:var(--down)}
+.stats td.c-wr.hi b{color:var(--up)}.stats td.c-wr.lo b{color:var(--down)}.stats td.c-wr.few b{color:var(--muted)}
+.stats td.na{color:var(--faint,var(--muted));font:400 13px var(--f-mono,ui-monospace,monospace)}
+.stats tr.none .st-n b{color:var(--muted)}
+.st-h{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;border:0;background:none;padding:0;color:var(--fg);text-align:left;cursor:pointer;font:inherit}
+.st-i{flex:none;width:22px;font:400 11px var(--f-mono,ui-monospace,monospace);color:var(--faint,var(--muted));text-align:right}
+.st-p{flex:none;width:36px;height:36px;border-radius:7px;overflow:hidden;background:linear-gradient(160deg,var(--lc),#000);display:grid;place-items:center;color:#fff;font:300 13px var(--f-display)}
+.st-p img{width:100%;height:100%;object-fit:cover;display:block}
+.st-n{display:flex;flex-direction:column;gap:3px;min-width:0}
+.st-n b{font:600 14.5px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-n small{display:flex;align-items:center;gap:6px;font:400 12px var(--f-body);color:var(--muted);white-space:nowrap}
+.st-t{font:500 11px var(--f-mono,ui-monospace,monospace);font-style:normal;color:var(--tc);border:1px solid color-mix(in srgb,var(--tc) 55%,transparent);border-radius:4px;padding:0 4px;line-height:16px}
+.st-m{display:flex;gap:4px;margin-left:auto;padding-left:6px}
+.st-m .mk{width:17px;height:17px;border-radius:4px}.st-m .mk svg{width:10px;height:10px}.st-m .mk.new{font-size:8px;padding:0 4px}
+.stats .c-wr,.stats .c-pk,.stats .c-bn,.stats .c-pres{width:118px}.stats .c-n{width:84px}
+@media (hover:hover){.stats tbody tr:hover{background:var(--surface-2)}.stats thead button:hover{color:var(--fg)}}
+.st-h:focus-visible{outline:2px solid var(--fg);outline-offset:2px;border-radius:6px}
+@media (max-width:760px){
+  .stats .c-n{display:none}
+  .bar.compact~.scroller .stats thead th{top:calc(var(--sat,0px) + var(--barh) - var(--r1h,56px))}
+  .stats thead button{padding:0 2px;letter-spacing:.04em;font-size:10.5px;gap:2px}
+  .stats thead button .i{width:11px;height:11px}
+  .stats tbody th,.stats tbody td{padding:8px 2px}
+  .stats td b{font-size:13px}
+  .stats td .dl{font-size:10px}
+  .stats .c-wr,.stats .c-pk,.stats .c-bn,.stats .c-pres{width:15%}
+  .stats thead .pc{display:none}
+  .st-i{display:none}
+  .st-h{gap:8px}
+  .st-p{width:34px;height:34px}
+  .st-n b{font-size:14px}
+  .st-n small{font-size:11.5px}
+  .st-m{flex-direction:column;gap:3px}
+  .st-cap{font-size:11px}
+}
+@media (max-width:374px){.st-p{display:none}.stats thead button{font-size:10px;letter-spacing:0}.stats td b{font-size:12.5px}.stats tbody th,.stats tbody td{padding:8px 1px}}
+/* Điện thoại hẹp: hàng chế độ có 3 nút (Meta, Tự xếp, Số liệu) nên nút Lọc chỉ còn biểu tượng để ô tìm đủ rộng */
+@media (max-width:480px){.row1{gap:12px}.seg{gap:14px}#ftoggle{position:relative;width:44px;padding:0!important;justify-content:center;flex:none}#ftoggle .ftx{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}#ftoggle .n{position:absolute;top:-5px;right:-5px}}
 /* Bộ icon nét mảnh dùng chung (lưới 24, nét 1,6, đầu nét tròn) */
 svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .modal .mtop button .i{width:18px;height:18px}
@@ -1051,12 +1106,13 @@ body.picking .instbar{display:none}
       <div class="seg" role="group" aria-label="Chế độ">
         <button id="m-meta" aria-pressed="true">Meta<span class="long"> hiện tại</span></button>
         <button id="m-mine" aria-pressed="false">Tự xếp</button>
+        <button id="m-stats" aria-pressed="false">Số liệu</button>
       </div>
       <label class="search"><span class="sr">Tìm tướng</span>
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 4.4 4.4"/></svg>
         <input type="search" id="q" placeholder="Tìm tướng" autocomplete="off"><kbd>/</kbd>
       </label>
-      <button class="btn" id="ftoggle" aria-expanded="false" aria-controls="filters"><svg class="i" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 7h16M7 12h10M10 17h4"/></svg>Lọc <span class="n" id="fcount" hidden>0</span></button>
+      <button class="btn" id="ftoggle" aria-expanded="false" aria-controls="filters"><svg class="i" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 7h16M7 12h10M10 17h4"/></svg><span class="ftx">Lọc </span><span class="n" id="fcount" hidden>0</span></button>
       <button class="btn ghost" id="freset" hidden>Xoá lọc</button>
     </div>
     <div class="lanes-m" id="lanesM" role="group" aria-label="Chọn đường"></div>
@@ -1169,7 +1225,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610270025"></script>
-<script defer src="assets/app.js?v=202610270025"></script>
+<script defer src="assets/data.js?v=202610270150"></script>
+<script defer src="assets/app.js?v=202610270150"></script>
 </body>
 </html>

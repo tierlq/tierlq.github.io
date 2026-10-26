@@ -48,7 +48,7 @@ const TZ=(function fixTextZoom(){
 function loadMine(){const m=freshMine(),saved=store("lq-mine2");
   if(saved&&typeof saved==="object")for(const id of Object.keys(m)){const t=saved[id];if(TIERS.includes(t)||t==="X")m[id]=t}
   return m}
-let mode=store("lq-mode")==="mine"?"mine":"meta",q="",selected=null,mine=loadMine();
+let mode=store("lq-mode")==="mine"?"mine":"meta",sortK="pres",sortD=-1,q="",selected=null,mine=loadMine();
 let mLane=LANES[store("lq-mlane")]?store("lq-mlane"):"top";
 const F={lane:new Set(),cls:new Set(),trend:new Set()};
 HEROES.forEach(h=>{if(!(h.id in mine))mine[h.id]=h.tier});
@@ -126,6 +126,8 @@ function render(){
     $("emptyReset").onclick=resetFilters;syncPick();
     board.querySelectorAll("[data-lane]").forEach(bt=>bt.onclick=()=>setLane(bt.dataset.lane));
     return}
+  board.classList.toggle("is-stats",mode==="stats");
+  if(mode==="stats"){board.style.setProperty("--minw","0px");return renderStats(list)}
   let html=`<div class="hrow"><div></div>${lanes.map(l=>`<div style="--lc:var(--l-${l})"><span class="lanebar" style="background:var(--l-${l})"></span>${LANES[l]} <small>${list.filter(h=>h.lane===l).length}</small></div>`).join("")}</div>`;
   const rows=mode==="mine"?[...TIERS,"X"]:TIERS;
   rows.forEach(t=>{
@@ -309,7 +311,7 @@ const BACK={st:[],skip:0,
   swap(a,n,fn,url){const t=this.top(a);if(!t)return false;t[0]=n;t[1]=fn;try{history.replaceState({lq:n},"",url||location.href)}catch(e){}return true},
   pop(n){const i=this.st.map(x=>x[0]).lastIndexOf(n);if(i<0)return;this.st.splice(i,1);if(history.state&&history.state.lq===n){this.skip++;history.back()}}};
 addEventListener("popstate",()=>{if(BACK.skip){BACK.skip--;return}const t=BACK.st.pop();if(t)t[1]()});
-function visibleOrder(){return [...document.querySelectorAll("#board .card")].map(c=>c.dataset.id)}
+function visibleOrder(){return [...document.querySelectorAll("#board .card, #board .st-h")].map(c=>c.dataset.id)}
 function openModal(id,dir,via){
   const h=HEROES.find(x=>x.id===id);if(!h)return;const b=TR[h.trend];
   const nav=!!$("veil");if(!nav)lastFocus=document.activeElement;
@@ -359,17 +361,46 @@ function openModal(id,dir,via){
     else if(horiz&&Math.abs(ddx)>60)go(ddx<0?1:-1)},{passive:true});
 }
 
+/* ===== Số liệu giải: bảng sắp xếp được theo cột (học từ OP.GG / Lolalytics), dùng chung bộ lọc đường, lớp, thay đổi, tìm kiếm =====
+   Số liệu ĐTDV tính theo tướng, không theo đường, nên mỗi tướng một dòng (giữ ô đường chính); điện thoại xem từng đường như bảng tier */
+const SCOL=[["wr","Thắng","Tỉ lệ thắng các trận được chọn ở ĐTDV"],["pk","Chọn","Tỉ lệ số trận được chọn"],["bn","Cấm","Tỉ lệ số trận bị cấm"],["pres","Có mặt","Chọn + cấm: tỉ lệ số trận tướng xuất hiện ở lượt cấm chọn"],["n","Trận","Số trận được chọn"]];
+const nf1=v=>v.toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1});
+function statOf(h){const a=aogOf(h.key,h.lane),p=prevOf(h.key,h.lane);
+  if(!a)return {wr:null,pk:null,bn:null,pres:null,n:0,p};
+  return {wr:a[3]?a[0]:null,pk:a[1],bn:a[2],pres:Math.round((a[1]+a[2])*10)/10,n:a[3],p}}
+function delta(cur,prev,ok){if(!ok||prev==null)return "";const d=Math.round((cur-prev)*10)/10;if(Math.abs(d)<.1)return `<small class="dl">±0</small>`;
+  return `<small class="dl ${d>0?"up":"down"}">${d>0?"+":"−"}${nf1(Math.abs(d))}</small>`}
+function renderStats(list){
+  const board=$("board"),seen=new Map();
+  for(const h of list){const k=h.key==="flowborn"?h.id:h.key,o=seen.get(k);if(!o||(o.sec&&!h.sec))seen.set(k,h)}
+  const rows=[...seen.values()].map(h=>[h,statOf(h)]);
+  rows.sort(([a,x],[b,y])=>{const u=x[sortK],v=y[sortK];if(sortK==="wr"&&u!=null&&v!=null&&(x.n<10)!==(y.n<10))return (x.n<10)-(y.n<10);if(u==null||v==null)return (u==null)-(v==null)||(y.pres||0)-(x.pres||0)||a.name.localeCompare(b.name,"vi");
+    return (u-v)*sortD||(y.pres||0)-(x.pres||0)||a.name.localeCompare(b.name,"vi")});
+  const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}(?=\/\d{4})/)||[""])[0];
+  const arrow=k=>k===sortK?ui(sortD<0?"M7 10l5 5 5-5":"M7 14l5-5 5 5"):"";
+  const cell=(h,s,k)=>{const v=s[k];if(v==null)return `<td class="c-${k} na">—</td>`;
+    if(k==="wr"){const few=s.n<10,cls=few?"few":v>=53?"hi":v<=47?"lo":"";return `<td class="c-wr ${cls}"${few?' title="Dưới 10 trận, tỉ lệ thắng chưa đáng tin"':""}><b>${nf1(v)}</b>${delta(v,s.p&&s.p[3]>=10?s.p[0]:null,!few)}</td>`}
+    const pv=s.p?(k==="pk"?s.p[1]:k==="bn"?s.p[2]:k==="pres"?s.p[1]+s.p[2]:null):null;
+    return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
+  board.innerHTML=`<div class="st-cap"><span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span></div>
+  <table class="stats"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${SCOL.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${t}">${l}${k==="n"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
+  <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="none"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?", chưa có số liệu ĐTDV":""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${SCOL.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;
+  syncPick()}
+$("board").addEventListener("click",e=>{if(mode!=="stats")return;const b=e.target.closest("[data-sort]");
+  if(b){const k=b.dataset.sort;if(k===sortK)sortD=-sortD;else{sortK=k;sortD=-1}draw();const nb=$("board").querySelector(`[data-sort="${k}"]`);nb&&nb.focus({preventScroll:true});return}
+  const r=e.target.closest("tr[data-id]");if(r)openModal(r.dataset.id)});
+
 /* Chế độ, tìm kiếm, phím tắt */
-function setMode(m){if(m!==mode)track("doi_che_do",{che_do:m==="mine"?"tu_xep":"meta"});mode=m;selected=null;store("lq-mode",m);$("m-meta").setAttribute("aria-pressed",m==="meta");$("m-mine").setAttribute("aria-pressed",m==="mine");$("minebar").hidden=m!=="mine";hideTip();draw()}
-$("m-meta").onclick=()=>setMode("meta");$("m-mine").onclick=()=>setMode("mine");
+function setMode(m){if(m!==mode)track("doi_che_do",{che_do:{mine:"tu_xep",stats:"so_lieu"}[m]||"meta"});mode=m;selected=null;store("lq-mode",m==="stats"?"meta":m);$("m-meta").setAttribute("aria-pressed",m==="meta");$("m-mine").setAttribute("aria-pressed",m==="mine");$("m-stats")&&$("m-stats").setAttribute("aria-pressed",m==="stats");$("minebar").hidden=m!=="mine";hideTip();draw()}
+$("m-meta").onclick=()=>setMode("meta");$("m-mine").onclick=()=>setMode("mine");$("m-stats")&&($("m-stats").onclick=()=>setMode("stats"));
 // Điện thoại chỉ hiện một đường: gõ tên tướng không có ở đường đang xem thì tự chuyển sang đường có kết quả
 $("q").oninput=e=>{q=e.target.value.trim();
-  if(q&&mq.matches&&mode==="meta"&&!HEROES.some(h=>h.lane===mLane&&match(h))){const l=Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&!h.sec&&match(h)))||Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&match(h)));if(l){setLane(l);return}}
+  if(q&&mq.matches&&mode!=="mine"&&!HEROES.some(h=>h.lane===mLane&&match(h))){const l=Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&!h.sec&&match(h)))||Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&match(h)));if(l){setLane(l);return}}
   draw()};
 $("q").onkeydown=e=>{if(e.key==="Escape"){e.target.value="";q="";draw();e.target.blur()}
-  else if(e.key==="Enter"){const first=document.querySelector("#board .card");if(first&&mode==="meta"){openModal(first.dataset.id)}}
+  else if(e.key==="Enter"){const first=document.querySelector("#board .card, #board .st-h");if(first&&mode!=="mine"){e.preventDefault();openModal(first.dataset.id)}}  // chặn Enter để nó không "bấm" luôn nút × vừa được focus trong bảng chi tiết
   // Mũi tên xuống: nhảy thẳng tới thẻ tướng đầu tiên, khỏi phải Tab qua cả dãy nút lọc
-  else if(e.key==="ArrowDown"){const first=document.querySelector("#board .card");if(first){e.preventDefault();first.focus()}}};
+  else if(e.key==="ArrowDown"){const first=document.querySelector("#board .card, #board .st-h");if(first){e.preventDefault();first.focus()}}};
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!$("veil")&&document.activeElement.tagName!=="INPUT"){e.preventDefault();$("q").focus()}});
 $("freset").onclick=resetFilters;
 function setSheet(o){const was=$("filters").classList.contains("open");if(mq.matches&&o&&!was)BACK.push("sheet",()=>sheetDom(false));else if(!o&&was)BACK.pop("sheet");sheetDom(o)}
