@@ -80,6 +80,9 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   `"new"` = tướng mới hoặc làm lại bộ kỹ năng.
   Khi có bản cập nhật Garena mới (https://lienquan.garena.vn/category/cap-nhat/), thay toàn bộ `P` bằng thay đổi mới, đổi `PATCH`,
   và theo cách tính đã ghi: tướng bị giảm sức mạnh hạ 1 bậc báo VN trong `RAW`, tướng tier D được tăng rõ lên 1 bậc (đánh dấu `true`).
+- `PREV_T` / `PREV_DATE` — tier của mọi ô tướng ở lần cập nhật trước, để hiện mũi tên lên/xuống bậc trên ảnh tướng (kiểu Prydwen), danh sách "Đổi bậc", bộ lọc.
+  **Đừng sửa tay**: chạy `node tools/tiers/snapshot.js <dd/mm>` (ngày của bảng đang hiện) NGAY TRƯỚC khi cập nhật số liệu hoặc bản Garena mới,
+  rồi mới sửa dữ liệu, để mũi tên cho thấy đúng những gì lần cập nhật đó đổi. Chỉnh tay lẻ của chủ web giữa hai lần cập nhật thì không chạy (mũi tên cộng dồn).
 - `MANUAL` — **chỉnh tay của chủ web. Không bao giờ xoá hay sửa** trừ khi chủ web yêu cầu.
 - `SECONDARY` và các dòng bỏ/đổi đường phía dưới — cũng là quyết định của chủ web, giữ nguyên.
 

@@ -9,7 +9,7 @@ const ROOT = path.join(__dirname, '..', '..'), SITE = 'https://tierlq.github.io'
 const ctx = {}; vm.createContext(ctx);
 for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/^const /gm, 'var '), ctx);
-const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS } = ctx;
+const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS } = ctx;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const upd = (index.match(/Dữ liệu cập nhật (\d{1,2}\/\d{1,2}\/\d{4})/) || [])[1] || '';
@@ -95,7 +95,7 @@ ${CSP}
 ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" height="852"></div>` : ''}
 <p class="over">${esc(L)}${h.sec ? ' · đường phụ' : ''} · ${esc(CLASSES[h.cls] || '')} · ${esc(season)}</p>
 <h1>${esc(h.name)} <span>tier ${h.tier}</span></h1>
-<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5. Cập nhật ${upd}, bản ${PATCH}.</p>
+<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>

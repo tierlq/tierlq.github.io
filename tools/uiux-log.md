@@ -8,6 +8,7 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Đầu trang đen tan dần vào nền trang (`.hero-fade`), không để mép cứng đen → kem ở nền sáng (chủ web yêu cầu 18/10/2026).
 - Phong cách theo Bugatti 2026 (chủ web chọn 18/10/2026): nền đen tuyền, chữ tiêu đề in hoa giãn rộng, chữ phụ/nút kiểu đánh máy (JetBrains Mono), nút viên thuốc, khung ảnh/hộp bo góc nhẹ (8–12px), logo giữa thanh trên, hiện từ mờ sang nét khi cuộn, đường kẻ mảnh, chuyển động chậm. Sân khấu và đầu trang vẫn tràn mép, không bo.
 - Tên tướng không xuống dòng trên thẻ (chủ web yêu cầu). Tên dài trên điện thoại thu chữ nhẹ (lớp `.card.ln`).
+- Dấu trên ảnh tướng kiểu Prydwen (chủ web yêu cầu 26/10/2026): cột ô vuông nhỏ ở góc phải trên. Ô đặc xanh mũi tên lên / đỏ mũi tên xuống = lên/xuống bậc so với lần cập nhật trước (`PREV_T`); ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản Garena; ô vàng MỚI = tướng mới. Không đổi lại thành nhãn chữ "↑ Tăng".
 - Hover chỉ đặt trong `@media (hover:hover)` (tránh nút "dính" màu sau khi chạm trên điện thoại).
 - Thanh dính (tìm kiếm, chọn đường) và hàng tên đường dùng nền đặc `var(--bg)`, không để trong suốt.
 - Thẻ tướng hiện ngay khi cuộn tới; không dùng lại hiệu ứng bật lên lần lượt (từng làm bảng mờ hơn 1 giây).
@@ -106,3 +107,8 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Vẫn ô đen/tím ở thẻ tướng (cả trình duyệt khác) sau khi tắt View Transition. Giảm tiếp trên điện thoại: bỏ content-visibility:auto ở hàng tier (Chrome có lỗi ảnh trong vùng bỏ qua vẽ hiện đen), bỏ transform 3D thị sai trên ảnh 5 slide sân khấu (lần tối ưu 25/10 ghi transform lên cả 5 ảnh lớn → giữ 5 lớp đồ hoạ lớn), bỏ lớp gradient ::after và transition ở ảnh chân dung, menu không tải sẵn ảnh sau 4s. Chưa tái hiện được trên giả lập; chờ chủ web thử máy thật.
 - Tối ưu điện thoại 26/10: nút Quay lại (Android) đóng bảng chi tiết / menu / bộ lọc thay vì rời web (BACK + pushState; link riêng #tuong- lúc mở trang cũng vậy; history.scrollRestoration=manual); gõ tìm tướng không có ở đường đang xem thì tự chuyển sang đường có kết quả; thiên hà trên điện thoại vẽ ~30 hình/giây, độ phân giải ≤1,25×, dừng hẳn khi khuất. Đo (CPU chậm 4×): TBT 595 → 434 ms, mở bảng chi tiết 939 → 613 ms.
 - Hàng tab sân khấu bỏ kính mờ (máy tính lag khi cuộn qua sân khấu), dùng nền chuyển đen đặc hơn.
+
+## 2026-10-26 (làm tay theo yêu cầu chủ web: dấu lên/xuống bậc kiểu Prydwen)
+- Ảnh tướng: thay nhãn chữ cũ bằng cột ô vuông 20px góc phải trên (giống prydwen.gg/star-rail/tier-list): lên bậc / xuống bậc (mũi tên, ô đặc) tách khỏi tăng / giảm sức mạnh (dấu + / −, ô tối).
+- Mốc so sánh: tier ngày 17/10 (`PREV_T` trong data.js, tạo bằng `tools/tiers/snapshot.js`). 13 ô lên bậc, 9 ô xuống bậc.
+- Thêm danh sách "Đổi bậc so với ngày 17/10" dưới mục thay đổi bản; bộ lọc có thêm "Lên bậc"/"Xuống bậc"; bảng chi tiết ghi "Lên bậc · B → A"; ảnh tải về cũng có dấu; trang riêng từng tướng ghi lên/xuống bậc.

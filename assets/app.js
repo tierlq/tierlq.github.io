@@ -56,10 +56,18 @@ HEROES.forEach(h=>{if(!(h.id in mine))mine[h.id]=h.tier});
 function initials(n){const w=n.replace(/[^\p{L}\s]/gu,"").trim().split(/\s+/);return (w.length>1?w[0][0]+w[1][0]:w[0].slice(0,2)).toUpperCase()}
 const P_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]),S_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]);
 const pKey=h=>{const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return P_KEYS.has(k)?k:""};
+/* Dấu trên ảnh tướng (góc phải trên, kiểu Prydwen): ô đặc mũi tên = lên/xuống bậc so với lần cập nhật trước,
+   ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản mới, MỚI = tướng mới */
+const MKI={up:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 11 6.4H7.7V11H4.3V6.4H1z"/></svg>',down:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 11 1 5.6h3.3V1h3.4v4.6H11z"/></svg>',
+  pu:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.8 1.5h2.4v3.3h3.3v2.4H7.2v3.3H4.8V7.2H1.5V4.8h3.3z"/></svg>',pd:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 4.8h9v2.4h-9z"/></svg>',
+  pm:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M5.1 .8h1.8v2.4h2.4V5H6.9v2.4H5.1V5H2.7V3.2h2.4zM2.7 9h6.6v1.8H2.7z"/></svg>'};
+const moveTxt=h=>h.move?`${h.move==="up"?"Lên":"Xuống"} bậc từ ${h.prev} (so với ${PREV_DATE})`:"";
+function mkMove(m){return `<span class="mk ${m==="up"?"rise":"fall"}">${MKI[m]}</span>`}
+function mkTrend(t){return t==="new"?`<span class="mk new">MỚI</span>`:`<span class="mk p${t[0]}">${MKI["p"+t[0]]}</span>`}
+function marks(h){const m=(h.move?mkMove(h.move):"")+(h.trend?mkTrend(h.trend):"");return m?`<span class="mks">${m}</span>`:""}
 function portrait(h){
-  const b=TR[h.trend];
   const src=imgOf(h);
-  return `<div class="por${src?" has":""}" aria-hidden="true" style="--lc:var(--l-${h.lane})">${src?`<img src="${src}" alt="" loading="lazy" decoding="async" width="88" height="88">`:`<span class="ini">${initials(h.name)}</span>`}<span class="cls" title="${CLASSES[h.cls]}">${ICON[h.cls]}</span>${b?`<span class="bdg ${b[1]}">${h.trend==="new"?"MỚI":b[0].split(" ")[0]}</span>`:""}${h.sec?`<span class="secl">Phụ</span>`:""}</div>`;
+  return `<div class="por${src?" has":""}" aria-hidden="true" style="--lc:var(--l-${h.lane})">${src?`<img src="${src}" alt="" loading="lazy" decoding="async" width="88" height="88">`:`<span class="ini">${initials(h.name)}</span>`}<span class="cls" title="${CLASSES[h.cls]}">${ICON[h.cls]}</span>${marks(h)}${h.sec?`<span class="secl">Phụ</span>`:""}</div>`;
 }
 const tierOf=h=>mode==="mine"?mine[h.id]:h.tier;
 const uniq=new Set(HEROES.map(h=>h.key)).size;
@@ -75,7 +83,7 @@ function buildFilters(){
     b.onclick=()=>{F[key].has(k)?F[key].delete(k):F[key].add(k);b.setAttribute("aria-pressed",F[key].has(k));draw()};el.appendChild(b)})};
   mk("f-lane","lane",LANES,(b,k,v)=>{b.innerHTML=`<span class="d" style="background:var(--l-${k})"></span>${v}`});
   mk("f-class","cls",CLASSES,(b,k,v)=>{b.innerHTML=ICON[k]+v});
-  mk("f-trend","trend",{up:"↑ Tăng",down:"↓ Giảm",mix:"⇄ Điều chỉnh",new:"Mới"},(b,k,v)=>{b.textContent=v});
+  mk("f-trend","trend",{rise:"Lên bậc",fall:"Xuống bậc",up:"Tăng sức mạnh",down:"Giảm sức mạnh",mix:"Điều chỉnh",new:"Mới"},(b,k,v)=>{b.innerHTML=(k==="rise"||k==="fall"?mkMove(k==="rise"?"up":"down"):mkTrend(k))+v});
   $("lanesM").innerHTML=Object.entries(LANES).map(([k,v])=>`<button data-l="${k}" style="--lc:var(--l-${k})" aria-pressed="${k===mLane}"><i></i>${v}</button>`).join("");
   $("lanesM").onclick=e=>{const b=e.target.closest("button");if(b)setLane(b.dataset.l)};
 }
@@ -88,7 +96,7 @@ function activeCount(){return F.cls.size+F.trend.size+(mq.matches?0:F.lane.size)
 function syncFilterUI(shown){const n=activeCount();$("fcount").hidden=!(F.cls.size+F.trend.size);$("fcount").textContent=F.cls.size+F.trend.size;$("freset").hidden=!n;
   // Nút đóng bảng lọc trên điện thoại báo luôn số tướng sẽ hiện
   if(shown!=null)$("fdone").textContent=shown?`Xem ${shown} tướng`:"Đóng"}
-function match(h){return (!F.cls.size||F.cls.has(h.cls))&&(!F.trend.size||F.trend.has(h.trend))&&(!q||slug(h.name).includes(slug(q)))}
+function match(h){return (!F.cls.size||F.cls.has(h.cls))&&(!F.trend.size||F.trend.has(h.trend)||(h.move&&F.trend.has(h.move==="up"?"rise":"fall")))&&(!q||slug(h.name).includes(slug(q)))}
 
 /* Vẽ bảng */
 const reduce=matchMedia("(prefers-reduced-motion: reduce)");
@@ -123,7 +131,7 @@ function render(){
     html+=`<div class="trow${mode==="mine"&&selected?" target":""}" data-t="${t}"><div class="tl" aria-label="Tier ${t==="X"?"chưa xếp":t}, ${inTier.length} tướng"><span class="L">${t==="X"?"–":t}</span><small>${t==="X"?"Chưa xếp":TNAME[t]}</small><em>${TDESC[t]}</em><span class="cnt">${inTier.length} tướng</span></div>`;
     lanes.forEach(l=>{
       const items=inTier.filter(h=>h.lane===l);
-      html+=`<div class="cell" data-t="${t}">${items.map(h=>`<button class="card${selected===h.id?" sel":""}${q?" hit":""}${h.name.length>10?" ln":""}" data-id="${h.id}" data-t="${tierOf(h)}" style="${vtOn?`view-transition-name:c-${h.id.replace(/[^a-z0-9-]/g,"")};`:""}--d:${(h.score*7)%4}" aria-label="${h.name}, ${LANES[h.lane]}${h.sec?" (đường phụ)":""}, tier ${tierOf(h)}${TR[h.trend]?", "+TR[h.trend][2].toLowerCase()+" ở bản mới":""}" ${mode==="mine"?'draggable="true"':""}>${portrait(h).replace('</div>',tierOf(h)==="S"?'<span class="sweep"></span></div>':'</div>')}<span class="nm">${h.name}</span></button>`).join("")||'<span class="none" aria-hidden="true">—</span>'}</div>`;
+      html+=`<div class="cell" data-t="${t}">${items.map(h=>`<button class="card${selected===h.id?" sel":""}${q?" hit":""}${h.name.length>10?" ln":""}" data-id="${h.id}" data-t="${tierOf(h)}" style="${vtOn?`view-transition-name:c-${h.id.replace(/[^a-z0-9-]/g,"")};`:""}--d:${(h.score*7)%4}" aria-label="${h.name}, ${LANES[h.lane]}${h.sec?" (đường phụ)":""}, tier ${tierOf(h)}${h.move?", "+moveTxt(h).toLowerCase():""}${TR[h.trend]?", "+TR[h.trend][2].toLowerCase()+" ở bản mới":""}" ${mode==="mine"?'draggable="true"':""}>${portrait(h).replace('</div>',tierOf(h)==="S"?'<span class="sweep"></span></div>':'</div>')}<span class="nm">${h.name}</span></button>`).join("")||'<span class="none" aria-hidden="true">—</span>'}</div>`;
     });
     html+=`</div>`;
   });
@@ -310,7 +318,7 @@ function openModal(id,dir,via){
     <div class="m-ban${splOf(h)?"":" noimg"}">${splOf(h)?`<img src="${splOf(h)}" srcset="${splOf(h)} 960w, ${sp2(splOf(h))} 1386w" sizes="(max-width:760px) 100vw, 760px" alt="" decoding="async">`:""}</div>
     <div class="m-body"><div class="card" data-t="${h.tier}">${portrait(h)}</div>
     <div><h3>${h.name}</h3>
-      <div class="tags"><span class="tag tt" style="--tg:var(--t-${h.tier.toLowerCase()})">Tier ${h.tier} · ${TNAME[h.tier]}</span><span class="tag">${LANES[h.lane]}${h.sec?" (đường phụ)":""}</span><span class="tag">${CLASSES[h.cls]}</span>${b?`<span class="tag mv ${b[1]}">${b[2]}</span>`:""}</div>
+      <div class="tags"><span class="tag tt" style="--tg:var(--t-${h.tier.toLowerCase()})">Tier ${h.tier} · ${TNAME[h.tier]}</span><span class="tag">${LANES[h.lane]}${h.sec?" (đường phụ)":""}</span><span class="tag">${CLASSES[h.cls]}</span>${h.move?`<span class="tag mv ${h.move==="up"?"rise":"fall"}">${h.move==="up"?"↑ Lên":"↓ Xuống"} bậc · ${h.prev} → ${h.tier}<small> so với ${PREV_DATE}</small></span>`:""}${b?`<span class="tag mv ${b[1]}">${b[2]}</span>`:""}</div>
       ${others.length?`<div class="other"><span>Còn đi:</span>${others.map(x=>`<button data-go="${x.id}" style="--lc:var(--l-${x.lane})"><i></i>${LANES[x.lane]}${x.sec?" (phụ)":""} · ${x.tier}</button>`).join("")}</div>`:""}
       ${buildHTML(h)}
       <h4 class="bds-h">Vì sao tier ${h.tier}</h4>
@@ -387,6 +395,12 @@ mq.addEventListener?mq.addEventListener("change",()=>{draw();measure()}):mq.addL
 const seen=new Set();
 $("log").innerHTML=HEROES.filter(h=>h.trend&&!h.sec&&!seen.has(h.key)&&seen.add(h.key)).sort((a,b)=>"down up new mix".indexOf(a.trend)-"down up new mix".indexOf(b.trend)).map(h=>`<li><span class="mv ${TR[h.trend][1]}">${TR[h.trend][0]}</span><span><button data-open="${h.id}">${h.name}</button> · ${h.note.replace(/^[^:]+: /,"")}</span></li>`).join("");
 $("log").onclick=e=>{const b=e.target.closest("[data-open]");if(b)openModal(b.dataset.open)};
+/* Lên / xuống bậc so với lần cập nhật trước (PREV_T trong data.js) */
+(function moves(){const el=$("moves"),hd=$("moveTitle"),hs=HEROES.filter(h=>h.move);if(!el||!hd||!hs.length)return;const L=Object.keys(LANES);
+  const row=(m,t)=>{const a=hs.filter(h=>h.move===m).sort((x,y)=>L.indexOf(x.lane)-L.indexOf(y.lane)||TIERS.indexOf(x.tier)-TIERS.indexOf(y.tier)||x.name.localeCompare(y.name,"vi"));
+    return a.length?`<div class="mvrow"><span class="mvl">${mkMove(m)}${t} · ${a.length}</span><div>${a.map(h=>`<button type="button" data-open="${h.id}">${h.name}<small>${LANES[h.lane]}${h.sec?" (phụ)":""} · ${h.prev}→${h.tier}</small></button>`).join("")}</div></div>`:""};
+  hd.textContent=`Đổi bậc so với ngày ${PREV_DATE}`;el.innerHTML=row("up","Lên bậc")+row("down","Xuống bậc");hd.hidden=el.hidden=false;
+  el.onclick=e=>{const b=e.target.closest("[data-open]");if(b)openModal(b.dataset.open)}})();
 (function logMore(){const ul=$("log"),bt=$("logMore"),n=ul.children.length,more=n-6;if(!bt||more<=0)return;
   const paint=()=>{const open=!ul.classList.contains("short");bt.textContent=open?"Thu gọn":`Xem thêm ${more} thay đổi`;bt.setAttribute("aria-expanded",open)};
   ul.classList.add("short");bt.hidden=false;paint();
@@ -577,7 +591,7 @@ function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3
   const sl=$("secList");if(sl)sl.textContent=sec.join("; ")})();
 /* Chú giải luôn hiện */
 $("legendStrip").innerHTML=`<div class="ls-t">${TIERS.map(t=>`<span class="ls-tier" style="--tc:var(--t-${t.toLowerCase()})"><b>${t}</b>${TNAME[t]}</span>`).join("")}</div>
-  <div class="ls-b"><span><i class="lg up">↑</i>Tăng sức mạnh</span><span><i class="lg down">↓</i>Giảm sức mạnh</span><span><i class="lg new">MỚI</i>Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
+  <div class="ls-b"><span>${mkMove("up")}Lên bậc</span><span>${mkMove("down")}Xuống bậc</span><span>${mkTrend("up")}Tăng sức mạnh</span><span>${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span>${mkTrend("mix")}Điều chỉnh</span>`:""}<span>${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
 
 /* ===== Hiệu ứng cuộn ===== */
 const seenRows=new Set();
@@ -653,6 +667,14 @@ addEventListener("hashchange",()=>{if(!$("veil"))openFromHash("history")});
 const TCOL={S:"#d9b56c",A:"#b9a9ff",B:"#86d0c3",C:"#8ea3cc",D:"#7a797f"};
 const LCOL={top:"#e8805f",jg:"#5cc496",mid:"#a597ff",ad:"#e9b766",sp:"#6fb6ee"};
 const loadImg=src=>new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src});
+// Dấu lên/xuống bậc và tăng/giảm sức mạnh trên ảnh tải về: vẽ giống hệt dấu trên web (cùng đường vẽ SVG)
+function drawMarks(c,h,x1,y,font){const S=19,ls=[];if(h.move)ls.push(h.move==="up"?["#7cde97","#0d2415",MKI.up]:["#ee5757","#fff",MKI.down]);
+  if(h.trend==="new")ls.push(["#e2c27e","#1d1405","MỚI"]);else if(h.trend)ls.push(["rgba(12,12,16,.85)",{up:"#7cde97",down:"#ff7d7d",mix:"#ecebe7"}[h.trend],MKI["p"+h.trend[0]]]);
+  ls.forEach(([bg,fg,ic])=>{c.save();const txt=!ic.startsWith("<");c.font=`700 9.5px ${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+10:S,x=x1-w;
+    c.fillStyle=bg;c.beginPath();c.roundRect?c.roundRect(x,y,w,S,3):c.rect(x,y,w,S);c.fill();c.fillStyle=fg;
+    if(txt){c.textAlign="center";c.textBaseline="middle";c.fillText(ic,x+w/2,y+S/2+.5)}
+    else{const d=ic.match(/ d="([^"]+)"/)[1],k=10.5/12;c.translate(x+(S-10.5)/2,y+(S-10.5)/2);c.scale(k,k);c.fill(new Path2D(d))}
+    c.restore();y+=S+2})}
 async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":"meta"});
   const btn=which==="mine"?$("dlMine"):$("dlImg");btn.setAttribute("aria-busy","true");toast("Đang tạo ảnh…");
   try{
@@ -681,6 +703,7 @@ async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":
         HEROES.filter(h=>h.lane===l&&tierOfX(h)===t).forEach((h,k)=>{const cx=x0+14+(k%PER)*(CARD+GAP),cy=y+14+Math.floor(k/PER)*(CARD+NAMEH+GAP);
           const im=imgs[imgOf(h)];if(im)c.drawImage(im,cx,cy,CARD,CARD);else{c.fillStyle=LCOL[l];c.fillRect(cx,cy,CARD,CARD)}
           c.strokeStyle=TCOL[t];c.lineWidth=t==="S"?2:1.5;c.strokeRect(cx+.75,cy+.75,CARD-1.5,CARD-1.5);c.lineWidth=1;c.strokeStyle="rgba(255,255,255,.14)";
+          if(which!=="mine")drawMarks(c,h,cx+CARD,cy,body);
           if(h.sec){c.fillStyle="rgba(0,0,0,.72)";c.fillRect(cx,cy+CARD-16,CARD,16);c.fillStyle="#fff";c.font=`500 9px ${disp}`;c.textAlign="center";c.fillText("PHỤ",cx+CARD/2,cy+CARD-5);c.textAlign="left"}
           c.fillStyle="#f3f2ef";c.font=`500 12.5px ${body}`;let nm=h.name;while(c.measureText(nm).width>CARD+GAP-2&&nm.length>3)nm=nm.slice(0,-2)+"…";c.fillText(nm,cx,cy+CARD+16)})});
       y+=rh+12}
@@ -759,7 +782,8 @@ function goTo(el,off){if(!el)return;const want=()=>Math.max(0,el.getBoundingClie
 // 1) Dải "bản cập nhật" ở đầu trang: cho thấy bảng luôn mới, bấm tới danh sách thay đổi
 (function heroUpd(){const el=$("heroUpd");if(!el||typeof PATCH==="undefined")return;const keys=new Set(),c={up:0,down:0,new:0,mix:0};
   HEROES.forEach(h=>{if(h.trend&&!h.sec&&!keys.has(h.key)){keys.add(h.key);c[h.trend]++}});
-  const parts=[c.up&&`${c.up} tăng`,c.down&&`${c.down} giảm`,c.mix&&`${c.mix} điều chỉnh`,c.new&&`${c.new} tướng mới`].filter(Boolean);
+  const rise=HEROES.filter(h=>h.move==="up").length,fall=HEROES.filter(h=>h.move==="down").length;
+  const parts=[c.up&&`${c.up} tăng`,c.down&&`${c.down} giảm`,c.mix&&`${c.mix} điều chỉnh`,c.new&&`${c.new} tướng mới`,(rise||fall)&&`${rise} lên bậc, ${fall} xuống bậc`].filter(Boolean);
   if(!parts.length)return;const sh=[c.up&&`${c.up} tăng`,c.down&&`${c.down} giảm`,c.new&&`${c.new} mới`].filter(Boolean);
   el.innerHTML=`<i aria-hidden="true"></i><span class="dk">Theo bản ${PATCH} · ${parts.join(" · ")}</span><span class="mb">Bản ${PATCH} · ${sh.join(" · ")}</span><b aria-hidden="true">→</b>`;el.hidden=false;
   el.onclick=e=>{e.preventDefault();track("xem_thay_doi",{noi:"dau_trang"});goTo($("logTitle"))}})();

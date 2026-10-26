@@ -435,7 +435,7 @@ const ICON={
 const TIERS=["S","A","B","C","D"];
 const TNAME={S:"Rất mạnh",A:"Mạnh",B:"Ổn",C:"Tình huống",D:"Yếu"};
 const GROUPS={S:["Đỉnh meta","nên cấm hoặc chọn sớm"],A:["Meta","lựa chọn an toàn khi leo rank"],C:["Ngoài meta","cần đội hình phù hợp"],D:["Ít được dùng","đang yếu ở bản hiện tại"]};
-const TR={up:["↑ Tăng","up","Được tăng sức mạnh"],down:["↓ Giảm","down","Bị giảm sức mạnh"],mix:["⇄ Chỉnh","mix","Điều chỉnh"],new:["Mới","new","Tướng mới / làm lại"]};
+const TR={up:["+ Tăng","up","Được tăng sức mạnh"],down:["− Giảm","down","Bị giảm sức mạnh"],mix:["± Chỉnh","mix","Điều chỉnh"],new:["Mới","new","Tướng mới / làm lại"]};
 // Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 15/10/2026 (lienquan.garena.vn)
 // key: [xu hướng, ghi chú, true nếu phần báo VN đã chỉnh theo bản này]; key có thể kèm đường (flowborn-ad)
 const PATCH="15/10";
@@ -535,5 +535,12 @@ for(const l of Object.keys(LANES)){
 // Hạng trong đường: xếp theo tier cuối cùng (sau sàn ĐTDV và chỉnh tay của chủ web) rồi mới tới điểm,
 // để hạng ghi trong bảng chi tiết khớp với bảng tier và sân khấu "Mạnh nhất mỗi đường"
 for(const l of Object.keys(LANES)){const TO="SABCD";HEROES.filter(h=>h.lane===l).sort((a,b)=>TO.indexOf(a.tier)-TO.indexOf(b.tier)||b.adj-a.adj).forEach((h,i)=>h.rank=i+1)}
+// Tier ở lần cập nhật trước: mũi tên lên/xuống bậc trên ảnh tướng (giống Prydwen). h.prev = tier cũ, h.move = "up"/"down"/"".
+// ĐỪNG SỬA TAY: chạy `node tools/tiers/snapshot.js <ngày dd/mm>` NGAY TRƯỚC mỗi lần cập nhật số liệu hoặc bản mới,
+// để mũi tên cho thấy những gì lần cập nhật đó thay đổi. Chỉnh tay lẻ của chủ web giữa hai lần cập nhật thì không chạy.
+const PREV_DATE="17/10";
+const PREV_T="S:annette-mid,billow-jg,dolia-sp,edras-top,elandorr-ad,liliana-mid,lorion-mid,rouie-mid,rouie-sp,ryoma-top,sinestrea-jg,tamyn-jg,toro-sp,violet-ad,ybneth-sp,zata-mid;A:airi-jg,airi-top,alice-sp,annette-sp,astrid-jg,biron-top,butterfly-jg,cresht-sp,darcy-mid,evita-mid,florentino-top,flowborn-ad,flowborn-mid,gildur-mid,hayate-ad,iggy-mid,ignis-mid,krizzix-sp,maloch-top,marja-top,mganga-mid,mina-sp,nakroth-jg,preyta-mid,qi-jg,qi-top,ryoma-jg,stuart-ad,taara-sp,taara-top,tachi-jg,teemee-sp,thane-sp,valhein-ad,yena-top,yue-mid,zephys-top;B:aleister-mid,aoi-jg,arthur-sp,arthur-top,aya-sp,azzenka-mid,baldum-sp,billow-top,capheny-ad,chaugnar-sp,dyadia-sp,elsu-ad,enzo-jg,fennik-ad,goverra-mid,heino-mid,keera-jg,krixi-mid,moren-ad,murad-jg,natalya-mid,omen-top,raz-mid,richter-top,skud-top,veres-top,volkath-top,wiro-sp,wiro-top,wisp-ad,yan-top,zephys-jg,zuka-jg,zuka-top;C:allain-top,arduin-sp,arum-sp,ata-top,bijan-top,boltbaron-top,bonnie-mid,celica-ad,dieuthuyen-mid,errol-top,grakk-sp,ilumia-mid,kahlii-mid,lauriel-mid,laville-ad,lubo-top,ngokhong-jg,paine-jg,quillen-jg,rourke-top,roxie-sp,slimz-ad,telannas-ad,thorne-ad,trieuvan-top,tulen-mid,veera-mid,wonderwoman-top,xeniel-sp,zill-jg,zip-sp;D:amily-top,arduin-top,ata-sp,bright-jg,charlotte-top,dextra-top,dirak-mid,erin-ad,helen-sp,ishar-mid,jinna-mid,kaine-jg,kaine-top,kilgroth-top,kriknak-jg,lindis-ad,lumburr-sp,max-top,ming-sp,omega-sp,ormarr-sp,sephera-mid,superman-top,teeri-ad,theflash-jg,trieuvan-jg,yorn-ad,zill-mid";
+{const pv={};PREV_T.split(";").forEach(s=>{const [t,ids]=s.split(":");ids&&ids.split(",").forEach(id=>pv[id]=t)});
+  HEROES.forEach(h=>{const o=pv[h.id]||"";h.prev=o;h.move=o&&o!==h.tier?("SABCD".indexOf(h.tier)<"SABCD".indexOf(o)?"up":"down"):""})}
 const picksOf=h=>{const a=aogOf(h.key,h.lane);return a?a[3]:0};
 HEROES.sort((a,b)=>picksOf(b)-picksOf(a)||b.score-a.score||a.name.localeCompare(b.name,"vi"));
