@@ -288,8 +288,18 @@ function hideItip(){const t=$("itip");if(t)t.hidden=true;if(itipFor)itipFor.remo
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&itipFor){e.stopPropagation();e.preventDefault();hideItip()}},true);
   addEventListener("resize",hideItip);document.addEventListener("scroll",()=>{if(itipFor)hideItip()},true)})();
 let lastFocus=null;
+/* ===== Nút Quay lại của điện thoại: đóng bảng chi tiết / menu / bộ lọc thay vì rời khỏi web =====
+   Mỗi lớp mở thêm một mục lịch sử; đóng bằng nút trong trang thì tự gỡ mục đó (history.back, bỏ qua popstate tương ứng). */
+try{history.scrollRestoration="manual"}catch(e){}
+const BACK={st:[],skip:0,
+  push(n,fn,url){try{history.pushState({lq:n},"",url||location.href)}catch(e){}this.st.push([n,fn])},
+  top(n){const t=this.st[this.st.length-1];return t&&t[0]===n?t:null},
+  set(n,fn,url){const t=this.top(n);if(t)t[1]=fn;else this.st.push([n,fn]);try{history.replaceState({lq:n},"",url||location.href)}catch(e){}},
+  swap(a,n,fn,url){const t=this.top(a);if(!t)return false;t[0]=n;t[1]=fn;try{history.replaceState({lq:n},"",url||location.href)}catch(e){}return true},
+  pop(n){const i=this.st.map(x=>x[0]).lastIndexOf(n);if(i<0)return;this.st.splice(i,1);if(history.state&&history.state.lq===n){this.skip++;history.back()}}};
+addEventListener("popstate",()=>{if(BACK.skip){BACK.skip--;return}const t=BACK.st.pop();if(t)t[1]()});
 function visibleOrder(){return [...document.querySelectorAll("#board .card")].map(c=>c.dataset.id)}
-function openModal(id,dir){
+function openModal(id,dir,via){
   const h=HEROES.find(x=>x.id===id);if(!h)return;const b=TR[h.trend];
   const nav=!!$("veil");if(!nav)lastFocus=document.activeElement;
   const others=HEROES.filter(x=>x.key===h.key&&x.id!==h.id);
@@ -309,10 +319,14 @@ function openModal(id,dir){
       ${skillHTML(h)}
       ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">→</i></button>`:""})()}
     </div></div></div></div>`;
-  document.documentElement.classList.add("lock");hideTip();hideItip();setHash("tuong-"+id);track("xem_tuong",{tuong:h.name,duong:LANES[h.lane],tier:h.tier});
+  document.documentElement.classList.add("lock");hideTip();hideItip();track("xem_tuong",{tuong:h.name,duong:LANES[h.lane],tier:h.tier});
   $("mshare").onclick=()=>shareLink(`${h.name} · Tier ${h.tier} ${LANES[h.lane]}`,`${h.name} đang ở tier ${h.tier} đường ${LANES[h.lane]} trên Bảng Tier Liên Quân`,pageUrl()+"#tuong-"+id);
-  const close=()=>{hideItip();setHash("");$("modalRoot").innerHTML="";document.documentElement.classList.remove("lock");drawRecent();INST&&INST.maybe();document.removeEventListener("keydown",key);
+  const shut=()=>{hideItip();$("modalRoot").innerHTML="";document.documentElement.classList.remove("lock");drawRecent();INST&&INST.maybe();document.removeEventListener("keydown",key);
     const back=document.querySelector(`#board .card[data-id="${id}"]`)||lastFocus;back&&back.focus&&back.focus(mq.matches?{preventScroll:true}:undefined)};
+  const close=()=>{shut();BACK.pop("modal")};
+  { const u=pageUrl()+"#tuong-"+id;
+    if(nav||via==="history")BACK.set("modal",shut,u);           // sang tướng khác trong bảng chi tiết / mở lại bằng nút Tiến: không thêm mục lịch sử
+    else if(!(via==="menu"&&BACK.swap("menu","modal",shut,u)))BACK.push("modal",shut,u) }
   const go=d=>{const n=order[i+d];if(n){document.removeEventListener("keydown",key);openModal(n,d)}};
   const key=e=>{if(e.key==="Escape")close();else if(e.key==="ArrowLeft")go(-1);else if(e.key==="ArrowRight")go(1);
     else if(e.key==="Tab"){const f=[...$("modalRoot").querySelectorAll("button:not(:disabled),a[href]")];if(!f.length)return;const first=f[0],last=f[f.length-1];
@@ -337,14 +351,18 @@ function openModal(id,dir){
 /* Chế độ, tìm kiếm, phím tắt */
 function setMode(m){if(m!==mode)track("doi_che_do",{che_do:m==="mine"?"tu_xep":"meta"});mode=m;selected=null;store("lq-mode",m);$("m-meta").setAttribute("aria-pressed",m==="meta");$("m-mine").setAttribute("aria-pressed",m==="mine");$("minebar").hidden=m!=="mine";hideTip();draw()}
 $("m-meta").onclick=()=>setMode("meta");$("m-mine").onclick=()=>setMode("mine");
-$("q").oninput=e=>{q=e.target.value.trim();draw()};
+// Điện thoại chỉ hiện một đường: gõ tên tướng không có ở đường đang xem thì tự chuyển sang đường có kết quả
+$("q").oninput=e=>{q=e.target.value.trim();
+  if(q&&mq.matches&&mode==="meta"&&!HEROES.some(h=>h.lane===mLane&&match(h))){const l=Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&!h.sec&&match(h)))||Object.keys(LANES).find(l=>HEROES.some(h=>h.lane===l&&match(h)));if(l){setLane(l);return}}
+  draw()};
 $("q").onkeydown=e=>{if(e.key==="Escape"){e.target.value="";q="";draw();e.target.blur()}
   else if(e.key==="Enter"){const first=document.querySelector("#board .card");if(first&&mode==="meta"){openModal(first.dataset.id)}}
   // Mũi tên xuống: nhảy thẳng tới thẻ tướng đầu tiên, khỏi phải Tab qua cả dãy nút lọc
   else if(e.key==="ArrowDown"){const first=document.querySelector("#board .card");if(first){e.preventDefault();first.focus()}}};
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!$("veil")&&document.activeElement.tagName!=="INPUT"){e.preventDefault();$("q").focus()}});
 $("freset").onclick=resetFilters;
-function setSheet(o){$("filters").classList.toggle("open",o);$("ftoggle").setAttribute("aria-expanded",o);$("fveil").hidden=!(o&&mq.matches);if(o&&mq.matches)$("fdone").focus();else if(!o)$("ftoggle").focus()}
+function setSheet(o){const was=$("filters").classList.contains("open");if(mq.matches&&o&&!was)BACK.push("sheet",()=>sheetDom(false));else if(!o&&was)BACK.pop("sheet");sheetDom(o)}
+function sheetDom(o){$("filters").classList.toggle("open",o);$("ftoggle").setAttribute("aria-expanded",o);$("fveil").hidden=!(o&&mq.matches);if(o&&mq.matches)$("fdone").focus();else if(!o)$("ftoggle").focus()}
 $("ftoggle").onclick=()=>setSheet(!$("filters").classList.contains("open"));
 $("fdone").onclick=()=>setSheet(false);$("fveil").onclick=()=>setSheet(false);$("fclear").onclick=()=>{resetFilters()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("filters").classList.contains("open")&&!$("veil")&&mq.matches)setSheet(false)});
@@ -503,7 +521,7 @@ paintTheme();
   function center(){if(small){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
     hero.style.setProperty("--gy",((1-gOff)*50).toFixed(1)+"%")}
   try{const ro=new ResizeObserver(center);ro.observe(hc);ro.observe(hf)}catch(e){}
-  function size(){center();dpr=Math.min(devicePixelRatio||1,1.5);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
+  function size(){center();dpr=Math.min(devicePixelRatio||1,small?1.25:1.5);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
   size();try{new ResizeObserver(size).observe(cv)}catch(e){addEventListener("resize",size)}
   let mx=9,my=9,tmx=9,tmy=9,stir=0,tstir=0,t=0,last=performance.now(),visible=true,spin=1,scS=-1;
   function setPt(cx,cy){const r=cv.getBoundingClientRect();tmx=((cx-r.left)/r.width)*2-1;tmy=-(((cy-r.top)/r.height)*2-1);tstir=1;spin=Math.min(spin+0.08,3)}
@@ -521,9 +539,14 @@ paintTheme();
     gl.drawArrays(gl.POINTS,0,N+NH);
   }
   if(reduce.matches){frame(performance.now());addEventListener("resize",()=>frame(performance.now()));return}
-  function loop(now){if(visible&&!document.hidden)frame(now);else last=now;requestAnimationFrame(loop)}
-  try{new IntersectionObserver(([e])=>visible=e.isIntersecting).observe(hero)}catch(e){}
-  requestAnimationFrame(loop);
+  // Điện thoại: vẽ ~30 hình/giây (hạt sáng chuyển động chậm nên mắt không thấy khác), đỡ pin và bộ nhớ đồ hoạ; khuất màn hình thì dừng hẳn
+  let lastDraw=0,raf=0;const FPS_GAP=small?30:0;
+  function loop(now){raf=0;if(!visible||document.hidden){last=now;return}
+    if(now-lastDraw>=FPS_GAP){lastDraw=now;frame(now)}raf=requestAnimationFrame(loop)}
+  const wake=()=>{if(!raf&&visible&&!document.hidden){last=performance.now();raf=requestAnimationFrame(loop)}};
+  document.addEventListener("visibilitychange",wake);
+  try{new IntersectionObserver(([e])=>{visible=e.isIntersecting;wake()}).observe(hero)}catch(e){}
+  wake();
 })();
 
 const setPh=()=>{$("q").placeholder=mq.matches?"Tìm…":"Tìm tướng"};setPh();mq.addEventListener&&mq.addEventListener("change",setPh);
@@ -610,8 +633,9 @@ async function shareLink(title,text,url){track("chia_se",{link:url.includes("#tu
   try{await navigator.clipboard.writeText(url);toast("Đã sao chép link")}catch(e){toast(url)}
 }
 $("sharePage").onclick=()=>shareLink("Bảng Tier Liên Quân","Tier list tướng Liên Quân theo từng đường, chấm điểm từ số liệu ĐTDV và giải đấu",pageUrl());
-function openFromHash(){const m=location.hash.match(/^#tuong-(.+)$/);if(m&&HEROES.some(h=>h.id===m[1]))openModal(m[1])}
-addEventListener("hashchange",()=>{if(!$("veil"))openFromHash()});
+function openFromHash(via){const m=location.hash.match(/^#tuong-(.+)$/);if(!m||!HEROES.some(h=>h.id===m[1]))return;
+  if(!via)try{history.replaceState(null,"",pageUrl())}catch(e){}openModal(m[1],0,via)}
+addEventListener("hashchange",()=>{if(!$("veil"))openFromHash("history")});
 
 /* ===== Xuất ảnh tier list ===== */
 const TCOL={S:"#d9b56c",A:"#b9a9ff",B:"#86d0c3",C:"#8ea3cc",D:"#7a797f"};
@@ -761,15 +785,16 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
   let keepY=0;const B=document.body.style;
   const lock=()=>{keepY=scrollY;B.position="fixed";B.top=-keepY+"px";B.left="0";B.right="0";B.width="100%"};
   const unlock=()=>{if(B.position!=="fixed")return;B.position=B.top=B.left=B.right=B.width="";scrollTo({top:keepY,behavior:"instant"})};
-  const open=()=>{cards();clearTimeout(t);m.hidden=false;lock();btn.setAttribute("aria-expanded","true");
+  const open=()=>{cards();clearTimeout(t);m.hidden=false;lock();btn.setAttribute("aria-expanded","true");BACK.push("menu",()=>shut(false));
     requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));m.querySelector(".menu-x").focus()};
-  const close=back=>{m.classList.remove("open");unlock();btn.setAttribute("aria-expanded","false");
+  const shut=back=>{m.classList.remove("open");unlock();btn.setAttribute("aria-expanded","false");
     t=setTimeout(()=>{m.hidden=true},reduce.matches?0:550);if(back)btn.focus({preventScroll:true})};
+  const close=back=>{shut(back);BACK.pop("menu")};
   btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});if(!mq.matches)setTimeout(cards,4000);
   m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
-    const a=e.target.closest(".menu-l a");if(a){close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
+    const a=e.target.closest(".menu-l a");if(a){if(a.hasAttribute("data-tt")){shut(false);const i=BACK.st.map(x=>x[0]).lastIndexOf("menu");if(i>=0)BACK.st.splice(i,1);return}close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
       if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>goTo(el,id==="spotTitle"?24:null))}return}
-    const o=e.target.closest("[data-open]");if(o){close(false);openModal(o.dataset.open)}});
+    const o=e.target.closest("[data-open]");if(o){shut(false);openModal(o.dataset.open,0,"menu")}});
   m.addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();close(true)}
     if(e.key==="Tab"){const f=[...m.querySelectorAll("button,a")],i=f.indexOf(document.activeElement);
       if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}}});

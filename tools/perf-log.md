@@ -116,3 +116,7 @@ mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), khô
 - Đầu trang (thiên hà) vẫn là chỗ khung hình nặng nhất khi cuộn (mọi khung > 50 ms đều ở 900px đầu), nhưng phần lớn do máy đo không có GPU.
 - Điện thoại 390px DPR 3 chọn ảnh sân khấu s3/ (2772px, 114–193 kB/ảnh) vì `sizes` là 1040px; s2/ (1386px) đã đủ ~1170px điểm ảnh cần cho màn 390px.
   Không đổi vì chủ web muốn sân khấu nét nhất (mục "Đã chốt" uiux-log) — chỉ hỏi chủ web nếu cần tiết kiệm dữ liệu di động.
+
+## 2026-10-26 (làm tay theo yêu cầu chủ web: tối ưu điện thoại)
+- Thiên hà trên điện thoại: ~30 hình/giây, dpr tối đa 1,25, dừng vòng vẽ khi khuất màn hình hoặc tab ẩn (trước vẫn chạy requestAnimationFrame rỗng).
+- Điện thoại (giả lập chậm): TBT 595 → 434 ms; mở bảng chi tiết 939 → 613 ms; LCP 424 → 432 ms (dao động); bảng có thẻ 1399 → 1429 ms (dao động). Máy tính không đổi đáng kể.

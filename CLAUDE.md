@@ -27,6 +27,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - Google Analytics `G-5WRPCM36GN` khởi tạo trong `assets/boot.js`, gắn ở `<head>` của `index.html` và `404.html`. Sự kiện riêng: `xem_tuong`, `tai_anh`, `chia_se`, `doi_che_do`, `mo_tiktok`, `xem_thay_doi`, `tuong_tiep`, `xem_gan_day`, `cai_dat_hien`/`cai_dat_bam`/`cai_dat_dong`/`cai_dat_xong` (hàm `track` trong `assets/app.js`).
   Nguồn có gắn sẵn: mở từ màn hình chính `utm_source=man_hinh_chinh` (manifest), quét QR trên ảnh tier list `utm_source=anh_tier_list` (`qr.png`, tạo bằng thư viện Python qrcode).
 - Link riêng từng tướng: `…/#tuong-<key>-<đường>` (ví dụ `#tuong-zata-mid`) tự mở bảng chi tiết.
+  Nút Quay lại của điện thoại đóng bảng chi tiết / menu / bộ lọc (đối tượng `BACK` trong `assets/app.js`: mở thì `pushState`, đóng bằng nút trong trang thì `history.back`). Lớp phủ mới cũng nên đi qua `BACK`.
 - `assets/builds.js` — build tham khảo (đồ, bảng ngọc, phép bổ trợ) hiện trong bảng chi tiết khi bấm vào tướng. **Tạo tự động, đừng sửa tay.**
   Không có thẻ `<script>` cho builds.js trong HTML: `app.js` tự tải nó 1,2 giây sau khi trang tải xong (hoặc ngay khi mở bảng chi tiết),
   dùng cùng số `?v=` với `app.js`. Bảng chi tiết hiện "Đang tải build…" rồi tự hiện build. Khi kiểm tra bằng Playwright, chờ `typeof BUILDS !== "undefined"`.
