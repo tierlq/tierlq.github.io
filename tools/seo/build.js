@@ -4,6 +4,7 @@
 //  3. Trang bản cập nhật: ban-cap-nhat/<dd-mm-yyyy>/ (từ P trong data.js + lịch sử tools/seo/patches.json) và ban-cap-nhat/ (danh sách)
 //  4. Trang Giới thiệu / Liên hệ / Quyền riêng tư (gioi-thieu/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
 //  3b. Tier list từng đường: duong/<ta-than|rung|giua|rong|tro-thu>/ (tướng xếp theo tier, hạng, điểm, ghi chú bản vá)
+//  3c. Bài viết phân tích: bai-viet/<slug>/ và bai-viet/ (nguồn: tools/seo/articles/<slug>.html — phần đầu "khoá: giá trị", dòng ---, thân HTML; liên kết sang trang tướng/bản vá được thêm tự động)
 //  5. sitemap.xml (trang chủ + mọi trang)
 // Chạy lại mỗi khi đổi assets/data.js, assets/builds.js hoặc assets/skills.js:   node tools/seo/build.js
 // Không sửa tay các tệp trong tuong/ — chạy lại script này.
@@ -26,8 +27,8 @@ const has = (dir, h) => fs.existsSync(path.join(ROOT, dir, skey(h) + '.webp'));
 
 // ---------- Phần dùng chung cho trang phụ (bản cập nhật, giới thiệu...) ----------
 const CSP0 = index.match(/<meta http-equiv="Content-Security-Policy"[^>]*>/)[0];
-const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
-const pageShell = ({ title, desc, path: pth, h1, over, body }) => `<!doctype html>
+const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
+const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -41,12 +42,13 @@ ${CSP0}
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE}${pth}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Bảng Tier Liên Quân">
+<meta property="og:type" content="${og}"><meta property="og:site_name" content="Bảng Tier Liên Quân">
 <meta property="og:title" content="${esc(h1)}"><meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}${pth}"><meta property="og:image" content="${SITE}/og.jpg"><meta property="og:locale" content="vi_VN">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: h1, item: SITE + pth }] })}</script>
+${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n')}
 <link rel="stylesheet" href="/assets/page.css">
 </head>
 <body>
@@ -79,6 +81,25 @@ patches.sort((a, b) => (b.year * 10000 + +b.date.split('/')[1] * 100 + +b.date.s
 const pIso = p => `${p.year}-${p.date.split('/')[1].padStart(2, '0')}-${p.date.split('/')[0].padStart(2, '0')}`;
 const LSLUG = { top: 'ta-than', jg: 'rung', mid: 'giua', ad: 'rong', sp: 'tro-thu' };   // trang tier list từng đường: /duong/<slug>/
 const lurl = l => `/duong/${LSLUG[l]}/`;
+
+// bài viết: tools/seo/articles/<slug>.html = vài dòng "khoá: giá trị" (title, h1, desc, date, over, patch, heroes) + dòng --- + phần thân HTML
+const ADIR = path.join(ROOT, 'tools', 'seo', 'articles');
+const aurl = a => `/bai-viet/${a.slug}/`;
+const dmy = iso => iso.split('-').reverse().join('/');
+const articles = (fs.existsSync(ADIR) ? fs.readdirSync(ADIR).filter(f => f.endsWith('.html')) : []).map(f => {
+  const raw = fs.readFileSync(path.join(ADIR, f), 'utf8'), cut = raw.indexOf('\n---\n');
+  if (cut < 0) throw Error(`${f}: thiếu dòng --- giữa phần đầu và thân bài`);
+  const a = { slug: f.replace(/\.html$/, ''), body: raw.slice(cut + 5).trim() };
+  for (const line of raw.slice(0, cut).split('\n')) { const m = line.match(/^(\w+):\s*(.*)$/); if (m) a[m[1]] = m[2].trim(); }
+  for (const k of ['title', 'h1', 'desc', 'date', 'over']) if (!a[k]) throw Error(`${f}: thiếu "${k}:" ở phần đầu`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(a.date)) throw Error(`${f}: date phải dạng yyyy-mm-dd`);
+  if (a.desc.length > 160) throw Error(`${f}: desc dài ${a.desc.length} ký tự (tối đa 160)`);
+  a.heroes = (a.heroes || '').split(',').map(s => s.trim()).filter(Boolean);
+  for (const id of a.heroes) if (!HEROES.some(h => h.id === id)) throw Error(`${f}: heroes có id lạ "${id}"`);
+  for (const m of a.body.matchAll(/href="\/tuong\/([^"/]+)\/"/g)) if (!HEROES.some(h => h.id === m[1])) throw Error(`${f}: liên kết tới trang tướng không có: ${m[1]}`);
+  return a;
+}).sort((x, y) => y.date.localeCompare(x.date));
+const artsOf = h => articles.filter(a => a.heroes.includes(h.id));
 
 // ---------- 1. FAQ ----------
 const tops = Object.keys(LANES).map(l => [l, byLane(l)]);
@@ -160,6 +181,7 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 <p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
+${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <ol class="items">${items.map(n => `<li>${esc(n)}</li>`).join('')}</ol>
 <p><b>Phép bổ trợ:</b> ${esc(spells.join(' hoặc '))}</p>
@@ -196,7 +218,9 @@ for (const p of patches) {
   const sec = (t, h2) => grp(t).length ? `<h2>${h2} (${grp(t).length})</h2><ul class="chg">${grp(t).map(c => `<li><a href="${url(c.h)}"><b>${esc(c.h.name)}</b></a> ${tierLine(c.h)}<p>${esc(strip(c.note))}</p></li>`).join('')}</ul>` : '';
   const lanes = Object.keys(LANES).map(l => { const s = byLane(l).filter(h => h.tier === 'S'); return s.length ? `<li><b><a href="${lurl(l)}">${esc(LANES[l])}</a>:</b> ${s.map(h => `<a href="${url(h)}">${esc(h.name)}</a>`).join(', ')}</li>` : ''; }).join('');
   const others = patches.filter(x => x !== p);
+  const pArts = articles.filter(a => a.patch === p.date);
   const body = `<p class="lead">${esc(p.title)} ngày ${p.date}/${p.year} thay đổi ${ch.length} tướng (${sum}). Mỗi tướng bên dưới có tóm tắt thay đổi và tier hiện tại trên Bảng Tier Liên Quân (dữ liệu ${upd}).</p>
+${pArts.map(a => `<p><a href="${aurl(a)}">Bài phân tích: ${esc(a.h1)} →</a></p>`).join('')}
 ${sec('up', 'Được tăng sức mạnh')}${sec('down', 'Bị giảm sức mạnh')}${sec('mix', 'Được điều chỉnh')}${sec('new', 'Tướng mới hoặc làm lại')}
 <p class="src">Nguồn: <a href="${esc(p.url)}" rel="noopener">Garena – ${esc(p.title)} ${p.date}/${p.year}</a>. Số liệu trước/sau lấy từ bài này, lời mô tả là tóm tắt lại. Tier chỉ phản ánh số liệu giải đấu và rank, không tự đổi ngay theo bản vá.</p>
 <h2>Tier S hiện tại theo từng đường</h2><ul class="chg plain">${lanes}</ul>
@@ -221,6 +245,21 @@ ${TO.split('').map(t => { const g = a.filter(h => h.tier === t); return g.length
 <h2>Các đường khác</h2><ul class="links">${Object.keys(LANES).filter(x => x !== l).map(x => `<li><a href="${lurl(x)}">Tier list ${esc(LANES[x])}</a></li>`).join('')}</ul>`;
   writePage(lurl(l).slice(1, -1), pageShell({ title: `Tier list ${L} Liên Quân ${season}: tướng mạnh nhất | Bảng Tier Liên Quân`, desc, path: lurl(l), h1: `Tier list ${L}`, over: `Liên Quân ${season} · cập nhật ${upd}`, body }));
 }
+
+// ---------- 3c. Bài viết (bai-viet/<slug>/ và bai-viet/): nguồn ở tools/seo/articles/ ----------
+fs.rmSync(path.join(ROOT, 'bai-viet'), { recursive: true, force: true });
+for (const a of articles) {
+  const related = a.heroes.map(id => HEROES.find(h => h.id === id)).filter(Boolean);
+  const body = `<p class="src">Đăng ${dmy(a.date)} · Bảng Tier Liên Quân</p>
+${a.body}
+${related.length ? `<h2>Tướng được nhắc trong bài</h2><ul class="links">${related.map(h => `<li><a href="${url(h)}">${esc(h.name)} ${esc(LANES[h.lane])}</a></li>`).join('')}</ul>` : ''}
+<p><a href="/bai-viet/">Tất cả bài viết →</a></p>`;
+  const ld = { '@context': 'https://schema.org', '@type': 'Article', headline: a.h1, description: a.desc, inLanguage: 'vi', datePublished: a.date, dateModified: a.date, image: [`${SITE}/og.jpg`],
+    mainEntityOfPage: SITE + aurl(a), author: { '@type': 'Organization', name: 'Bảng Tier Liên Quân', url: SITE + '/' }, publisher: { '@type': 'Organization', name: 'Bảng Tier Liên Quân', url: SITE + '/' } };
+  writePage(aurl(a).slice(1), pageShell({ title: `${a.title} | Bảng Tier Liên Quân`, desc: a.desc, path: aurl(a), h1: a.h1, over: a.over, body, og: 'article', ld: [ld] }));
+}
+writePage('bai-viet', pageShell({ title: 'Bài viết về meta và cân bằng tướng Liên Quân | Bảng Tier Liên Quân', desc: `Phân tích các bản cập nhật cân bằng tướng Liên Quân ${season}: tướng nào đáng chơi, số liệu giải đấu và ý kiến người chơi.`, path: '/bai-viet/', h1: 'Bài viết', over: `Phân tích · ${season}`,
+  body: `<p class="lead">Phân tích sau mỗi bản cân bằng: tướng nào đáng chơi, số liệu giải đấu nói gì và người chơi nghĩ gì.</p><ul class="chg plain">${articles.map(a => `<li><a href="${aurl(a)}"><b>${esc(a.h1)}</b></a><span class="tb">${dmy(a.date)}</span><p>${esc(a.desc)}</p></li>`).join('')}</ul>` }));
 
 // ---------- 4. Giới thiệu / Liên hệ / Quyền riêng tư + mục lục liên kết ----------
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
@@ -251,6 +290,7 @@ const dirHTML = `<!--HEROLINKS-->
 ${Object.keys(LANES).map(l => `      <h3>${esc(LANES[l])}</h3><p class="faq-l">${[...HEROES.filter(h => h.lane === l)].sort((a, b) => TO.indexOf(a.tier) - TO.indexOf(b.tier) || a.rank - b.rank).map(h => `<a href="${url(h)}">${esc(h.name)}${h.sec ? ' (phụ)' : ''}</a>`).join(' · ')}</p>`).join('\n')}
       <h3>Tier list theo đường</h3><p class="faq-l">${Object.keys(LANES).map(l => `<a href="${lurl(l)}">Tier list ${esc(LANES[l])}</a>`).join(' · ')}</p>
       <h3>Bản cập nhật</h3><p class="faq-l">${patches.map(p => `<a href="${purl(p)}">Bản ${p.date}/${p.year}</a>`).join(' · ')} · <a href="/ban-cap-nhat/">Tất cả</a></p>
+      <h3>Bài viết</h3><p class="faq-l">${articles.map(a => `<a href="${aurl(a)}">${esc(a.h1)}</a>`).join(' · ')} · <a href="/bai-viet/">Tất cả</a></p>
       <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
     </details>
   </section>
@@ -263,8 +303,8 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);
-console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · 3 trang phụ · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + 4} link (cập nhật ${upd})`);
+console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · ${articles.length} bài viết · 3 trang phụ · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + articles.length + 5} link (cập nhật ${upd})`);

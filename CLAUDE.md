@@ -17,6 +17,10 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   **tạo tự động bằng `node tools/seo/build.js`, đừng sửa tay. Chạy lại mỗi khi đổi `assets/data.js`, `assets/builds.js`, `assets/skills.js` hoặc ngày cập nhật.** Kiểu chữ ở `assets/page.css`.
   Cũng do `build.js` tạo (đừng sửa tay): `ban-cap-nhat/<dd-mm-yyyy>/` (mỗi bản vá một trang: tướng tăng/giảm/đổi + tier hiện tại) `duong/<ta-than|rung|giua|rong|tro-thu>/` (tier list từng đường, nhắm từ khoá "tier list rừng liên quân"…; hạng/tổng đếm cả tướng đường phụ như trang từng tướng) và `ban-cap-nhat/` (danh sách),
   `gioi-thieu/`, `lien-he/`, `quyen-rieng-tu/` (nội dung viết trong build.js; liên hệ chỉ qua TikTok, không đăng email cá nhân),
+  và `bai-viet/<slug>/` + `bai-viet/` (bài phân tích): **nguồn viết tay** ở `tools/seo/articles/<slug>.html` (đừng sửa tay thư mục `bai-viet/`): phần đầu là các dòng `khoá: giá trị`
+  (`title`, `h1`, `desc` ≤160 ký tự, `date` yyyy-mm-dd, `over`, `patch` dd/mm = bản vá liên quan, `heroes` = id trang tướng được nhắc), một dòng `---`, rồi thân bài bằng HTML.
+  Build tự thêm: liên kết từ trang tướng và trang bản vá sang bài, mục "Tướng được nhắc trong bài", mục lục, sitemap, JSON-LD Article; báo lỗi nếu `desc` quá dài hoặc liên kết tới trang tướng không có.
+  Bài là ảnh chụp tại ngày đăng (số ĐTDV, tier, hạng ghi theo ngày đó), không sửa lại khi số liệu đổi. Ý kiến của chủ web ghi là "theo người biên tập"; số liệu phải đối chiếu `assets/data.js` trước khi đăng. Bài đầu: `can-bang-30-10-2026` (31/10/2026).
   và mục lục liên kết tới mọi trang giữa `<!--HEROLINKS-->…<!--/HEROLINKS-->` trong `index.html` (liên kết thường để Google tìm thấy 147 trang tướng).
   **Lịch sử bản vá ở `tools/seo/patches.json`**: khi có bản Garena mới, TRƯỚC khi chạy build thêm một mục `{"date":"dd/mm","year":2026,"title":"…","url":"<link bài Garena>","changes":[]}`
   (cùng `PATCH` trong data.js); build tự điền `changes` từ `P`, bản cũ giữ nguyên. Thiếu mục thì build báo lỗi.
