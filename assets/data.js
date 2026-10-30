@@ -444,24 +444,23 @@ const TIERS=["S","A","B","C","D"];
 const TNAME={S:"Rất mạnh",A:"Mạnh",B:"Ổn",C:"Tình huống",D:"Yếu"};
 const GROUPS={S:["Đỉnh meta","nên cấm hoặc chọn sớm"],A:["Meta","lựa chọn an toàn khi leo rank"],C:["Ngoài meta","cần đội hình phù hợp"],D:["Ít được dùng","đang yếu ở bản hiện tại"]};
 const TR={up:["+ Tăng","up","Được tăng sức mạnh"],down:["− Giảm","down","Bị giảm sức mạnh"],mix:["± Chỉnh","mix","Điều chỉnh"],new:["Mới","new","Tướng mới / làm lại"]};
-// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 15/10/2026 (lienquan.garena.vn)
+// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 30/10/2026 (lienquan.garena.vn)
 // key: [xu hướng, ghi chú, true nếu phần báo VN đã chỉnh theo bản này]; key có thể kèm đường (flowborn-ad)
-const PATCH="15/10";
+const PATCH="30/10";
 const P={
- gildur:["down","Giảm sức mạnh: sát thương chiêu 2 còn 350 (+70/cấp, +0,5 SMPT), trước là 380 (+76/cấp, +0,55); sát thương duy trì tăng nhẹ lên 35 (+7/cấp); hồi chiêu 3 thành 45s (−5s/cấp).",true],
- "flowborn-ad":["down","Giảm sức mạnh (dạng Xạ thủ): sát thương cơ bản chiêu 3 còn 64 (+32/cấp, +0,26 công vật lý), trước là 70 (+35/cấp, +0,28).",true],
- raz:["up","Tăng sức mạnh: hồi chiêu 1 còn 8s (−0,3s/cấp), trước là 10s; chiêu 2 gây 450 (+90/cấp, +0,9 SMPT) và giảm giáp phép 100 (+20/cấp)."],
- kriknak:["up","Tăng sức mạnh: sát thương chiêu 1 lên 325 (+65/cấp, +1,5 công vật lý cộng thêm), trước là 300 (+50/cấp, +1,4)."],
- trieuvan:["up","Tăng sức mạnh: đòn đánh cường hóa của chiêu 1 lướt tới mục tiêu; không có mục tiêu thì lướt về phía trước."],
- evita:["new","Tướng mới (Pháp sư, đường giữa), ra mắt 15/10. Chưa có số liệu giải đấu và rank; tier do người biên tập xếp."],
- dirak:["mix","Điều chỉnh: Pháo tử quang tách khỏi chiêu 3 thành chiêu 4 riêng (500 +250/cấp +0,8 SMPT, hồi 50s); chiêu 2 rơi thẳng xuống nếu đặt trong vòng trong của chiêu 1, hồi chiêu 2 thành 12,5s."],
- ngokhong:["mix","Điều chỉnh: đòn đánh cường hóa của nội tại gây 450 (+1,0 công vật lý) thay vì 340–508 tăng theo cấp, nên mạnh hơn đầu trận, nhẹ hơn cuối trận."],
- errol:["mix","Điều chỉnh: tầng nội tại mất dần từng tầng một, mỗi tầng giữ lâu thêm 1 giây."]
+ evita:["down","Giảm sức mạnh: sát thương chiêu 1 còn 300 (+60/cấp, +0,6 SMPT), trước là 325 (+65/cấp, +0,65); sát thương chiêu 3 còn 30 (+15/cấp, +0,06 SMPT), hồi chiêu 3 tăng lên 55s (−5s/cấp)."],
+ astrid:["down","Giảm sức mạnh: tốc đánh cộng thêm của chiêu 1 còn 15% (+3%/cấp), trước là 20% (+4%/cấp); sát thương chiêu 1 còn 275 (+55/cấp, +1,0 công vật lý), trước là 300 (+60/cấp, +1,1)."],
+ tamyn:["down","Giảm sức mạnh: đòn đánh cường hóa của nội tại còn 182–364 (+0,28 công vật lý cộng thêm), trước là 200–396 (+0,3)."],
+ hayate:["mix","Điều chỉnh: sát thương chuẩn của nội tại thành 45 (+0,23 công vật lý), trước là 40 (+0,25); chiêu 1 gây 110 (+22/cấp, +0,18 công vật lý), trước là 105 (+21/cấp, +0,2). Mạnh hơn đầu trận, nhẹ hơn cuối trận."],
+ keera:["up","Tăng sức mạnh: hồi chiêu 1 còn 5s (−0,2s/cấp), trước là 6s (−0,4s/cấp); chiêu 2 gây 100 (+20/cấp, +0,2 SMPT) trên đường lướt và 400 (+80/cấp, +0,8 SMPT) ở vùng tam giác."],
+ erin:["up","Tăng sức mạnh: chiêu 1 gây 450 (+90/cấp, +1,05 SMPT, +0,6 công vật lý), trước là 350 (+70/cấp, +0,8, +0,45); sát thương trúng đích 150 (+30/cấp, +0,35 SMPT); hồi chiêu giảm 0,3s mỗi cấp.",true],
+ xeniel:["up","Tăng sức mạnh: lá chắn chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa), trước là 350 (+110/cấp, +0,4, +4%); sát thương chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa).",true],
+ sephera:["up","Tăng sức mạnh: nội tại thêm hiệu ứng tự hồi máu bằng 4% máu tối đa cộng thêm.",true]
 };
 // đường|lớp|tier: danh sách
 const RAW=[
  ["top","tank","A","Y'bneth"],["top","tank","B","Taara"],["top","tank","C","Ata"],["top","tank","D","Omega,Max"],
- ["sp","tank","A","Toro"],["sp","tank","B","Mina"],["sp","tank","C","Roxie,Baldum,Chaugnar,Thane"],["sp","tank","D","Ormarr,Arduin,Xeniel,Wiro"],
+ ["sp","tank","A","Toro"],["sp","tank","B","Mina"],["sp","tank","C","Roxie,Baldum,Chaugnar,Thane"],["sp","tank","C","Xeniel"],["sp","tank","D","Ormarr,Arduin,Wiro"],
  ["top","fighter","S","Arthur,Zuka,Florentino,Volkath"],["top","fighter","B","Ryoma,Maloch,Triệu Vân,Airi,Yena,Veres,Qi,Bijan"],
  ["top","fighter","C","Lữ Bố,Omen,Richter,Errol,Allain,Edras,Biron,Bolt Baron"],
  ["top","fighter","D","Skud,Kil'Groth,Superman,Amily,Charlotte,Wonder Woman,Rourke,Dextra,Yan"],
@@ -475,9 +474,9 @@ const RAW=[
  ["mid","mage","S","Yue,Zata"],["mid","mage","A","Gildur,Raz,Lorion,Azzen'Ka,Iggy"],
  ["mid","mage","-","Evita"],
  ["mid","mage","B","Krixi,Veera,Natalya,Lauriel,Aleister,Tulen,Liliana,Heino,Flowborn,Goverra"],
- ["mid","mage","C","Kahlii,Mganga,Ilumia,Điêu Thuyền,Bonnie,Ignis"],["mid","mage","D","Preyta,Jinna,D'Arcy,Ishar,Sephera,Dirak"],
+ ["mid","mage","C","Kahlii,Mganga,Ilumia,Điêu Thuyền,Bonnie,Ignis"],["mid","mage","C","Sephera"],["mid","mage","D","Preyta,Jinna,D'Arcy,Ishar,Dirak"],
  ["ad","marksman","S","Violet,Hayate"],["ad","marksman","A","Flowborn,Moren,Elsu"],["ad","marksman","B","Valhein,Slimz,Fennik,Stuart,Tel'Annas,Capheny,Laville"],
- ["ad","marksman","C","Celica,Eland'orr,Yorn,Lindis,Wisp,Thorne"],["ad","marksman","D","Teeri,Erin"],
+ ["ad","marksman","C","Celica,Eland'orr,Yorn,Lindis,Wisp,Thorne,Erin"],["ad","marksman","D","Teeri"],
  ["sp","support","S","Alice,Dolia,Aya"],["sp","support","A","Annette,Dyadia"],["sp","support","B","Cresht,Grakk,Rouie"],
  ["sp","support","C","Krizzix,Arum"],["sp","support","D","Lumburr,Helen,TeeMee,Zip,Ming"]
 ];
@@ -547,7 +546,7 @@ for(const l of Object.keys(LANES)){const TO="SABCD";HEROES.filter(h=>h.lane===l)
 // ĐỪNG SỬA TAY: chạy `node tools/tiers/snapshot.js <ngày dd/mm>` NGAY TRƯỚC mỗi lần cập nhật số liệu hoặc bản mới,
 // để mũi tên cho thấy những gì lần cập nhật đó thay đổi. Chỉnh tay lẻ của chủ web giữa hai lần cập nhật thì không chạy.
 const PREV_DATE="26/10";
-const PREV_T="S:annette-mid,astrid-jg,billow-jg,dolia-sp,edras-top,elandorr-ad,liliana-mid,lorion-mid,marja-top,rouie-mid,rouie-sp,ryoma-top,sinestrea-jg,tamyn-jg,toro-sp,violet-ad,ybneth-sp,zata-mid;A:airi-jg,airi-top,alice-sp,annette-sp,baldum-sp,biron-top,butterfly-jg,darcy-mid,evita-mid,florentino-top,flowborn-ad,flowborn-mid,gildur-mid,hayate-ad,iggy-mid,ignis-mid,krizzix-sp,maloch-top,mganga-mid,mina-sp,nakroth-jg,preyta-mid,qi-jg,qi-top,raz-mid,ryoma-jg,skud-top,stuart-ad,taara-sp,taara-top,tachi-jg,teemee-sp,thane-sp,valhein-ad,yena-top,zephys-top;B:aleister-mid,aoi-jg,arthur-sp,arthur-top,aya-sp,azzenka-mid,billow-top,capheny-ad,chaugnar-sp,cresht-sp,dyadia-sp,elsu-ad,enzo-jg,fennik-ad,goverra-mid,heino-mid,keera-jg,krixi-mid,moren-ad,murad-jg,natalya-mid,omen-top,richter-top,rourke-top,veres-top,volkath-top,wiro-sp,wiro-top,wisp-ad,yan-top,yue-mid,zephys-jg,zuka-jg,zuka-top;C:allain-top,arduin-sp,arum-sp,ata-top,bijan-top,bright-jg,erin-ad,errol-top,grakk-sp,helen-sp,ilumia-mid,jinna-mid,kahlii-mid,kriknak-jg,laville-ad,lubo-top,max-top,ngokhong-jg,paine-jg,roxie-sp,sephera-mid,slimz-ad,telannas-ad,thorne-ad,trieuvan-top,tulen-mid,veera-mid,wonderwoman-top,xeniel-sp,zip-sp;D:amily-top,arduin-top,ata-sp,boltbaron-top,bonnie-mid,celica-ad,charlotte-top,dextra-top,dieuthuyen-mid,dirak-mid,ishar-mid,kaine-jg,kaine-top,kilgroth-top,lauriel-mid,lindis-ad,lumburr-sp,ming-sp,omega-sp,ormarr-sp,quillen-jg,superman-top,teeri-ad,theflash-jg,trieuvan-jg,yorn-ad,zill-jg,zill-mid";
+const PREV_T="S:annette-mid,annette-sp,astrid-jg,billow-jg,dolia-sp,edras-top,elandorr-ad,hayate-ad,liliana-mid,lorion-mid,marja-top,rouie-mid,rouie-sp,ryoma-top,sinestrea-jg,tamyn-jg,violet-ad,ybneth-sp,zata-mid;A:airi-jg,airi-top,alice-sp,biron-top,boltbaron-ad,capheny-ad,cresht-sp,darcy-mid,evita-mid,florentino-top,flowborn-ad,gildur-mid,iggy-mid,ignis-mid,krizzix-sp,maloch-top,mganga-mid,mina-sp,nakroth-jg,preyta-mid,qi-jg,qi-top,raz-mid,ryoma-jg,skud-top,stuart-ad,taara-sp,taara-top,tachi-jg,teemee-sp,thane-sp,toro-sp,valhein-ad,yena-top,yue-mid,zephys-jg,zephys-top;B:aleister-mid,aoi-jg,arthur-sp,arthur-top,aya-sp,azzenka-mid,baldum-sp,billow-top,butterfly-jg,chaugnar-sp,dyadia-sp,elsu-ad,enzo-jg,errol-top,fennik-ad,flowborn-mid,goverra-mid,heino-mid,keera-jg,moren-ad,murad-jg,natalya-mid,omen-top,richter-top,slimz-ad,veres-top,volkath-top,wiro-sp,wiro-top,wisp-ad,yan-top,zuka-jg,zuka-top;C:allain-top,arduin-sp,arum-sp,ata-top,bijan-top,boltbaron-top,bright-jg,celica-ad,erin-ad,grakk-sp,helen-sp,ilumia-mid,jinna-mid,kahlii-mid,kriknak-jg,krixi-mid,laville-ad,lubo-top,max-top,ngokhong-jg,paine-jg,roxie-sp,sephera-mid,telannas-ad,thorne-ad,trieuvan-top,tulen-mid,wonderwoman-top,xeniel-sp,zip-sp;D:amily-top,arduin-top,ata-sp,bonnie-mid,charlotte-top,dextra-top,dieuthuyen-mid,dirak-mid,ishar-mid,kaine-jg,kaine-top,kilgroth-top,lauriel-mid,lindis-ad,lumburr-sp,ming-sp,omega-sp,ormarr-sp,quillen-jg,rourke-top,superman-top,teeri-ad,theflash-jg,trieuvan-jg,veera-mid,yorn-ad,zill-jg,zill-mid";
 {const pv={};PREV_T.split(";").forEach(s=>{const [t,ids]=s.split(":");ids&&ids.split(",").forEach(id=>pv[id]=t)});
   HEROES.forEach(h=>{const o=pv[h.id]||"";h.prev=o;h.move=o&&o!==h.tier?("SABCD".indexOf(h.tier)<"SABCD".indexOf(o)?"up":"down"):""})}
 const picksOf=h=>{const a=aogOf(h.key,h.lane);return a?a[3]:0};
