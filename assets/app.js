@@ -765,9 +765,9 @@ async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":
       y+=rh+12}
     // Chân ảnh: địa chỉ web to + mã QR để người xem ảnh được chia sẻ quét vào web (GA ghi nguồn anh_tier_list)
     const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}\/\d{4}/)||[""])[0];
-    c.fillStyle="#f3f2ef";c.font=`300 30px ${disp}`;spaced("TIERLQ.GITHUB.IO",PAD,H-74,3);
+    c.fillStyle="#f3f2ef";c.font=`300 30px ${disp}`;spaced("TIERLQ.COM",PAD,H-74,3);
     c.fillStyle="rgba(243,242,239,.6)";c.font=`400 15px ${body}`;c.fillText(`Xem build, bảng ngọc, phù hiệu từng tướng${upd?" · Cập nhật "+upd:""}`,PAD,H-44);
-    const qr=await loadImg("qr.png"),QS=112;if(qr){const qx=W-PAD-QS,qy=H-FOOT+18;c.fillStyle="#fff";c.fillRect(qx-6,qy-6,QS+12,QS+12);c.imageSmoothingEnabled=false;c.drawImage(qr,qx,qy,QS,QS);c.imageSmoothingEnabled=true;
+    const qr=await loadImg("qr.png?v=20261030"),QS=112;if(qr){const qx=W-PAD-QS,qy=H-FOOT+18;c.fillStyle="#fff";c.fillRect(qx-6,qy-6,QS+12,QS+12);c.imageSmoothingEnabled=false;c.drawImage(qr,qx,qy,QS,QS);c.imageSmoothingEnabled=true;
       c.textAlign="right";c.fillStyle="rgba(243,242,239,.6)";c.font=`400 13px ${body}`;c.fillText("Quét để xem bảng mới nhất",qx-18,qy+QS-4);c.textAlign="left"}
     const blob=await new Promise(r=>cv.toBlob(r,"image/jpeg",0.9));const name=which==="mine"?"tier-list-cua-toi.jpg":"bang-tier-lien-quan.jpg";
     const file=new File([blob],name,{type:"image/jpeg"});
