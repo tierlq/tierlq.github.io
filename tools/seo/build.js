@@ -3,6 +3,7 @@
 //  2. Trang riêng từng ô tướng: tuong/<key>-<đường>/index.html (tier, điểm, build, phù hiệu, bộ chiêu, link mở bảng chi tiết)
 //  3. Trang bản cập nhật: ban-cap-nhat/<dd-mm-yyyy>/ (từ P trong data.js + lịch sử tools/seo/patches.json) và ban-cap-nhat/ (danh sách)
 //  4. Trang Giới thiệu / Liên hệ / Quyền riêng tư (gioi-thieu/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
+//  3b. Tier list từng đường: duong/<ta-than|rung|giua|rong|tro-thu>/ (tướng xếp theo tier, hạng, điểm, ghi chú bản vá)
 //  5. sitemap.xml (trang chủ + mọi trang)
 // Chạy lại mỗi khi đổi assets/data.js, assets/builds.js hoặc assets/skills.js:   node tools/seo/build.js
 // Không sửa tay các tệp trong tuong/ — chạy lại script này.
@@ -76,6 +77,8 @@ curP.changes = Object.entries(P).map(([k, v]) => ({ id: (heroOf(k) || {}).id || 
 fs.writeFileSync(PFILE, JSON.stringify(patches, null, 1) + '\n');
 patches.sort((a, b) => (b.year * 10000 + +b.date.split('/')[1] * 100 + +b.date.split('/')[0]) - (a.year * 10000 + +a.date.split('/')[1] * 100 + +a.date.split('/')[0]));
 const pIso = p => `${p.year}-${p.date.split('/')[1].padStart(2, '0')}-${p.date.split('/')[0].padStart(2, '0')}`;
+const LSLUG = { top: 'ta-than', jg: 'rung', mid: 'giua', ad: 'rong', sp: 'tro-thu' };   // trang tier list từng đường: /duong/<slug>/
+const lurl = l => `/duong/${LSLUG[l]}/`;
 
 // ---------- 1. FAQ ----------
 const tops = Object.keys(LANES).map(l => [l, byLane(l)]);
@@ -88,7 +91,7 @@ const faq = [
     const s = a.filter(h => h.tier === 'S'), list = (s.length ? s : a.slice(0, 3));
     return [`Tướng ${LANES[l]} mạnh nhất Liên Quân là ai?`,
       `Ở đường ${LANES[l]}, tier S gồm: ${names(list, 8)}.` + (a.filter(h => h.tier === 'A').length ? ` Tier A: ${names(a.filter(h => h.tier === 'A'), 6)}.` : ''),
-      list.slice(0, 8).map(h => `<a href="${url(h)}">${esc(h.name)}</a>`).join(', ')];
+      list.slice(0, 8).map(h => `<a href="${url(h)}">${esc(h.name)}</a>`).join(', ') + ` · <a href="${lurl(l)}">Cả tier list ${esc(LANES[l])}</a>`];
   }),
   ['Bảng tier được xếp dựa trên gì?',
    'Điểm tổng hợp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong từng đường.', ''],
@@ -167,6 +170,7 @@ ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `
 <p class="src">Tóm tắt từ <a href="https://lienquan.garena.vn/hoc-vien/tuong-skin/d/${esc(sk[0])}/" rel="noopener">Học viện Garena</a>.</p>` : ''}
 ${others.length ? `<h2>${esc(h.name)} ở đường khác</h2><ul class="links">${others.map(x => `<li><a href="${url(x)}">${esc(LANES[x.lane])}${x.sec ? ' (phụ)' : ''} · tier ${x.tier}</a></li>`).join('')}</ul>` : ''}
 ${peers.length ? `<h2>Cùng tier ${h.tier} ở ${esc(L)}</h2><ul class="links">${peers.map(x => `<li><a href="${url(x)}">${esc(x.name)}</a></li>`).join('')}</ul>` : ''}
+<p><a href="${lurl(h.lane)}">Xem cả tier list ${esc(L)} →</a></p>
 <a class="go" href="/#tuong-${h.id}">Mở ${esc(h.name)} trên Bảng Tier →</a>
 </main>
 <footer><a href="/">Bảng Tier Liên Quân</a> · ${NAVF}<br>Dữ liệu cập nhật ${upd}. Hình tướng thuộc bản quyền Garena / TiMi Studio.</footer>
@@ -190,7 +194,7 @@ for (const p of patches) {
   let desc = mkDesc(4); for (let n = 3; desc.length > 160 && n >= 1; n--) desc = mkDesc(n);
   if (desc.length > 160) desc = `Liên Quân bản ${p.date}/${p.year}: ${sum}. Kèm tier hiện tại của từng tướng thay đổi.`;
   const sec = (t, h2) => grp(t).length ? `<h2>${h2} (${grp(t).length})</h2><ul class="chg">${grp(t).map(c => `<li><a href="${url(c.h)}"><b>${esc(c.h.name)}</b></a> ${tierLine(c.h)}<p>${esc(strip(c.note))}</p></li>`).join('')}</ul>` : '';
-  const lanes = Object.keys(LANES).map(l => { const s = byLane(l).filter(h => h.tier === 'S'); return s.length ? `<li><b>${esc(LANES[l])}:</b> ${s.map(h => `<a href="${url(h)}">${esc(h.name)}</a>`).join(', ')}</li>` : ''; }).join('');
+  const lanes = Object.keys(LANES).map(l => { const s = byLane(l).filter(h => h.tier === 'S'); return s.length ? `<li><b><a href="${lurl(l)}">${esc(LANES[l])}</a>:</b> ${s.map(h => `<a href="${url(h)}">${esc(h.name)}</a>`).join(', ')}</li>` : ''; }).join('');
   const others = patches.filter(x => x !== p);
   const body = `<p class="lead">${esc(p.title)} ngày ${p.date}/${p.year} thay đổi ${ch.length} tướng (${sum}). Mỗi tướng bên dưới có tóm tắt thay đổi và tier hiện tại trên Bảng Tier Liên Quân (dữ liệu ${upd}).</p>
 ${sec('up', 'Được tăng sức mạnh')}${sec('down', 'Bị giảm sức mạnh')}${sec('mix', 'Được điều chỉnh')}${sec('new', 'Tướng mới hoặc làm lại')}
@@ -201,6 +205,22 @@ ${others.length ? `<h2>Các bản khác</h2><ul class="links">${others.map(x => 
 }
 writePage('ban-cap-nhat', pageShell({ title: 'Các bản cập nhật cân bằng tướng Liên Quân | Bảng Tier Liên Quân', desc: `Danh sách các bản điều chỉnh sức mạnh tướng Liên Quân ${season}: tướng nào tăng, giảm, đổi, kèm tier hiện tại.`, path: '/ban-cap-nhat/', h1: 'Các bản cập nhật', over: `Cân bằng tướng · ${season}`,
   body: `<p class="lead">Mỗi bản điều chỉnh sức mạnh của Garena một trang: tướng nào được tăng, bị giảm, được đổi và đang ở tier nào.</p><ul class="chg plain">${patches.map(p => `<li><a href="${purl(p)}"><b>Bản ${p.date}/${p.year}</b></a> · ${p.changes.length} tướng thay đổi<p>${esc(p.title)}</p></li>`).join('')}</ul>` }));
+
+// ---------- 3b. Tier list từng đường (duong/<slug>/): trang đích cho "tier list rừng liên quân"... ----------
+fs.rmSync(path.join(ROOT, 'duong'), { recursive: true, force: true });
+const rowL = h => `<li><a href="${url(h)}"><b>${esc(h.name)}</b></a>${h.sec ? '<span class="tb">đường phụ</span>' : ''}<span class="tb">hạng ${h.rank}/${h.laneN}</span><span class="tb">${h.score.toFixed(2)}/5</span>${h.move ? `<span class="tb">${h.move === 'up' ? '↑ lên' : '↓ xuống'} từ tier ${h.prev}</span>` : ''}${h.note ? `<p>Bản ${PATCH}: ${esc(strip(h.note))}</p>` : ''}</li>`;
+for (const l of Object.keys(LANES)) {
+  const L = LANES[l], a = HEROES.filter(h => h.lane === l).sort((x, y) => TO.indexOf(x.tier) - TO.indexOf(y.tier) || x.rank - y.rank);   // cùng cách đếm hạng/tổng như trang từng tướng (gồm đường phụ)
+  const nSec = a.filter(h => h.sec).length, S = a.filter(h => h.tier === 'S'), Sm = S.filter(h => !h.sec), Ss = S.filter(h => h.sec), topN = Sm.length ? Sm : a.slice(0, 3);   // tier S ghi đường chính trước, đường phụ sau (khớp mục Hỏi nhanh)
+  const cnt = TO.split('').filter(t => a.some(h => h.tier === t)).map(t => `${a.filter(h => h.tier === t).length} tier ${t}`).join(', ');
+  const mkDesc = n => `Tier list ${L} Liên Quân ${season} (cập nhật ${upd}): ${Sm.length ? 'tier S' : 'đứng đầu'} ${names(topN, n)}. Xếp ${a.length} tướng ${L} theo số liệu ĐTDV và rank.`;
+  let desc = mkDesc(5); for (let n = 4; desc.length > 160 && n >= 1; n--) desc = mkDesc(n);
+  const body = `<p class="lead">Bảng xếp ${a.length} tướng đi ${esc(L)} trong Liên Quân ${esc(season)}${nSec ? ` (gồm ${nSec} tướng đi như đường phụ)` : ''}, từ mạnh đến yếu: ${esc(cnt)}. ${S.length ? `Tier S gồm ${esc(names(Sm.length ? Sm : Ss, 10))}${Sm.length && Ss.length ? ` và ${esc(names(Ss, 5))} (đường phụ)` : ''}.` : `Đứng đầu là ${esc(names(topN, 3))}.`} Cập nhật ${upd}, bản ${PATCH}.</p>
+${TO.split('').map(t => { const g = a.filter(h => h.tier === t); return g.length ? `<h2>Tier ${t} · ${TNAME[t]} (${g.length})</h2><ul class="chg plain">${g.map(rowL).join('')}</ul>` : ''; }).join('\n')}
+<h2>Tier được xếp thế nào</h2><p>Điểm tổng hợp trên thang 5 từ số liệu ĐTDV mùa hiện tại (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong riêng đường ${esc(L)}, nên một tướng đi nhiều đường có thể có tier khác nhau ở mỗi đường. Thông tin để tham khảo, meta đổi theo bản vá và cách chơi. <a href="/gioi-thieu/">Chi tiết cách xếp</a> · <a href="${purl(curP)}">Thay đổi của bản ${PATCH}</a>.</p>
+<h2>Các đường khác</h2><ul class="links">${Object.keys(LANES).filter(x => x !== l).map(x => `<li><a href="${lurl(x)}">Tier list ${esc(LANES[x])}</a></li>`).join('')}</ul>`;
+  writePage(lurl(l).slice(1, -1), pageShell({ title: `Tier list ${L} Liên Quân ${season}: tướng mạnh nhất | Bảng Tier Liên Quân`, desc, path: lurl(l), h1: `Tier list ${L}`, over: `Liên Quân ${season} · cập nhật ${upd}`, body }));
+}
 
 // ---------- 4. Giới thiệu / Liên hệ / Quyền riêng tư + mục lục liên kết ----------
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
@@ -229,6 +249,7 @@ const dirHTML = `<!--HEROLINKS-->
   <section class="faq dir" aria-label="Mục lục các trang">
     <details><summary>Mục lục: ${HEROES.length} trang tướng, bản cập nhật, giới thiệu</summary>
 ${Object.keys(LANES).map(l => `      <h3>${esc(LANES[l])}</h3><p class="faq-l">${[...HEROES.filter(h => h.lane === l)].sort((a, b) => TO.indexOf(a.tier) - TO.indexOf(b.tier) || a.rank - b.rank).map(h => `<a href="${url(h)}">${esc(h.name)}${h.sec ? ' (phụ)' : ''}</a>`).join(' · ')}</p>`).join('\n')}
+      <h3>Tier list theo đường</h3><p class="faq-l">${Object.keys(LANES).map(l => `<a href="${lurl(l)}">Tier list ${esc(LANES[l])}</a>`).join(' · ')}</p>
       <h3>Bản cập nhật</h3><p class="faq-l">${patches.map(p => `<a href="${purl(p)}">Bản ${p.date}/${p.year}</a>`).join(' · ')} · <a href="/ban-cap-nhat/">Tất cả</a></p>
       <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
     </details>
@@ -242,8 +263,8 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']), ['/ban-cap-nhat/', iso, 'weekly', '0.7'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);
-console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · 3 trang phụ · sitemap ${HEROES.length + 1 + patches.length + 4} link (cập nhật ${upd})`);
+console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · 3 trang phụ · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + 4} link (cập nhật ${upd})`);
