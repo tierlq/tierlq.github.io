@@ -134,3 +134,11 @@ mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), khô
   Phần CLS còn lại (≈0,001 mỗi lần) là vệt chạy của nút "Khám phá" (hoạt ảnh `top`), đã ghi ở mục trước là để nguyên.
 - Kiểm tra: 8 máy/khổ màn (1440, 1280, iPhone 13, iPhone SE, Pixel 7, Galaxy S9+, xoay ngang 844, máy tính bảng 820), sáng/tối: không lỗi JS, không vi phạm CSP, không ảnh 404, không tràn ngang;
   147/147 bảng chi tiết mở được; link #tuong-, nút Quay lại, menu, 3 chế độ, tìm kiếm, tải ảnh (máy tính + điện thoại) đều chạy; axe-core không lỗi; mất mạng vẫn mở được trang, ảnh và build (service worker).
+
+## 2026-10-30 (làm tay: chủ web thấy mới mở web hơi lag)
+- Đo vết (trace) lúc mở trang trên điện thoại giả lập chậm: tác vụ chạy app.js dài 459 ms, trong đó 251 ms là bố cục bắt buộc — `measure()` (chiều cao thanh dính) gọi thẳng sau khi dựng bảng,
+  `scrollFx` gọi `measureDoc();update()` và thiên hà đọc `offsetHeight`/`getBoundingClientRect` ngay lúc khởi tạo, nên trình duyệt phải bố cục cả trang nhiều lần giữa lúc chạy JS.
+- Đã làm: bỏ lệnh `measure()` chạy ngay (ResizeObserver tự gọi sau lần bố cục đầu, trước khi vẽ); `measure` đọc hết rồi mới ghi, chỉ ghi khi đổi; `--barh`/`--gy` đặt sẵn trong CSS
+  đúng giá trị thường gặp (điện thoại 112px / 43.5%, máy tính 61px / 68%) để khỏi phải tính lại kiểu cả trang; `scrollFx` đo lần đầu trong ResizeObserver; thiên hà khởi tạo sau khung hình đầu
+  (`requestAnimationFrame` → `setTimeout`) và hiện dần 0,5 giây; tâm quầng nền (`--gy`) tách ra ResizeObserver riêng nên đứng đúng chỗ từ khung đầu.
+- Kết quả (measure.js, 5 lần, cùng lần đo): điện thoại TBT 585 → 359 ms, tác vụ dài nhất 459 → ~240 ms, bảng có thẻ 1533 → 1410 ms, LCP 428 → 424 ms; máy tính TBT 37 → 8 ms, bảng có thẻ 478 → 457 ms.

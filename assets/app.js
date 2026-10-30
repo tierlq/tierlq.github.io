@@ -419,7 +419,11 @@ $("copy").onclick=()=>{
 };
 
 /* Thanh dính: đo chiều cao để tiêu đề cột dính ngay bên dưới */
-function measure(){document.documentElement.style.setProperty("--barh",$("bar").offsetHeight+"px");$("bar").style.setProperty("--r1h",$("bar").querySelector(".row1").offsetHeight+"px")}
+// Đọc hết rồi mới ghi, và chỉ ghi khi đổi: ghi biến CSS ở gốc bắt tính lại kiểu cả trang, đọc sau khi ghi sẽ bắt bố cục lại ngay
+let barH=mq.matches?112:61,r1H=-1;   // khớp giá trị --barh đặt sẵn trong CSS: thường không phải ghi lại
+function measure(){const b=$("bar"),h=b.offsetHeight,h1=b.querySelector(".row1").offsetHeight;
+  if(h!==barH){barH=h;document.documentElement.style.setProperty("--barh",h+"px")}
+  if(h1!==r1H){r1H=h1;b.style.setProperty("--r1h",h1+"px")}}
 try{new ResizeObserver(measure).observe($("bar"))}catch(e){addEventListener("resize",measure)}
 const sentinel=document.createElement("div");$("bar").before(sentinel);
 try{new IntersectionObserver(([en])=>$("bar").classList.toggle("stuck",!en.isIntersecting)).observe(sentinel)}catch(e){}
@@ -504,12 +508,19 @@ $("themeBtn").onclick=()=>{const n=curTheme()==="dark"?"light":"dark";document.d
 paintTheme();
 
 
-/* ===== Thiên hà hạt (WebGL) ===== */
-(function galaxy(){
+/* ===== Thiên hà hạt (WebGL) =====
+   Khởi tạo sau khung hình đầu tiên (tạo hạt, dịch shader, đo khung): trang hiện ra trước, thiên hà hiện ngay sau đó */
+// Tâm thiên hà (--gy, cũng là tâm quầng nền CSS): ResizeObserver đo ngay sau lần bố cục đầu, trước khi vẽ, nên quầng nền đứng đúng chỗ từ khung đầu
+const gSmall=matchMedia("(max-width:719px)").matches;let gOff=gSmall?-0.12:-0.36;
+(function(){let lastGy=gSmall?"43.5%":"68.0%";const hero=$("hero"),hc=hero.querySelector(".hero-c"),hf=hero.querySelector(".hero-foot");
+  function center(){if(gSmall){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
+    const v=((1-gOff)*50).toFixed(1)+"%";if(v!==lastGy){lastGy=v;hero.style.setProperty("--gy",v)}}
+  try{const ro=new ResizeObserver(center);ro.observe(hc);ro.observe(hf)}catch(e){center()}})();
+function galaxy(){
   const cv=$("galaxy"),hero=$("hero");
   const gl=cv.getContext("webgl",{antialias:false,alpha:true,premultipliedAlpha:true});
   if(!gl){hero.classList.add("nogl");return}
-  const small=matchMedia("(max-width:719px)").matches;
+  const small=gSmall;
   const lowEnd=(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4;
   const N=Math.round((TOTAL_PICK+TOTAL_BAN)*(small?2.6:6)*(lowEnd?0.6:1));   // mỗi lượt chọn/cấm → vài hạt
   const ARMS=5;                                               // 5 nhánh = 5 đường
@@ -563,19 +574,14 @@ paintTheme();
   at("aR",1,0);at("aT",1,1);at("aY",1,2);at("aS",1,3);at("aC",3,4);at("aA",1,7);
   const U=n=>gl.getUniformLocation(pr,n);gl.uniform1f(U("uMaxPt"),(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)||[1,64])[1]);const uOff=U("uOff"),uTime=U("uTime"),uTilt=U("uTilt"),uAsp=U("uAsp"),uDpr=U("uDpr"),uMouse=U("uMouse"),uStir=U("uStir"),uZoom=U("uZoom");
   gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);gl.clearColor(0,0,0,0);
-  let W=0,H=0,dpr=1,gOff=small?-0.12:-0.36;
-  const hc=hero.querySelector(".hero-c"),hf=hero.querySelector(".hero-foot");
-  // quầng nền CSS (.hero background) đặt đúng tâm thiên hà để hai lớp sáng khớp nhau
-  function center(){if(small){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
-    hero.style.setProperty("--gy",((1-gOff)*50).toFixed(1)+"%")}
-  try{const ro=new ResizeObserver(center);ro.observe(hc);ro.observe(hf)}catch(e){}
+  let W=0,H=0,dpr=1;
   /* Tự hạ chất lượng khi máy vẽ không kịp (card đồ hoạ yếu, màn độ phân giải cao, Chrome tắt tăng tốc phần cứng → vẽ bằng CPU):
      Q0 đầy đủ · Q1 bớt ~45% hạt, độ phân giải 1× · Q2 ~30% hạt, 0,75×, 30 hình/giây · Q3 ~20% hạt, 0,6×, 24 hình/giây.
      Vẽ bằng phần mềm thì vào thẳng Q2; mỗi giây đo lại, vẫn chậm thì hạ tiếp. */
   const soft=(()=>{try{const x=gl.getExtension("WEBGL_debug_renderer_info");return /swiftshader|llvmpipe|software|basic render/i.test(gl.getParameter(x?x.UNMASKED_RENDERER_WEBGL:gl.RENDERER)||"")}catch(e){return false}})();
   let Q=soft?2:0,heroH=hero.offsetHeight||1;
   const nMain=()=>Math.round(N*[1,.55,.3,.2][Q]),nHaze=()=>Math.round(NH*[1,.6,.4,.3][Q]);
-  function size(){center();heroH=hero.offsetHeight||1;dpr=Math.min(devicePixelRatio||1,[small?1.25:1.5,1,.75,.6][Q]);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
+  function size(){heroH=hero.offsetHeight||1;dpr=Math.min(devicePixelRatio||1,[small?1.25:1.5,1,.75,.6][Q]);const r=cv.getBoundingClientRect();W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);cv.width=W;cv.height=H;gl.viewport(0,0,W,H)}
   size();try{new ResizeObserver(size).observe(cv)}catch(e){addEventListener("resize",size)}
   let mx=9,my=9,tmx=9,tmy=9,stir=0,tstir=0,t=0,last=performance.now(),visible=true,spin=1,scS=-1;
   function setPt(cx,cy){const r=cv.getBoundingClientRect();tmx=((cx-r.left)/r.width)*2-1;tmy=-(((cy-r.top)/r.height)*2-1);tstir=1;spin=Math.min(spin+0.08,3)}
@@ -591,6 +597,7 @@ paintTheme();
     gl.uniform1f(uTime,t);gl.uniform1f(uTilt,0.36+sc*0.55+Math.max(-1,Math.min(1,my))*0.05*stir);gl.uniform1f(uAsp,W/H);gl.uniform1f(uDpr,dpr);
     gl.uniform1f(uOff,gOff);gl.uniform2f(uMouse,mx,my);gl.uniform1f(uStir,stir);gl.uniform1f(uZoom,(small?0.56:0.95)*(1+sc*0.25));
     gl.drawArrays(gl.POINTS,0,nMain());gl.drawArrays(gl.POINTS,N,nHaze());
+    if(!cv.classList.contains("on"))cv.classList.add("on");
   }
   if(reduce.matches){frame(performance.now());addEventListener("resize",()=>frame(performance.now()));return}
   // Điện thoại: vẽ ~30 hình/giây (hạt sáng chuyển động chậm nên mắt không thấy khác), đỡ pin và bộ nhớ đồ hoạ; khuất màn hình thì dừng hẳn
@@ -607,7 +614,8 @@ paintTheme();
   document.addEventListener("visibilitychange",wake);
   try{new IntersectionObserver(([e])=>{visible=e.isIntersecting;wake()}).observe(hero)}catch(e){}
   wake();
-})();
+}
+requestAnimationFrame(()=>setTimeout(galaxy,0));
 
 const setPh=()=>{$("q").placeholder=mq.matches?"Tìm…":"Tìm tướng"};setPh();mq.addEventListener&&mq.addEventListener("change",setPh);
 
@@ -677,8 +685,9 @@ if(revIO)document.querySelectorAll(".sec-h,.legend-strip,.filters,.box").forEach
   }
   const req=()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}};
   addEventListener("scroll",req,{passive:true});addEventListener("resize",()=>{measureDoc();req()});
-  try{new ResizeObserver(()=>{measureDoc();req()}).observe(document.body)}catch(e){}
-  measureDoc();update();
+  // Lần đo đầu do ResizeObserver gọi ngay sau lần bố cục đầu tiên (đo ngay lúc chạy JS bắt trình duyệt bố cục cả trang thêm một lần)
+  let first=true;
+  try{new ResizeObserver(()=>{measureDoc();if(first){first=false;update()}else req()}).observe(document.body)}catch(e){measureDoc();update()}
   totop.onclick=()=>scrollTo({top:0,behavior:reduce.matches?"auto":"smooth"});
 })();
 
@@ -872,6 +881,6 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
       if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}}});
 })();
 
-buildFilters();buildStage();paintPP();setMode(mode);measure();
+buildFilters();buildStage();paintPP();setMode(mode);  // measure() để ResizeObserver gọi sau lần bố cục đầu (gọi ngay ở đây bắt trình duyệt bố cục cả trang giữa lúc chạy JS)
 openFromHash();
 requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(()=>fitNames());
