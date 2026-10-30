@@ -126,3 +126,8 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Điện thoại ≤480px: nút Lọc chỉ còn biểu tượng (44×44) để ô tìm đủ rộng; ≤374px bảng số liệu ẩn ảnh đại diện cho vừa 4 cột.
 - Sửa lỗi cũ: gõ tên tướng rồi Enter, bảng chi tiết mở ra rồi đóng ngay (Enter "bấm" luôn nút × vừa được focus).
 - Không làm: "Khắc chế" (weak against) như OP.GG vì chưa có nguồn số liệu đối đầu.
+
+## 2026-10-30 (làm tay: chủ web muốn dấu tăng/giảm sức mạnh dễ nhận hơn)
+- Dấu sức mạnh trước là ô tối có dấu +/−/± nét mảnh, trông giống ô lớp tướng bên trái nên khó nhận. Nay là **hình tròn đặc màu** + mũi tên có thân nét đậm:
+  xanh ↑ tăng, đỏ ↓ giảm, vàng cam ⇅ điều chỉnh. Dấu bậc giữ **ô vuông chữ V** (khác cả hình lẫn nét). Trên ảnh tướng có viền tối mỏng để nổi trên ảnh sáng.
+- Ảnh tải về vẽ giống hệt (drawMarks). Mục "Ký hiệu trên thẻ" trong Cách đọc bảng dùng đúng dấu thật, thêm dòng lên/xuống bậc.

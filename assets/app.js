@@ -57,16 +57,19 @@ function initials(n){const w=n.replace(/[^\p{L}\s]/gu,"").trim().split(/\s+/);re
 const P_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]),S_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]);
 const pKey=h=>{const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return P_KEYS.has(k)?k:""};
 /* Dấu trên ảnh tướng (góc phải trên, kiểu Prydwen): ô đặc mũi tên = lên/xuống bậc so với lần cập nhật trước,
-   ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản mới, MỚI = tướng mới */
-const mkS=d=>`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
-// Đường vẽ (lưới 12): mũi tên kiểu chữ V, hai chữ V khi đổi từ 2 bậc trở lên; dấu + / − / ± nét mảnh
-const MKD={up:"M3 7.6 6 4.6l3 3",up2:"M3 6 6 3l3 3M3 9.6l3-3 3 3",down:"M3 4.4l3 3 3-3",down2:"M3 2.4l3 3 3-3M3 6l3 3 3-3",pu:"M6 3v6M3 6h6",pd:"M3 6h6",pm:"M6 2.6v4.6M3.7 4.9h4.6M3.6 9.4h4.8"};
-const MKI=Object.fromEntries(Object.entries(MKD).map(([k,d])=>[k,mkS(d)]));
+   hình tròn đặc có mũi tên ↑ / ↓ / ⇅ = tăng / giảm / điều chỉnh sức mạnh ở bản mới, MỚI = tướng mới.
+   Hai loại khác nhau cả hình (vuông / tròn) lẫn nét (chữ V / mũi tên có thân) để nhìn là phân biệt. */
+const mkS=(d,w=1.7)=>`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+// Đường vẽ (lưới 12): bậc = chữ V (hai chữ V khi đổi từ 2 bậc trở lên); sức mạnh = mũi tên có thân, nét đậm
+const MKD={up:"M3 7.6 6 4.6l3 3",up2:"M3 6 6 3l3 3M3 9.6l3-3 3 3",down:"M3 4.4l3 3 3-3",down2:"M3 2.4l3 3 3-3M3 6l3 3 3-3",
+  pu:"M6 9.6V2.6M2.8 5.8 6 2.6l3.2 3.2",pd:"M6 2.4v7M2.8 6.2 6 9.4l3.2-3.2",pm:"M4 9.6V2.6M2.1 4.5 4 2.6l1.9 1.9M8 2.4v7M6.1 7.5 8 9.4l1.9-1.9"};
+const MKW={pu:2.1,pd:2.1,pm:1.8};
+const MKI=Object.fromEntries(Object.entries(MKD).map(([k,d])=>[k,mkS(d,MKW[k])]));
 const ui=(d,extra="")=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${extra}<path d="${d}"/></svg>`;
 const moveN=h=>h.move?Math.abs(TIERS.indexOf(h.prev)-TIERS.indexOf(h.tier)):0;
 const moveTxt=h=>h.move?`${h.move==="up"?"Lên":"Xuống"} bậc từ ${h.prev} (so với ${PREV_DATE})`:"";
 function mkMove(m,n){return `<span class="mk ${m==="up"?"rise":"fall"}">${MKI[m+(n>1?"2":"")]}</span>`}
-function mkTrend(t){return t==="new"?`<span class="mk new">MỚI</span>`:`<span class="mk p${t[0]}">${MKI["p"+t[0]]}</span>`}
+function mkTrend(t){return t==="new"?`<span class="mk new">MỚI</span>`:`<span class="mk pw p${t[0]}">${MKI["p"+t[0]]}</span>`}
 function marks(h){const m=(h.move?mkMove(h.move,moveN(h)):"")+(h.trend?mkTrend(h.trend):"");return m?`<span class="mks">${m}</span>`:""}
 function portrait(h){
   const src=imgOf(h);
@@ -631,6 +634,7 @@ function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3
   const ml=$("manualList");if(ml)ml.textContent=man.join("; ")||"chưa có";
   const sec=ord.map(l=>[l,HEROES.filter(h=>h.sec&&h.lane===l).sort(by).map(h=>h.name)]).filter(x=>x[1].length).map(([l,n])=>`${LANES[l]}: ${n.join(", ")}`);
   const sl=$("secList");if(sl)sl.textContent=sec.join("; ")})();
+document.querySelectorAll(".lgm[data-mk]").forEach(el=>{const k=el.dataset.mk;el.innerHTML=k==="rise"?mkMove("up"):k==="fall"?mkMove("down"):mkTrend(k)});
 /* Chú giải luôn hiện */
 $("legendStrip").innerHTML=`<div class="ls-t">${TIERS.map(t=>`<span class="ls-tier" style="--tc:var(--t-${t.toLowerCase()})"><b>${t}</b>${TNAME[t]}</span>`).join("")}</div>
   <div class="ls-b"><span>${mkMove("up")}Lên bậc</span><span>${mkMove("down")}Xuống bậc</span><span>${mkTrend("up")}Tăng sức mạnh</span><span>${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span>${mkTrend("mix")}Điều chỉnh</span>`:""}<span>${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
@@ -711,14 +715,15 @@ const TCOL={S:"#d9b56c",A:"#b9a9ff",B:"#86d0c3",C:"#8ea3cc",D:"#7a797f"};
 const LCOL={top:"#e8805f",jg:"#5cc496",mid:"#a597ff",ad:"#e9b766",sp:"#6fb6ee"};
 const loadImg=src=>new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src});
 // Dấu lên/xuống bậc và tăng/giảm sức mạnh trên ảnh tải về: vẽ giống hệt dấu trên web (cùng đường vẽ SVG)
+const PWC={up:["#3fcf8e","#03170b"],down:["#ff6b5e","#2b0603"],mix:["#f0b450","#2a1802"]};
 function drawMarks(c,h,x1,y,font){const S=19,ls=[];x1-=3;y+=3;
   if(h.move)ls.push(h.move==="up"?["#5fd398","#05170c",MKD[moveN(h)>1?"up2":"up"]]:["#ff7466","#2b0804",MKD[moveN(h)>1?"down2":"down"]]);
-  if(h.trend==="new")ls.push(["#d9b56c","#1d1405","MỚI",1]);else if(h.trend)ls.push(["rgba(8,8,10,.8)",{up:"#5fd398",down:"#ff8a7d",mix:"#e9e7e2"}[h.trend],MKD["p"+h.trend[0]]]);
-  ls.forEach(([bg,fg,ic,txt])=>{c.save();c.font=`600 8.5px "JetBrains Mono",${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+9:S,x=x1-w;
-    c.fillStyle=bg;c.beginPath();c.roundRect?c.roundRect(x,y,w,S,5):c.rect(x,y,w,S);c.fill();
-    if(!txt&&bg.startsWith("rgba")){c.strokeStyle="rgba(255,255,255,.14)";c.lineWidth=1;c.beginPath();c.roundRect?c.roundRect(x+.5,y+.5,w-1,S-1,4.5):c.rect(x+.5,y+.5,w-1,S-1);c.stroke()}
+  if(h.trend==="new")ls.push(["#d9b56c","#1d1405","MỚI",1]);else if(h.trend){const k="p"+h.trend[0];ls.push([...PWC[h.trend],MKD[k],0,1,MKW[k]])}
+  ls.forEach(([bg,fg,ic,txt,round,lw])=>{c.save();c.font=`600 8.5px "JetBrains Mono",${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+9:S,x=x1-w;
+    c.beginPath();if(round)c.arc(x+S/2,y+S/2,S/2,0,Math.PI*2);else c.roundRect?c.roundRect(x,y,w,S,5):c.rect(x,y,w,S);
+    c.fillStyle=bg;c.fill();c.strokeStyle="rgba(0,0,0,.55)";c.lineWidth=1.5;c.stroke();
     if(txt){c.fillStyle=fg;c.textAlign="center";c.textBaseline="middle";c.fillText(ic,x+w/2,y+S/2+.5)}
-    else{const k=11/12;c.translate(x+(S-11)/2,y+(S-11)/2);c.scale(k,k);c.strokeStyle=fg;c.lineWidth=1.7;c.lineCap=c.lineJoin="round";c.stroke(new Path2D(ic))}
+    else{const g=round?12:11,k=g/12;c.translate(x+(S-g)/2,y+(S-g)/2);c.scale(k,k);c.strokeStyle=fg;c.lineWidth=lw||1.7;c.lineCap=c.lineJoin="round";c.stroke(new Path2D(ic))}
     c.restore();y+=S+3})}
 async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":"meta"});
   const btn=which==="mine"?$("dlMine"):$("dlImg");btn.setAttribute("aria-busy","true");toast("Đang tạo ảnh…");

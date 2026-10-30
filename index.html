@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610301640"></script>
+<script defer src="assets/boot.js?v=202610301720"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -241,8 +241,13 @@ a{color:inherit}
 .mk svg{width:11px;height:11px;display:block}
 .mk.rise{background:#5fd398;color:#05170c}
 .mk.fall{background:#ff7466;color:#2b0804}
-.mk.pu,.mk.pd,.mk.pm{background:rgba(8,8,10,.74);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
-.mk.pu{color:#5fd398}.mk.pd{color:#ff8a7d}.mk.pm{color:#e9e7e2}
+/* Sức mạnh: hình tròn đặc màu (xanh tăng, đỏ giảm, vàng cam điều chỉnh) + mũi tên đậm; viền tối để nổi trên mọi ảnh */
+.mk.pw{border-radius:50%!important}
+.por .mk{box-shadow:0 0 0 1.5px rgba(0,0,0,.5),0 1px 4px rgba(0,0,0,.4)}
+.mk.pw svg{width:12px!important;height:12px!important}
+.lgm{display:inline-flex;justify-content:center;min-width:34px}
+.mk.pu{background:#3fcf8e;color:#03170b}.mk.pd{background:#ff6b5e;color:#2b0603}.mk.pm{background:#f0b450;color:#2a1802}
+.modal .por .mk.pw svg,.ls-b .mk.pw svg{width:13px!important;height:13px!important}
 .mk.new{width:auto!important;padding:0 4.5px;background:#d9b56c;color:#1d1405}
 .modal .por .cls{width:23px;height:23px;border-radius:6px}.modal .por .cls svg{width:14px;height:14px}
 .modal .por .mk{width:23px;height:23px;border-radius:6px}.modal .por .mk svg{width:13px;height:13px}.modal .por .mk.new{font-size:10px;padding:0 6px}
@@ -1082,9 +1087,11 @@ body.picking .instbar{display:none}
       <h2>Ký hiệu trên thẻ</h2>
       <div class="legend">
         <span class="lg s"></span><span>Viền vàng: tướng tier S</span>
-        <span class="lg up">↑</span><span>Được tăng sức mạnh ở bản 30/10</span>
-        <span class="lg down">↓</span><span>Bị giảm sức mạnh ở bản 30/10</span>
-        <span class="lg mix">⇄</span><span>Được điều chỉnh ở bản 30/10</span>
+        <span class="lgm" data-mk="rise"></span><span>Ô vuông chữ V: lên bậc so với lần cập nhật trước (hai chữ V = lên từ 2 bậc)</span>
+        <span class="lgm" data-mk="fall"></span><span>Ô vuông chữ V úp: xuống bậc so với lần cập nhật trước</span>
+        <span class="lgm" data-mk="up"></span><span>Tròn xanh mũi tên lên: được tăng sức mạnh ở bản 30/10</span>
+        <span class="lgm" data-mk="down"></span><span>Tròn đỏ mũi tên xuống: bị giảm sức mạnh ở bản 30/10</span>
+        <span class="lgm" data-mk="mix"></span><span>Tròn vàng hai mũi tên: được điều chỉnh (có tăng có giảm) ở bản 30/10</span>
         <span class="lg new">MỚI</span><span>Tướng mới hoặc được làm lại bộ kỹ năng</span>
         <span class="lg sec">PHỤ</span><span>Đường phụ, không phải đường chính</span>
       </div>
@@ -1230,7 +1237,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610301640"></script>
-<script defer src="assets/app.js?v=202610301640"></script>
+<script defer src="assets/data.js?v=202610301720"></script>
+<script defer src="assets/app.js?v=202610301720"></script>
 </body>
 </html>
