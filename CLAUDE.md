@@ -1,7 +1,7 @@
 # Bảng Tier Liên Quân — hướng dẫn cập nhật
 
 Web tĩnh chạy trên GitHub Pages. Tên miền riêng **tierlq.com** (mua ở Vietnix 30/10/2026, hết hạn 30/10/2027 nếu không gia hạn; DNS quản lý ở Vietnix: 4 bản ghi A tới GitHub + CNAME `www` → `tierlq.github.io`). Địa chỉ gốc đọc từ `tools/site.json`; `tierlq.github.io` tự chuyển hướng sang tên miền riêng khi GitHub bật xong.
-  Việc còn lại sau khi GitHub Pages báo DNS xong: bật Enforce HTTPS (Settings → Pages), thêm tài sản `https://tierlq.com/` (hoặc loại Tên miền) vào Search Console + gửi sitemap, rồi đổi link bio TikTok sang tên miền mới (`tools/tiktok/links.txt`).
+  30/10/2026 đã bật Enforce HTTPS, `tierlq.github.io` chuyển hướng sang tierlq.com. Tệp `googlef1811475a67fc619.html` ở gốc là tệp xác minh Search Console, **đừng xoá**. Việc còn lại: chủ web đổi link bio TikTok sang `https://tierlq.com/?utm_source=tiktok&utm_medium=bio&utm_campaign=bio` (khi đủ 1.000 follower mới dán được link).
 Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và tự đẩy lên.
 
 ## Cấu trúc
@@ -22,7 +22,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   (cùng `PATCH` trong data.js); build tự điền `changes` từ `P`, bản cũ giữ nguyên. Thiếu mục thì build báo lỗi.
   Địa chỉ web đọc từ `tools/site.json`; đổi tên miền bằng `node tools/domain/doi-ten-mien.js https://… [--dry]` (xem `tools/domain/HUONG-DAN.md`, người mua tên miền là chủ web).
 - `tools/tiktok/links.js` → `tools/tiktok/links.txt`: link bio TikTok có mã theo dõi (`utm_source=tiktok`) và link ngắn từng ô tướng (`#tuong-<key>-<đường>`) để ghi trong clip. Chạy lại khi thêm tướng.
-- Search Console (tài sản `https://tierlq.github.io/` đã xác minh, chủ web đăng nhập sẵn trong Chrome): 10–27/10/2026 có 519 lượt nhấp, 2.040 lượt hiển thị, vị trí TB 4,7, toàn bộ vào trang chủ
+- Search Console: tài sản mới `https://tierlq.com/` (tiền tố URL, xác minh bằng tệp HTML, đã gửi sitemap 30/10/2026: 159 trang); tài sản cũ `https://tierlq.github.io/` giữ để xem số liệu trước khi đổi tên miền. Số liệu dưới đây là của tài sản cũ ( chủ web đăng nhập sẵn trong Chrome): 10–27/10/2026 có 519 lượt nhấp, 2.040 lượt hiển thị, vị trí TB 4,7, toàn bộ vào trang chủ
   (từ khoá: tier list liên quân, meta liên quân, tierlq…). 30/10 mới biết các trang tướng chưa được lập chỉ mục và sitemap báo "không thể đọc" → đã nộp lại sitemap, thêm mục lục liên kết; xem lại ở Search Console.
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
