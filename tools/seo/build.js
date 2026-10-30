@@ -5,6 +5,7 @@
 //  4. Trang Giới thiệu / Liên hệ / Quyền riêng tư (gioi-thieu/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
 //  3b. Tier list từng đường: duong/<ta-than|rung|giua|rong|tro-thu>/ (tướng xếp theo tier, hạng, điểm, ghi chú bản vá)
 //  3c. Bài viết phân tích: bai-viet/<slug>/ và bai-viet/ (nguồn: tools/seo/articles/<slug>.html — phần đầu "khoá: giá trị", dòng ---, thân HTML; liên kết sang trang tướng/bản vá được thêm tự động)
+//  3d. Trang Phụ kiện (phu-kien/): link tiếp thị Shopee / TikTok Shop, nguồn tools/seo/affiliate.json; mảng items rỗng thì không tạo trang, không thêm link nào
 //  5. sitemap.xml (trang chủ + mọi trang)
 // Chạy lại mỗi khi đổi assets/data.js, assets/builds.js hoặc assets/skills.js:   node tools/seo/build.js
 // Không sửa tay các tệp trong tuong/ — chạy lại script này.
@@ -27,7 +28,9 @@ const has = (dir, h) => fs.existsSync(path.join(ROOT, dir, skey(h) + '.webp'));
 
 // ---------- Phần dùng chung cho trang phụ (bản cập nhật, giới thiệu...) ----------
 const CSP0 = index.match(/<meta http-equiv="Content-Security-Policy"[^>]*>/)[0];
-const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
+const affItems = (JSON.parse(fs.readFileSync(path.join(__dirname, 'affiliate.json'), 'utf8')).items) || [];
+affItems.forEach((x, i) => { if (!x.name || !x.desc || !/^https:\/\//.test(x.url || '') || !['Shopee', 'TikTok Shop'].includes(x.shop)) throw Error(`tools/seo/affiliate.json mục ${i + 1}: cần name, desc, shop (Shopee hoặc TikTok Shop) và url bắt đầu bằng https://`); });
+const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
 const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
 <html lang="vi">
 <head>
@@ -261,6 +264,10 @@ ${related.length ? `<h2>Tướng được nhắc trong bài</h2><ul class="links
 writePage('bai-viet', pageShell({ title: 'Bài viết về meta và cân bằng tướng Liên Quân | Bảng Tier Liên Quân', desc: `Phân tích các bản cập nhật cân bằng tướng Liên Quân ${season}: tướng nào đáng chơi, số liệu giải đấu và ý kiến người chơi.`, path: '/bai-viet/', h1: 'Bài viết', over: `Phân tích · ${season}`,
   body: `<p class="lead">Phân tích sau mỗi bản cân bằng: tướng nào đáng chơi, số liệu giải đấu nói gì và người chơi nghĩ gì.</p><ul class="chg plain">${articles.map(a => `<li><a href="${aurl(a)}"><b>${esc(a.h1)}</b></a><span class="tb">${dmy(a.date)}</span><p>${esc(a.desc)}</p></li>`).join('')}</ul>` }));
 
+// ---------- 3d. Phụ kiện (link tiếp thị), chỉ khi tools/seo/affiliate.json có món ----------
+if (affItems.length) writePage('phu-kien', pageShell({ title: 'Phụ kiện chơi Liên Quân: gợi ý tay cầm, tản nhiệt, tai nghe | Bảng Tier Liên Quân', desc: 'Gợi ý phụ kiện chơi Liên Quân Mobile trên điện thoại. Trang có liên kết tiếp thị Shopee và TikTok Shop, giá bạn trả không đổi.', path: '/phu-kien/', h1: 'Phụ kiện chơi Liên Quân', over: 'Gợi ý · có liên kết tiếp thị',
+  body: `<p class="lead">Vài món người chơi trên điện thoại hay dùng. Mình chỉ ghi món đã tìm hiểu kỹ, không có xếp hạng như bảng tier.</p><p><b>Lưu ý:</b> các liên kết bên dưới là liên kết tiếp thị (affiliate). Nếu bạn mua qua đó, người duy trì web có thể nhận một khoản hoa hồng, giá bạn trả không đổi. Hoa hồng không ảnh hưởng tier hay nhận định trong bài.</p><ul class="chg plain">${affItems.map(x => `<li><a href="${esc(x.url)}" rel="sponsored nofollow noopener" target="_blank"><b>${esc(x.name)}</b></a><span class="tb">${esc(x.shop)}</span><p>${esc(x.desc)}</p></li>`).join('')}</ul>` }));
+
 // ---------- 4. Giới thiệu / Liên hệ / Quyền riêng tư + mục lục liên kết ----------
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
@@ -280,7 +287,7 @@ writePage('quyen-rieng-tu', pageShell({ title: 'Chính sách quyền riêng tư 
 <h2>Thống kê lượt xem</h2><p>Web dùng Google Analytics để biết có bao nhiêu người xem, xem trang nào, bằng thiết bị và ở quốc gia nào. Google Analytics dùng cookie hoặc mã định danh trình duyệt cho việc này. Tính năng tín hiệu Google và cá nhân hoá quảng cáo đã tắt. Bạn có thể từ chối bằng cách chặn cookie bên thứ ba hoặc cài <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">tiện ích từ chối Google Analytics</a> của Google.</p>
 <h2>Dữ liệu lưu trên thiết bị của bạn</h2><p>Bảng Tự xếp, chế độ xem, giao diện sáng/tối, các tướng xem gần đây và lựa chọn về gợi ý cài ứng dụng được lưu trong bộ nhớ trình duyệt của bạn (localStorage). Dữ liệu này không gửi đi đâu. Một bộ nhớ đệm (service worker) cũng lưu ảnh và tệp của web để mở nhanh và dùng được khi mất mạng. Xoá dữ liệu trang web trong trình duyệt là xoá hết.</p>
 <h2>Dịch vụ bên ngoài</h2><ul><li>Phông chữ tải từ Google Fonts.</li><li>Hình biểu tượng chiêu thức tải từ máy chủ của Garena (lienquan.garena.vn), không gửi kèm địa chỉ trang bạn đang xem.</li><li>Web được lưu trữ trên GitHub Pages; GitHub có thể ghi nhật ký truy cập theo chính sách của họ.</li><li>Các liên kết ra ngoài (TikTok, Garena, trang nguồn) thuộc chính sách riêng của từng nơi.</li></ul>
-<h2>Quảng cáo</h2><p>Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.</p>
+<h2>${affItems.length ? 'Quảng cáo và liên kết tiếp thị' : 'Quảng cáo'}</h2><p>${affItems.length ? 'Web không chạy quảng cáo hiển thị. Trang <a href="/phu-kien/">Phụ kiện</a> có liên kết tiếp thị (affiliate) tới Shopee và TikTok Shop: nếu bạn mua qua liên kết đó, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. Các liên kết này được ghi rõ trên trang và không xuất hiện ở bảng tier.' : 'Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.'}</p>
 <h2>Liên hệ</h2><p>Câu hỏi về trang này: xem <a href="/lien-he/">Liên hệ</a>.</p>` }));
 
 // mục lục liên kết tới mọi trang (để Google và người đọc tìm thấy mọi trang tướng bằng liên kết thường)
@@ -291,7 +298,7 @@ ${Object.keys(LANES).map(l => `      <h3>${esc(LANES[l])}</h3><p class="faq-l">$
       <h3>Tier list theo đường</h3><p class="faq-l">${Object.keys(LANES).map(l => `<a href="${lurl(l)}">Tier list ${esc(LANES[l])}</a>`).join(' · ')}</p>
       <h3>Bản cập nhật</h3><p class="faq-l">${patches.map(p => `<a href="${purl(p)}">Bản ${p.date}/${p.year}</a>`).join(' · ')} · <a href="/ban-cap-nhat/">Tất cả</a></p>
       <h3>Bài viết</h3><p class="faq-l">${articles.map(a => `<a href="${aurl(a)}">${esc(a.h1)}</a>`).join(' · ')} · <a href="/bai-viet/">Tất cả</a></p>
-      <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a> · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
+      <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
     </details>
   </section>
   <!--/HEROLINKS-->`;
@@ -303,7 +310,7 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);

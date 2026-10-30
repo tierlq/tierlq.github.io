@@ -1,0 +1,4 @@
+{
+  "ghi_chu": "Link tiếp thị (Shopee Affiliate / TikTok Shop). Để mảng items rỗng thì build không tạo trang Phụ kiện. Mỗi mục: name (tên món), shop (Shopee hoặc TikTok Shop), desc (1–2 câu nói thật món dùng để làm gì), url (link affiliate, bắt đầu bằng https://). Chạy lại: node tools/seo/build.js",
+  "items": []
+}
