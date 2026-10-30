@@ -1,6 +1,7 @@
 # Bảng Tier Liên Quân — hướng dẫn cập nhật
 
-Web tĩnh chạy trên GitHub Pages: https://tierlq.github.io/
+Web tĩnh chạy trên GitHub Pages. Tên miền riêng **tierlq.com** (mua ở Vietnix 30/10/2026, hết hạn 30/10/2027 nếu không gia hạn; DNS quản lý ở Vietnix: 4 bản ghi A tới GitHub + CNAME `www` → `tierlq.github.io`). Địa chỉ gốc đọc từ `tools/site.json`; `tierlq.github.io` tự chuyển hướng sang tên miền riêng khi GitHub bật xong.
+  Việc còn lại sau khi GitHub Pages báo DNS xong: bật Enforce HTTPS (Settings → Pages), thêm tài sản `https://tierlq.com/` (hoặc loại Tên miền) vào Search Console + gửi sitemap, rồi đổi link bio TikTok sang tên miền mới (`tools/tiktok/links.txt`).
 Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và tự đẩy lên.
 
 ## Cấu trúc
