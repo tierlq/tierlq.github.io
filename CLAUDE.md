@@ -14,6 +14,15 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
 - `tuong/<key>-<đường>/index.html` — trang riêng từng ô tướng cho Google/trợ lý AI đọc (tier, điểm, build, phù hiệu, bộ chiêu, link mở bảng chi tiết),
   mục "Hỏi nhanh" (FAQ) trong `index.html` giữa `<!--FAQ-->…<!--/FAQ-->` + JSON-LD giữa `<!--FAQLD-->…<!--/FAQLD-->`, và `sitemap.xml`:
   **tạo tự động bằng `node tools/seo/build.js`, đừng sửa tay. Chạy lại mỗi khi đổi `assets/data.js`, `assets/builds.js`, `assets/skills.js` hoặc ngày cập nhật.** Kiểu chữ ở `assets/page.css`.
+  Cũng do `build.js` tạo (đừng sửa tay): `ban-cap-nhat/<dd-mm-yyyy>/` (mỗi bản vá một trang: tướng tăng/giảm/đổi + tier hiện tại) và `ban-cap-nhat/` (danh sách),
+  `gioi-thieu/`, `lien-he/`, `quyen-rieng-tu/` (nội dung viết trong build.js; liên hệ chỉ qua TikTok, không đăng email cá nhân),
+  và mục lục liên kết tới mọi trang giữa `<!--HEROLINKS-->…<!--/HEROLINKS-->` trong `index.html` (liên kết thường để Google tìm thấy 147 trang tướng).
+  **Lịch sử bản vá ở `tools/seo/patches.json`**: khi có bản Garena mới, TRƯỚC khi chạy build thêm một mục `{"date":"dd/mm","year":2026,"title":"…","url":"<link bài Garena>","changes":[]}`
+  (cùng `PATCH` trong data.js); build tự điền `changes` từ `P`, bản cũ giữ nguyên. Thiếu mục thì build báo lỗi.
+  Địa chỉ web đọc từ `tools/site.json`; đổi tên miền bằng `node tools/domain/doi-ten-mien.js https://… [--dry]` (xem `tools/domain/HUONG-DAN.md`, người mua tên miền là chủ web).
+- `tools/tiktok/links.js` → `tools/tiktok/links.txt`: link bio TikTok có mã theo dõi (`utm_source=tiktok`) và link ngắn từng ô tướng (`#tuong-<key>-<đường>`) để ghi trong clip. Chạy lại khi thêm tướng.
+- Search Console (tài sản `https://tierlq.github.io/` đã xác minh, chủ web đăng nhập sẵn trong Chrome): 10–27/10/2026 có 519 lượt nhấp, 2.040 lượt hiển thị, vị trí TB 4,7, toàn bộ vào trang chủ
+  (từ khoá: tier list liên quân, meta liên quân, tierlq…). 30/10 mới biết các trang tướng chưa được lập chỉ mục và sitemap báo "không thể đọc" → đã nộp lại sitemap, thêm mục lục liên kết; xem lại ở Search Console.
 - `og.jpg` ảnh xem trước khi chia sẻ, `favicon.svg`, `robots.txt`, `sitemap.xml`.
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — cài web như ứng dụng trên điện thoại.
 - `sw.js` — bộ nhớ đệm: ảnh (`p/`, `s/`, `b/`) lưu lâu, trang luôn lấy bản mới; tệp `assets/*.js?v=…` dùng ngay bản đã lưu và lấy bản mới ở nền

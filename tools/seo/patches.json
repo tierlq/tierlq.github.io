@@ -1,0 +1,103 @@
+[
+ {
+  "date": "30/10",
+  "year": 2026,
+  "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",
+  "url": "https://lienquan.garena.vn/dieu-chinh-giua-mua-pb-vet-nut-thoi-khong-30-10-2026/",
+  "changes": [
+   {
+    "id": "evita-mid",
+    "trend": "down",
+    "note": "Giảm sức mạnh: sát thương chiêu 1 còn 300 (+60/cấp, +0,6 SMPT), trước là 325 (+65/cấp, +0,65); sát thương chiêu 3 còn 30 (+15/cấp, +0,06 SMPT), hồi chiêu 3 tăng lên 55s (−5s/cấp)."
+   },
+   {
+    "id": "astrid-jg",
+    "trend": "down",
+    "note": "Giảm sức mạnh: tốc đánh cộng thêm của chiêu 1 còn 15% (+3%/cấp), trước là 20% (+4%/cấp); sát thương chiêu 1 còn 275 (+55/cấp, +1,0 công vật lý), trước là 300 (+60/cấp, +1,1)."
+   },
+   {
+    "id": "tamyn-jg",
+    "trend": "down",
+    "note": "Giảm sức mạnh: đòn đánh cường hóa của nội tại còn 182–364 (+0,28 công vật lý cộng thêm), trước là 200–396 (+0,3)."
+   },
+   {
+    "id": "hayate-ad",
+    "trend": "mix",
+    "note": "Điều chỉnh: sát thương chuẩn của nội tại thành 45 (+0,23 công vật lý), trước là 40 (+0,25); chiêu 1 gây 110 (+22/cấp, +0,18 công vật lý), trước là 105 (+21/cấp, +0,2). Mạnh hơn đầu trận, nhẹ hơn cuối trận."
+   },
+   {
+    "id": "keera-jg",
+    "trend": "up",
+    "note": "Tăng sức mạnh: hồi chiêu 1 còn 5s (−0,2s/cấp), trước là 6s (−0,4s/cấp); chiêu 2 gây 100 (+20/cấp, +0,2 SMPT) trên đường lướt và 400 (+80/cấp, +0,8 SMPT) ở vùng tam giác."
+   },
+   {
+    "id": "erin-ad",
+    "trend": "up",
+    "note": "Tăng sức mạnh: chiêu 1 gây 450 (+90/cấp, +1,05 SMPT, +0,6 công vật lý), trước là 350 (+70/cấp, +0,8, +0,45); sát thương trúng đích 150 (+30/cấp, +0,35 SMPT); hồi chiêu giảm 0,3s mỗi cấp."
+   },
+   {
+    "id": "xeniel-sp",
+    "trend": "up",
+    "note": "Tăng sức mạnh: lá chắn chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa), trước là 350 (+110/cấp, +0,4, +4%); sát thương chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa)."
+   },
+   {
+    "id": "sephera-mid",
+    "trend": "up",
+    "note": "Tăng sức mạnh: nội tại thêm hiệu ứng tự hồi máu bằng 4% máu tối đa cộng thêm."
+   }
+  ]
+ },
+ {
+  "date": "15/10",
+  "year": 2026,
+  "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",
+  "url": "https://lienquan.garena.vn/dieu-chinh-giua-mua-pb-vet-nut-thoi-khong-15-10-2026/",
+  "changes": [
+   {
+    "id": "gildur-mid",
+    "trend": "down",
+    "note": "Giảm sức mạnh: sát thương chiêu 2 còn 350 (+70/cấp, +0,5 SMPT), trước là 380 (+76/cấp, +0,55); sát thương duy trì tăng nhẹ lên 35 (+7/cấp); hồi chiêu 3 thành 45s (−5s/cấp)."
+   },
+   {
+    "id": "flowborn-ad",
+    "trend": "down",
+    "note": "Giảm sức mạnh (dạng Xạ thủ): sát thương cơ bản chiêu 3 còn 64 (+32/cấp, +0,26 công vật lý), trước là 70 (+35/cấp, +0,28)."
+   },
+   {
+    "id": "raz-mid",
+    "trend": "up",
+    "note": "Tăng sức mạnh: hồi chiêu 1 còn 8s (−0,3s/cấp), trước là 10s; chiêu 2 gây 450 (+90/cấp, +0,9 SMPT) và giảm giáp phép 100 (+20/cấp)."
+   },
+   {
+    "id": "kriknak-jg",
+    "trend": "up",
+    "note": "Tăng sức mạnh: sát thương chiêu 1 lên 325 (+65/cấp, +1,5 công vật lý cộng thêm), trước là 300 (+50/cấp, +1,4)."
+   },
+   {
+    "id": "trieuvan-top",
+    "trend": "up",
+    "note": "Tăng sức mạnh: đòn đánh cường hóa của chiêu 1 lướt tới mục tiêu; không có mục tiêu thì lướt về phía trước."
+   },
+   {
+    "id": "evita-mid",
+    "trend": "new",
+    "note": "Tướng mới (Pháp sư, đường giữa), ra mắt 15/10. Chưa có số liệu giải đấu và rank; tier do người biên tập xếp."
+   },
+   {
+    "id": "dirak-mid",
+    "trend": "mix",
+    "note": "Điều chỉnh: Pháo tử quang tách khỏi chiêu 3 thành chiêu 4 riêng (500 +250/cấp +0,8 SMPT, hồi 50s); chiêu 2 rơi thẳng xuống nếu đặt trong vòng trong của chiêu 1, hồi chiêu 2 thành 12,5s."
+   },
+   {
+    "id": "ngokhong-jg",
+    "trend": "mix",
+    "note": "Điều chỉnh: đòn đánh cường hóa của nội tại gây 450 (+1,0 công vật lý) thay vì 340–508 tăng theo cấp, nên mạnh hơn đầu trận, nhẹ hơn cuối trận."
+   },
+   {
+    "id": "errol-top",
+    "trend": "mix",
+    "note": "Điều chỉnh: tầng nội tại mất dần từng tầng một, mỗi tầng giữ lâu thêm 1 giây."
+   }
+  ]
+ }
+]

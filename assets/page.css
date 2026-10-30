@@ -23,3 +23,16 @@ p{margin:0 0 12px}
 .src{font-size:13px;color:var(--muted)}.src a,.sk a{color:inherit}
 footer{margin-top:48px;padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 footer a{color:var(--fg)}
+
+/* Trang bản cập nhật, giới thiệu, liên hệ */
+.chg{list-style:none;padding:0;margin:0}
+.chg>li{padding:14px 0;border-bottom:1px solid var(--line)}
+.chg>li p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.chg a{color:var(--fg)}
+.chg.plain>li{padding:10px 0}
+.tb{display:inline-block;margin-left:6px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;font:400 11px ui-monospace,Menlo,monospace;letter-spacing:.08em;color:var(--muted);vertical-align:middle}
+main ul{padding-left:20px}
+main ul.links,main ul.chg{padding-left:0}
+footer a{margin:0}
+h1+.lead{margin-top:16px}
+.over{line-height:1.5}
