@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610301720"></script>
+<script defer src="assets/boot.js?v=202610301730"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -239,16 +239,22 @@ a{color:inherit}
 .por .mks{position:absolute;top:3px;right:3px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:3px;pointer-events:none}
 .mk{display:inline-flex;align-items:center;justify-content:center;flex:none;width:19px;height:19px;border-radius:5px;font:600 8.5px/1 var(--f-mono,ui-monospace,monospace);letter-spacing:.04em}
 .mk svg{width:11px;height:11px;display:block}
-.mk.rise{background:#5fd398;color:#05170c}
-.mk.fall{background:#ff7466;color:#2b0804}
-/* Sức mạnh: hình tròn đặc màu (xanh tăng, đỏ giảm, vàng cam điều chỉnh) + mũi tên đậm; viền tối để nổi trên mọi ảnh */
+/* Dấu kiểu kính tối phát sáng (cùng họ với ô lớp tướng): nền tối mờ, viền mảnh và mũi tên cùng màu, quầng sáng nhẹ.
+   Bậc = ô vuông bo góc chữ V · Sức mạnh = hình tròn mũi tên (xanh tăng, đỏ giảm, vàng điều chỉnh) · MỚI = viên thuốc vàng */
+.mk{--mc:233,231,226;--mcd:#3a3a3f;color:rgb(var(--mc));
+  background:radial-gradient(120% 120% at 50% 0%,rgba(var(--mc),.34),rgba(var(--mc),.06) 60%),rgba(8,9,13,.78);
+  box-shadow:inset 0 0 0 1px rgba(var(--mc),.85),0 0 10px rgba(var(--mc),.38),0 1px 3px rgba(0,0,0,.55)}
+.mk.rise,.mk.pu{--mc:95,211,152;--mcd:#127a47}
+.mk.fall,.mk.pd{--mc:255,122,106;--mcd:#b02a1c}
+.mk.pm{--mc:240,190,96;--mcd:#8a5a07}
+.mk.new{--mc:217,181,108;--mcd:#7f5d17;width:auto!important;padding:0 5px;border-radius:999px!important}
 .mk.pw{border-radius:50%!important}
-.por .mk{box-shadow:0 0 0 1.5px rgba(0,0,0,.5),0 1px 4px rgba(0,0,0,.4)}
 .mk.pw svg{width:12px!important;height:12px!important}
-.lgm{display:inline-flex;justify-content:center;min-width:34px}
-.mk.pu{background:#3fcf8e;color:#03170b}.mk.pd{background:#ff6b5e;color:#2b0603}.mk.pm{background:#f0b450;color:#2a1802}
 .modal .por .mk.pw svg,.ls-b .mk.pw svg{width:13px!important;height:13px!important}
-.mk.new{width:auto!important;padding:0 4.5px;background:#d9b56c;color:#1d1405}
+.lgm{display:inline-flex;justify-content:center;min-width:34px}
+/* Nền sáng (ngoài ảnh tướng): nền màu nhạt, nét đậm màu để đủ tương phản */
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .mk:not(.por .mk){color:var(--mcd);background:rgba(var(--mc),.18);box-shadow:inset 0 0 0 1px rgba(var(--mc),.95)}}
+:root[data-theme="light"] .mk:not(.por .mk){color:var(--mcd);background:rgba(var(--mc),.18);box-shadow:inset 0 0 0 1px rgba(var(--mc),.95)}
 .modal .por .cls{width:23px;height:23px;border-radius:6px}.modal .por .cls svg{width:14px;height:14px}
 .modal .por .mk{width:23px;height:23px;border-radius:6px}.modal .por .mk svg{width:13px;height:13px}.modal .por .mk.new{font-size:10px;padding:0 6px}
 .tag.mv{display:inline-flex;align-items:center;gap:8px}.tag .mk{width:17px;height:17px;border-radius:4px}.tag .mk svg{width:10px;height:10px}.tag .mk.new{font-size:8px;padding:0 4px}
@@ -1237,7 +1243,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610301720"></script>
-<script defer src="assets/app.js?v=202610301720"></script>
+<script defer src="assets/data.js?v=202610301730"></script>
+<script defer src="assets/app.js?v=202610301730"></script>
 </body>
 </html>

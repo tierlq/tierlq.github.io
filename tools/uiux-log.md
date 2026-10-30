@@ -131,3 +131,6 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Dấu sức mạnh trước là ô tối có dấu +/−/± nét mảnh, trông giống ô lớp tướng bên trái nên khó nhận. Nay là **hình tròn đặc màu** + mũi tên có thân nét đậm:
   xanh ↑ tăng, đỏ ↓ giảm, vàng cam ⇅ điều chỉnh. Dấu bậc giữ **ô vuông chữ V** (khác cả hình lẫn nét). Trên ảnh tướng có viền tối mỏng để nổi trên ảnh sáng.
 - Ảnh tải về vẽ giống hệt (drawMarks). Mục "Ký hiệu trên thẻ" trong Cách đọc bảng dùng đúng dấu thật, thêm dòng lên/xuống bậc.
+- Cùng ngày, chủ web muốn "hiện đại, hợp vibe web hơn": đổi mọi dấu (bậc, sức mạnh, MỚI) sang kiểu **kính tối phát sáng** cùng họ với ô lớp tướng —
+  nền tối mờ có sắc màu từ trên xuống, viền mảnh + nét cùng màu, quầng sáng nhẹ. Giữ quy ước hình: bậc = ô vuông chữ V, sức mạnh = tròn mũi tên, MỚI = viên thuốc.
+  Ngoài ảnh tướng ở nền sáng: nền màu nhạt + nét đậm màu (`--mcd`) cho đủ tương phản. Ảnh tải về vẽ giống hệt (`MKC` trong drawMarks).
