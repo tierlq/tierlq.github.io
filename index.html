@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610302115"></script>
+<script defer src="assets/boot.js?v=202610310612"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -950,7 +950,7 @@ html.lock{overflow:hidden}
 
 /* Điện thoại: bớt lớp GPU để Chrome Android không bị ô trắng/xanh khi cuộn hoặc lúc tải (thiếu bộ nhớ đồ hoạ):
    không giữ will-change thường trực, hàng tab sân khấu không dùng kính mờ (backdrop-filter rất tốn). */
-@media (max-width:719px){
+@media (max-width:719px), (pointer:coarse) and (max-height:500px){   /* cả điện thoại xoay ngang */
   .hero-c,.slide img.bg,.slide-c,.band-row,.sprog i{will-change:auto!important}
   .tabs{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(0,0,0,.62)}
   .stage,.hero{background-color:#000}
@@ -958,11 +958,11 @@ html.lock{overflow:hidden}
 
 /* Điện thoại (theo bản quay màn hình của chủ web 25/10): hiệu ứng làm mờ (filter/backdrop-filter) và hoạt ảnh giãn chữ
    làm Chrome Android vẽ chậm: hiện khối xanh/trắng, khoảng trống đen khi cuộn nhanh. Thay bằng hiện dần nhanh, không mờ. */
-@media (max-width:719px){
+@media (max-width:719px), (pointer:coarse) and (max-height:500px){
   .menu-bg{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(0,0,0,.62)}
   .modal .mtop button{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(0,0,0,.62)}
 }
-@media (max-width:719px) and (prefers-reduced-motion:no-preference){
+@media (max-width:719px) and (prefers-reduced-motion:no-preference), (pointer:coarse) and (max-height:500px) and (prefers-reduced-motion:no-preference){
   .sec-h.in,.box.in,.legend-strip.in{animation:qfade .45s var(--ease) both}
   .sec-h.in h2,.sec-h.in .over,.sec-h.in p{animation:none}
   .slide.on .slide-c>*{animation-name:up}
@@ -1046,6 +1046,20 @@ body.picking .instbar{display:none}
 .foot-l a{color:var(--muted);text-decoration:none;padding:8px 0}
 @media (hover:hover){.foot-l a:hover{color:var(--fg)}}
 @media (pointer:coarse){.foot-l a{min-height:44px;display:inline-flex;align-items:center}}
+
+/* Rà lỗi điện thoại 30/10 (việc định kỳ) */
+@media (max-width:480px){
+  /* Ô tìm chỉ rộng 42–96px (màn 320px chữ gõ vào không hiện): khi đang gõ thì tạm ẩn Meta/Tự xếp/Số liệu cho ô tìm giãn hết hàng */
+  .row1:has(#q:focus) .seg{display:none}
+  .row1:has(#q:focus) .search{max-width:none}
+}
+@media (pointer:coarse){
+  .search kbd{display:none}                            /* phím tắt "/" vô nghĩa trên màn cảm ứng (xoay ngang vẫn hiện) */
+  .modal .mtop button{width:44px;height:44px}          /* xoay ngang: nút chia sẻ/‹ ›/× trong bảng chi tiết chỉ 38px */
+  .sp-b{min-height:40px}
+  .menu-l a{padding:8px 0}
+}
+@media (pointer:coarse) and (max-height:500px){.dk{display:none}.mb{display:inline}}   /* xoay ngang: không ghi "Trên máy tính, rê chuột…" */
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1265,7 +1279,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610302115"></script>
-<script defer src="assets/app.js?v=202610302115"></script>
+<script defer src="assets/data.js?v=202610310612"></script>
+<script defer src="assets/app.js?v=202610310612"></script>
 </body>
 </html>

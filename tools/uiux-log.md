@@ -134,3 +134,17 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Cùng ngày, chủ web muốn "hiện đại, hợp vibe web hơn": đổi mọi dấu (bậc, sức mạnh, MỚI) sang kiểu **kính tối phát sáng** cùng họ với ô lớp tướng —
   nền tối mờ có sắc màu từ trên xuống, viền mảnh + nét cùng màu, quầng sáng nhẹ. Giữ quy ước hình: bậc = ô vuông chữ V, sức mạnh = tròn mũi tên, MỚI = viên thuốc.
   Ngoài ảnh tướng ở nền sáng: nền màu nhạt + nét đậm màu (`--mcd`) cho đủ tương phản. Ảnh tải về vẽ giống hệt (`MKC` trong drawMarks).
+
+## 2026-10-30 (việc định kỳ: rà UI/UX điện thoại)
+- Đã thử bằng Playwright, thao tác chạm: iPhone 13, iPhone SE, Pixel 7, Android 360px, màn 320px, xoay ngang 844×390; sáng và tối. Các bước: tải trang, menu (mở, đóng ×, bấm từng mục từ đầu/giữa/cuối trang),
+  sân khấu (đổi tab, vuốt, Xem chi tiết), thanh dính + hàng đường, chọn đường, tìm có/không kết quả, bộ lọc (kể cả đường không có tướng khớp), bảng chi tiết (build, hộp thông tin món đồ, Bộ chiêu thức, đóng),
+  link `#tuong-zata-mid`, Tự xếp (chọn + đặt hàng, thanh báo), Số liệu, đổi sáng/tối, chân trang. Không lỗi JS, không ảnh 404, không tràn ngang, menu tới đúng mục (không nhảy về đầu trang), ảnh thẻ menu tải đủ.
+- Sửa: **ô tìm trên điện thoại quá hẹp** (320px: 42px, gõ vào không thấy chữ, chỉ thấy nút ×; 360–390px: 82–96px, tên dài như Eland'orr bị cắt). Nay khi đang gõ (≤480px) tạm ẩn Meta/Tự xếp/Số liệu, ô tìm giãn hết hàng (232–320px); bỏ focus thì hàng chế độ hiện lại. Chiều cao thanh dính không đổi.
+- Sửa: **điện thoại xoay ngang** (rộng 844px) trước đây dùng kiểu máy tính nên còn những thứ đã bỏ trên điện thoại vì gây màn trắng/xanh ở Chrome Android: kính mờ (menu, nút bảng chi tiết), hiệu ứng hiện từ mờ `filter:blur` ở tiêu đề mục,
+  `will-change` thường trực ở 5 ảnh sân khấu, và ảnh sân khấu s3/ 2772px (sizes 1040px × DPR 3). Nay áp các quy tắc điện thoại cho `(pointer:coarse) and (max-height:500px)`; ảnh s3 không dùng trên điện thoại (`PHONE` trong app.js: màn cảm ứng, cạnh ngắn ≤500px), máy tính bảng và máy tính giữ nguyên.
+- Vùng chạm trên màn cảm ứng: nút chia sẻ/‹ ›/× trong bảng chi tiết khi xoay ngang 38 → 44px; phép bổ trợ trong build 36 → 40px; mục trong menu 38 → 42px. Ẩn phím tắt "/" ở ô tìm và chữ "Trên máy tính, rê chuột…" khi xoay ngang.
+- Hiệu năng (measure.js, 3 lần, đo bản cũ/mới cùng lúc): điện thoại TBT 412 → 429 ms, mở bảng chi tiết 581 → 569 ms, LCP 580 → 600 ms (dao động); máy tính không đổi đáng kể. Không thêm yêu cầu tải.
+- Kiểm 1440/390 sáng/tối: 5 slide, bảng có thẻ (147/38), không tràn ngang, không lỗi JS.
+- Không tự kiểm được: chữ "SỐ LIỆU" dấu tách rời trong ảnh chụp là do máy kiểm tra không tải được font Google (JetBrains Mono), máy thật bình thường. Cần chủ web thử máy thật: gõ tìm trên điện thoại (hàng Meta/Tự xếp/Số liệu ẩn tạm khi gõ),
+  xoay ngang Chrome Android (còn màn trắng/xanh không), trình duyệt trong Zalo/Messenger/TikTok.
+- Ý tưởng để lần sau: xoay ngang, bảng chi tiết cao ~310px nên ảnh bìa chiếm gần hết, phải cuộn trong bảng mới thấy build — cân nhắc thu ảnh bìa khi màn thấp.

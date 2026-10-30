@@ -455,7 +455,9 @@ const sp2=u=>u.replace(/^s\//,"s2/");
 /* s3/: bản siêu nét rộng 2772 (Real-ESRGAN ×2 từ s2/, tools/upscale/up.py) chỉ dùng ở sân khấu, cho màn lớn / mật độ điểm ảnh cao */
 // Mọi tướng có s3/ trừ Tamyn (ảnh gốc chỉ 600px). Vài ảnh gốc khác cỡ chuẩn: ghi độ rộng thật để trình duyệt chọn đúng.
 const S3_NO=new Set(["tamyn"]),S3_W={evita:3194,preyta:2400,veera:4000},S2_W={evita:1597,preyta:1200,veera:2000};
-const s3Of=u=>{const k=u.slice(2,-5);return S3_NO.has(k)?"":`, s3/${k}.webp ${S3_W[k]||2772}w`};
+// Điện thoại (kể cả xoay ngang: sizes 1040px × DPR 3 chọn s3, giải nén ~19 MB/tấm) không dùng s3, s2 đã đủ nét
+const PHONE=matchMedia("(pointer:coarse)").matches&&Math.min(screen.width,screen.height)<=500;
+const s3Of=u=>{const k=u.slice(2,-5);return PHONE||S3_NO.has(k)?"":`, s3/${k}.webp ${S3_W[k]||2772}w`};
 function splOf(h){const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return S_KEYS.has(k)?`s/${k}.webp`:""}
 const laneTop=l=>HEROES.filter(h=>h.lane===l&&!h.sec).sort((a,b)=>TORD[a.tier]-TORD[b.tier]||b.adj-a.adj).slice(0,3);
 const DUR=7000;let sIdx=0,sTimer=null,sStart=0,sLeft=DUR,sPaused=false,sVisible=true;
