@@ -1,4 +1,29 @@
 {
   "ghi_chu": "Link tiếp thị (Shopee Affiliate / TikTok Shop). Để mảng items rỗng thì build không tạo trang Phụ kiện. Mỗi mục: name (tên món), shop (Shopee hoặc TikTok Shop), desc (1–2 câu nói thật món dùng để làm gì), url (link affiliate, bắt đầu bằng https://). Chạy lại: node tools/seo/build.js",
-  "items": []
+  "items": [
+    {
+      "name": "Găng tay chơi game MEMO V7 (sợi bạc, chống mồ hôi)",
+      "shop": "Shopee",
+      "desc": "Găng ngón tay cho người chơi điện thoại, gian hàng gắn nhãn Shopee Mall. Giá khoảng 75.000đ, Shopee hiển thị hơn 100 nghìn lượt bán (ngày 31/10/2026).",
+      "url": "https://s.shopee.vn/9pfVXgABQa"
+    },
+    {
+      "name": "Quạt tản nhiệt điện thoại T2 (sò lạnh bán dẫn, hút nam châm)",
+      "shop": "Shopee",
+      "desc": "Quạt làm mát điện thoại, gắn bằng nam châm. Giá khoảng 137.000đ, hơn 20 nghìn lượt bán (ngày 31/10/2026). Cùng mẫu có nhiều gian hàng bán, nên so giá và đọc đánh giá.",
+      "url": "https://s.shopee.vn/8fTY9ZyuMA"
+    },
+    {
+      "name": "Quạt tản nhiệt điện thoại KIRI TH16 Pro V2",
+      "shop": "Shopee",
+      "desc": "Quạt làm mát điện thoại, mẫu đắt hơn trong nhóm. Giá khoảng 269.000đ, hơn 3 nghìn lượt bán (ngày 31/10/2026).",
+      "url": "https://s.shopee.vn/7AekMr57Ge"
+    },
+    {
+      "name": "Quạt tản nhiệt điện thoại MEMO G6 (kẹp 2 chiều)",
+      "shop": "Shopee",
+      "desc": "Quạt kẹp làm mát điện thoại, mẫu rẻ nhất trong nhóm. Giá khoảng 33.900đ, hơn 30 nghìn lượt bán (ngày 31/10/2026).",
+      "url": "https://s.shopee.vn/AUvCL0Vl1V"
+    }
+  ]
 }
