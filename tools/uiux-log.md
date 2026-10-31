@@ -4,6 +4,7 @@ Việc định kỳ mỗi Thứ Bảy (7:45 giờ Việt Nam) đọc tệp này 
 Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng để lần sau.
 
 ## Đã chốt, không làm ngược lại
+- Khối tràn mép (`.hero`, `.stage`, `.bar`, `.band`, `.hero-fade`) dùng `width:100vw`. Trên Chrome máy tính có thanh cuộn 15px, `documentElement.scrollWidth` lớn hơn `clientWidth` khoảng 7px (đo 31/10/2026: 1432 so với 1425). Đây không phải lỗi người xem thấy: `overflow-x:clip` ở `body` truyền lên khung nhìn thành `hidden`, cuộn chuột ngang không dịch trang (đã thử, `scrollX` vẫn 0), chỉ `scrollTo()` bằng mã mới dịch được. Playwright không thấy vì thanh cuộn của nó không chiếm chỗ. Đừng coi là tràn ngang cần sửa; khi kiểm, đọc `scrollX` sau khi cuộn chuột thay vì so `scrollWidth`.
 - Sân khấu "Mạnh nhất mỗi đường" luôn tràn kín mép, không có viền ở bất kỳ bước cuộn nào: không thu nhỏ khung, không mở ảnh từ khung hẹp (viền kem hay viền đen hai bên đều bị chủ web chê, 18/10/2026). Chuyển động chỉ ở bên trong: ảnh thu dần + trôi dọc, tỉ lệ phóng luôn đủ phủ phần trôi.
 - Đầu trang đen tan dần vào nền trang (`.hero-fade`), không để mép cứng đen → kem ở nền sáng (chủ web yêu cầu 18/10/2026).
 - Phong cách theo Bugatti 2026 (chủ web chọn 18/10/2026): nền đen tuyền, chữ tiêu đề in hoa giãn rộng, chữ phụ/nút kiểu đánh máy (JetBrains Mono), nút viên thuốc, khung ảnh/hộp bo góc nhẹ (8–12px), logo giữa thanh trên, hiện từ mờ sang nét khi cuộn, đường kẻ mảnh, chuyển động chậm. Sân khấu và đầu trang vẫn tràn mép, không bo.
