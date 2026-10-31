@@ -1,0 +1,1028 @@
+# Điểm mạnh / điểm yếu từng tướng — tóm tắt tiếng Việt viết lại (không dịch nguyên văn) từ mục Strengths / Weaknesses
+# trên trang tướng của ROV META (https://rovmeta.com/heroes/<slug>), server Thái, bản 1.64, đọc ngày 31/10/2026.
+# Mỗi khối: dòng đầu là slug của ROV META, rồi tối đa 3 dòng "+ điểm mạnh" và 3 dòng "- điểm yếu".
+# Đã bỏ các ý chỉ là số liệu xếp hạng server Thái (tỉ lệ cấm, tỉ lệ thắng). Chạy: python3 tools/counters/emit.py
+
+airi
++ Nội tại giảm hồi chiêu nên phi tiêu (chiêu 1) hồi rất nhanh.
++ Chiêu 2 có 3 lần lướt: vừa áp sát, đổi vị trí, vừa thoát.
++ Chiêu cuối không thể bị chọn làm mục tiêu, chịu dồn sát thương rồi phản đòn.
+- Không có hồi máu, dễ bị tướng cấu rỉa mài máu trước khi lên đồ.
+- Dùng hết 3 lần lướt để tấn công thì đứng yên, dễ bị gank.
+- Phi tiêu bắn hình quạt, tướng cơ động dễ né.
+
+aleister
++ Nội tại gây sát thương chuẩn, đe dọa cả đỡ đòn và tướng có khiên.
++ Chiêu cuối khống chế 2,5 giây, thuộc loại lâu nhất của pháp sư.
++ Chiêu 1 tạo vùng chắn giữ đường giữa, phạt tướng đi rừng xâm nhập.
+- Không có chiêu lướt, chỉ trông vào Tốc Biến để thoát.
+- Đếm sai cộng dồn thì nội tại nổ vào lính thay vì tướng.
+- Phải đủ Ngọc Đại Pháp Sư, Trượng Bùng Nổ, Vương Miện Hecate mới mạnh.
+
+alice
++ Chiêu cuối giảm mạnh giáp phép, khuếch đại sát thương phép của cả đội.
++ Chạy nhanh và khiên giúp bảo kê nhiều đồng đội trong một trận giao tranh.
++ Chiêu 1 khống chế chỉ định, dễ trúng khi đánh áp sát.
+- Đối thủ phối hợp tốt chỉ cần lướt ra khỏi vùng chiêu cuối.
+- Tầm khống chế ngắn, phải đứng đầu giao tranh mà không có đường thoát.
+- Không hồi máu cho đội, thua các trợ thủ như Annette, Sephera khi đánh kéo dài.
+
+allain
++ Sát thương hỗn hợp vật lý và phép, khó lên đồ phòng thủ đúng.
++ Chiêu cuối gây sát thương chuẩn theo máu, đe dọa cả đấu sĩ đầy máu.
++ Hai lần lướt của chiêu 2 cho cả đuổi lẫn thoát.
+- Trượt hiệu ứng trói của chiêu 2 là hỏng cả combo.
+- Đầu giao tranh ít cộng dồn nên chiêu 1 yếu.
+- Chiêu cuối buộc đứng cận chiến, một lần bị đẩy lùi là kẹt.
+
+amily
++ Nội tại tăng mạnh sát thương khi đấu tay đôi với mục tiêu đứng lẻ.
++ Chiêu 1 bay về hồi máu và giảm hồi chiêu.
++ Có hất tung riêng, không cần đồng đội khống chế trước.
+- Khống chế ít, kém giá trị trong giao tranh tổng có tổ chức.
+- Nội tại chỉ tính một mục tiêu, giao tranh đông người thì giảm sát thương.
+- Cấp 1–2 yếu, thiếu chiêu áp sát, dễ bị thả diều.
+
+annette
++ Chiêu cuối tạo tường chặn đường đi, không chỉ làm chậm.
++ Nội tại tự hồi máu cho đồng đội khi họ tụt máu.
++ Có cách giải khống chế, sống sót qua các pha lao vào liên hoàn.
+- Chiêu 2 cần hai kẻ địch thẳng hàng, đội giỏi sẽ giãn đội hình.
+- Không có lướt, bị bắt là mất Tốc Hành rất lâu.
+- Chiêu cuối đặt theo điểm, bị cắt từ xa là mất pha mở giao tranh.
+
+aoi
++ Chiêu 2 bám tường cho góc tiếp cận ít ai cắm mắt.
++ Cộng dồn nội tại đủ là đòn chí mạng chắc chắn.
++ Chiêu cuối không thể bị chọn làm mục tiêu, né khống chế không cần Tốc Biến.
+- Không có tường gần thì mất chiêu 2, giao tranh trong hang rồng rất khó.
+- Dọn rừng trước Kiếm Truy Hồn chậm hơn Nakroth, Murad.
+- Bị khống chế liên tục là mất hết cộng dồn giữa trận.
+
+arduin
++ Nội tại giúp thắng các pha đổi máu kéo dài khi máu thấp.
++ Chiêu 1 nối chiêu 2 hất tung ổn định, không cần thao tác khó.
++ Sau chiêu cuối có lao tới làm choáng 1,5 giây.
+- Nội tại hồi lâu, để lộ khoảng trống dài giữa các lần bật.
+- Trước chiêu cuối không có đòn tầm xa, dễ bị cấu máu.
+- Sát thương chuẩn của chiêu cuối cần 3 đòn liên tiếp, khó với mục tiêu có lướt.
+
+arthur
++ Nội tại hồi máu tốt, thắng đổi máu lâu với đấu sĩ ít cơ động.
++ Bộ chiêu đơn giản, dễ tập trung vào lối chơi toàn bản đồ.
++ Lao tới nối chiêu cuối tạo pha giao tranh đối thủ phải dè chừng.
+- Không có đường thoát, trượt chiêu lao là đứng yên chịu đòn.
+- Pha lao dễ đoán, đối thủ trình cao dụ rồi phạt.
+- Sát thương bộc phá thấp hơn Allain, Veres.
+
+arum
++ Chiêu cuối giữ chặt 2,5 giây, không thể bị chọn làm mục tiêu, khó giải.
++ Nối chiêu 2 với chiêu cuối khống chế tới khoảng 3,5 giây.
++ Kết thúc chiêu cuối gọi thêm thú, có thêm một lượt khống chế.
+- Trượt chiêu choáng là mất thú, chờ hồi chiêu lâu.
+- Chiêu cuối tự giữ chân bản thân, đồng đội không theo là chết.
+- Không dọn lính, không có đường thoát ngoài tăng tốc, dễ bị thả diều.
+
+astrid
++ Hai lớp chống chịu sẵn trong bộ chiêu (nội tại và chiêu cuối).
++ Chiêu 2 giảm 30% giáp của đối thủ trong vài giây.
++ Chiêu cuối gây sát thương chuẩn, phạt đấu sĩ lên nhiều giáp.
+- Lướt chiêu 2 ngắn, gặp tướng đánh xa phải dùng Tốc Biến mới tới.
+- Nội tại hồi lâu, có khoảng không khiên đúng lúc bị gank.
+- Chiêu cuối cần vận 1,5 giây, bị khống chế là hủy.
+
+ata
++ Nội tại cho hồi máu tốt khi đổi máu kéo dài.
++ Chiêu 2 đẩy vào tường gây choáng chỉ định.
++ Chiêu cuối dựng thuyền chặn đường đi vài giây.
+- Sát thương thuần vật lý, đối thủ lên giáp sớm là chậm nhịp mạnh.
+- Chiêu 2 ở chỗ trống chỉ làm chậm nhẹ, phải có tường.
+- Chiêu cuối đặt sai dễ chặn luôn đồng đội.
+
+aya
++ Bám vào sát thủ hoặc xạ thủ đang mạnh khiến họ rất khó chết.
++ Nội tại như một mạng phụ, phí bộc phá của đối thủ.
++ Chiêu khống chế biến hình khó giải bằng phép thường.
+- Đồng đội được bám đã chết hoặc yếu thì Aya gần như vô dụng.
+- Khi tách ra gây rất ít sát thương.
+- Trước cấp 4 yếu, thua đổi máu với Baldum, Arduin.
+
+azzenka
++ Chồng nhiều vùng sát thương, khắc chế tướng ít cơ động hoặc lấn quá sâu.
++ Kiểm soát khu vực tốt khi tranh rồng.
++ Khống chế nối tiếp giúp bảo kê và theo sau pha mở giao tranh của đồng đội.
+- Murad, Nakroth lướt xuyên bẫy cát dễ dàng.
+- Không có chiêu thoát, bị đấu sĩ lao vào sườn là chết.
+- Cấp 1–3 yếu, dễ bị Tulen, Điêu Thuyền ép lính.
+
+baldum
++ Chiêu cuối chôn diện rộng 3 giây, khống chế dài nhất game.
++ Nội tại tự tăng giáp theo cấp, không tốn vàng.
++ Chiêu 1 lôi xạ thủ ra khỏi hàng sau rất hiệu quả.
+- Hướng lôi phụ thuộc góc quay, sai góc là cứu luôn mục tiêu.
+- Chiêu cuối có độ trễ, tướng có lướt kịp thoát.
+- Không cấu máu, không dọn lính, trước cấp 4 rất thụ động.
+
+bijan
++ Thắng các pha đổi máu ngắn, khó bị ép rời đường.
++ Có hồi máu sẵn, giữ máu tốt qua giao tranh nhỏ.
++ Chiêu cuối gây sát thương diện rộng giữa trận.
+- Đánh cận chiến nên dễ bị cấu máu trước khi kịp đổi máu.
+- Không có đường thoát chắc chắn, bị gank khống chế là chết.
+- Cuối trận yếu đi trước đội hình nhiều đỡ đòn.
+
+billow
++ Thời gian hạ gục mục tiêu thuộc loại nhanh nhất đường Tà Thần.
++ Tự đi đường tốt, không cần hỗ trợ.
++ Có mạng sớm là lăn cầu tuyết sang tranh mục tiêu lớn.
+- Phụ thuộc hồi chiêu, đối thủ kiên nhẫn chờ rồi phạt.
+- Yếu trước tướng cấu máu tầm xa.
+- Không có lợi thế sớm thì yếu dần trước đội hình trâu.
+
+biron
++ Mạnh trước đấu sĩ nhiều máu không có đường thoát.
++ Nội tại hồi máu giúp ít phải về nhà.
++ Biến lợi thế đường thành áp lực lên rồng và Tà Thần.
+- Tướng thả diều, cấu máu chặn được việc cộng dồn nội tại.
+- Bị bỏ lại thì gần như không có cách lật kèo.
+- Không có khống chế cứng để giữ mục tiêu.
+
+boltbaron
++ Xoay vòng chiêu nhanh, phạt tướng cộng dồn chậm khi đổi máu ngắn.
++ Tự áp sát được mục tiêu, không cần đi rừng giúp.
++ Lên đồ hút máu có thể đứng đầu giao tranh khi đang hơn.
+- Không có khống chế cứng, phải dùng lướt mới ép được giao tranh.
+- Gặp tướng cấu máu thì bị mài máu trước khi kịp áp sát.
+- Lướt đang hồi là đấu sĩ chậm, dễ bị thả diều.
+
+bonnie
++ Một lượt chiêu có thể hạ xạ thủ máu giấy.
++ Dọn lính nhanh, giữ đường và đi hỗ trợ sớm.
++ Có cơ động sẵn, chịu sát thủ lao vào tốt hơn nhiều pháp sư.
+- Trượt chiêu 2 là hỏng combo, hồi chiêu dài.
+- Chết hai lần ở đường là sát thương không còn đủ.
+- Ngoài sát thương không có khống chế cứng hay bảo kê.
+
+bright
++ Nội tại gây sát thương chuẩn, bỏ qua giáp vật lý.
++ Chiêu 1 khống chế chỉ định, hồi chiêu ngắn.
++ Chiêu 2 làm mới khi hạ gục, liên hoàn được cả giao tranh.
+- Tầm đánh thường ngắn hơn Tel'Annas, Laville, Elsu nên bị cấu máu.
+- Chiêu cuối phản tác dụng nếu đối thủ rút trước khi Bright kịp hạ gục.
+- Trượt một trong hai đòn của chiêu 1 lúc quyết định có thể thua giao tranh.
+
+butterfly
++ Hạ gục hoặc hỗ trợ là làm mới toàn bộ hồi chiêu, gank liên tục.
++ Chiêu cuối giảm mạnh sát thương nhận vào, chịu được một lần khống chế.
++ Hạ gục hồi máu, ít phải về nhà giữa các pha gank.
+- Chiêu cuối tự nhắm mục tiêu máu thấp nhất, có thể ném Butterfly vào đỡ đòn.
+- Hết chiêu là không còn áp sát, tướng đánh xa thả diều dễ.
+- Bị bỏ lại sớm thì bộc phá không đủ, nội tại không kích hoạt.
+
+capheny
++ Cộng dồn xuyên giáp, xé nát đội hình hai đỡ đòn.
++ Vừa chạy vừa bắn, thả diều tốt.
++ Cuối trận tăng sức mạnh rất tốt.
+- Chế độ bắn nhanh tự làm chậm bản thân, hết Tốc Biến là nguy hiểm.
+- Cạn năng lượng giữa giao tranh là tự đổi chế độ, mất cộng dồn xuyên giáp.
+- Không có khống chế cứng, phụ thuộc đồng đội bảo kê.
+
+celica
++ Đánh ở tầm tối đa, thắng đổi máu cấu rỉa mà không vào tầm đối thủ.
++ Có lướt rút lui thật sự, sát thủ cần hai lần áp sát mới chạm tới.
++ Chiêu cuối đe dọa mục tiêu ưu tiên từ ngoài tầm nhìn.
+- Trước món đồ đầu tiên đi đường mỏng manh, không có hồi máu.
+- Chỉ một chiêu cơ động, không đủ trước đội hình nhiều lướt hoặc hai người mở giao tranh.
+- Bị khống chế cứng là hủy chiêu cuối đang vận.
+
+charlotte
++ Trụ lâu hơn tướng lao vào trong đổi máu kéo dài.
++ Tự bắt lẻ được, không cần đi rừng.
++ Cuối trận vẫn là mối đe dọa ở đường bên.
+- Không có khống chế cứng để bảo kê hay giữ xạ thủ.
+- Cận chiến nên thua tướng cấu máu hoặc giữ khoảng cách.
+- Bị bỏ lại thì khó gỡ vì không có cách farm an toàn từ xa.
+
+chaugnar
++ Chiêu cuối giải khống chế cho cả đội, khắc chế đội hình nhiều khống chế.
++ Mỗi lần dùng chiêu được thêm chỉ số chống chịu.
++ Xoay vòng chiêu 1 và 2 giữ hiệu ứng làm chậm gần như liên tục.
+- Không mở giao tranh, không hồi máu cho đội; xạ thủ thụ động thì đường rất nhạt.
+- Giải khống chế chỉ trong khoảnh khắc ngắn, bấm muộn là xạ thủ chết.
+- Tầm chiêu gần, trợ thủ đánh xa cấu máu dễ.
+
+cresht
++ Dạng thú làm chậm mạnh, bảo kê tốt trước đội hình lao vào.
++ Khiên phản sát thương phạt sát thủ lao vào xạ thủ.
++ Chiêu cuối vừa có khiên vừa hất tung trong một nút.
+- Dạng người chỉ có đẩy lùi, đội kiên nhẫn chờ hết dạng thú.
+- Chiêu cuối có độ trễ, người chơi giỏi Tốc Biến hoặc lướt qua.
+- Không hồi máu, ít đường thoát, dễ bị 2 đánh 1 đầu trận.
+
+darcy
++ Nội tại thưởng cho việc sắp xếp thứ tự chiêu hợp lý.
++ Chiêu 1 đủ để né gank.
++ Dọn lính nhanh, rảnh tay đi bắt lẻ.
+- Tầm hạ gục ngắn, buộc phải combo áp sát mạo hiểm.
+- Cộng dồn chậm, khiên và hồi máu hấp thụ được.
+- Bị đẩy lùi giữa chừng là vỡ combo.
+
+dextra
++ Cộng dồn nội tại giúp thắng đổi máu kéo dài.
++ Chiêu cuối biến bộ chiêu của sát thủ bộc phá thành máu cho Dextra.
++ Kháng làm chậm khi dùng chiêu, rất khó thả diều.
+- Bị khống chế cứng trước khi bật chiêu cuối là xong.
+- Đổi mục tiêu là mất cộng dồn, tướng hàng sau cơ động lợi dụng được.
+- Không cấu máu, thua đổi máu sớm với Ryoma, Rourke tới cấp 4.
+
+dieuthuyen
++ Chiêu 2 có hai lần dùng: đóng băng, rút lui rồi khống chế tiếp.
++ Nội tại tăng sát thương lên mục tiêu bị đóng băng, cuối trận rất mạnh.
++ Chiêu cuối tăng giáp lớn, tự bảo vệ không cần đồ đỡ đòn.
+- Không có lướt, một Tốc Biến thường không đủ trước sát thủ.
+- Đóng băng cần dấu ấn trước, tướng có lướt né được.
+- Đầu trận dọn lính kém, đi rừng hổ báo dễ ép.
+
+dirak
++ Nội tại đổi năng lượng thành máu, khó bị bộc phá.
++ Có thể cấu máu liên tục ở đường.
++ Chiêu tạo rào chắn đạn, vô hiệu xạ thủ.
+- Năng lượng thấp là giảm cả sát thương lẫn khả năng chống chịu.
+- Chiêu choáng rơi chậm, người chơi giỏi đi ra kịp.
+- Rào chắn chỉ chặn phía trước, Murad, Nakroth đánh từ bên hông là qua.
+
+dolia
++ Kiểm soát khu vực và khống chế ngay từ cấp 2, không cần đồ.
++ Bộ chiêu vừa mở giao tranh vừa rút lui được.
++ Bảo kê nhiều lớp, phạt lối chơi sát thủ lao vào.
+- Thua cuộc đua đi hỗ trợ thì từ cấp 4 gần như vô dụng.
+- Khống chế cần đứng đúng chỗ, đối thủ cơ động dụ được.
+- Đồng đội không tận dụng khoảnh khắc chiêu cuối là phí.
+
+dyadia
++ Rất mạnh trong giao tranh ở chỗ hẹp.
++ Chiêu 1 nối chiêu cuối tự đe dọa hạ gục, không cần đi rừng.
++ Nội tại cộng dồn thưởng cho lối chơi hổ báo trong giao tranh nhỏ.
+- Không tự bảo vệ được, Nakroth, Murad hạ gọn khi chiêu 1 đang hồi.
+- Tầm cấu máu ngắn, đi đường khó trước Azzen'Ka, Natalya.
+- Khoảnh khắc bộc phá hẹp, đỡ đòn và khiên hấp thụ gần hết.
+
+edras
++ Nội tại thưởng cho việc ở lại giao tranh, đánh lâu khó thua.
++ Có chiêu lao tới bắt xạ thủ đang chạy.
++ Mạnh lên rõ từ món đồ đầu tiên.
+- Chỉ đe dọa bằng chiêu lao, đội nhiều khống chế khóa được.
+- Không hồi máu hay khiên, thua hai món đồ là khó đi đường.
+- Cấp 1–2 yếu, Kil'Groth, Allain ép lính được.
+
+elandorr
++ Có chiêu tự bảo vệ hiếm thấy ở xạ thủ.
++ Bộ nội tại, chiêu 1 và đánh thường hạ xạ thủ trong chưa tới 1 giây.
++ Kỹ năng giữ khoảng cách khi đi đường dùng thẳng cho giao tranh.
+- Chỉ có một chiêu thoát, bị dụ mất là chết dưới khống chế.
+- Cuối trận sát thương hụt trước mục tiêu nhiều giáp nếu thiếu đồ xuyên giáp.
+- Phụ thuộc trợ thủ, trợ thủ bỏ đường là đường rồng bị ép.
+
+elsu
++ Cộng dồn nội tại đủ thì đòn bắn có thể hạ gọn mục tiêu máu giấy.
++ Ba con mắt canh cho tầm nhìn rộng nhất trong các xạ thủ.
++ Tàng hình khi đứng sát tường, xoay hướng tấn công bất ngờ.
+- Rời xa tường là không có cơ động, bị lao vào ở chỗ trống là chết.
+- Chiêu bắn tỉa vận 2 giây, đối thủ lướt một cái là trượt.
+- Đi đường đầu trận yếu, bị xâm nhập rừng sớm là chậm nhịp mạnh.
+
+enzo
++ Chiêu 2 có tầm kéo xa trong các lối đi trong rừng.
++ Chiêu cuối giảm 50% sát thương nhận vào khi lao vào hàng sau.
++ Hủy chiêu 2 giữa chừng chỉ mất một nửa hồi chiêu, dụ kéo liên tục.
+- Không kéo trúng là gần như không có sát thương.
+- Combo theo thứ tự dễ đọc, một lần lướt sau khi kéo là phá được.
+- Bị khống chế lúc đang vận kéo là mất chiêu.
+
+erin
++ Tầm đánh xa, đứng ngoài vùng nguy hiểm ở đường rồng.
++ Chiêu cuối gây sát thương rất lớn lên mục tiêu đã bị khống chế.
++ Bộ chiêu cấu máu hợp lối chơi công trụ, tranh mục tiêu.
+- Sát thủ và tướng lao vào áp sát được trước khi Erin kịp thoát.
+- Chỉ có một chiêu cơ động, phụ thuộc đội hình bảo kê.
+- Dùng sai chiêu cuối hoặc đứng sai vị trí là bị phạt nặng.
+
+errol
++ Nội tại hút máu, càng đánh lâu càng hồi nhiều.
++ Chiêu đủ cộng dồn biến pha đổi máu đang thua thành hạ gục.
++ Chiêu cuối không thể bị chọn làm mục tiêu, né bộc phá và pha lao trụ.
+- Chiêu chính là đường thẳng hẹp, trượt khi đủ cộng dồn là phí.
+- Cộng dồn mất nhanh, đối thủ thả diều làm mất khả năng hồi máu.
+- Ngoài một hiệu ứng trói thì không có mở giao tranh cứng.
+
+evita
++ Chiêu 2 kéo cả giao tranh vào một vùng hất tung.
++ Có khiên mỗi lần trúng chiêu, sống qua pha lao vào.
++ Chiêu cuối giảm giáp phép, tan chảy cả đỡ đòn nhiều máu.
+- Chiêu cuối tầm ngắn, buộc đứng gần giao tranh.
+- Chiêu 2 có độ trễ, tướng cơ động đi ra được.
+- Trước cấp 4 yếu và không có lướt; tướng mới nên dữ liệu còn ít.
+
+fennik
++ Một vòng 4 đòn đánh thường có thể hạ xạ thủ máu giấy.
++ Chiêu cuối tạo vùng làm chậm, tự bảo vệ được.
++ Sát thương lan rất mạnh ở chỗ hẹp như hang rồng.
+- Không có khống chế cứng, tướng có lướt dễ lao vào lại.
+- Phải đứng gần mới phát huy, nguy hiểm trước Elsu, Capheny.
+- Chậm lên đồ chính là mất khả năng hạ gục.
+
+florentino
++ Chiêu cuối cô lập mục tiêu, cắt hết bảo kê của đồng đội họ.
++ Sát thương chuẩn theo máu tối đa, bỏ qua giáp và máu.
++ Có miễn khống chế khi dùng chiêu, rất khó thả diều.
+- Chỉ đánh một mục tiêu, đối thủ bỏ qua và dồn đồng đội của Florentino.
+- Bị đẩy lùi khỏi chỗ hoa là mất vòng làm mới chiêu 2.
+- Bị khống chế trước lúc miễn khống chế là vỡ combo.
+
+flowborn
++ Sát thương vừa vật lý vừa phép, đối thủ khó lên đồ phòng thủ.
++ Thắng đổi máu ngắn trước xạ thủ thuần vật lý.
++ Có chiêu thoát khi sát thủ áp sát.
+- Trượt chiêu chính trước trợ thủ hổ báo là mất hẳn lối chơi.
+- Có khoảng yếu giữa món đồ thứ nhất và thứ hai.
+- Sau phút 15 thua Tel'Annas, Laville trong giao tranh kéo dài.
+
+gildur
++ Nội tại đẩy lùi định kỳ, bảo kê không tốn hồi chiêu.
++ Chiêu cuối choáng 2–3 kẻ địch cùng lúc nếu được chuẩn bị.
++ Mỗi chiêu tạo khiên, không cần đồ hồi máu.
+- Chiêu cuối bị hủy ngay khi trúng bất kỳ lướt, hất tung hay ngắt chiêu nào.
+- Không có đường lui ngoài Tốc Biến, lấn sâu là chết.
+- Bấm chiêu cuối sai thời điểm là đối thủ đi ra.
+
+goverra
++ Chiêu cuối kiểm soát hang rồng rất tốt.
++ Cộng dồn hiệu ứng gây sát thương cao hơn đối thủ tưởng.
++ Dọn lính nhanh, đẩy đường giữa rồi đi hỗ trợ.
+- Không có cơ động, sát thủ lao vào là chết nếu thiếu Tốc Biến.
+- Sát thương cần chuẩn bị, giao tranh chớp nhoáng thì hụt.
+- Trước cấp 3 yếu, dễ bị pháp sư hổ báo ép.
+
+grakk
++ Chiêu 2 kéo thẳng xạ thủ ra khỏi hàng sau.
++ Kéo trúng tướng được cộng máu tối đa vĩnh viễn.
++ Chiêu cuối có khiên, trụ đủ lâu để đồng đội theo vào.
+- Trượt kéo là phí cả lượt chiêu, không có khống chế thay thế.
+- Không có cơ động ngoài Tốc Biến, dễ bị cấu máu.
+- Toàn sát thương phép, đối thủ lên giáp phép là giảm hẳn.
+
+hayate
++ Nội tại nảy sang nhiều tướng, cộng dồn sát thương chuẩn.
++ Chiêu 2 dịch chuyển tức thì, né được chiêu khống chế định hướng.
++ Chiêu cuối kích hoạt hiệu ứng đòn đánh rất nhiều lần, bộc phá trong một lượt.
+- Không có khống chế cứng, phụ thuộc đồng đội mở giao tranh.
+- Nội tại hay nổ vào đỡ đòn thay vì xạ thủ cần hạ.
+- Trước Kiếm Fafnir thua đổi máu với Allain, Veres.
+
+heino
++ Kiểm soát khu vực rất tốt ở cửa hang rồng và Tà Thần.
++ Cấu máu tầm xa, ép pháp sư cận chiến mà không phải mạo hiểm.
++ Chiêu cuối vẫn mạnh dù không trúng giữa trong giao tranh đông người.
+- Đứng yên khi tạo vùng, sát thủ dễ tiếp cận.
+- Không có chiêu thoát, chỉ trông vào Tốc Biến và đồng đội.
+- Thua tướng bộc phá như Natalya, Tulen ở chỗ trống.
+
+helen
++ Khống chế đều ở mọi giai đoạn, tốt cho tranh mục tiêu.
++ Đi hỗ trợ sớm mạnh, khống chế lật được giao tranh 2 đánh 2.
++ Hợp mọi đội hình: sát thủ, xạ thủ hay pháp sư.
+- Gần như không sát thương, trượt khống chế là không đóng góp gì.
+- Sát thủ áp sát nhanh khiến Helen thành gánh nặng hàng sau.
+- Phải lên đồ theo đội hình đối thủ, lên theo khuôn cuối trận rất yếu.
+
+iggy
++ Nhiều điểm cộng dồn nội tại, gần như lúc nào cũng có bộc phá.
++ Quả cầu lửa trúng tâm phạt nặng tướng máu giấy ở gần.
++ Chiêu 2 tăng tốc mạnh, dùng để thoát gank.
+- Xả hết cộng dồn là không còn sát thương một lúc lâu.
+- Trúng tâm cầu lửa cần đứng gần, rủi ro trước khống chế.
+- Không có khống chế cứng, cần đồng đội giữ mục tiêu.
+
+ignis
++ Nội tại tự hồi máu, đổi máu liên tục không cần về nhà.
++ Chiêu cuối gây sát thương chuẩn lên mục tiêu có dấu ấn.
++ Choáng chỉ định khi mục tiêu có dấu ấn, đe dọa hạ gục một mình.
+- Không có chiêu cơ động, dùng Tốc Biến để thoát là mất sức ép.
+- Khoảnh khắc hồi máu ngắn, bị đẩy lùi là mất.
+- Ngoài tầm chiêu 1 không cấu máu được, tướng né chiêu 1 khóa cả bộ chiêu.
+
+ilumia
++ Chiêu cuối toàn bản đồ, gây áp lực cả ba đường từ đường giữa.
++ Chiêu 1 cường hóa hất tung, ngắt lướt và chiêu vận.
++ Chiêu 2 nối chiêu 1 cường hóa hạ được tướng máu giấy trong một lượt.
+- Chiêu 2 tầm ngắn, buộc áp sát, đi rừng dễ bắt.
+- Không có cơ động hay đường thoát, Nakroth, Murad lao vào là xong.
+- Chiêu cuối né được nếu đối thủ giữ lướt.
+
+ishar
++ Chiêu cuối chia cắt đội hình và nhốt sát thủ lao vào.
++ Choáng nối hất tung ổn định, không cần nhắm.
++ Nội tại tăng độ trâu cuối trận.
+- Đi đường đầu trận yếu, gank Ishar ít rủi ro.
+- Mọi khống chế phụ thuộc vị trí thú cưng, bị đẩy lùi là vỡ combo.
+- Chiêu có độ trễ, đối thủ để ý là đi ra được.
+
+jinna
++ Kiểm soát vùng, ép đối thủ ăn lính ở góc bất lợi.
++ Nội tại cộng dồn phạt đối thủ quay lại giao tranh quá sớm.
++ Hiệu ứng dưới đất cắt đường vòng, dồn giao tranh vào một chỗ.
+- Không có khống chế cứng, mọi lướt đều né được cả bộ chiêu.
+- Sát thương lên chậm, bị bỏ lại sớm khó gỡ.
+- Đỡ đòn trâu đi xuyên vùng chiêu không ngại.
+
+kahlii
++ Cộng dồn làm chậm khiến chiêu cuối gần như không thể né.
++ Có khiên giúp trụ trước tướng cấu máu.
++ Đánh thường xuyên giáp, phạt trợ thủ có khiên.
+- Không có khống chế cứng, một Thanh Tẩy hay Tốc Hành là vô hiệu.
+- Chỉ có Tốc Biến để thoát, đối thủ chờ hết là lao vào.
+- Chiêu cuối cần vài giây trên mục tiêu, tướng cơ động bỏ chạy được.
+
+kaine
++ Khoảnh khắc bộc phá rất ngắn, tướng máu giấy khó phản ứng.
++ Cơ động tốt, gank nhiều đường mà không phải dốc hết chiêu.
++ Có mạng ở cấp 4–5 là thành lợi thế đồ rõ ràng.
+- Một lần trói hoặc hất tung từ Maloch, Baldum là mất bộc phá.
+- Thua cuộc farm là sát thương quá yếu, không có cách lật kèo.
+- Đối thủ bảo kê và lên đỡ đòn tốt thì Kaine mờ nhạt.
+
+keera
++ Chiêu 1 giữ mục tiêu 3 giây, bám cả tướng có lướt.
++ Chiêu cuối làm mới chiêu 1 và 2, có hai lượt bộc phá.
++ Đi xuyên tường và tàng hình trong địa hình, rất khó đuổi trong rừng.
+- Chiêu 1 kéo kẻ gần nhất, lính có thể đỡ mất.
+- Toàn sát thương phép, một món giáp phép chống bộc phá là chặn được.
+- Chiêu cuối hồi lâu, dùng để chạy là mất sức ép hạ gục cả chục giây.
+
+kilgroth
++ Nội tại cộng dồn, rất mạnh khi đổi máu cận chiến kéo dài.
++ Lao giáo đủ tầm để phạt xạ thủ đứng sai.
++ Đấu được cả đỡ đòn lẫn tướng máu giấy.
+- Không có khống chế cứng, bị đẩy lùi sau khi lao là hết sức ép.
+- Lao đang hồi là hoàn toàn bị thả diều.
+- Gặp tướng cấu máu tầm xa thì không cộng dồn được nội tại.
+
+kriknak
++ Chiêu 1 gây sát thương theo máu tối đa, phạt đỡ đòn nhiều máu.
++ Chiêu 2 hồi nhanh, vừa đuổi vừa chạy.
++ Chiêu cuối miễn khống chế khi bay vào.
+- Không có khống chế cứng, ám sát hỏng là phụ thuộc đồng đội.
+- Dọn rừng chậm trước Kiếm Truy Hồn, dễ bị xâm nhập.
+- Chỉ đánh một mục tiêu, khó tác động trước đội hình 5 người cùng đứng trước.
+
+krixi
++ Nội tại tăng tốc mỗi khi trúng chiêu, rất khó bị giữ chân ở đường.
++ Chiêu cuối gây sát thương diện rộng nhiều nhịp, tốt khi tranh mục tiêu.
++ Dọn lính an toàn từ xa, đi hỗ trợ nhanh.
+- Chiêu 2 có độ trễ, sát thủ cơ động né dễ.
+- Chiêu cuối cần đứng trong tầm vài giây, khổ trước đội hình đẩy lùi.
+- Đầu trận thiếu năng lượng, phải đi đường thụ động.
+
+krizzix
++ Chiêu cuối tàng hình cả đội, duy nhất trong game.
++ Giảm giáp đối thủ, khuếch đại xạ thủ vật lý.
++ Tàng hình và tăng tốc giúp đi hỗ trợ và rút an toàn.
+- Chiêu kéo dễ đoán, kẻ địch cơ động đi ra được.
+- Tàng hình cả đội cần đồng đội rất kỷ luật.
+- Không có khống chế cứng hay hồi máu, đội hình cấu máu ép được.
+
+lauriel
++ Nội tại gây sát thương chuẩn, bỏ qua giáp phép.
++ Chiêu 2 lướt và làm mới khi trúng, cơ động nhất các pháp sư.
++ Chiêu cuối giảm hồi chiêu giữa giao tranh, có lượt bộc phá thứ hai.
+- Không có khống chế cứng, phụ thuộc đồng đội hoặc Tốc Biến để mở giao tranh.
+- Huân Chương Troy giảm phần sát thương phép, phải cộng dồn cẩn thận hơn.
+- Xả hết chiêu mà sát thủ còn sống là Lauriel dễ chết.
+
+laville
++ Nội tại cộng chiêu cuối hạ xạ thủ máu giấy trong một lượt.
++ Chiêu khiên có khoảnh khắc bất tử, phạt sát thủ lao vào.
++ Chiêu choáng xa lên tới 3,5 giây.
+- Bộc phá dồn vào đầu, bị né hoặc giải là hết sát thương.
+- Choáng ở tầm gần chỉ rất ngắn.
+- Chiêu lướt vừa để thoát vừa để gây sát thương, luôn phải đánh đổi.
+
+liliana
++ Hai dạng chiêu, đối phó được cả đội hình cấu máu lẫn lao vào.
++ Làm chậm nối choáng khóa mục tiêu khoảng 3 giây.
++ Dạng cáo có giáp và giáp phép, chịu bộc phá rồi phản đòn.
+- Khoảnh khắc hạ gục ngắn, trượt chiêu choáng là mất nhịp.
+- Chiêu choáng là đường thẳng, tướng có lướt né dễ.
+- Hết lướt và Tốc Biến ở dạng người là không còn đường thoát.
+
+lindis
++ Nội tại bắn đôi, thắng phần lớn pha đấu tay đôi trong bụi.
++ Có thể chủ động soi tầm nhìn các lối bụi.
++ Chiêu 2 và chiêu cuối kích hoạt hiệu ứng đồ từ xa, không cần đánh gần.
+- Ngoài bụi không có áp sát, khống chế hay đường thoát, rất cần bảo kê.
+- Đổi mục tiêu là mất cộng dồn sát thương.
+- Không dọn lính tốt, tướng cấu máu xa như Tel'Annas ép được.
+
+lorion
++ Một chiêu đủ khóa cửa hang rồng và Tà Thần.
++ Có chiêu vừa mở giao tranh, vừa thoát, vừa đổi vị trí.
++ Nối chiêu được khuếch đại, chiêu cuối rất nguy hiểm.
+- Trước Quả Cầu Băng Sương, Murad hay Keera bám được.
+- Vùng khống chế có thời hạn, bị dụ dùng trước là đối thủ quay lại.
+- Hết chiêu thì đánh thường gần như không đe dọa.
+
+lubo
++ Lần lao thứ ba hất tung ổn định, mở giao tranh không cần chuẩn bị.
++ Nội tại giữ hiệu ứng làm chậm gần như liên tục khi đánh lâu.
++ Chiêu cuối giúp gần như không thể bị bộc phá giữa giao tranh.
+- Không có đường thoát, lao hỏng mà thiếu Tốc Biến là chết.
+- Bị thả diều trước khi bật chiêu cuối là mất khoảnh khắc sát thương.
+- Tướng đánh xa đứng ngoài tầm lao cấu máu thoải mái.
+
+lumburr
++ Nội tại cho xạ thủ thêm giáp định kỳ, không tốn năng lượng.
++ Một chiêu vừa gây sát thương vừa tạo khiên cho đồng đội.
++ Có chiêu giảm sát thương vật lý của đối thủ, khóa Laville, Fennik.
+- Trước cấp 4 không có khống chế, bị ép sớm rất khổ.
+- Bộ chiêu bị động và cận chiến, đội hình thả diều vô hiệu nội tại.
+- Không mở giao tranh từ xa, chọn mù trước đội hình cấu máu rất tệ.
+
+maloch
++ Chiêu 1 hồi nhiều máu khi trúng nhiều tướng.
++ Nội tại tăng tầm đánh, ép đường mà không phải lấn quá sâu.
++ Có làm chậm và hất tung, vừa bảo kê vừa mở giao tranh.
+- Phải chém trúng tướng mới hồi máu, đội hình cấu máu chặn được.
+- Chiêu cuối có dấu hiệu dưới đất, xạ thủ cơ động né dễ.
+- Không có áp sát, hết Tốc Biến là bị thả diều.
+
+marja
++ Hút máu mạnh, gần như không chết khi đổi máu kéo dài.
++ Khống chế chỉ định, không cần nhắm.
++ Chiêu cuối né được nhiều chiêu mở giao tranh trong một trận.
+- Không có khống chế cứng, Thanh Tẩy hay đỡ đòn miễn khống chế bỏ qua được.
+- Đầu trận chiêu dễ bị lính chắn.
+- Đối thủ giữ khống chế chờ Marja hiện lại là hạ gọn.
+
+max
++ Nội tại giảm hồi máu của đối thủ, không cần đồ chống hồi máu.
++ Cộng dồn tốc chạy, rất khó cắt đuôi.
++ Hai lần lướt vừa né chiêu, vượt đỡ đòn, vừa giữ đường thoát.
+- Bấm lần hai chiêu cuối sai lúc là kẹt giữa đội địch.
+- Không có sát thương theo phần trăm máu, đỡ đòn nhiều giáp trụ được.
+- Đi đường trước món đồ đầu yếu, dễ bị cấu máu.
+
+mganga
++ Vừa hồi máu đồng đội vừa gây sát thương trong một chiêu.
++ Chiêu có hai lần dùng, giữ cửa hang và mục tiêu gần như liên tục.
++ Tự hồi máu mỗi lần dùng chiêu, thắng đổi máu chậm.
+- Không có khống chế cứng, tướng lao vào phá vòng cộng dồn dễ.
+- Hiệu quả cộng dồn lên chậm so với nhịp giao tranh nhanh hiện tại.
+- Chưa có Ngọc Đại Pháp Sư là cạn năng lượng sau vài lần đổi máu.
+
+mina
++ Chiêu cuối khiêu khích mọi kẻ địch quanh mình trong 2 giây.
++ Chiêu 1 gây sát thương theo máu tối đa, đỡ đòn không miễn nhiễm.
++ Chiêu 2 kéo và làm chậm, mở giao tranh ổn định.
+- Chiêu kéo là đường hẹp, trượt là đội bước vào bất lợi.
+- Không có lướt ngoài Tốc Biến, rất dễ bị thả diều.
+- Không cấu máu được ở đường, bị ép sớm.
+
+ming
++ Có khống chế cứng sớm, gank trước nhiều trợ thủ khác.
++ Cơ động đủ để cắm mắt sâu trong rừng địch.
++ Một chiêu cuối đúng lúc ở rồng có thể lật cả trận.
+- Phụ thuộc đồng đội theo sau, theo kém là phí hồi chiêu.
+- Thanh Tẩy hoặc tướng giải khống chế xóa cả bộ chiêu.
+- Chỉ có một chiêu thoát, đối thủ khôn dụ dùng trước.
+
+moren
++ Chiêu lướt tự làm mới nhờ nội tại, không cần trợ thủ.
++ Có choáng, hiếm thấy ở xạ thủ.
++ Hút máu nhiều theo vòng nội tại, trụ tốt ở đường cấu máu.
+- Không có khoảnh khắc bất tử, Nakroth, Murad hạ trước khi làm mới lướt.
+- Chiêu chính chỉ đánh một mục tiêu, yếu khi bị nhiều người lao vào.
+- Cần hai món đồ chính, trước phút 12 khá yếu.
+
+murad
++ Chiêu 2 và chiêu cuối đều không thể bị chọn làm mục tiêu khi đang dùng.
++ Chiêu 1 lần ba quay về điểm cũ, có đường thoát sẵn.
++ Chiêu 2 giảm giáp, có lợi cho cả đội.
+- Cộng dồn ở bãi quái lộ trên bản đồ nhỏ, đối thủ khôn sẽ lùi.
+- Bị khống chế chỉ định trước khi bật chiêu là hỏng cả combo.
+- Không dọn lính, bị đi rừng địch đi nhanh hơn là chậm đồ.
+
+nakroth
++ Đòn đánh thứ 4 hất tung, không tốn chiêu.
++ Chiêu cuối miễn khống chế, lao vào đội nhiều trợ thủ được.
++ Chiêu lướt hai lần, linh hoạt giữa lao vào và rút lui.
+- Dùng hết lướt là không còn đường thoát, bị trói sau đó thường chết.
+- Không hồi máu, đấu tay đôi sớm với Kil'Groth, Taara là thua.
+- Chiêu cuối đứng tại chỗ, đối thủ bảo kê tốt là phí.
+
+natalya
++ Nội tại cộng dồn thưởng cho việc cấu máu, phớt lờ là chết.
++ Choáng nối làm chậm giúp gần như vận trọn chiêu cuối.
++ Chiêu cuối có khiên và kháng hiệu ứng, khó ngắt.
+- Không có cơ động, tướng có lướt ngắt chiêu cuối trước khi khiên phát huy.
+- Chiêu cuối đứng yên, bị khống chế lần hai vẫn bị ngắt.
+- Trượt choáng thì chiêu cuối chỉ là tia vận mà mục tiêu đi ra được.
+
+omega
++ Mỗi pha gank đều thành mối đe dọa lên trụ.
++ Chuỗi hất tung nối choáng ổn định.
++ Khiên giúp khó chết khi bị 1 đánh 2.
+- Chỉ mở giao tranh cận chiến, bị cấu máu hay đẩy lùi là vô hiệu.
+- Chiêu cuối dễ đi ra nếu đồng đội chưa khống chế trước.
+- Không hồi máu, khiên hay hỗ trợ đồng đội.
+
+omen
++ Chiêu kéo chỉ trúng tướng, bắt lẻ đáng tin ở đường Tà Thần.
++ Đánh thường sát thương chuẩn kèm giảm hồi chiêu, đổi máu lâu có lợi.
++ Chiêu cuối giam 5 giây, cho đồng đội nhiều thời gian theo vào.
+- Không có chiêu thoát, chiêu cuối lao về phía địch, thiếu Tốc Biến là bị dồn.
+- Chiêu kéo có độ trễ, Butterfly, Murad né dễ.
+- Chiêu cuối chỉ giảm sát thương, không chặn khống chế; pháp sư bộc phá vẫn đánh được.
+
+ormarr
++ Sát thương theo máu, phạt đỡ đòn dồn máu.
++ Ba lần cộng dồn là choáng, không cần đồng đội.
++ Có đủ làm chậm, choáng và lao trong một lượt, vừa bảo kê vừa lao vào.
+- Cộng dồn dễ đọc, tướng cơ động rút ra giữa các nhịp.
+- Không hồi máu hay khiên, thua đổi máu sớm là bị đẩy khỏi lính.
+- Sau phút 20 mà không hơn đồ thì chỉ còn là tướng tiện ích.
+
+paine
++ Chiêu lướt dịch chuyển ra sau hàng sau, xuyên qua đỡ đòn.
++ Có miễn khống chế, khắc chế các combo kéo và khóa.
++ Chiêu cuối câm lặng diện rộng, kiểm soát giao tranh rồng.
+- Bị đẩy lùi giữa combo là mất khoảnh khắc sát thương.
+- Dọn rừng chậm hơn Kil'Groth, Veres, dễ bị xâm nhập.
+- Hai chiêu chính cùng hồi là có vài giây không còn đường thoát.
+
+preyta
++ Chiêu cuối làm mới toàn bộ, có hai lượt chiêu mỗi giao tranh.
++ Chiêu cường hóa có choáng tự tạo, thuộc loại tốt nhất đường giữa.
++ Nội tại tăng tốc, đổi vị trí khi vận chiêu không cần Tốc Biến.
+- Chiêu vận 2 giây, bất kỳ lướt hay hất tung nào cũng phạt được.
+- Không có đường thoát ngoài tốc chạy, trước chiêu cuối thua sát thủ.
+- Trượt combo cường hóa là vô dụng một lúc lâu.
+
+qi
++ Lao tới nối chiêu 2 tự hạ gục, không cần chuẩn bị.
++ Nội tại cộng giáp và hồi máu, thắng đổi máu cận chiến ngắn.
++ Chiêu cuối ghim mục tiêu 1,5 giây mà không cần đồng đội.
+- Bị lướt sau khi lao là hỏng pha ghim tường và cả combo.
+- Cộng dồn nội tại ngắn, tướng cấu máu làm mất trước khi kịp hồi.
+- Chỉ có một chiêu áp sát, dùng để chạy là mất cả lượt.
+
+quillen
++ Đánh từ phía sau là chí mạng chắc chắn, giáp không cản được.
++ Làm chậm mạnh và hồi chiêu ngắn, bám mục tiêu cực tốt.
++ Chiêu cuối tàng hình, hồi máu, làm mới khi hạ gục, liên hoàn được.
+- Không có khống chế cứng, bị choáng, hất tung là mất bộc phá.
+- Đánh từ trước mặt không chí mạng, Baldum, Lumburr chặn được.
+- Dọn rừng chậm, bị xâm nhập sớm là mất nhịp mạnh giữa trận.
+
+raz
++ Khống chế đến từ hai đòn riêng, Thanh Tẩy khó giải cả hai.
++ Trúng chiêu hoàn năng lượng, combo gần như tự nuôi combo tiếp.
++ Chiêu giảm giáp phép, không cần đồ xuyên giáp phép vẫn đánh được đỡ đòn.
+- Không đe dọa được ai đứng ngoài tầm lướt.
+- Chiêu cuối là đường thẳng hẹp, tướng cơ động né dễ.
+- Dọn lính kém hơn Tulen, Điêu Thuyền, lên đồ chậm hơn.
+
+richter
++ Nội tại mạnh khi đánh gần địa hình, phạt tướng đánh ở chỗ trống.
++ Chiêu 2 có hai lần dùng, rất khó hạ bằng sát thủ dùng chiêu.
++ Chiêu cuối câm lặng sau chuỗi đòn, khóa pháp sư và sát thủ.
+- Đối thủ dụ ra khỏi địa hình là mất lợi thế nội tại.
+- Chiêu 2 vô dụng trước xạ thủ chỉ đánh thường như Tel'Annas, Laville.
+- Hết hai lần chiêu 2 mà dính khống chế là không còn đường thoát.
+
+rouie
++ Chiêu cuối đặt điểm dịch chuyển, tạo pha xuyên bản đồ hiếm có.
++ Chiêu 1 có hai lần câm lặng kèm đẩy lùi, tự khống chế được.
++ Hào quang tăng tốc giúp cả Rouie và xạ thủ xoay đường nhanh.
+- Không mở giao tranh cứng, phụ thuộc xạ thủ hoặc đi rừng.
+- Chiêu cuối phải đặt trước, đọc sai giao tranh là phí cả phút hồi chiêu.
+- Trượt chiêu 1 khi chiêu cuối đang hồi là gần như không đóng góp.
+
+rourke
++ Cộng dồn giảm giáp, thắng đấu tay đôi kéo dài.
++ Chiêu cuối giải khống chế, khắc chế đội hình lao vào.
++ Lướt trúng tướng là giảm hồi chiêu, đẩy lùi liên tục.
+- Cần thời gian cộng dồn, sát thủ bộc phá hạ trước khi đủ.
+- Lướt chỉ để lao vào, không có đường thoát.
+- Sát thương yếu trước khi đủ hai món đồ chính.
+
+roxie
++ Nội tại hồi máu, thắng đổi máu lâu trước đấu sĩ.
++ Chiêu cuối khống chế 2,5 giây và làm mới chiêu 1.
++ Khiên làm chậm mạnh, bám chặt mục tiêu chỉ có một lướt.
+- Tướng có hai lướt đi ra khỏi vùng chiêu 1 dễ.
+- Chiêu cuối có độ trễ, người chơi giỏi lướt trước.
+- Chưa đánh dấu nội tại thì gần như không sát thương, thua kèo bộc phá sớm.
+
+ryoma
++ Nội tại cho sát thương nền cao nhất đường khi đổi máu lâu.
++ Chiêu 1 vừa lướt tấn công vừa né chiêu định hướng.
++ Đầu chiêu 2 choáng, tự tạo cơ hội hạ gục.
+- Chỉ choáng ở tầm xa nhất, Skud, Taara đánh sát là vô hiệu.
+- Nội tại có khoảng chờ, Murad bộc phá hạ trước khi làm mới.
+- Bị trói sau khi lướt là đứng yên chịu khống chế liên hoàn.
+
+sephera
++ Nội tại hồi máu mỗi lần dùng chiêu, không cần đồ hồi máu.
++ Chiêu 1 nối đánh thường giảm hồi chiêu, dựng tường nước liên tục.
++ Chiêu cuối có khoảnh khắc không thể bị chọn làm mục tiêu, chống bộc phá rất tốt.
+- Tường nước chỉ choáng ở mép ngoài, tướng có lướt đi ra kịp.
+- Mọi chiêu cần tầm trung, Nakroth, Murad áp sát trước khi kịp dùng.
+- Không đủ chuỗi chiêu thì bộc phá thấp hơn Tulen, Natalya nhiều.
+
+sinestrea
++ Nội tại hồi sinh, rất khó bị hạ hẳn trong giao tranh.
++ Chiêu 2 gây sát thương theo máu, phạt mọi loại mục tiêu.
++ Tàng hình tự bảo vệ rồi lao vào lại, không cần lướt.
+- Không có cộng dồn là chỉ còn một tướng máu giấy.
+- Chiêu cuối vận 0,5 giây, Maloch, Baldum ngắt được.
+- Lauriel và Kriknak khắc chế tàng hình.
+
+skud
++ Lao tới nối chiêu cuối gần như chắc chắn choáng và hất tung.
++ Hồi máu nội tại trụ lâu hơn hầu hết đấu sĩ không hút máu.
++ Chiêu cuối gây sát thương theo máu hiện tại, phạt đội nhiều đỡ đòn.
+- Ngoài chiêu lao không có cách bắt, tướng hai lướt đi thoát.
+- Chiêu vận có độ trễ dễ đọc, kèo cơ động phạt nặng.
+- Đứng xa là vô dụng, pháp sư và xạ thủ thả diều được.
+
+slimz
++ Chiêu ném giáo choáng càng xa càng lâu, khống chế dài cho xạ thủ.
++ Chiêu cuối gây sát thương theo máu tối đa, đỡ đòn càng trâu càng thiệt.
++ Đòn thứ ba xuyên nhiều kẻ địch đứng thẳng hàng.
+- Bị làm chậm hoặc trói trước khi có tầm là rất khổ.
+- Sát thủ bộc phá hạ trước khi đòn thứ ba kịp bắn.
+- Giáo là đường thẳng dễ đoán, người chơi giỏi né được.
+
+stuart
++ Một chiêu vừa áp sát vừa thoát gank.
++ Hai món đồ là đã đe dọa hạ tướng máu giấy.
++ Linh hoạt làm sát thương chính hoặc phụ.
+- Khống chế cứng liên hoàn cắt cơ động là bị khóa hẳn.
+- Thua hai cấp là lệch nhịp mạnh giữa trận.
+- Trợ thủ đấu sĩ trâu chịu được sự hổ báo mà không cho mạng.
+
+superman
++ Chiêu lao mở giao tranh ổn định nếu canh hồi chiêu.
++ Chiêu cuối áp chế, khó giải nếu nối đúng lúc.
++ Chỉ số trâu, đóng được vai mở giao tranh phụ.
+- Sát thương thấp hơn đấu sĩ hàng đầu, khó hạ gục một mình.
+- Chiêu cuối chỉ một mục tiêu, kém trước đội hình đứng gần nhau.
+- Chiêu lao không phải đường thoát, mở hỏng là chết.
+
+taara
++ Nội tại biến máu thấp thành sát thương, đối thủ hay đánh giá sai.
++ Chiêu 1 nhảy tới xạ thủ hàng sau mà nhiều đỡ đòn không với tới.
++ Nội tại hồi máu, trụ đường lâu không cần về nhà.
+- Không có khống chế cứng nào để giữ mục tiêu.
+- Đứng xa là vô dụng, Elsu, Tel'Annas cấu máu thoải mái.
+- Sát thủ bộc phá hạ trước khi nội tại kịp mạnh lên.
+
+tachi
++ Ở trạng thái giải phong, sát thương chuẩn bỏ qua mọi loại giáp.
++ Có chiêu vào thẳng trạng thái giải phong, không cần chuẩn bị.
++ Giải phong hồi máu và có khiên, thắng nhiều kèo đấu tay đôi.
+- Bị thả diều hay đẩy lùi giữa các lần hồi chiêu là mất sức ép.
+- Bản vận đầy của chiêu đâm làm Tachi đứng yên, dễ bị phạt.
+- Không có khống chế cứng, tướng có lướt đi ra khỏi khoảnh khắc mạnh.
+
+teemee
++ Nội tại kiếm thêm vàng, rất hiệu quả khi đi hỗ trợ.
++ Chiêu vận đầy choáng rất lâu so với các trợ thủ.
++ Chiêu cuối kích hoạt cả khi đang bị khống chế, cứu đồng đội phút chót.
+- Chiêu vận dễ đoán, đối thủ lướt hoặc khống chế giữa chừng.
+- Chiêu cuối tự chọn đồng đội máu thấp nhất, có khi rơi vào đỡ đòn.
+- Trượt chiêu móc là mắc kẹt, không có phương án dự phòng.
+
+teeri
++ Đòn cường hóa thắng đổi máu bộc phá mà nhiều xạ thủ không theo kịp.
++ Chiêu tăng tốc vừa đuổi vừa tự bảo vệ, không cần đồ.
++ Chiêu cuối nảy giữa nhiều mục tiêu, mạnh trong giao tranh tổng.
+- Không có thoát cứng, bị mở giao tranh trước khi bật chiêu là chết.
+- Phải theo dõi nhiều cộng dồn cùng lúc, dễ sai khi bị ép.
+- Thua đổi máu cấu rỉa với Laville, Violet ở đường.
+
+telannas
++ Tầm đánh thường xa nhất game.
++ Cấu máu tạo chênh lệch trước khi mục tiêu lớn xuất hiện.
++ Chiêu cuối xé đội hình đứng gần trong giao tranh dài.
+- Không có lướt hay dịch chuyển, bị lao vào thường là chết.
+- Chiêu cuối vận, một lần choáng hay hất tung là mất.
+- Chiêu định hướng kém tin cậy trước đội cơ động hoặc núp sau lính.
+
+thane
++ Chiêu 1 nối chiêu 2 khống chế hơn 2 giây, không cần đồ.
++ Nội tại hấp thụ các combo bộc phá vốn hạ gọn nhiều tướng mở giao tranh khác.
++ Chiêu cuối miễn khống chế, lao vào đội nhiều khống chế an toàn.
+- Chiêu 1 dễ đoán, một lần lướt của Butterfly, Nakroth là né trọn.
+- Sát thương vật lý của chiêu 2 yếu hẳn khi đối thủ lên giáp sớm.
+- Lao vào hụt là kẹt lại, nội tại hồi lâu nên lần thứ hai không có lưới an toàn.
+
+theflash
++ Chiêu 1 có lần lướt về, vừa mở giao tranh vừa thoát.
++ Chiêu cuối kéo cuối chiêu là chỉ định, không né được.
++ Làm chậm giữ mục tiêu máu giấy suốt chuỗi đấm.
+- Tướng còn lướt trong lúc xoay là thoát chiêu cuối.
+- Chuỗi đấm khóa hướng, bị đẩy lùi giữa chừng là mất nhiều đòn.
+- Không dọn lính được, tướng cấu máu đẩy đường thoải mái.
+
+thorne
++ Nội tại đổi giảm hồi chiêu thành công vật lý, Kiếm Muramasa vừa tăng công vừa xuyên giáp.
++ Đạn vàng ba lần là choáng cứng, không cần phép bổ trợ.
++ Đổi màu đạn để vá điểm yếu giữa trận.
+- Chỉ có một chiêu thoát, dùng để chạy là mất sát thương và khống chế.
+- Đổi màu đạn hoặc bị khống chế là mất cộng dồn.
+- Chiêu cuối vận 1 giây, bị lướt hay dịch chuyển là hủy.
+
+toro
++ Mỗi lần dùng chiêu được miễn khống chế, đi xuyên chiêu cuối của Maloch.
++ Lao tới nối chiêu cuối có hai lần hất tung, gần như trúng trọn.
++ Có sẵn áp sát, làm chậm và chiêu cuối diện rộng, tự ép giao tranh.
+- Không có đòn tầm xa, Elsu, Tel'Annas, Violet thả diều tới chết.
+- Chiêu cuối dễ đọc, có lướt là thoát các nhịp sau.
+- Toàn sát thương vật lý, Thương Longinus gần như vô hiệu chiêu cuối.
+
+tulen
++ Chiêu 2 lao vào mà vẫn giữ được Tốc Biến.
++ Nội tại mạnh dần trong giao tranh dài và ưu tiên trúng tướng.
++ Chiêu cuối tăng sát thương theo máu đã mất, hạ gục liên hoàn cả hàng sau.
+- Chiêu cuối bị chắn nếu có tướng đứng giữa Tulen và mục tiêu.
+- Không có khống chế cứng, làm chậm mạnh cần hai lần trúng.
+- Phụ thuộc Ngọc Đại Pháp Sư, trước lần về đầu dễ bị cấu máu.
+
+valhein
++ Nội tại có hiệu ứng choáng, điều nhiều xạ thủ không có.
++ Toàn sát thương phép, phạt đội lên nhiều giáp vật lý.
++ Dùng chiêu cộng tốc chạy, cơ động trong giao tranh nhỏ.
+- Không có đường thoát, sát thủ hạ sớm trước khi có đồ phòng thủ.
+- Bị khống chế là ngắt nhịp đánh, sát thương tụt nhiều.
+- Chiêu cuối tỏa rộng, đứng xa thì vô dụng, Tel'Annas, Elsu đánh xa hơn.
+
+veera
++ Chiêu 1 cộng dồn giảm giáp phép, có lợi cho cả đội.
++ Chiêu 2 choáng chỉ định 1,5 giây, gần như không né được.
++ Hạ gục hoặc hỗ trợ là hoàn một phần hồi chiêu, liên hoàn nhanh.
+- Không có cơ động, sát thủ chạm tới trước khi choáng là thua.
+- Chiêu choáng bị chặn hoặc ngắt là vô hại tới khi hồi chiêu xong.
+- Đầu trận dọn lính kém, Tulen ép dưới trụ được.
+
+veres
++ Hút máu tăng mạnh khi máu thấp, thắng các pha liều mạng.
++ Chiêu 1 choáng hai sợi, tự khống chế không cần hỗ trợ.
++ Chiêu cuối gây sát thương chuẩn theo máu đã mất, xuyên qua đỡ đòn nhiều giáp.
+- Choáng cần trúng cả hai sợi, chỗ trống dễ trượt.
+- Ngoài lướt của chiêu cuối không có áp sát, đội thả diều chặn đòn thứ tư.
+- Nhịp bốn đòn dễ đọc, người chơi giỏi rút trước khi hút máu bật.
+
+violet
++ Chiêu lướt hồi nhanh, né chiêu và đổi vị trí giữa pha đổi máu.
++ Đánh xen chiêu đúng nhịp thì gần như luôn có đòn cường hóa.
++ Chiêu cuối nảy và chí mạng, là xạ thủ gánh đội thật sự.
+- Không có khống chế cứng, cần trợ thủ tạo khoảnh khắc gây sát thương.
+- Chiêu cuối chỉ bắn hình nón phía trước, né một bước là phí.
+- Murad, Quillen nhiều lần áp sát vẫn bám được.
+
+volkath
++ Nội tại định kỳ cho giáp, như có thêm một món phòng thủ.
++ Chiêu gây sát thương theo máu đã mất, xé đỡ đòn định đánh lâu.
++ Chiêu cuối giải khống chế khi dùng, khắc pháp sư trợ thủ nhiều trói.
+- Không có áp sát trước khi chém trúng, tướng cơ động thả diều được.
+- Cộng dồn bị chia ra nhiều mục tiêu trong giao tranh, khó chốt hạ.
+- Chiêu chém chậm và dễ đọc, người chơi có kinh nghiệm né dễ.
+
+wiro
++ Nội tại buộc đối thủ phải tốn hai lượt chiêu mới hạ được.
++ Chiêu đẩy vào tường choáng một mục tiêu rất lâu.
++ Chiêu cuối vận đầy hất tung nhiều kẻ địch.
+- Bị tê liệt sau nội tại, không có đồng đội gần là chết.
+- Chiêu đẩy ở chỗ không có tường thì không choáng.
+- Chiêu cuối vận dễ đọc, bị khống chế cứng trước là hủy.
+
+wisp
++ Bom đẩy vào tường gây choáng, tự bảo vệ hiếm có ở xạ thủ.
++ Chiêu 2 trúng tướng là giảm hồi chiêu, cấu máu gần như liên tục.
++ Đòn đánh lan trúng cả xạ thủ lẫn đỡ đòn.
+- Chiêu cuối vận, bị khống chế là mất trọn.
+- Không có đường thoát thật ngoài Tốc Biến và lướt ngắn.
+- Đi đường trước Thánh Kiếm yếu, sát thương gốc thấp.
+
+wonderwoman
++ Nội tại gây sát thương chuẩn, phạt đỡ đòn lên giáp mà không cần xuyên giáp.
++ Chiêu thòng lọng lao tới mục tiêu khỏe, kéo mục tiêu yếu về để hạ.
++ Chiêu cuối choáng diện rộng và tăng tốc đồng đội.
+- Điểm ngọt của chiêu 2 khó trúng tướng cơ động như Airi, Butterfly.
+- Không có đường thoát, đọc sai thòng lọng là kẹt giữa địch.
+- Đầu trận chậm, Taara, Veres ép trước Áo Choàng Băng Giá.
+
+ngokhong
++ Nội tại cho tỉ lệ chí mạng miễn phí, mạnh sớm hơn một món đồ.
++ Bộ chiêu tự đủ để hạ gục, không cần đồng đội khống chế trước.
++ Chiêu cuối dùng lần hai vừa để thoát vừa để lao vào lại.
+- Bị đẩy lùi lúc xoay chiêu cuối là mất sát thương, choáng và đường thoát.
+- Ngoài một combo không có tiện ích, đối thủ đứng gộp sớm là khó vào.
+- Dọn rừng chậm, dễ tụt sau Murad, Quillen.
+
+xeniel
++ Hai khiên độc lập từ chiêu 1 và chiêu cuối, khó phá cả hai.
++ Sát thương theo máu tối đa, lên đồ đỡ đòn là thêm sát thương.
++ Chiêu lao choáng, vừa mở giao tranh vừa bảo kê.
+- Một tướng bộc phá phá cả hai khiên trước khi kịp nổ.
+- Chiêu lao vừa là khống chế vừa là cơ động duy nhất, dùng là kẹt.
+- Không hồi máu, không có cách rút, khó lật đường đang thua.
+
+ybneth
++ Ba chiêu nối khống chế đủ lâu cho xạ thủ chậm kịp hạ gục.
++ Trâu tới cuối trận, không bao giờ chỉ là bia đỡ.
++ Chiêu cuối diện rộng phá pha lao vào của Murad, Nakroth.
+- Không tự bảo vệ, bị lao vào từ góc khuất như Nakroth, Butterfly.
+- Trượt chiêu là trần khống chế giảm hẳn.
+- Bị bỏ lại thì không tự gánh được như Maloch, Arduin.
+
+yan
++ Đòn cường hóa hồi máu, đổi máu lâu không cần đồ hút máu.
++ Có khoảnh khắc không thể bị chọn làm mục tiêu, né khống chế chỉ định giữa combo.
++ Cộng dồn xuyên giáp mạnh hơn nhiều đấu sĩ.
+- Trượt đòn cường hóa là mất cả vòng đổi máu.
+- Đường lướt cong khó canh khi bị ép, dễ lướt quá mục tiêu.
+- Ngoài một hất tung thì không có khống chế cứng, cần đồng đội giữ mục tiêu.
+
+yena
++ Đủ dấu ấn là nổ sát thương lớn kèm làm chậm mạnh.
++ Nhặt lại lưỡi liềm là giảm hồi chiêu, thưởng cho đứng đúng chỗ.
++ Hai trạng thái với hai nhịp đe dọa khác nhau, khó có một cách khắc chế.
+- Chưa đủ dấu ấn thì sát thương khiêm tốn, đối thủ rút sớm là phí.
+- Chiêu ném là đường thẳng hẹp, tướng cơ động né dễ.
+- Khi hợp kiếm thì giảm tốc đánh, dễ bị thả diều ở chỗ trống.
+
+yorn
++ Chiêu 2 trói, tự khống chế, phạt tướng cơ động ở đường.
++ Chiêu cuối toàn bản đồ, kết liễu từ xa tốt nhất game.
++ Có Thánh Kiếm và Song Đao Bão Táp là xóa sổ tướng máu giấy.
+- Không có cơ động, chỉ có Tốc Biến khi hàng trước vỡ.
+- Phải đánh xen đòn thường sau mỗi chiêu, không thì sát thương tụt.
+- Trước Kiếm Fafnir yếu, tướng hổ báo đầu trận lợi dụng được.
+
+yue
++ Chiêu cường hóa đánh vòng cung, phạt xạ thủ hay né sang bên.
++ Nội tại giữ sức ép suốt giao tranh, không có khoảng chết sau bộc phá.
++ Một chiêu vừa mở giao tranh, vừa thoát, vừa bảo kê đồng đội.
+- Không có khống chế cứng, chỉ đẩy chứ không giữ được mục tiêu.
+- Nội tại cần thời gian tích, bị bộc phá sớm là mất nhịp.
+- Gặp đỡ đòn bắt buộc lên Trượng Hỗn Mang, lối lên đồ cứng nhắc.
+
+trieuvan
++ Cộng dồn nội tại cho trần lăn cầu tuyết cao nhất đường Tà Thần.
++ Chiêu 2 gây sát thương chuẩn, bỏ qua giáp.
++ Chiêu cuối giải hiệu ứng, phạt lối thả diều làm chậm và cấu máu.
+- Đầu trận bình thường khi chưa đủ cộng dồn.
+- Hất tung rất ngắn, đồng đội khó theo kịp.
+- Không có hạ gục thì không hồi máu, bị ép đường là đói đồ.
+
+zata
++ Chiêu cuối 3 lần lướt hạ gọn tướng máu giấy trong chưa tới 2 giây.
++ Nội tại giảm hồi chiêu cuối, gần như làm mới giữa giao tranh nếu đánh trúng liên tục.
++ Chiêu 2 có hai lần dùng và làm chậm, tự tạo khống chế khi lao vào.
+- Không có khống chế cứng, một lần lướt, khiên hay giải hiệu ứng là vô hiệu cả 3 lần lướt.
+- Nội tại cần hai chiêu trúng cùng mục tiêu, khó với kẻ địch cơ động.
+- Dùng hết 3 lần lướt mà không hạ được là kẹt cận chiến với chiêu cuối hồi lâu.
+
+zephys
++ Nội tại chống lại các combo bộc phá định hạ gục ngay.
++ Chiêu cuối có khống chế cứng, không cần đồng đội chuẩn bị.
++ Chiêu 2 hồi máu khi đánh tướng, thắng đổi máu lâu.
+- Không cấu máu hay rút lui, Allain, Florentino ép khỏi lính cả trận.
+- Quillen, Butterfly hạ gọn trước khi nội tại kịp bật.
+- Chiêu cuối dùng lên đỡ đòn là phí, không còn cách lao vào lại.
+
+zill
++ Chiêu lướt làm mới trong combo, có sẵn đường thoát.
++ Chiêu 1 trúng hai lần, đặt hai dấu ấn ngay.
++ Chiêu cuối không thể bị chọn làm mục tiêu, khắc chiêu cuối vận như Violet, Natalya.
+- Bị khống chế cứng trước dấu ấn thứ ba là hỏng combo.
+- Chiêu cuối giảm sát thương khi trúng nhiều mục tiêu, yếu trước hai đỡ đòn.
+- Không hồi máu, không khiên, thua mọi giao tranh kéo dài.
+
+zip
++ Chiêu cuối nuốt đồng đội vài giây, vô hiệu cả lượt chiêu của sát thủ.
++ Ba kiểu khống chế khác nhau trong một trận giao tranh.
++ Chiêu lăn miễn hiệu ứng suốt thời gian dùng.
+- Khi nuốt đồng đội thì đứng yên, đối thủ chờ sẵn lúc nhả ra.
+- Choáng ngắn, xạ thủ phải theo ngay.
+- Trước khi có đồ phòng thủ khá mỏng.
+
+zuka
++ Hất tung và choáng trong một lượt, gần như không thể bảo kê kịp.
++ Chiêu cuối tăng công theo phần trăm, mạnh dần với đồ chí mạng và xuyên giáp.
++ Hai đòn cường hóa bộc phá vượt trội so với số đồ đầu trận.
+- Không có tầm xa hay hồi máu, Allain, Florentino ép khỏi đường.
+- Bị đẩy lùi giữa chiêu cuối là mất cả khoảnh khắc bộc phá.
+- Chiêu mở giao tranh cũng là chiêu thoát, trượt là kẹt.

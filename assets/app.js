@@ -219,7 +219,7 @@ function loadBuilds(){return loadJS("buildsjs","assets/builds.js")}
 /* Bộ chiêu thức (assets/skills.js, ~37 kB): chỉ tải khi người xem chạm vào thẻ tướng hoặc mở bảng chi tiết,
    vì phần lớn người xem chỉ lướt bảng tier */
 function loadSkills(){return loadJS("skillsjs","assets/skills.js")}
-/* Khắc chế và hợp cặp (assets/counters.js, ~4 kB nén): danh sách viết tay của ROV META (server Thái), tải cùng lúc với bộ chiêu thức */
+/* Điểm mạnh, điểm yếu + khắc chế và hợp cặp (assets/counters.js, ~20 kB nén): tóm tắt tiếng Việt và danh sách viết tay của ROV META (server Thái), tải cùng lúc với bộ chiêu thức */
 function loadCounters(){return loadJS("countersjs","assets/counters.js")}
 document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest("#board .card")){loadSkills();loadCounters()}},{passive:true});
 function waitCounters(){if(waitCounters.on)return;waitCounters.on=true;
@@ -227,14 +227,18 @@ function waitCounters(){if(waitCounters.on)return;waitCounters.on=true;
     if(ok&&h&&typeof COUNTERS!=="undefined")sec.outerHTML=counterHTML(h);else sec.remove()};
   if(typeof COUNTERS!=="undefined")return redo(true);
   const s=loadCounters();s.addEventListener("load",()=>redo(true),{once:true});s.addEventListener("error",()=>redo(false),{once:true})}
+function swHTML(h){const s=typeof STRWK!=="undefined"&&STRWK[h.key];if(!s)return "";
+  const col=(t,l,w)=>`<div class="sw-c${w?" w":""}"><h5>${t}</h5><ul>${l.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  return `<section class="sw" aria-label="Điểm mạnh và điểm yếu của ${esc(h.name)}"><h4 class="bds-h">Điểm mạnh, điểm yếu</h4><div class="sw-g">${col("Điểm mạnh",s[0])}${col("Điểm yếu",s[1],1)}</div>
+    <p class="sk-src">Tóm tắt tiếng Việt theo mục Strengths / Weaknesses của <a href="${CNSRC.base+s[2]}" target="_blank" rel="noopener">${CNSRC.name}</a> (server Thái, bản ${CNSRC.patch}): nhận định của người biên tập trang đó, không phải số liệu.</p></section>`}
 function counterHTML(h){
   const head=`<h4 class="bds-h">Khắc chế và hợp cặp</h4>`;
-  if(typeof COUNTERS==="undefined"){waitCounters();return `<section class="cn" data-wait="${h.id}">${head}<p class="bld-note">Đang tải…</p></section>`}
-  const c=COUNTERS[h.key];if(!c)return "";
+  if(typeof COUNTERS==="undefined"){waitCounters();return `<section class="cn" data-wait="${h.id}"><h4 class="bds-h">Điểm mạnh, điểm yếu</h4><p class="bld-note">Đang tải…</p></section>`}
+  const c=COUNTERS[h.key],sw=swHTML(h);if(!c)return sw;
   const chip=k=>{const x=HEROES.find(y=>y.key===k&&!y.sec)||HEROES.find(y=>y.key===k);if(!x)return "";const src=imgOf(x);
     return `<li><button type="button" class="cn-b" data-cgo="${x.id}" style="--lc:var(--l-${x.lane})">${src?`<img src="${src}" alt="" loading="lazy" decoding="async" width="36" height="36">`:`<span class="cn-i">${initials(x.name)}</span>`}<span>${esc(x.name)}</span></button></li>`};
   const row=(t,l)=>l.length?`<div class="cn-r"><h5>${t}</h5><ul>${l.map(chip).join("")}</ul></div>`:"";
-  return `<section class="cn" aria-label="Khắc chế và hợp cặp của ${esc(h.name)}">${head}${row("Bị khắc chế bởi",c[0])}${row("Khắc chế",c[1])}${row("Hợp cặp",c[2])}
+  return sw+`<section class="cn" aria-label="Khắc chế và hợp cặp của ${esc(h.name)}">${head}${row("Bị khắc chế bởi",c[0])}${row("Khắc chế",c[1])}${row("Hợp cặp",c[2])}
     <p class="sk-src">Theo danh sách viết tay của <a href="${CNSRC.base+c[3]}" target="_blank" rel="noopener">${CNSRC.name}</a> (server Thái, bản ${CNSRC.patch}), không phải tỉ lệ thắng; server Việt Nam có thể lệch. Chạm vào tướng để xem tướng đó.</p></section>`;
 }
 // bấm tướng trong mục Khắc chế: sang bảng chi tiết của tướng đó (gỡ phím tắt của bảng cũ như nút "Còn đi")

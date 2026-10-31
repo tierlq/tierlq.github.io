@@ -2,7 +2,7 @@
 // Kiểm tra chức năng bằng Playwright (Chromium có sẵn), tự chạy máy chủ tĩnh, chặn mọi request ra ngoài (font, GA).
 // Ở 1440px và 390px:
 //  - trang chủ: không lỗi JS, không 404, 5 slide, bảng có thẻ, không tràn ngang
-//  - mở lần lượt mọi bảng chi tiết: có build (đồ, ngọc có tên Việt, phép, link tra cứu), bộ chiêu thức, mục khắc chế (trừ tướng nguồn không có), không còn "Đang tải"
+//  - mở lần lượt mọi bảng chi tiết: có build (đồ, ngọc có tên Việt, phép, link tra cứu), bộ chiêu thức, điểm mạnh/yếu (trừ Tamyn), mục khắc chế (trừ tướng nguồn không có), không còn "Đang tải"
 //  - mọi ảnh do app.js chèn (thẻ, build, ngọc, phù hiệu, khắc chế) trỏ tới tệp có thật
 //  - bấm tướng trong mục khắc chế sang tướng khác; hộp thông tin món đồ; nút Quay lại đóng bảng; chế độ Số liệu và Tự xếp
 //  - các trang tĩnh tiêu biểu (tra cứu, trang tướng, trang đường) không tràn ngang ở 390px; thêm --all để đo mọi trang
@@ -52,6 +52,7 @@ const errs = [], log = (...a) => console.log(...a);
         if (!m.querySelector('.bld-hint a[href="/bang-ngoc/"]')) out.bad.push(h.id + ': gợi ý build thiếu link Bảng ngọc');
         if (!m.querySelector('.sk-list li')) out.bad.push(h.id + ': không có bộ chiêu');
         if (!noCn.includes(h.key) && !m.querySelector('.cn .cn-b')) out.bad.push(h.id + ': không có mục khắc chế');
+        if (h.key !== 'tamyn' && m.querySelectorAll('.sw li').length < 2) out.bad.push(h.id + ': không có điểm mạnh/yếu');
         m.querySelectorAll('img').forEach(i => { const s = i.getAttribute('src'); if (s && !/^https?:/.test(s)) out.srcs.add(s.replace(/^\//, '')); });
         document.querySelectorAll('#board .card img').forEach(i => { const s = i.getAttribute('src'); if (s && !/^https?:/.test(s)) out.srcs.add(s.replace(/^\//, '')); });
       }

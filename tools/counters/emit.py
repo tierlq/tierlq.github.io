@@ -36,5 +36,25 @@ head = ('/* Khắc chế và hợp cặp từng tướng. Tạo bằng python3 t
         '   COUNTERS[khoá tướng] = [bị khắc chế bởi, khắc chế, hợp cặp, tên trang ROV META]. Nguồn: danh sách viết tay của ROV META (server Thái, bản 1.64), không phải tỉ lệ thắng. */\n'
         'const CNSRC={name:"ROV META",patch:"1.64",read:"31/10/2026",base:"https://rovmeta.com/heroes/"};\n')
 body_js = 'const COUNTERS={' + ','.join(f'{json.dumps(k)}:{json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' for k, v in sorted(out.items())) + '};\n'
+# Điểm mạnh / điểm yếu: tóm tắt tiếng Việt viết tay ở tools/strengths/vi.txt (viết lại từ mục Strengths/Weaknesses của ROV META, không dịch nguyên văn)
+sw, slug_of = {}, {k: v[3] for k, v in out.items()}
+cur = None
+for ln in open(os.path.join(ROOT, 'tools/strengths/vi.txt'), encoding='utf-8'):
+    ln = ln.rstrip('\n')
+    if not ln.strip() or ln.startswith('#'): continue
+    if ln[:2] in ('+ ', '- '):
+        if cur is None: sys.exit('vi.txt: dòng +/- trước tên tướng: ' + ln)
+        sw[cur][0 if ln[0] == '+' else 1].append(ln[2:].strip()); continue
+    cur = ln.strip()
+    if cur not in web: sys.exit(f'vi.txt: khoá tướng lạ: {cur}')
+    if cur in sw: sys.exit(f'vi.txt: trùng tướng: {cur}')
+    sw[cur] = [[], []]
+for k, (a, b) in sw.items():
+    if not (1 <= len(a) <= 3 and 1 <= len(b) <= 3): sys.exit(f'vi.txt: {k} cần 1–3 điểm mạnh và 1–3 điểm yếu')
+    for t in a + b:
+        if len(t) > 140: sys.exit(f'vi.txt: {k}: câu quá dài ({len(t)} ký tự): {t}')
+    sw[k] = [a, b, slug_of.get(k, k)]
+body_js += 'const STRWK={' + ','.join(f'{json.dumps(k)}:{json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' for k, v in sorted(sw.items())) + '};\n'
+head = head.replace('không phải tỉ lệ thắng. */', 'không phải tỉ lệ thắng.\n   STRWK[khoá tướng] = [điểm mạnh, điểm yếu, tên trang ROV META]: tóm tắt tiếng Việt viết lại từ mục Strengths/Weaknesses (tools/strengths/vi.txt). */')
 open(os.path.join(ROOT, 'assets/counters.js'), 'w', encoding='utf-8').write(head + body_js)
-print(f'{len(out)} tướng có mục; bỏ qua: {", ".join(sorted(skipped))}; web chưa có: {", ".join(sorted(web - set(out)))}')
+print(f'{len(sw)} tướng có điểm mạnh/yếu (thiếu: {", ".join(sorted(web - set(sw)))}) · {len(out)} tướng có khắc chế; bỏ qua: {", ".join(sorted(skipped))}; web chưa có: {", ".join(sorted(web - set(out)))}')

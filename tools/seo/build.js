@@ -14,7 +14,7 @@ const ROOT = path.join(__dirname, '..', '..'), SITE = JSON.parse(fs.readFileSync
 const ctx = {}; vm.createContext(ctx);
 for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js', 'assets/counters.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/^const /gm, 'var '), ctx);
-const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC } = ctx;
+const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC, STRWK } = ctx;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const upd = (index.match(/Dữ liệu cập nhật (\d{1,2}\/\d{1,2}\/\d{4})/) || [])[1] || '';
@@ -120,8 +120,8 @@ const faq = [
   }),
   ['Bảng tier được xếp dựa trên gì?',
    'Điểm tổng hợp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong từng đường.', ''],
-  ['Xem tướng khắc chế và hợp cặp ở đâu?',
-   `Bấm vào một tướng trên bảng tier, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Danh sách là ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
+  ['Xem điểm mạnh, điểm yếu, tướng khắc chế và hợp cặp ở đâu?',
+   `Bấm vào một tướng trên bảng tier: mục "Điểm mạnh, điểm yếu" tóm tắt 3 điểm mạnh và 3 điểm yếu, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Cả hai lấy từ ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
    `Ví dụ: <a href="${url(tops.find(([l]) => l === 'mid')[1][0])}">khắc chế ${esc(tops.find(([l]) => l === 'mid')[1][0].name)}</a>`],
   ['Tra giá và tác dụng trang bị, bảng ngọc, phù hiệu, phép bổ trợ ở đâu?',
    'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu, Bảng ngọc và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
@@ -164,7 +164,7 @@ for (const h of HEROES) {
     { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' },
     { '@type': 'ListItem', position: 2, name: `${h.name} ${L}`, item: SITE + url(h) }] };
   const ench = b && b.e ? b.e.map(id => BENCH[id][0]) : [];
-  const cn = COUNTERS[h.key];
+  const cn = COUNTERS[h.key], sw = STRWK[h.key];
   const cnRow = (t, l) => l.length ? `<p><b>${esc(t)}:</b> ${l.map(k => { const x = heroOf(k); return x ? `<a href="${url(x)}">${esc(x.name)}</a>` : ''; }).filter(Boolean).join(', ')}</p>` : '';
   const html = `<!doctype html>
 <html lang="vi">
@@ -203,6 +203,8 @@ ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
 ${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
 <p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}
+${sw ? `<h2>Điểm mạnh, điểm yếu của ${esc(h.name)}</h2>
+<h3>Điểm mạnh</h3><ul>${sw[0].map(t => `<li>${esc(t)}</li>`).join('')}</ul><h3>Điểm yếu</h3><ul>${sw[1].map(t => `<li>${esc(t)}</li>`).join('')}</ul><p class="src">Tóm tắt tiếng Việt theo mục Strengths / Weaknesses của <a href="${CNSRC.base}${esc(sw[2])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}): nhận định của người biên tập trang đó, không phải số liệu.</p>` : ''}
 ${cn ? `<h2>Khắc chế và hợp cặp với ${esc(h.name)}</h2>
 ${cnRow('Bị khắc chế bởi', cn[0])}${cnRow(`${h.name} khắc chế`, cn[1])}${cnRow('Hợp cặp', cn[2])}<p class="src">Theo danh sách viết tay của <a href="${CNSRC.base}${esc(cn[3])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}), không phải tỉ lệ thắng; server Việt Nam có thể lệch.</p>` : ''}
 ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `<dt>${['Nội tại', 'Chiêu 1', 'Chiêu 2', 'Chiêu cuối'][k] || 'Chiêu'}${n ? ' · ' + esc(n) : ''}</dt><dd>${esc(s || '')}</dd>`).join('')}</dl>
@@ -324,7 +326,7 @@ ${otherConcepts('/phep-bo-tro/')}` }));
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
   body: `<p class="lead">Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường (Tà Thần, Rừng, Giữa, Rồng, Trợ thủ). Web do một người chơi duy trì, không thuộc Garena hay TiMi Studio.</p>
-<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, danh sách tướng khắc chế và hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
+<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, điểm mạnh, điểm yếu và danh sách tướng khắc chế, hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
 <h2>Tra cứu</h2><p>Trang riêng cho từng món <a href="/trang-bi/">trang bị</a>, từng <a href="/phu-hieu/">phù hiệu</a>, <a href="/bang-ngoc/">bảng ngọc</a> (30 loại ngọc) và <a href="/phep-bo-tro/">phép bổ trợ</a> (giá, chỉ số, tác dụng), cùng <a href="/phuong-phap/">trang Phương pháp</a> ghi công thức xếp tier.</p>
 <h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>. Công thức đầy đủ, ngưỡng điểm và giới hạn: <a href="/phuong-phap/">trang Phương pháp</a>.</p>
 <h2>Cập nhật</h2><p>Bảng được cập nhật sau mỗi bản cân bằng của Garena và khoảng 2 tuần một lần theo số liệu giải. Ngày cập nhật ghi ở cuối mỗi trang; lịch sử các bản ở mục <a href="/ban-cap-nhat/">Bản cập nhật</a>.</p>
