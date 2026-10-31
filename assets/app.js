@@ -219,7 +219,27 @@ function loadBuilds(){return loadJS("buildsjs","assets/builds.js")}
 /* Bộ chiêu thức (assets/skills.js, ~37 kB): chỉ tải khi người xem chạm vào thẻ tướng hoặc mở bảng chi tiết,
    vì phần lớn người xem chỉ lướt bảng tier */
 function loadSkills(){return loadJS("skillsjs","assets/skills.js")}
-document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest("#board .card"))loadSkills()},{passive:true});
+/* Khắc chế và hợp cặp (assets/counters.js, ~4 kB nén): danh sách viết tay của ROV META (server Thái), tải cùng lúc với bộ chiêu thức */
+function loadCounters(){return loadJS("countersjs","assets/counters.js")}
+document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest("#board .card")){loadSkills();loadCounters()}},{passive:true});
+function waitCounters(){if(waitCounters.on)return;waitCounters.on=true;
+  const redo=ok=>{waitCounters.on=false;const sec=document.querySelector(".modal .cn[data-wait]");if(!sec)return;const h=HEROES.find(x=>x.id===sec.dataset.wait);
+    if(ok&&h&&typeof COUNTERS!=="undefined")sec.outerHTML=counterHTML(h);else sec.remove()};
+  if(typeof COUNTERS!=="undefined")return redo(true);
+  const s=loadCounters();s.addEventListener("load",()=>redo(true),{once:true});s.addEventListener("error",()=>redo(false),{once:true})}
+function counterHTML(h){
+  const head=`<h4 class="bds-h">Khắc chế và hợp cặp</h4>`;
+  if(typeof COUNTERS==="undefined"){waitCounters();return `<section class="cn" data-wait="${h.id}">${head}<p class="bld-note">Đang tải…</p></section>`}
+  const c=COUNTERS[h.key];if(!c)return "";
+  const chip=k=>{const x=HEROES.find(y=>y.key===k&&!y.sec)||HEROES.find(y=>y.key===k);if(!x)return "";const src=imgOf(x);
+    return `<li><button type="button" class="cn-b" data-cgo="${x.id}" style="--lc:var(--l-${x.lane})">${src?`<img src="${src}" alt="" loading="lazy" decoding="async" width="36" height="36">`:`<span class="cn-i">${initials(x.name)}</span>`}<span>${esc(x.name)}</span></button></li>`};
+  const row=(t,l)=>l.length?`<div class="cn-r"><h5>${t}</h5><ul>${l.map(chip).join("")}</ul></div>`:"";
+  return `<section class="cn" aria-label="Khắc chế và hợp cặp của ${esc(h.name)}">${head}${row("Bị khắc chế bởi",c[0])}${row("Khắc chế",c[1])}${row("Hợp cặp",c[2])}
+    <p class="sk-src">Theo danh sách viết tay của <a href="${CNSRC.base+c[3]}" target="_blank" rel="noopener">${CNSRC.name}</a> (server Thái, bản ${CNSRC.patch}), không phải tỉ lệ thắng; server Việt Nam có thể lệch. Chạm vào tướng để xem tướng đó.</p></section>`;
+}
+// bấm tướng trong mục Khắc chế: sang bảng chi tiết của tướng đó (gỡ phím tắt của bảng cũ như nút "Còn đi")
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".modal [data-cgo]");if(!b)return;
+  track("khac_che",{tuong:b.textContent.trim()});if(openModal.off)openModal.off();openModal(b.dataset.cgo)});
 function waitSkills(){if(waitSkills.on)return;waitSkills.on=true;
   const redo=ok=>{waitSkills.on=false;const sec=document.querySelector(".modal .sk[data-wait]");if(!sec)return;const h=HEROES.find(x=>x.id===sec.dataset.wait);
     if(ok&&h&&typeof SKILLS!=="undefined")sec.outerHTML=skillHTML(h);else sec.querySelector(".bld-note").textContent="Không tải được bộ chiêu thức. Tải lại trang để thử lại."};
@@ -334,6 +354,7 @@ function openModal(id,dir,via){
       <h4 class="bds-h">Vì sao tier ${h.tier}</h4>
       ${breakdown(h)}
       <p>${h.note||`Không có thay đổi ở bản ${PATCH}.`}</p>
+      ${counterHTML(h)}
       ${skillHTML(h)}
       ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">${ui("M5 12h14m-5.5-5.5L19 12l-5.5 5.5")}</i></button>`:""})()}
     </div></div></div></div>`;
@@ -354,6 +375,7 @@ function openModal(id,dir,via){
   $("mprev").onclick=()=>go(-1);$("mnext").onclick=()=>go(1);if($("mnext2"))$("mnext2").onclick=()=>{track("tuong_tiep",{tuong:h.name});go(1)};
   pushRecent(id);
   $("modalRoot").querySelectorAll("[data-go]").forEach(bt=>bt.onclick=()=>{document.removeEventListener("keydown",key);openModal(bt.dataset.go)});
+  openModal.off=()=>document.removeEventListener("keydown",key);
   fitNames($("modalRoot"));$("mx").focus({preventScroll:true});
   /* Điện thoại: vuốt xuống để đóng, vuốt ngang để sang tướng trước/sau */
   const md=$("modalRoot").querySelector(".modal");let x0=null,y0=0,dy=0,drag=false,horiz=false;

@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202610310949"></script>
+<script defer src="assets/boot.js?v=202610311048"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -850,6 +850,17 @@ html.lock{overflow:hidden}
 .modal .sk-d{margin:4px 0 0;font-size:13px;line-height:1.55}
 .modal .sk-src{margin:18px 0 0;font-size:12px;line-height:1.5;color:var(--faint)}
 .sk-src a{color:var(--muted);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px;padding:6px 0}   /* vùng chạm cao ~28px, không đổi dòng chữ */
+/* Khắc chế và hợp cặp (dưới phần Vì sao tier, trên bộ chiêu thức) */
+.modal .cn{margin-top:28px}
+.cn-r{margin:0 0 18px}
+.cn-r h5{margin:0 0 10px;font:400 10.5px var(--f-display);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.cn-r ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.cn-b{display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 14px 4px 4px;border:1px solid var(--line-2);background:none;color:var(--fg);font:inherit;font-size:13px;cursor:pointer;text-align:left}
+.cn-b img,.cn-i{width:36px;height:36px;flex:none;object-fit:cover;background:var(--surface-2)}
+.cn-i{display:grid;place-items:center;font:400 12px var(--f-display);color:var(--faint)}
+.cn-b span:last-child{white-space:nowrap}
+@media (hover:hover){.cn-b:hover{border-color:var(--lc,var(--fg))}}
+.cn-b:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 @media (max-width:719px){
   .bld-items{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 8px}
   .bi-ic{width:60px;height:60px}
@@ -1286,7 +1297,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202610310949"></script>
-<script defer src="assets/app.js?v=202610310949"></script>
+<script defer src="assets/data.js?v=202610311048"></script>
+<script defer src="assets/app.js?v=202610311048"></script>
 </body>
 </html>

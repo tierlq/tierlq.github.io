@@ -1,20 +1,20 @@
 // Tạo phần cho Google / trợ lý AI đọc được mà không cần chạy JavaScript:
 //  1. Mục "Hỏi nhanh" (FAQ) trong index.html, giữa <!--FAQ--> … <!--/FAQ--> và JSON-LD FAQPage giữa <!--FAQLD--> … <!--/FAQLD-->
-//  2. Trang riêng từng ô tướng: tuong/<key>-<đường>/index.html (tier, điểm, build, phù hiệu, bộ chiêu, link mở bảng chi tiết)
+//  2. Trang riêng từng ô tướng: tuong/<key>-<đường>/index.html (tier, điểm, build, phù hiệu, khắc chế/hợp cặp, bộ chiêu, link mở bảng chi tiết)
 //  3. Trang bản cập nhật: ban-cap-nhat/<dd-mm-yyyy>/ (từ P trong data.js + lịch sử tools/seo/patches.json) và ban-cap-nhat/ (danh sách)
 //  4. Trang Giới thiệu / Phương pháp / Liên hệ / Quyền riêng tư (gioi-thieu/, phuong-phap/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
 //  3b. Tier list từng đường: duong/<ta-than|rung|giua|rong|tro-thu>/ (tướng xếp theo tier, hạng, điểm, ghi chú bản vá)
 //  3c. Bài viết phân tích: bai-viet/<slug>/ và bai-viet/ (nguồn: tools/seo/articles/<slug>.html — phần đầu "khoá: giá trị", dòng ---, thân HTML; liên kết sang trang tướng/bản vá được thêm tự động)
 //  3d. Trang Phụ kiện (phu-kien/): link tiếp thị Shopee / TikTok Shop, nguồn tools/seo/affiliate.json; mảng items rỗng thì không tạo trang, không thêm link nào
 //  5. sitemap.xml (trang chủ + mọi trang)
-// Chạy lại mỗi khi đổi assets/data.js, assets/builds.js hoặc assets/skills.js:   node tools/seo/build.js
+// Chạy lại mỗi khi đổi assets/data.js, assets/builds.js, assets/skills.js hoặc assets/counters.js:   node tools/seo/build.js
 // Không sửa tay các tệp trong tuong/ — chạy lại script này.
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..', '..'), SITE = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'site.json'), 'utf8')).origin;   // đổi tên miền: node tools/domain/doi-ten-mien.js
 const ctx = {}; vm.createContext(ctx);
-for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js'])
+for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js', 'assets/counters.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/^const /gm, 'var '), ctx);
-const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS } = ctx;
+const { HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC } = ctx;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const upd = (index.match(/Dữ liệu cập nhật (\d{1,2}\/\d{1,2}\/\d{4})/) || [])[1] || '';
@@ -155,6 +155,8 @@ for (const h of HEROES) {
     { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' },
     { '@type': 'ListItem', position: 2, name: `${h.name} ${L}`, item: SITE + url(h) }] };
   const ench = b && b.e ? b.e.map(id => BENCH[id][0]) : [];
+  const cn = COUNTERS[h.key];
+  const cnRow = (t, l) => l.length ? `<p><b>${esc(t)}:</b> ${l.map(k => { const x = heroOf(k); return x ? `<a href="${url(x)}">${esc(x.name)}</a>` : ''; }).filter(Boolean).join(', ')}</p>` : '';
   const html = `<!doctype html>
 <html lang="vi">
 <head>
@@ -192,6 +194,8 @@ ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `ngọc ${COLVI[BARC[a][0]]} ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
 ${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
 <p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}
+${cn ? `<h2>Khắc chế và hợp cặp với ${esc(h.name)}</h2>
+${cnRow('Bị khắc chế bởi', cn[0])}${cnRow(`${h.name} khắc chế`, cn[1])}${cnRow('Hợp cặp', cn[2])}<p class="src">Theo danh sách viết tay của <a href="${CNSRC.base}${esc(cn[3])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}), không phải tỉ lệ thắng; server Việt Nam có thể lệch.</p>` : ''}
 ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `<dt>${['Nội tại', 'Chiêu 1', 'Chiêu 2', 'Chiêu cuối'][k] || 'Chiêu'}${n ? ' · ' + esc(n) : ''}</dt><dd>${esc(s || '')}</dd>`).join('')}</dl>
 <p class="src">Tóm tắt từ <a href="https://lienquan.garena.vn/hoc-vien/tuong-skin/d/${esc(sk[0])}/" rel="noopener">Học viện Garena</a>.</p>` : ''}
 ${others.length ? `<h2>${esc(h.name)} ở đường khác</h2><ul class="links">${others.map(x => `<li><a href="${url(x)}">${esc(LANES[x.lane])}${x.sec ? ' (phụ)' : ''} · tier ${x.tier}</a></li>`).join('')}</ul>` : ''}
@@ -337,6 +341,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
 <li>Liên kết tiếp thị và hoa hồng. Hiện chỉ có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'}, tách khỏi bảng tier và ghi rõ trên trang.</li>
+<li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
 <h2>Giới hạn</h2><ul class="items">
 <li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này; tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
