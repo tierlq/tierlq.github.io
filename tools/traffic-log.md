@@ -39,3 +39,7 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
   - Trang đích: 929 phiên vào `/`, chỉ 1 phiên vào trang tướng (Google chưa lập chỉ mục trang tướng; mã GA có trên mọi trang). 66 phiên không ghi trang đích.
   - Sự kiện riêng (số lần): `xem_tuong` 2.039, `doi_che_do` 321, `cai_dat_hien` 116, `tuong_tiep` 79, `tai_anh` 35, `cai_dat_dong` 21, `cai_dat_bam` 12, `xem_thay_doi` 12, `mo_tiktok` 9, `cai_dat_xong` 8, `xem_gan_day` 6, `chia_se` 4. `khac_che` chưa có vì tính năng ra ngày 31/10.
   - Số liệu này là nguồn thứ hai (Supermetrics), chưa đối chiếu với giao diện GA. Search Console qua Supermetrics chưa đăng nhập.
+- 31/10/2026: Search Console đọc qua Supermetrics (chưa đối chiếu với giao diện Search Console).
+  - Tài sản cũ `https://tierlq.github.io/`, 17–31/10: 619 lượt nhấp, 2.532 lượt hiển thị, vị trí trung bình 5,9. Chỉ trang chủ `/` có lượt hiển thị; chưa trang tướng hay trang đường nào. (Khoảng ngày khác mốc đầu 10–28/10 nên không so vị trí trung bình trực tiếp.)
+  - Tài sản mới `https://tierlq.com/`, 28–31/10: chưa có dòng dữ liệu nào (mới xác minh 30/10). Kiểm lại từ 14/11.
+  - Việc của chủ web: bấm "Yêu cầu lập chỉ mục" cho vài trang `/duong/…` và `/tuong/…` ở Search Console của `tierlq.com`.
