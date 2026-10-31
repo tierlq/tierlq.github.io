@@ -123,9 +123,9 @@ const faq = [
   ['Xem tướng khắc chế và hợp cặp ở đâu?',
    `Bấm vào một tướng trên bảng tier, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Danh sách là ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
    `Ví dụ: <a href="${url(tops.find(([l]) => l === 'mid')[1][0])}">khắc chế ${esc(tops.find(([l]) => l === 'mid')[1][0].name)}</a>`],
-  ['Tra giá và tác dụng trang bị, phù hiệu, phép bổ trợ ở đâu?',
-   'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
-   '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
+  ['Tra giá và tác dụng trang bị, bảng ngọc, phù hiệu, phép bổ trợ ở đâu?',
+   'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu, Bảng ngọc và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
+   '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/bang-ngoc/">Bảng ngọc</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
   ['Bảng tier cập nhật khi nào?',
    `Lần cập nhật gần nhất ngày ${upd}, theo bản ${PATCH} của Garena. Bảng được cập nhật sau mỗi bản cân bằng tướng và khoảng 2 tuần một lần theo số liệu giải.`, ''],
 ];
@@ -200,7 +200,7 @@ ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
 <p><b>Phép bổ trợ:</b> ${b.s.map(s => `<a href="/phep-bo-tro/#${s}">${esc(BSPELL[s][0])}</a>`).join(' hoặc ')}</p>
-<p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `ngọc ${COLVI[BARC[a][0]]} ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
+<p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
 ${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
 <p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}
 ${cn ? `<h2>Khắc chế và hợp cặp với ${esc(h.name)}</h2>
@@ -282,15 +282,15 @@ writePage('bai-viet', pageShell({ title: 'Bài viết về meta và cân bằng 
 if (affItems.length) writePage('phu-kien', pageShell({ title: 'Phụ kiện chơi Liên Quân: găng tay, quạt tản nhiệt điện thoại | Bảng Tier Liên Quân', desc: 'Gợi ý phụ kiện chơi Liên Quân Mobile trên điện thoại. Trang có liên kết tiếp thị ' + affShops + ', giá bạn trả không đổi.', path: '/phu-kien/', h1: 'Phụ kiện chơi Liên Quân', over: 'Gợi ý · có liên kết tiếp thị',
   body: `<p class="lead">Vài món phụ kiện cho người chơi trên điện thoại, chọn theo lượt bán trên Shopee. Đây không phải bài đánh giá hay xếp hạng như bảng tier: hãy đọc đánh giá của người mua trước khi quyết định.</p><p><b>Lưu ý:</b> các liên kết bên dưới là liên kết tiếp thị (affiliate). Nếu bạn mua qua đó, người duy trì web có thể nhận một khoản hoa hồng, giá bạn trả không đổi. Hoa hồng không ảnh hưởng tier hay nhận định trong bài.</p><ul class="chg plain">${affItems.map(x => `<li><a href="${esc(x.url)}" rel="sponsored nofollow noopener" target="_blank"><b>${esc(x.name)}</b></a><span class="tb">${esc(x.shop)}</span><p>${esc(x.desc)}</p></li>`).join('')}</ul>` }));
 
-// ---------- 3e. Trang tra cứu: trang bị, phù hiệu, phép bổ trợ (dữ liệu BITEM/BINFO/BENCH/BSPELL trong builds.js; "số build" = đếm trong BUILDS) ----------
+// ---------- 3e. Trang tra cứu: trang bị, phù hiệu, bảng ngọc, phép bổ trợ (dữ liệu BITEM/BINFO/BENCH/BARC/BSPELL trong builds.js; "số build" = đếm trong BUILDS) ----------
 const { BINFO, BENCHB } = ctx;
 const nB = Object.keys(BUILDS).length;
 const countBy = pick => { const m = {}; Object.values(BUILDS).forEach(b => pick(b).forEach(x => { m[x] = (m[x] || 0) + 1; })); return m; };
-const cItem = countBy(b => b.i), cSpell = countBy(b => b.s), cEnch = countBy(b => b.e || []);
+const cItem = countBy(b => b.i), cSpell = countBy(b => b.s), cEnch = countBy(b => b.e || []), cArc = countBy(b => b.r.map(([a]) => a));
 const goldFmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 const byCountName = (cm, nameOf) => (a, b) => (cm[b] || 0) - (cm[a] || 0) || nameOf(a).localeCompare(nameOf(b), 'vi');
 const REFNOTE = `Số build là đếm trong ${nB} build tham khảo của web (chủ yếu từ AOV-Builds, server Việt), không phải tỉ lệ dùng trong game.`;
-const CONCEPTS = [['/trang-bi/', 'Trang bị'], ['/phu-hieu/', 'Phù hiệu'], ['/phep-bo-tro/', 'Phép bổ trợ']];
+const CONCEPTS = [['/trang-bi/', 'Trang bị'], ['/phu-hieu/', 'Phù hiệu'], ['/bang-ngoc/', 'Bảng ngọc'], ['/phep-bo-tro/', 'Phép bổ trợ']];
 const otherConcepts = cur => `<h2>Tra cứu khác</h2><ul class="links">${CONCEPTS.filter(([u]) => u !== cur).map(([u, n]) => `<li><a href="${u}">${n}</a></li>`).join('')}<li><a href="/phuong-phap/">Cách xếp tier</a></li><li><a href="${lurl('jg')}">Tier list Rừng</a></li></ul>`;
 const ITCAT = [['atk', 'Tấn công'], ['mag', 'Phép thuật'], ['def', 'Phòng thủ'], ['boot', 'Giày'], ['jg', 'Đồ rừng'], ['sup', 'Đồ trợ thủ']];
 const itemLi = id => { const [vi, , ic] = BITEM[id], f = BINFO[id] || { s: [], n: [] };
@@ -307,6 +307,12 @@ writePage('phu-hieu', pageShell({ title: 'Phù hiệu Liên Quân: các nhánh, 
 <p class="src">${REFNOTE} Tên và mô tả theo dữ liệu AoV-IndeX bản Việt. Tra chính thức ở <a href="https://lienquan.garena.vn/hoc-vien/phu-hieu/" rel="noopener">Học viện Garena</a>.</p>
 ${Object.entries(BENCHB).map(([br, bn]) => { const ids = benchIds.filter(id => BENCH[id][1] === br).sort((a, b) => BENCH[a][2] - BENCH[b][2] || BENCH[a][0].localeCompare(BENCH[b][0], 'vi')); return ids.length ? `<h2>${esc(bn)} (${ids.length})</h2><ul class="chg plain">${ids.map(id => `<li id="${id}"><img class="ic" src="/b/e-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BENCH[id][0])}</b><span class="tb">Cấp ${ROM[BENCH[id][2]] || BENCH[id][2]}</span><span class="tb">${cEnch[id] || 0} build</span><p>${esc(BENCH[id][3])}</p></li>`).join('')}</ul>` : ''; }).join('\n')}
 ${otherConcepts('/phu-hieu/')}` }));
+const arcIds = Object.keys(BARC), ARCCOL = [['red', 'đỏ'], ['purple', 'tím'], ['teal', 'xanh']];
+writePage('bang-ngoc', pageShell({ title: 'Bảng ngọc Liên Quân: chỉ số 30 viên ngọc đỏ, tím, xanh | Bảng Tier Liên Quân', desc: `${arcIds.length} viên ngọc Liên Quân ${season}: tên, chỉ số cấp III của ngọc đỏ, tím, xanh và số build tham khảo dùng từng viên.`, path: '/bang-ngoc/', h1: 'Bảng ngọc Liên Quân', over: `Tra cứu · ${season}`,
+  body: `<p class="lead">Mỗi bảng ngọc gồm 30 viên, 10 viên mỗi màu đỏ, tím, xanh (đúng như các build tham khảo của web). Trang này liệt kê ${arcIds.length} loại ngọc cấp III, ${arcIds.length / 3} loại mỗi màu, kèm chỉ số và số build dùng loại đó; loại nhiều build đứng trước.</p>
+<p class="src">${REFNOTE} Tên ngọc theo trang <a href="https://lienquan.garena.vn/hoc-vien/bang-ngoc/" rel="noopener">Bảng ngọc của Học viện Garena</a> (đọc ngày 31/10/2026), chỉ số theo dữ liệu AoV-IndeX. Ngọc cấp I và II có chỉ số thấp hơn, xem ở Học viện. Hai loại ngọc tím Hút máu và Tỷ lệ chí mạng/Máu chưa được trang Học viện liệt kê ở cấp III nên tên theo cấp II của trang đó.</p>
+${ARCCOL.map(([c, cn]) => { const ids = arcIds.filter(id => BARC[id][0] === c).sort(byCountName(cArc, id => BARC[id][2])); return `<h2>Ngọc ${cn} (${ids.length})</h2><ul class="chg plain">${ids.map(id => `<li id="${id}"><img class="ic" src="/b/a-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BARC[id][2])}</b><span class="tb">${cArc[id] || 0} build</span><p>${esc(BARC[id][1])}</p></li>`).join('')}</ul>`; }).join('\n')}
+${otherConcepts('/bang-ngoc/')}` }));
 const spellIds = Object.keys(BSPELL).sort(byCountName(cSpell, id => BSPELL[id][0]));
 writePage('phep-bo-tro', pageShell({ title: 'Phép bổ trợ Liên Quân: tác dụng từng phép | Bảng Tier Liên Quân', desc: `${spellIds.length} phép bổ trợ Liên Quân ${season}: ${spellIds.slice(0, 4).map(id => BSPELL[id][0]).join(', ')}... kèm tác dụng và số build tham khảo dùng phép đó.`, path: '/phep-bo-tro/', h1: 'Phép bổ trợ Liên Quân', over: `Tra cứu · ${season}`,
   body: `<p class="lead">${spellIds.length} phép bổ trợ xuất hiện trong ${nB} build tham khảo của Bảng Tier Liên Quân, kèm tác dụng và số build dùng phép đó. Trong các build của web, tướng đi Rừng đều mang Trừng Trị.</p>
@@ -319,7 +325,7 @@ const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
   body: `<p class="lead">Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường (Tà Thần, Rừng, Giữa, Rồng, Trợ thủ). Web do một người chơi duy trì, không thuộc Garena hay TiMi Studio.</p>
 <h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, danh sách tướng khắc chế và hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
-<h2>Tra cứu</h2><p>Trang riêng cho từng món <a href="/trang-bi/">trang bị</a>, từng <a href="/phu-hieu/">phù hiệu</a> và <a href="/phep-bo-tro/">phép bổ trợ</a> (giá, chỉ số, tác dụng), cùng <a href="/phuong-phap/">trang Phương pháp</a> ghi công thức xếp tier.</p>
+<h2>Tra cứu</h2><p>Trang riêng cho từng món <a href="/trang-bi/">trang bị</a>, từng <a href="/phu-hieu/">phù hiệu</a>, <a href="/bang-ngoc/">bảng ngọc</a> (30 loại ngọc) và <a href="/phep-bo-tro/">phép bổ trợ</a> (giá, chỉ số, tác dụng), cùng <a href="/phuong-phap/">trang Phương pháp</a> ghi công thức xếp tier.</p>
 <h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>. Công thức đầy đủ, ngưỡng điểm và giới hạn: <a href="/phuong-phap/">trang Phương pháp</a>.</p>
 <h2>Cập nhật</h2><p>Bảng được cập nhật sau mỗi bản cân bằng của Garena và khoảng 2 tuần một lần theo số liệu giải. Ngày cập nhật ghi ở cuối mỗi trang; lịch sử các bản ở mục <a href="/ban-cap-nhat/">Bản cập nhật</a>.</p>
 <h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://rovmeta.com/heroes" rel="noopener">ROV META (khắc chế và hợp cặp, server Thái)</a></li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>

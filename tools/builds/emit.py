@@ -43,10 +43,22 @@ ITEM={}
 for i in used_i:
     e=EQ[i];ITEM[i]=[FIXVI.get(i,e['vi']),CAT[e['categoryId']],i,e['name']]
     icon(f"{A}/{e['asset']}",f'{REPO}/b/i-{i}.webp');keep.add(f'i-{i}.webp')
+# Bảng ngọc: xuất cả 30 viên (không chỉ viên có trong build) cho trang /bang-ngoc/. Tên Việt theo trang Học viện Garena
+# https://lienquan.garena.vn/hoc-vien/bang-ngoc/ (đọc 31/10/2026; dạng "<Màu> III <chỉ số>"), ghép với avix-data theo chỉ số.
+# Hai viên tím Hút máu (reaper) và Tỷ lệ chí mạng/Máu (tyrant): trang Garena chưa liệt kê ở cấp III, tên theo cấp II của chính trang đó.
+ARCVI={'red_wise':'Công phép','red_samurai':'Công vật lý','red_berserker':'Công vật lý/Xuyên giáp','red_bloodlust':'Công vật lý/Hút máu',
+ 'red_rampage':'Tỉ lệ chí mạng/Sát thương chí mạng','red_guardian':'Tốc đánh/Máu/Giáp','red_nomad':'Công phép/Xuyên thủ phép','red_sovereign':'Công phép/Tốc đánh',
+ 'red_savage':'Tỉ lệ chí mạng','red_blitz':'Tốc đánh/Tỉ lệ chí mạng',
+ 'purple_colossus':'Máu tối đa','purple_cleric':'Hút máu phép','purple_tyrant':'Tỷ lệ chí mạng/Máu','purple_reaper':'Hút máu','purple_undying':'Máu tối đa/Hồi máu',
+ 'purple_crusader':'Hút máu/Thủ phép','purple_vampire':'Công phép/Hút máu phép','purple_reliever':'Máu/Hồi máu/Tốc chạy','purple_assassin':'Công vật lý/Tốc chạy','purple_fairy':'Tốc đánh/Tốc chạy',
+ 'teal_bastion':'Giáp','teal_mythril':'Giáp/Giáp phép','teal_paladin':'Máu tối đa/Giảm hồi chiêu','teal_monarch':'Giáp phép','teal_hexer':'Công phép/Giảm hồi chiêu',
+ 'teal_dragoon':'Công vật lý/Xuyên giáp','teal_degenerate':'Tốc đánh/Xuyên giáp phép','teal_templar':'Giảm hồi chiêu','teal_darksider':'Hút máu phép/Giáp','teal_crusader':'Giáp/Giáp phép/Hồi chiêu'}
+COLNAME={'red':'Đỏ','purple':'Tím','teal':'Xanh'}
+assert set(ARCVI)==set(AR),set(AR)^set(ARCVI)
 ARC={}
-for a in used_a:
-    s=AR[a]['stats'];txt=' · '.join(f"{STATVI[k]} +{v}{'%' if k in PCT else ''}" for k,v in s.items())
-    ARC[a]=[a.split('_')[0],txt];icon(f"{A}/{AR[a]['asset']}",f'{REPO}/b/a-{a}.webp',64);keep.add(f'a-{a}.webp')
+for a in sorted(AR):
+    s=AR[a]['stats'];txt=' · '.join(f"{STATVI[k]} +{v}{'%' if k in PCT else ''}" for k,v in s.items());col=a.split('_')[0]
+    ARC[a]=[col,txt,f"{COLNAME[col]} III {ARCVI[a]}"];icon(f"{A}/{AR[a]['asset']}",f'{REPO}/b/a-{a}.webp',64);keep.add(f'a-{a}.webp')
 # Phù hiệu: tên Việt, nhánh, cấp, mô tả (avix-data bản Việt); ảnh b/e-<id>.webp
 ENV={e['enchantmentId']:e for e in json.load(open(f'{D}/vi/enchantments.json'))}
 BRV={'leagueofhumans':'Thành khởi nguyên','veda':'Tháp quang minh','lokheim':'Vực hỗn mang','afata':'Rừng nguyên sinh'}
