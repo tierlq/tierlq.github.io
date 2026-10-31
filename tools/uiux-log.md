@@ -148,3 +148,14 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Không tự kiểm được: chữ "SỐ LIỆU" dấu tách rời trong ảnh chụp là do máy kiểm tra không tải được font Google (JetBrains Mono), máy thật bình thường. Cần chủ web thử máy thật: gõ tìm trên điện thoại (hàng Meta/Tự xếp/Số liệu ẩn tạm khi gõ),
   xoay ngang Chrome Android (còn màn trắng/xanh không), trình duyệt trong Zalo/Messenger/TikTok.
 - Ý tưởng để lần sau: xoay ngang, bảng chi tiết cao ~310px nên ảnh bìa chiếm gần hết, phải cuộn trong bảng mới thấy build — cân nhắc thu ảnh bìa khi màn thấp.
+
+## 2026-10-31 (việc định kỳ Thứ Bảy)
+- Rà 1440/390/360 sáng/tối + điện thoại xoay ngang 844×390: đầu trang, sân khấu, bảng tier, bảng chi tiết (build), bộ lọc, tìm có/không kết quả, Tự xếp, Số liệu, Cách xếp và nguồn. axe-core 4.10: trang chính và bảng chi tiết không lỗi.
+- Sửa: **bảng chi tiết khi điện thoại xoay ngang** (ý tưởng để dành từ 30/10): ảnh bìa 16/7 cao ~330px chiếm gần hết khung 350px, chỉ thấy ảnh + tên, phải cuộn mới thấy tier/build.
+  Nay khi màn thấp (max-height:500px, nằm ngang) ảnh bìa cao clamp(120px, 38vh, 170px), lề ngoài 20 → 8px: mở ra thấy ngay tên, nhãn tier/đường/lớp và hàng đồ build. Chỉ CSS, máy tính và điện thoại dọc không đổi.
+- Sửa: link trong danh sách Nguồn (mục Cách xếp và nguồn) trên máy tính cao 17px → 28px (inline-block + padding 3px, dòng chữ gần như không xê dịch). Điện thoại đã có padding riêng từ trước.
+- Kiểm tra: 1440/390 sáng/tối: 5 slide, 147/38 thẻ, mở 147 bảng chi tiết không lỗi, không lỗi JS/CSP, không ảnh 404, không tràn ngang. So ảnh trước/sau: chỉ khác ở bảng chi tiết xoay ngang; đầu trang khác do thiên hà chuyển động.
+- Không sửa JS nên không đổi `?v=`.
+- Ý tưởng để lần sau:
+  - Điện thoại xoay ngang (≥720px) dùng bộ lọc dạng hàng chip của máy tính, cao ~240px: khi gõ tìm, bàn phím che nửa màn nên không thấy kết quả. Cân nhắc dùng nút Lọc + tấm trượt như điện thoại dọc cho `(pointer:coarse) and (max-height:500px)`.
+  - Mục lục tên tướng trong Hỏi nhanh: tên ngắn như "Qi" rộng 19px (đủ chuẩn nhờ khoảng cách " · ", chỉ cân nhắc).

@@ -983,7 +983,12 @@ html.lock{overflow:hidden}
 @media (max-height:500px) and (orientation:landscape){
   .stage{height:auto;min-height:100vh;min-height:100svh}
   .slide-c{bottom:84px}
+  /* Bảng chi tiết khi màn thấp (điện thoại xoay ngang): ảnh bìa 16/7 từng chiếm gần hết chiều cao, phải cuộn mới thấy tier/build */
+  .veil{padding:8px}
+  .modal{max-height:calc(100% - 16px)}
+  .m-ban:not(.noimg){aspect-ratio:auto;height:clamp(120px,38vh,170px)}
 }
+@media (min-width:720px){.box li>a:only-child{display:inline-block;padding:3px 0}}   /* link nguồn trên máy tính: vùng bấm 17 → 28px */
 
 /* Giữ chân người xem: dải bản cập nhật, xem gần đây, tướng tiếp theo, mời thêm vào màn hình chính */
 .hero-upd{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;margin:0 0 14px;padding:8px 14px 8px 12px;border:1px solid var(--h-line);border-radius:999px;color:#f3f2ef;text-decoration:none;font:400 11px var(--f-mono);letter-spacing:.06em;background:rgba(0,0,0,.45)}
