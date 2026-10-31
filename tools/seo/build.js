@@ -2,7 +2,7 @@
 //  1. Mục "Hỏi nhanh" (FAQ) trong index.html, giữa <!--FAQ--> … <!--/FAQ--> và JSON-LD FAQPage giữa <!--FAQLD--> … <!--/FAQLD-->
 //  2. Trang riêng từng ô tướng: tuong/<key>-<đường>/index.html (tier, điểm, build, phù hiệu, bộ chiêu, link mở bảng chi tiết)
 //  3. Trang bản cập nhật: ban-cap-nhat/<dd-mm-yyyy>/ (từ P trong data.js + lịch sử tools/seo/patches.json) và ban-cap-nhat/ (danh sách)
-//  4. Trang Giới thiệu / Liên hệ / Quyền riêng tư (gioi-thieu/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
+//  4. Trang Giới thiệu / Phương pháp / Liên hệ / Quyền riêng tư (gioi-thieu/, phuong-phap/, lien-he/, quyen-rieng-tu/) và mục lục liên kết trong index.html (<!--HEROLINKS-->)
 //  3b. Tier list từng đường: duong/<ta-than|rung|giua|rong|tro-thu>/ (tướng xếp theo tier, hạng, điểm, ghi chú bản vá)
 //  3c. Bài viết phân tích: bai-viet/<slug>/ và bai-viet/ (nguồn: tools/seo/articles/<slug>.html — phần đầu "khoá: giá trị", dòng ---, thân HTML; liên kết sang trang tướng/bản vá được thêm tự động)
 //  3d. Trang Phụ kiện (phu-kien/): link tiếp thị Shopee / TikTok Shop, nguồn tools/seo/affiliate.json; mảng items rỗng thì không tạo trang, không thêm link nào
@@ -31,7 +31,7 @@ const CSP0 = index.match(/<meta http-equiv="Content-Security-Policy"[^>]*>/)[0];
 const affItems = (JSON.parse(fs.readFileSync(path.join(__dirname, 'affiliate.json'), 'utf8')).items) || [];
 affItems.forEach((x, i) => { if (!x.name || !x.desc || !/^https:\/\//.test(x.url || '') || !['Shopee', 'TikTok Shop'].includes(x.shop)) throw Error(`tools/seo/affiliate.json mục ${i + 1}: cần name, desc, shop (Shopee hoặc TikTok Shop) và url bắt đầu bằng https://`); });
 const affShops = [...new Set(affItems.map(x => x.shop))].join(' và ');
-const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
+const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
 const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
 <html lang="vi">
 <head>
@@ -187,10 +187,10 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
-<ol class="items">${items.map(n => `<li>${esc(n)}</li>`).join('')}</ol>
-<p><b>Phép bổ trợ:</b> ${esc(spells.join(' hoặc '))}</p>
+<ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
+<p><b>Phép bổ trợ:</b> ${b.s.map(s => `<a href="/phep-bo-tro/#${s}">${esc(BSPELL[s][0])}</a>`).join(' hoặc ')}</p>
 <p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `ngọc ${COLVI[BARC[a][0]]} ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
-${ench.length ? `<p><b>Phù hiệu:</b> ${esc(ench.join(', '))}</p>` : ''}
+${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
 <p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}
 ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `<dt>${['Nội tại', 'Chiêu 1', 'Chiêu 2', 'Chiêu cuối'][k] || 'Chiêu'}${n ? ' · ' + esc(n) : ''}</dt><dd>${esc(s || '')}</dd>`).join('')}</dl>
 <p class="src">Tóm tắt từ <a href="https://lienquan.garena.vn/hoc-vien/tuong-skin/d/${esc(sk[0])}/" rel="noopener">Học viện Garena</a>.</p>` : ''}
@@ -245,7 +245,7 @@ for (const l of Object.keys(LANES)) {
   let desc = mkDesc(5); for (let n = 4; desc.length > 160 && n >= 1; n--) desc = mkDesc(n);
   const body = `<p class="lead">Bảng xếp ${a.length} tướng đi ${esc(L)} trong Liên Quân ${esc(season)}${nSec ? ` (gồm ${nSec} tướng đi như đường phụ)` : ''}, từ mạnh đến yếu: ${esc(cnt)}. ${S.length ? `Tier S gồm ${esc(names(Sm.length ? Sm : Ss, 10))}${Sm.length && Ss.length ? ` và ${esc(names(Ss, 5))} (đường phụ)` : ''}.` : `Đứng đầu là ${esc(names(topN, 3))}.`} Cập nhật ${upd}, bản ${PATCH}.</p>
 ${TO.split('').map(t => { const g = a.filter(h => h.tier === t); return g.length ? `<h2>Tier ${t} · ${TNAME[t]} (${g.length})</h2><ul class="chg plain">${g.map(rowL).join('')}</ul>` : ''; }).join('\n')}
-<h2>Tier được xếp thế nào</h2><p>Điểm tổng hợp trên thang 5 từ số liệu ĐTDV mùa hiện tại (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong riêng đường ${esc(L)}, nên một tướng đi nhiều đường có thể có tier khác nhau ở mỗi đường. Thông tin để tham khảo, meta đổi theo bản vá và cách chơi. <a href="/gioi-thieu/">Chi tiết cách xếp</a> · <a href="${purl(curP)}">Thay đổi của bản ${PATCH}</a>.</p>
+<h2>Tier được xếp thế nào</h2><p>Điểm tổng hợp trên thang 5 từ số liệu ĐTDV mùa hiện tại (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong riêng đường ${esc(L)}, nên một tướng đi nhiều đường có thể có tier khác nhau ở mỗi đường. Thông tin để tham khảo, meta đổi theo bản vá và cách chơi. <a href="/phuong-phap/">Chi tiết cách xếp</a> ·<a href="${purl(curP)}">Thay đổi của bản ${PATCH}</a>.</p>
 <h2>Các đường khác</h2><ul class="links">${Object.keys(LANES).filter(x => x !== l).map(x => `<li><a href="${lurl(x)}">Tier list ${esc(LANES[x])}</a></li>`).join('')}</ul>`;
   writePage(lurl(l).slice(1, -1), pageShell({ title: `Tier list ${L} Liên Quân ${season}: tướng mạnh nhất | Bảng Tier Liên Quân`, desc, path: lurl(l), h1: `Tier list ${L}`, over: `Liên Quân ${season} · cập nhật ${upd}`, body }));
 }
@@ -269,16 +269,80 @@ writePage('bai-viet', pageShell({ title: 'Bài viết về meta và cân bằng 
 if (affItems.length) writePage('phu-kien', pageShell({ title: 'Phụ kiện chơi Liên Quân: găng tay, quạt tản nhiệt điện thoại | Bảng Tier Liên Quân', desc: 'Gợi ý phụ kiện chơi Liên Quân Mobile trên điện thoại. Trang có liên kết tiếp thị ' + affShops + ', giá bạn trả không đổi.', path: '/phu-kien/', h1: 'Phụ kiện chơi Liên Quân', over: 'Gợi ý · có liên kết tiếp thị',
   body: `<p class="lead">Vài món phụ kiện cho người chơi trên điện thoại, chọn theo lượt bán trên Shopee. Đây không phải bài đánh giá hay xếp hạng như bảng tier: hãy đọc đánh giá của người mua trước khi quyết định.</p><p><b>Lưu ý:</b> các liên kết bên dưới là liên kết tiếp thị (affiliate). Nếu bạn mua qua đó, người duy trì web có thể nhận một khoản hoa hồng, giá bạn trả không đổi. Hoa hồng không ảnh hưởng tier hay nhận định trong bài.</p><ul class="chg plain">${affItems.map(x => `<li><a href="${esc(x.url)}" rel="sponsored nofollow noopener" target="_blank"><b>${esc(x.name)}</b></a><span class="tb">${esc(x.shop)}</span><p>${esc(x.desc)}</p></li>`).join('')}</ul>` }));
 
+// ---------- 3e. Trang tra cứu: trang bị, phù hiệu, phép bổ trợ (dữ liệu BITEM/BINFO/BENCH/BSPELL trong builds.js; "số build" = đếm trong BUILDS) ----------
+const { BINFO, BENCHB } = ctx;
+const nB = Object.keys(BUILDS).length;
+const countBy = pick => { const m = {}; Object.values(BUILDS).forEach(b => pick(b).forEach(x => { m[x] = (m[x] || 0) + 1; })); return m; };
+const cItem = countBy(b => b.i), cSpell = countBy(b => b.s), cEnch = countBy(b => b.e || []);
+const goldFmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const byCountName = (cm, nameOf) => (a, b) => (cm[b] || 0) - (cm[a] || 0) || nameOf(a).localeCompare(nameOf(b), 'vi');
+const REFNOTE = `Số build là đếm trong ${nB} build tham khảo của web (chủ yếu từ AOV-Builds, server Việt), không phải tỉ lệ dùng trong game.`;
+const CONCEPTS = [['/trang-bi/', 'Trang bị'], ['/phu-hieu/', 'Phù hiệu'], ['/phep-bo-tro/', 'Phép bổ trợ']];
+const otherConcepts = cur => `<h2>Tra cứu khác</h2><ul class="links">${CONCEPTS.filter(([u]) => u !== cur).map(([u, n]) => `<li><a href="${u}">${n}</a></li>`).join('')}<li><a href="/phuong-phap/">Cách xếp tier</a></li><li><a href="${lurl('jg')}">Tier list Rừng</a></li></ul>`;
+const ITCAT = [['atk', 'Tấn công'], ['mag', 'Phép thuật'], ['def', 'Phòng thủ'], ['boot', 'Giày'], ['jg', 'Đồ rừng'], ['sup', 'Đồ trợ thủ']];
+const itemLi = id => { const [vi, , ic] = BITEM[id], f = BINFO[id] || { s: [], n: [] };
+  return `<li id="${id}"><img class="ic" src="/b/i-${esc(ic)}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(vi)}</b>${f.p ? `<span class="tb">${goldFmt(f.p)} vàng</span>` : ''}<span class="tb">${cItem[id] || 0} build</span>${f.s && f.s.length ? `<p>${esc(f.s.join(' · '))}</p>` : ''}${(f.n || []).map(([n, d]) => `<p><b>${esc(n)}:</b> ${esc(d)}</p>`).join('')}</li>`; };
+const itemIds = Object.keys(BITEM);
+writePage('trang-bi', pageShell({ title: 'Trang bị Liên Quân: giá, chỉ số, nội tại từng món | Bảng Tier Liên Quân', desc: `${itemIds.length} món trang bị Liên Quân ${season}: giá, chỉ số, nội tại và số build tham khảo dùng món đó, chia theo nhóm tấn công, phép thuật, phòng thủ.`, path: '/trang-bi/', h1: 'Trang bị Liên Quân', over: `Tra cứu · ${season}`,
+  body: `<p class="lead">${itemIds.length} món trang bị xuất hiện trong ${nB} build tham khảo của Bảng Tier Liên Quân, chia theo nhóm. Mỗi món ghi giá, chỉ số, nội tại và số build dùng món đó; món nhiều build đứng trước.</p>
+<p class="src">${REFNOTE} Giá và chỉ số theo dữ liệu AoV-IndeX bản Việt, có thể lệch nếu Garena vừa chỉnh. Tra chính thức ở <a href="https://lienquan.garena.vn/hoc-vien/trang-bi/" rel="noopener">Học viện Garena</a>.</p>
+${ITCAT.map(([c, t]) => { const ids = itemIds.filter(id => BITEM[id][1] === c).sort(byCountName(cItem, id => BITEM[id][0])); return ids.length ? `<h2>${t} (${ids.length})</h2><ul class="chg plain">${ids.map(itemLi).join('')}</ul>` : ''; }).join('\n')}
+${otherConcepts('/trang-bi/')}` }));
+const benchIds = Object.keys(BENCH), ROM = ['', 'I', 'II', 'III'];
+writePage('phu-hieu', pageShell({ title: 'Phù hiệu Liên Quân: các nhánh, cấp độ và tác dụng | Bảng Tier Liên Quân', desc: `${benchIds.length} phù hiệu Liên Quân ${season} chia theo ${Object.keys(BENCHB).length} nhánh, kèm cấp độ, tác dụng và số build tham khảo dùng phù hiệu đó.`, path: '/phu-hieu/', h1: 'Phù hiệu Liên Quân', over: `Tra cứu · ${season}`,
+  body: `<p class="lead">Phù hiệu chia thành ${Object.keys(BENCHB).length} nhánh: ${Object.values(BENCHB).map(esc).join(', ')}. Mỗi bộ có 3 phù hiệu ở nhánh chính (cấp I, II, III) và 2 phù hiệu phụ cấp I hoặc II ở nhánh khác. Bảng liệt kê ${benchIds.length} phù hiệu xuất hiện trong ${nB} build tham khảo, kèm tác dụng và số build dùng.</p>
+<p class="src">${REFNOTE} Tên và mô tả theo dữ liệu AoV-IndeX bản Việt. Tra chính thức ở <a href="https://lienquan.garena.vn/hoc-vien/phu-hieu/" rel="noopener">Học viện Garena</a>.</p>
+${Object.entries(BENCHB).map(([br, bn]) => { const ids = benchIds.filter(id => BENCH[id][1] === br).sort((a, b) => BENCH[a][2] - BENCH[b][2] || BENCH[a][0].localeCompare(BENCH[b][0], 'vi')); return ids.length ? `<h2>${esc(bn)} (${ids.length})</h2><ul class="chg plain">${ids.map(id => `<li id="${id}"><img class="ic" src="/b/e-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BENCH[id][0])}</b><span class="tb">Cấp ${ROM[BENCH[id][2]] || BENCH[id][2]}</span><span class="tb">${cEnch[id] || 0} build</span><p>${esc(BENCH[id][3])}</p></li>`).join('')}</ul>` : ''; }).join('\n')}
+${otherConcepts('/phu-hieu/')}` }));
+const spellIds = Object.keys(BSPELL).sort(byCountName(cSpell, id => BSPELL[id][0]));
+writePage('phep-bo-tro', pageShell({ title: 'Phép bổ trợ Liên Quân: tác dụng từng phép | Bảng Tier Liên Quân', desc: `${spellIds.length} phép bổ trợ Liên Quân ${season}: ${spellIds.slice(0, 4).map(id => BSPELL[id][0]).join(', ')}... kèm tác dụng và số build tham khảo dùng phép đó.`, path: '/phep-bo-tro/', h1: 'Phép bổ trợ Liên Quân', over: `Tra cứu · ${season}`,
+  body: `<p class="lead">${spellIds.length} phép bổ trợ xuất hiện trong ${nB} build tham khảo của Bảng Tier Liên Quân, kèm tác dụng và số build dùng phép đó. Trong các build của web, tướng đi Rừng đều mang Trừng Trị.</p>
+<p class="src">${REFNOTE} Tên và mô tả theo dữ liệu AoV-IndeX bản Việt. Tra chính thức ở <a href="https://lienquan.garena.vn/hoc-vien/phu-tro/" rel="noopener">Học viện Garena</a>.</p>
+<ul class="chg plain">${spellIds.map(id => `<li id="${id}"><img class="ic" src="/b/t-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BSPELL[id][0])}</b><span class="tb">${cSpell[id] || 0} build</span><p>${esc(BSPELL[id][1])}</p></li>`).join('')}</ul>
+${otherConcepts('/phep-bo-tro/')}` }));
+
 // ---------- 4. Giới thiệu / Liên hệ / Quyền riêng tư + mục lục liên kết ----------
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
   body: `<p class="lead">Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường (Tà Thần, Rừng, Giữa, Rồng, Trợ thủ). Web do một người chơi duy trì, không thuộc Garena hay TiMi Studio.</p>
 <h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
-<h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>.</p>
+<h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>. Công thức đầy đủ, ngưỡng điểm và giới hạn: <a href="/phuong-phap/">trang Phương pháp</a>.</p>
 <h2>Cập nhật</h2><p>Bảng được cập nhật sau mỗi bản cân bằng của Garena và khoảng 2 tuần một lần theo số liệu giải. Ngày cập nhật ghi ở cuối mỗi trang; lịch sử các bản ở mục <a href="/ban-cap-nhat/">Bản cập nhật</a>.</p>
 <h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>
 <h2>Lưu ý</h2><p>Thông tin để tham khảo. Meta đổi theo bản vá, trình độ và cách chơi, nên tier không thay cho cảm nhận của bạn khi chơi. Tên và hình ảnh tướng thuộc bản quyền Garena / TiMi Studio.</p>
 <p>Kênh TikTok: <a href="${TT}" rel="noopener">@bangtierlienquan</a> · Góp ý, báo sai số liệu: <a href="/lien-he/">Liên hệ</a>.</p>` }));
+// Phương pháp (phuong-phap/): công thức xếp tier. Số trận, danh sách chỉnh tay và đường phụ đọc thẳng từ data.js; ngưỡng điểm phải khớp aogScore/proScore/QUOTA trong data.js
+const manualList = HEROES.filter(h => h.floor === 'manual').sort((a, b) => TO.indexOf(a.tier) - TO.indexOf(b.tier) || a.name.localeCompare(b.name, 'vi')).map(h => `${esc(h.name)} (${esc(LANES[h.lane])}) → ${h.tier}`);
+const secList = HEROES.filter(h => h.sec).map(h => `${esc(h.name)} (${esc(LANES[h.lane])})`);
+writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Quân: công thức và nguồn | Bảng Tier Liên Quân', desc: 'Cách Bảng Tier Liên Quân xếp tier: nguồn ĐTDV và RoV Pro League, công thức tính điểm, ngưỡng từng tier và danh sách chỉnh tay công khai.', path: '/phuong-phap/', h1: 'Phương pháp xếp tier', over: `Cách làm · ${season}`,
+  body: `<p class="lead">Tier trên Bảng Tier Liên Quân đến từ một công thức công khai, chạy trên số liệu giải đấu và tier list rank cộng đồng, cộng một danh sách chỉnh tay của người biên tập cũng công khai. Trang này giải thích từng bước để bạn tự kiểm lại.</p>
+<h2>Bốn nguồn số liệu</h2><ul class="items">
+<li><b>ĐTDV mùa hiện tại (46%):</b> ${ctx.SRC.aogGames} trận của Đấu Trường Danh Vọng (Arena of Glory) theo bảng thống kê Liquipedia, ưu tiên số trận được chọn.</li>
+<li><b>ĐTDV mùa trước (17%):</b> ${ctx.SRC.prevGames} trận, cùng cách tính, trọng số nhẹ hơn vì đã qua nhiều bản cập nhật.</li>
+<li><b>RoV Pro League (14%):</b> giải đấu của server Thái Lan, lấy từ ROV META. Tướng ít xuất hiện chỉ được tính rất nhẹ.</li>
+<li><b>Tier list rank cộng đồng (23%):</b> người biên tập tổng hợp từ hai nhà sáng tạo nội dung (@darkiaov9126 và @blvkhanhhy). Đây là ý kiến, không phải số liệu.</li></ul>
+<p>Trọng số được chia lại theo các nguồn có mặt: tướng chưa có trong tier list rank cộng đồng thì chỉ tính ba nguồn còn lại. Tướng không xuất hiện ở ĐTDV nhận 1,5 điểm ở nguồn đó. Tier list của báo game Việt Nam không còn được tính từ 19/10/2026.</p>
+<h2>Điểm của một tướng (thang 1 đến 5)</h2><ul class="items">
+<li><b>ĐTDV:</b> tỉ lệ chọn từ 30% số trận = 5 điểm, 25% = 4,5, 20% = 4, 15% = 3,5, 10% = 3, 5% = 2,5, 2% = 2, thấp hơn = 1,5. Bị cấm từ 40% số trận cộng 0,5, từ 20% cộng 0,25.</li>
+<li><b>Tỉ lệ thắng chỉ được tính khi tướng được chọn ở ít nhất 5% số trận:</b> thắng từ 55% cộng 0,5, từ 45% trở xuống trừ 0,5. Nhờ vậy tướng chỉ đánh vài trận với tỉ lệ thắng cao không tự nhảy lên tier cao.</li>
+<li><b>RoV Pro League:</b> tỉ lệ chọn cộng cấm từ 50% = 5 điểm, 30% = 4,5, 20% = 4, 10% = 3,5, 5% = 3, thấp hơn = 2,5; khi tướng chọn từ 5% số trận, thắng từ 55% cộng 0,5, từ 45% trở xuống trừ 0,5.</li>
+<li><b>Rank cộng đồng:</b> S+ = 5, S = 4,5, A = 3,5, B = 2,5, C = 1,5.</li></ul>
+<h2>Từ điểm thành tier</h2><ul class="items">
+<li><b>Tier xếp theo từng đường:</b> tướng chỉ so với các tướng cùng đường. Top 12% của đường là S, 12–32% là A, 32–57% là B, 57–80% là C, còn lại là D.</li>
+<li><b>Đường phụ:</b> tướng thường được đưa sang đường khác bị trừ 0,4 điểm khi so và tối đa tier A, vì số liệu giải không tách theo đường.</li>
+<li><b>Sàn theo ĐTDV (chỉ đường chính):</b> chọn cộng cấm từ 75% số trận luôn là S, từ 55% tối thiểu A. Chọn từ 30% số trận (thắng từ 45%) là S, từ 20% tối thiểu A.</li>
+<li><b>Chỉnh tay của người biên tập</b> ghi đè mọi quy tắc trên và được giữ khi cập nhật số liệu.</li>
+<li>Mũi tên lên hoặc xuống trên ảnh tướng so tier hiện tại với tier ở lần cập nhật trước (${esc(PREV_DATE)}).</li></ul>
+<h2>Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
+<h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
+<h2>Điều không ảnh hưởng tier</h2><ul class="items">
+<li>Liên kết tiếp thị và hoa hồng. Hiện chỉ có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'}, tách khỏi bảng tier và ghi rõ trên trang.</li>
+<li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
+<h2>Giới hạn</h2><ul class="items">
+<li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này; tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
+<li>Số liệu giải không tách theo đường nên tier ở đường phụ chỉ là ước tính.</li>
+<li>RoV Pro League là giải của server Thái Lan, tham khảo cho xu hướng chứ không thay số liệu server Việt Nam.</li></ul>
+<p>Thấy tướng xếp sai hoặc số liệu lệch: <a href="/lien-he/">báo cho người duy trì</a>. Nguồn đầy đủ ở <a href="/gioi-thieu/">trang Giới thiệu</a>.</p>` }));
 writePage('lien-he', pageShell({ title: 'Liên hệ Bảng Tier Liên Quân: góp ý, báo sai số liệu, hợp tác', desc: 'Cách liên hệ Bảng Tier Liên Quân để góp ý, báo sai số liệu, đề nghị hợp tác hoặc báo lỗi bảo mật.', path: '/lien-he/', h1: 'Liên hệ', over: 'Về web',
   body: `<p class="lead">Góp ý, báo tướng hoặc số liệu bị sai, đề nghị hợp tác: nhắn tin riêng cho kênh TikTok <a href="${TT}" rel="noopener">@bangtierlienquan</a>.</p>
 <h2>Khi báo sai số liệu</h2><p>Ghi rõ tên tướng, đường, điều bạn thấy sai và nguồn (ví dụ bài cập nhật của Garena) để kiểm tra nhanh hơn.</p>
@@ -299,7 +363,8 @@ ${Object.keys(LANES).map(l => `      <h3>${esc(LANES[l])}</h3><p class="faq-l">$
       <h3>Tier list theo đường</h3><p class="faq-l">${Object.keys(LANES).map(l => `<a href="${lurl(l)}">Tier list ${esc(LANES[l])}</a>`).join(' · ')}</p>
       <h3>Bản cập nhật</h3><p class="faq-l">${patches.map(p => `<a href="${purl(p)}">Bản ${p.date}/${p.year}</a>`).join(' · ')} · <a href="/ban-cap-nhat/">Tất cả</a></p>
       <h3>Bài viết</h3><p class="faq-l">${articles.map(a => `<a href="${aurl(a)}">${esc(a.h1)}</a>`).join(' · ')} · <a href="/bai-viet/">Tất cả</a></p>
-      <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
+      <h3>Tra cứu</h3><p class="faq-l">${CONCEPTS.map(([u, n]) => `<a href="${u}">${n}</a>`).join(' · ')}</p>
+      <h3>Về web</h3><p class="faq-l"><a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a></p>
     </details>
   </section>
   <!--/HEROLINKS-->`;
@@ -311,8 +376,8 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/phuong-phap/', iso, 'monthly', '0.5'], ...CONCEPTS.map(([u]) => [u, iso, 'weekly', '0.6']), ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);
-console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · ${articles.length} bài viết · 3 trang phụ · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + articles.length + 5} link (cập nhật ${upd})`);
+console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · ${articles.length} bài viết · ${4 + CONCEPTS.length + (affItems.length ? 1 : 0)} trang phụ (gồm ${CONCEPTS.length} trang tra cứu) · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + articles.length + 6 + CONCEPTS.length + (affItems.length ? 1 : 0)} link (cập nhật ${upd})`);

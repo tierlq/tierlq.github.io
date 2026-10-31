@@ -198,10 +198,12 @@ function breakdown(h){
   const bar=(label,val,txt)=>`<div class="bd"><span>${label}</span><div class="bdbar"><i style="width:${val==null?0:val/5*100}%"></i></div><b>${txt}</b></div>`;
   let pro="Chưa có dữ liệu";
   if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${(r[1]+r[2]).toFixed(1)}% pick+cấm)`:`Pick ${r[1]}% · Cấm ${r[2]}% · Thắng ${r[0]==null?"–":r[0]+"%"}`;
-  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận${a[3]?" · Thắng "+a[0]+"%":""}`:`Không được chọn trong ${SRC.aogGames} trận`;
+  // Tỉ lệ thắng chỉ vào điểm khi tướng được chọn từ 5% số trận (aogScore trong data.js): dưới mức đó ghi rõ là mẫu nhỏ
+  const wrTxt=x=>x[3]?` · Thắng ${x[0]}%${x[1]<5?" (mẫu nhỏ, chọn dưới 5% số trận nên chưa tính vào điểm)":""}`:"";
+  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận`;
   return `<div class="bds">
     ${bar("ĐTDV mùa Đông",aogScore(a),aTxt)}
-    ${(()=>{const pv=prevOf(h.key,h.lane);return bar("Mùa trước",aogScore(pv),pv?`${pv[3]} pick · ${pv[4]} cấm / ${SRC.prevGames} trận${pv[3]?" · Thắng "+pv[0]+"%":""}`:`Không được chọn trong ${SRC.prevGames} trận`)})()}
+    ${(()=>{const pv=prevOf(h.key,h.lane);return bar("Mùa trước",aogScore(pv),pv?`${pv[3]} pick · ${pv[4]} cấm / ${SRC.prevGames} trận${wrTxt(pv)}`:`Không được chọn trong ${SRC.prevGames} trận`)})()}
     ${bar("RoV Pro League",ps,pro)}
     ${bar("Rank cộng đồng",m?RMS[m]:null,m?"Tier "+m:"Chưa có dữ liệu")}
     <div class="bd total"><span>Điểm tổng</span><div class="bdbar"><i style="width:${h.score/5*100}%"></i></div><b>${h.score.toFixed(2)} / 5 · hạng ${h.rank}/${h.laneN} ở ${LANES[h.lane]}${h.sec?" (đường phụ: trừ 0,4, tối đa tier A)":""}</b></div>
