@@ -287,7 +287,7 @@ function buildHTML(h){
   const notes=b.n?[b.n]:[];
   const items=`<ol class="bld-items">${b.i.map((id,k)=>{const [vi,cat,ic,en]=BITEM[id],jg=cat==="jg";
       return `<li class="bi${jg?" jg":""}"><button type="button" class="bi-b" data-item="${id}" aria-describedby="itip"><span class="bi-ic"><img src="b/i-${ic}.webp" alt="" loading="lazy" decoding="async" width="56" height="56"><b>${k+1}</b></span><span class="bi-n">${vi}</span>${jg?"<em>Đồ rừng</em>":cat==="sup"?"<em>Đồ trợ thủ</em>":""}</button></li>`}).join("")}</ol>
-    <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số.</p>`;
+    <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số. Tra cứu đầy đủ: <a href="/trang-bi/" target="_blank" rel="noopener">Trang bị</a> · <a href="/phu-hieu/" target="_blank" rel="noopener">Phù hiệu</a> · <a href="/phep-bo-tro/" target="_blank" rel="noopener">Phép bổ trợ</a>.</p>`;
   const ar=b.r.map(([a,n])=>{const [c,t]=BARC[a];return `<li><img src="b/a-${a}.webp" alt="" loading="lazy" width="30" height="30"><span><b>Ngọc ${COLVI[c]} ×${n}</b>${t}</span></li>`}).join("");
   const sp=b.s.map(s=>`<li><button type="button" class="sp-b" data-spell="${s}" aria-describedby="itip"><img src="b/t-${s}.webp" alt="" loading="lazy" width="36" height="36"><span><b>${BSPELL[s][0]}</b>${(b.o||[]).includes(s)?"<em>Phương án thêm</em>":""}</span></button></li>`).join("");
   return `<section class="bld" aria-label="${title}">${head}${notes.map(n=>`<p class="bld-note">${n}</p>`).join("")}${items}
@@ -910,7 +910,7 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
   const close=back=>{shut(back);BACK.pop("menu")};
   btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});if(!mq.matches)setTimeout(cards,4000);
   m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
-    const a=e.target.closest(".menu-l a");if(a){if(a.hasAttribute("data-tt")){shut(false);const i=BACK.st.map(x=>x[0]).lastIndexOf("menu");if(i>=0)BACK.st.splice(i,1);return}close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
+    const a=e.target.closest(".menu-l a");if(a){if(/^\//.test(a.getAttribute("href")||""))return;if(a.hasAttribute("data-tt")){shut(false);const i=BACK.st.map(x=>x[0]).lastIndexOf("menu");if(i>=0)BACK.st.splice(i,1);return}close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
       if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>goTo(el,id==="spotTitle"?24:null))}return}
     const o=e.target.closest("[data-open]");if(o){shut(false);openModal(o.dataset.open,0,"menu")}});
   m.addEventListener("keydown",e=>{if(e.key==="Escape"){e.stopPropagation();close(true)}

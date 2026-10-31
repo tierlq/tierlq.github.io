@@ -120,6 +120,12 @@ const faq = [
   }),
   ['Bảng tier được xếp dựa trên gì?',
    'Điểm tổng hợp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng (23%). Tier xếp theo thứ hạng trong từng đường.', ''],
+  ['Xem tướng khắc chế và hợp cặp ở đâu?',
+   `Bấm vào một tướng trên bảng tier, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Danh sách là ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
+   `Ví dụ: <a href="${url(tops.find(([l]) => l === 'mid')[1][0])}">khắc chế ${esc(tops.find(([l]) => l === 'mid')[1][0].name)}</a>`],
+  ['Tra giá và tác dụng trang bị, phù hiệu, phép bổ trợ ở đâu?',
+   'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
+   '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
   ['Bảng tier cập nhật khi nào?',
    `Lần cập nhật gần nhất ngày ${upd}, theo bản ${PATCH} của Garena. Bảng được cập nhật sau mỗi bản cân bằng tướng và khoảng 2 tuần một lần theo số liệu giải.`, ''],
 ];
@@ -145,10 +151,13 @@ for (const h of HEROES) {
   const peers = HEROES.filter(x => x.lane === h.lane && x.tier === h.tier && x.id !== h.id).slice(0, 12);
   const title = `${h.name} ${L} – tier ${h.tier} ${season} | Bảng Tier Liên Quân`;
   // Mô tả cho Google: tối đa ~160 ký tự (dài hơn bị cắt trên trang kết quả) → bớt dần số món đồ trong build
-  const mkDesc = n => `${h.name} đi ${L}${h.sec ? ' (đường phụ)' : ''}: tier ${h.tier} (${TNAME[h.tier]}), hạng ${h.rank}/${h.laneN} đường ${L}.` +
+  const cn0 = COUNTERS[h.key], cnNames = cn0 ? cn0[0].slice(0, 3).map(k => (heroOf(k) || {}).name).filter(Boolean) : [];
+  const mkDesc = (n, c) => `${h.name} đi ${L}${h.sec ? ' (đường phụ)' : ''}: tier ${h.tier} (${TNAME[h.tier]}), hạng ${h.rank}/${h.laneN} đường ${L}.` +
+    (cnNames.length && c ? ` Bị khắc chế bởi ${cnNames.slice(0, c).join(', ')}.` : '') +
     (items.length && n ? ` Build: ${items.slice(0, n).join(', ')}…` : '') + (spells.length ? ` Phép: ${spells.join(', ')}.` : '') + ` Cập nhật ${upd}.`;
-  let desc = mkDesc(4);
-  for (let n = 3; desc.length > 160 && n >= 0; n--) desc = mkDesc(n);
+  // thử lần lượt: nhiều món đồ + 3 tướng khắc chế, rồi bớt dần; cuối cùng bỏ hẳn khắc chế và đồ
+  let desc = '';
+  for (const [n, c] of [[4, 3], [3, 3], [2, 3], [1, 3], [3, 2], [2, 2], [1, 2], [0, 3], [0, 2], [0, 1], [0, 0]]) { desc = mkDesc(n, c); if (desc.length <= 160) break; }
   const img = has('s', h) ? `${SITE}/s/${skey(h)}.webp` : `${SITE}/og.jpg`;
   const ban = has('s2', h) ? `/s2/${skey(h)}.webp` : has('s', h) ? `/s/${skey(h)}.webp` : '';
   const ld = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -309,10 +318,11 @@ ${otherConcepts('/phep-bo-tro/')}` }));
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
   body: `<p class="lead">Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường (Tà Thần, Rừng, Giữa, Rồng, Trợ thủ). Web do một người chơi duy trì, không thuộc Garena hay TiMi Studio.</p>
-<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
+<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, danh sách tướng khắc chế và hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV, và chế độ Tự xếp để làm tier list của riêng bạn.</p>
+<h2>Tra cứu</h2><p>Trang riêng cho từng món <a href="/trang-bi/">trang bị</a>, từng <a href="/phu-hieu/">phù hiệu</a> và <a href="/phep-bo-tro/">phép bổ trợ</a> (giá, chỉ số, tác dụng), cùng <a href="/phuong-phap/">trang Phương pháp</a> ghi công thức xếp tier.</p>
 <h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>. Công thức đầy đủ, ngưỡng điểm và giới hạn: <a href="/phuong-phap/">trang Phương pháp</a>.</p>
 <h2>Cập nhật</h2><p>Bảng được cập nhật sau mỗi bản cân bằng của Garena và khoảng 2 tuần một lần theo số liệu giải. Ngày cập nhật ghi ở cuối mỗi trang; lịch sử các bản ở mục <a href="/ban-cap-nhat/">Bản cập nhật</a>.</p>
-<h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>
+<h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://rovmeta.com/heroes" rel="noopener">ROV META (khắc chế và hợp cặp, server Thái)</a></li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>
 <h2>Lưu ý</h2><p>Thông tin để tham khảo. Meta đổi theo bản vá, trình độ và cách chơi, nên tier không thay cho cảm nhận của bạn khi chơi. Tên và hình ảnh tướng thuộc bản quyền Garena / TiMi Studio.</p>
 <p>Kênh TikTok: <a href="${TT}" rel="noopener">@bangtierlienquan</a> · Góp ý, báo sai số liệu: <a href="/lien-he/">Liên hệ</a>.</p>` }));
 // Phương pháp (phuong-phap/): công thức xếp tier. Số trận, danh sách chỉnh tay và đường phụ đọc thẳng từ data.js; ngưỡng điểm phải khớp aogScore/proScore/QUOTA trong data.js
