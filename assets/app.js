@@ -361,10 +361,11 @@ function openModal(id,dir,via){
       <p>${h.note||`Không có thay đổi ở bản ${PATCH}.`}</p>
       ${counterHTML(h)}
       ${skillHTML(h)}
+      <button class="cta m-share2" id="mshare2" type="button">${ui("m8.3 10.9 7.4-3.8M8.3 13.1l7.4 3.8",'<circle cx="17.5" cy="6" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18" r="2.5"/>')}Gửi tướng này cho bạn bè</button>
       ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">${ui("M5 12h14m-5.5-5.5L19 12l-5.5 5.5")}</i></button>`:""})()}
     </div></div></div></div>`;
   document.documentElement.classList.add("lock");hideTip();hideItip();track("xem_tuong",{tuong:h.name,duong:LANES[h.lane],tier:h.tier});
-  $("mshare").onclick=()=>shareLink(`${h.name} · Tier ${h.tier} ${LANES[h.lane]}`,`${h.name} đang ở tier ${h.tier} đường ${LANES[h.lane]} trên Bảng Tier Liên Quân`,pageUrl()+"#tuong-"+id);
+  $("mshare2").onclick=$("mshare").onclick=()=>shareLink(`${h.name} · Tier ${h.tier} ${LANES[h.lane]}`,`${h.name} đang ở tier ${h.tier} đường ${LANES[h.lane]} trên Bảng Tier Liên Quân`,pageUrl()+"#tuong-"+id);
   const shut=()=>{hideItip();$("modalRoot").innerHTML="";document.documentElement.classList.remove("lock");drawRecent();INST&&INST.maybe();document.removeEventListener("keydown",key);
     const back=document.querySelector(`#board .card[data-id="${id}"]`)||lastFocus;back&&back.focus&&back.focus(mq.matches?{preventScroll:true}:undefined)};
   const close=()=>{shut();BACK.pop("modal")};
@@ -896,7 +897,7 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
   $("instGo").onclick=async()=>{track("cai_dat_bam",{});if(evt){evt.prompt();try{await evt.userChoice}catch(e){}evt=null;hide()}else hide()};
   return {maybe(){if(standalone||bar.hidden===false)return;const off=+store("lq-inst-off")||0;if(Date.now()-off<14*864e5)return;
     if((+store("lq-views")||0)<3)return;
-    if(evt){$("instTxt").innerHTML="<b>Thêm Bảng Tier vào màn hình chính</b>Mở nhanh như ứng dụng, xem bản cập nhật mới.";$("instGo").hidden=false}
+    if(evt){$("instTxt").innerHTML="<b>Mở bảng tier chỉ một chạm</b>Thêm vào màn hình chính, không cần tìm lại link mỗi lần có bản mới.";$("instGo").hidden=false}
     else if(ios){$("instTxt").innerHTML="<b>Thêm vào màn hình chính</b>Bấm nút Chia sẻ <span aria-hidden=\"true\">⬆</span> ở dưới rồi chọn “Thêm vào MH chính”.";$("instGo").hidden=true}
     else return;
     bar.hidden=false;document.body.classList.add("inst");track("cai_dat_hien",{})}}})();
