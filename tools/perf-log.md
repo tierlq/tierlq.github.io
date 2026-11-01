@@ -142,3 +142,31 @@ mở bảng chi tiết, tải ảnh tier list ra tệp (1,73 MB, như cũ), khô
   đúng giá trị thường gặp (điện thoại 112px / 43.5%, máy tính 61px / 68%) để khỏi phải tính lại kiểu cả trang; `scrollFx` đo lần đầu trong ResizeObserver; thiên hà khởi tạo sau khung hình đầu
   (`requestAnimationFrame` → `setTimeout`) và hiện dần 0,5 giây; tâm quầng nền (`--gy`) tách ra ResizeObserver riêng nên đứng đúng chỗ từ khung đầu.
 - Kết quả (measure.js, 5 lần, cùng lần đo): điện thoại TBT 585 → 359 ms, tác vụ dài nhất 459 → ~240 ms, bảng có thẻ 1533 → 1410 ms, LCP 428 → 424 ms; máy tính TBT 37 → 8 ms, bảng có thẻ 478 → 457 ms.
+
+## 2026-11-01 — việc định kỳ Chủ nhật (không đổi mã)
+Đo bằng `tools/perf` (measure.js, trung vị 5 lần; so bản đang chạy 190f7a8 với bản 30/10 ef4bb61 và với bản thử, xen kẽ trên cùng máy). Không tính Google Fonts và Google Analytics (môi trường đo không vào được).
+
+| | Điện thoại (390px, CPU chậm 4×, 4G chậm) | Máy tính (1440px) |
+|---|---|---|
+| LCP / CLS | 588–620 ms / 0 | 188 ms / 0,009 |
+| TBT | 390–497 ms | 105 ms |
+| Bảng tier có thẻ | 1676–1815 ms | 540 ms |
+| Mở bảng chi tiết | 509–782 ms | 440 ms |
+| Tải tới lúc bảng hiện | 82 kB / 5 yêu cầu | 82 kB / 5 yêu cầu |
+| Tổng sau 3 giây | 137 kB / 16 yêu cầu | 444 kB / 18 yêu cầu (2 ảnh sân khấu s3/ 307 kB) |
+Môi trường đo hôm nay chậm hơn tuần trước (LCP điện thoại 424 → ~600 ms ở cả bản 30/10), nên chỉ so trong cùng lần đo. Cùng lần đo, bản 30/10: bảng có thẻ 1591 ms,
+tải trước khi bảng hiện 76 kB — tăng 6 kB do index.html (FAQ, menu Tra cứu, mục nguồn) và app.js (khắc chế, điểm mạnh/yếu, nút chia sẻ) lớn thêm; TBT và mở bảng chi tiết trong mức dao động.
+
+Đã thử rồi bỏ:
+- Trace lúc mở trang (điện thoại) thấy 3 chỗ đọc làm trình duyệt bố cục giữa lúc chạy app.js: `innerWidth` (dòng `let lw=innerWidth`), `innerHeight`/`scrollY` khi khởi tạo `scrollFx`,
+  và `document.fonts.ready` (gọi ngay ở cuối app.js: tính kiểu + bố cục ~130 ms CPU chậm). Dời cả ba vào sau khung hình đầu thì tác vụ app.js ngắn đi 337 → 245 ms,
+  nhưng lượng bố cục chỉ chuyển sang khung hình kế tiếp (205 ms), tổng việc như cũ: đo 2 lượt × 5 lần không thấy TBT hay thời gian bảng hiện tốt lên (còn hơi xấu do dao động),
+  nên không giữ. Khác với lần 30/10 (khi đó có bố cục bị làm hai lần); lần này là lần bố cục đầu, bỏ không được.
+- Không đo độ mượt khi cuộn tuần này vì không đổi gì ở phần cuộn (số tuần 25/10 vẫn dùng được).
+Ghi chú:
+- Ảnh `icon-192.png` (3 kB) của hộp "Thêm vào màn hình chính" (đang ẩn) tải ngay lúc mở trang, cùng lúc với app.js. Thêm `loading="lazy"` sẽ bỏ được yêu cầu này
+  nhưng icon có thể hiện trễ một nhịp khi hộp bật lên; lợi rất nhỏ nên để dành.
+- content-visibility trên điện thoại đã cố ý tắt (lỗi ô đen/tím trên Chrome Android, uiux-log) — đừng bật lại để giảm lần bố cục đầu (~110–190 ms CPU chậm, phần lớn là mục "Cách xếp và nguồn" cao ~4.500 px).
+Ý tưởng để lần sau:
+- Thời gian mở bảng chi tiết trên điện thoại dao động mạnh (509–823 ms); trace cho thấy phần lớn là vẽ/hợp lớp (Paint, Layerize, Raster) khi thiên hà còn chạy phía sau lúc đang ở đầu trang. Thử đo khi đã cuộn xuống bảng (trường hợp thật hay gặp) trước khi kết luận.
+- Khởi tạo thiên hà (`galaxy`, ~100–160 ms CPU chậm, chạy sau khung hình đầu) vẫn là tác vụ dài thứ hai; phần tạo hạt có thể chia nhỏ nhưng thiên hà sẽ hiện chậm hơn — cần so mắt.
