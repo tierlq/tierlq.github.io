@@ -160,3 +160,18 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Ý tưởng để lần sau:
   - Điện thoại xoay ngang (≥720px) dùng bộ lọc dạng hàng chip của máy tính, cao ~240px: khi gõ tìm, bàn phím che nửa màn nên không thấy kết quả. Cân nhắc dùng nút Lọc + tấm trượt như điện thoại dọc cho `(pointer:coarse) and (max-height:500px)`.
   - Mục lục tên tướng trong Hỏi nhanh: tên ngắn như "Qi" rộng 19px (đủ chuẩn nhờ khoảng cách " · ", chỉ cân nhắc).
+
+## 2026-11-06 (việc định kỳ: rà UI/UX điện thoại)
+- Đã thử bằng Playwright, chạm/vuốt bằng sự kiện cảm ứng thật (CDP touch): iPhone 13, iPhone SE, Pixel 7, Android 360px, màn 320px, xoay ngang 844×390; sáng và tối. Các bước: tải trang, thiên hà, menu (mở, đóng ×, bấm từng mục từ đầu/giữa/cuối trang, ảnh thẻ menu),
+  sân khấu (đổi tab, vuốt ngang, Xem chi tiết, nút Quay lại), thanh dính + hàng đường (sát mép trên), chọn 5 đường, tìm có/không kết quả, bộ lọc, bảng chi tiết (build, hộp thông tin món đồ, Bộ chiêu thức, nút Gửi tướng, đóng ×),
+  link `#tuong-zata-mid`, Tự xếp (chọn tướng, đặt hàng, thanh báo), Số liệu, tải ảnh tier list, chia sẻ, TikTok, nút lên đầu trang (hiện khi vuốt ngược lên), vuốt qua các điểm dừng từ đầu tới cuối (không bị kéo ngược), đổi sáng/tối.
+  Không lỗi JS, không ảnh 404, không tràn ngang, không chữ bị cắt, menu tới đúng mục, điện thoại không tải ảnh s3/.
+- Sửa: **thông báo nhỏ (toast) xuống 2 dòng** dù chữ ngắn ("Lorion → tier S", "Đã đưa hết về Chưa xếp", "Đã lấy lại bảng Meta"…): hộp đặt `left:50%` nên trình duyệt chỉ cho rộng tối đa nửa màn (160px ở màn 320, 195px ở iPhone 13).
+  Nay `width:max-content; max-width:calc(100vw - 32px)`: mọi thông báo một dòng (cao 52 → 38px), chữ dài (link khi không sao chép được) tự xuống dòng trong màn.
+- Sửa vùng chạm trên màn cảm ứng: 5 mục "Tra cứu" trong menu 36 → 42px (cùng cỡ các mục khác); link nguồn build "AOV-Builds · server Việt" trong bảng chi tiết 32 → 40px (margin âm nên dòng tiêu đề build không cao thêm). Chỉ CSS, máy tính không đổi.
+- Hiệu năng (measure.js, 3 lần): điện thoại LCP 472 ms, TBT 171 ms, bảng có thẻ 1264 ms, mở bảng chi tiết 308 ms, 82 kB / 5 yêu cầu tới lúc bảng hiện (không đổi); máy tính LCP 116 ms. Môi trường đo hôm nay nhanh hơn tuần trước, không so trực tiếp.
+- Kiểm tra: `tools/check/all.sh` TẤT CẢ ĐẠT (1440/390: 5 slide, 147/38 thẻ, 147 bảng chi tiết, không tràn ngang). Không sửa JS nên không đổi `?v=`.
+- Không phải lỗi (đừng sửa): menu trên điện thoại phủ kín màn nên không có nền để bấm đóng (đóng bằng × hoặc nút Quay lại); hàng Meta/Tìm/Lọc ẩn khi cuộn xuống trong bảng, chỉ còn hàng đường dính sát mép trên (đã chốt từ trước);
+  chạm vùng tối phía trên bảng chi tiết thì đóng cả bảng (đúng kiểu tấm trượt); tên ngắn trong mục lục Hỏi nhanh (Qi, Ata…) rộng 19–40px nhưng cao 44–50px.
+- Cần chủ web thử máy thật: Zalo, Messenger, app TikTok (trình duyệt trong app), Chrome Android còn màn trắng/xanh không; thông báo nhỏ khi đặt tướng ở Tự xếp giờ nằm một dòng.
+- Ghi chú cho lần sau: `Input.synthesizeScrollGesture` của CDP không cuộn được trang trong Playwright giả lập điện thoại; dùng chuỗi `Input.dispatchTouchEvent` (touchStart → nhiều touchMove → touchEnd) mới cuộn và kích hoạt hút điểm dừng như người thật.

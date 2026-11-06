@@ -400,7 +400,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .box ul.log{padding-left:0;gap:0}
 .box li b{color:var(--fg);font-weight:500}
 .foot{border-top:1px solid var(--line);padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:400 10px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(28px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 22px;font:400 11px var(--f-display);letter-spacing:.16em;text-transform:uppercase;z-index:20;box-shadow:var(--shadow)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);text-align:center;overflow-wrap:anywhere;bottom:calc(28px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 22px;font:400 11px var(--f-display);letter-spacing:.16em;text-transform:uppercase;z-index:20;box-shadow:var(--shadow)}
 
 /* ===== Điện thoại ===== */
 @media (max-width:900px){.stage{aspect-ratio:auto;height:min(640px,86vh)}}
@@ -1085,6 +1085,8 @@ body.picking .instbar{display:none}
   .modal .mtop button{width:44px;height:44px}          /* xoay ngang: nút chia sẻ/‹ ›/× trong bảng chi tiết chỉ 38px */
   .sp-b{min-height:40px}
   .menu-l a{padding:8px 0}
+  .menu-l a.menu-s{padding:11px 0}                    /* mục Tra cứu chữ nhỏ hơn: 36 → 42px */
+  .bld-h a{padding:10px 0;margin:-4px 0}               /* link nguồn build: 32 → 40px, dòng tiêu đề không cao thêm */
 }
 @media (pointer:coarse) and (max-height:500px){.dk{display:none}.mb{display:inline}}   /* xoay ngang: không ghi "Trên máy tính, rê chuột…" */
 </style>
