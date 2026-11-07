@@ -425,41 +425,57 @@ const SRC = {
     "max": "C",
 
     // === Tier list theo từng đường (TikTok @zena_sama 24/10/2026, tuyển thủ ANK WeiT, LiTing xếp; chủ web yêu cầu 07/11/2026) ===
-    // Khoá "tướng-đường" ưu tiên hơn khoá "tướng" (đã tổng hợp ở trên) cho đúng đường đó. SS/S+/T0→S+, S/T0.5→S, A/T1→A, B/T2→B, C/T3/D→C, nhãn "special" bỏ qua.
+    // Khoá "tướng-đường" ưu tiên hơn khoá "tướng" (đã tổng hợp ở trên) cho đúng đường đó. SS/S+/T0→S+, S/T0.5→S, A/T1→A, B/T2→B, C/T3→C, D→D, nhãn "special" bỏ qua.
+    // 07/11/2026 đọc lại cả 3 bảng (chỉ so với tướng có ô ở đường đó), chủ web yêu cầu "y chang" nên tier cuối cũng ghim trong MANUAL.
     // Chỉ ghi tướng nhận ra chắc chắn từ chân dung; đường Rồng không có trong bài.
-    // --- Tà Thần ---
+    // --- Tà Thần --- (bậc "special" không tính: Ata, Triệu Vân, Edras, Wiro)
     "airi-top": "S+",
     "qi-top": "S",
     "marja-top": "S",
     "florentino-top": "S",
     "taara-top": "A",
     "yan-top": "A",
+    "richter-top": "A",
     "yena-top": "A",
+    "biron-top": "A",
     "maloch-top": "A",
+    "boltbaron-top": "A",
     "omen-top": "A",
     "skud-top": "A",
     "ryoma-top": "A",
+    "volkath-top": "B",
     "charlotte-top": "B",
     "veres-top": "B",
     "zuka-top": "B",
+    "max-top": "B",
     "lubo-top": "B",
+    "allain-top": "C",
+    "amily-top": "C",
     "kilgroth-top": "C",
-    // --- Rừng ---
+    "kaine-top": "C",
+    "arthur-top": "C",
+    // --- Rừng --- (bảng có bậc D)
     "nakroth-jg": "S+",
     "tamyn-jg": "S+",
     "billow-jg": "S+",
     "astrid-jg": "S+",
     "sinestrea-jg": "S+",
     "aoi-jg": "S",
+    "tachi-jg": "S",
     "ryoma-jg": "A",
     "ngokhong-jg": "A",
     "trieuvan-jg": "A",
+    "zephys-jg": "A",
     "butterfly-jg": "A",
+    "enzo-jg": "B",
     "keera-jg": "B",
     "murad-jg": "B",
+    "zuka-jg": "B",
+    "kriknak-jg": "C",
     "quillen-jg": "C",
     "paine-jg": "C",
-    "bright-jg": "C",
+    "bright-jg": "D",
+    "kaine-jg": "D",
     // --- Giữa ---
     // Từ 07/11/2026 theo bảng riêng của @zena_sama đăng 03/11/2026 ("Tier Mid Meta Tác Chiến Sa Hải", SS→S+, có thêm bậc D), thay bảng 24/10 cho đường này.
     // Chủ web yêu cầu "y chang bảng này": tier cuối của các ô Giữa còn được ghim trong MANUAL (ô "-mid"). Erin, Alice, Aya, Dolia, Dyadia, The Flash được thêm ô Giữa (đường phụ trong SECONDARY).
@@ -501,7 +517,7 @@ const SRC = {
     "dyadia-mid": "C",
     "theflash-mid": "D",
     "gildur-mid": "B",   // bảng 03/11 không có Gildur: giữ nguyên từ bảng 24/10
-    // --- Trợ thủ ---
+    // --- Trợ thủ --- (T0→S+, T0.5→S, T1→A, T2→B, T3→C)
     "ybneth-sp": "S+",
     "thane-sp": "S+",
     "wiro-sp": "S+",
@@ -514,10 +530,12 @@ const SRC = {
     "baldum-sp": "A",
     "toro-sp": "A",
     "omega-sp": "A",
+    "alice-sp": "A",
     "lumburr-sp": "B",
     "xeniel-sp": "B",
     "chaugnar-sp": "B",
     "zip-sp": "B",
+    "aya-sp": "B",
     "arum-sp": "C",
     "grakk-sp": "C",
     "arduin-sp": "C",
@@ -601,7 +619,9 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
 const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","boltbaron-ad":"A",
   // Đường Giữa ghim theo bảng @zena_sama 03/11/2026 (chủ web yêu cầu "y chang bảng này" 07/11/2026). Xoá các dòng "-mid" dưới đây để đường Giữa tính lại theo điểm.
   "lorion-mid":"S","rouie-mid":"S","darcy-mid":"S","evita-mid":"S","ignis-mid":"S","liliana-mid":"S","zata-mid":"S","annette-mid":"A","goverra-mid":"A","iggy-mid":"A","raz-mid":"A","yue-mid":"A","aleister-mid":"B","azzenka-mid":"B","dirak-mid":"B","mganga-mid":"B","natalya-mid":"B","preyta-mid":"B","dieuthuyen-mid":"C","flowborn-mid":"C","heino-mid":"C","ilumia-mid":"C","jinna-mid":"C","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"C","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D",
-  "erin-mid":"S","alice-mid":"A","aya-mid":"B","dolia-mid":"C","dyadia-mid":"C","theflash-mid":"D"};
+  "erin-mid":"S","alice-mid":"A","aya-mid":"B","dolia-mid":"C","dyadia-mid":"C","theflash-mid":"D",
+  // Tà Thần, Rừng, Trợ thủ ghim theo bảng TikTok @zena_sama 24/10/2026 (chủ web yêu cầu y chang 07/11/2026). Tướng không có trong bảng giữ tier theo điểm.
+  "airi-top":"S","qi-top":"S","marja-top":"S","florentino-top":"S","taara-top":"A","yan-top":"A","richter-top":"A","yena-top":"A","biron-top":"A","maloch-top":"A","boltbaron-top":"A","omen-top":"A","skud-top":"A","ryoma-top":"A","volkath-top":"B","charlotte-top":"B","veres-top":"B","zuka-top":"B","max-top":"B","lubo-top":"B","allain-top":"C","amily-top":"C","kilgroth-top":"C","kaine-top":"C","arthur-top":"C","nakroth-jg":"S","tamyn-jg":"S","billow-jg":"S","astrid-jg":"S","sinestrea-jg":"S","aoi-jg":"S","tachi-jg":"S","ryoma-jg":"A","ngokhong-jg":"A","trieuvan-jg":"A","zephys-jg":"A","butterfly-jg":"A","enzo-jg":"B","keera-jg":"B","murad-jg":"B","zuka-jg":"B","kriknak-jg":"C","quillen-jg":"C","paine-jg":"C","bright-jg":"D","kaine-jg":"D","ybneth-sp":"S","thane-sp":"S","wiro-sp":"S","dolia-sp":"S","teemee-sp":"S","ata-sp":"S","cresht-sp":"S","krizzix-sp":"S","ormarr-sp":"A","baldum-sp":"A","toro-sp":"A","omega-sp":"A","alice-sp":"A","lumburr-sp":"B","xeniel-sp":"B","chaugnar-sp":"B","zip-sp":"B","aya-sp":"B","arum-sp":"C","grakk-sp":"C","arduin-sp":"C"};
 const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
 // Lớp tướng theo phân loại chính thức trên lienquan.garena.vn
 const CLASSFIX={airi:"assassin",chaugnar:"support",cresht:"tank",zill:"mage",xeniel:"support",ata:"fighter",boltbaron:"mage",arum:"tank",bright:"marksman",roxie:"fighter",lumburr:"tank",ormarr:"fighter",theflash:"mage",arduin:"fighter",sephera:"support"};
