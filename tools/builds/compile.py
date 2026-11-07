@@ -142,7 +142,8 @@ for blk in open('vn.txt',encoding='utf-8').read().split('\n## ')[1:]:
         if not t: warn.append((bid,'spell?',s));continue
         sp.append(t);used_t.add(t)
         if mark: own.append(t)
-    b={'i':items,'r':runes,'s':sp,'l':f['SRC']}
+    b={'i':items,'r':runes,'s':sp}
+    if f.get('SRC'): b['l']=f['SRC']
     if own: b['o']=own
     if f.get('ENCH'): b['e']=parse_ench(bid,f['ENCH'])
     if f.get('ENCH_SRC'): b['el']=f['ENCH_SRC']

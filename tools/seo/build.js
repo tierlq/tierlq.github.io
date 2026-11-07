@@ -202,7 +202,7 @@ ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <p><b>Phép bổ trợ:</b> ${b.s.map(s => `<a href="/phep-bo-tro/#${s}">${esc(BSPELL[s][0])}</a>`).join(' hoặc ')}</p>
 <p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
 ${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
-<p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}
+${b.l ? `<p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}` : ''}
 ${sw ? `<h2>Điểm mạnh, điểm yếu của ${esc(h.name)}</h2>
 <h3>Điểm mạnh</h3><ul>${sw[0].map(t => `<li>${esc(t)}</li>`).join('')}</ul><h3>Điểm yếu</h3><ul>${sw[1].map(t => `<li>${esc(t)}</li>`).join('')}</ul><p class="src">Tóm tắt tiếng Việt theo mục Strengths / Weaknesses của <a href="${CNSRC.base}${esc(sw[2])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}): nhận định của người biên tập trang đó, không phải số liệu.</p>` : ''}
 ${cn ? `<h2>Khắc chế và hợp cặp với ${esc(h.name)}</h2>

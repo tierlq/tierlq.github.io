@@ -509,11 +509,11 @@ SPELL: Tốc Biến
 ENCH: Vực hỗn mang: Dư ảnh, Cường công, Ma tính | Tháp quang minh: Tương phản, Xuyên tâm
 
 ## tamyn@jg
-SRC: https://aov-builds.com/tuong/tamyn/
-ITEMS: Kiếm Truy Hồn | Giày Thuật Sĩ | Phức Hợp Kiếm | Thương Longinus | Giáp Cuồng Nộ | Thương Khung Kiếm
-RUNES: Đỏ Tốc đánh-Máu-Giáp x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+ITEMS: Giày Thuật Sĩ | Thương Longinus | Kiếm Truy Hồn | Phức Hợp Kiếm | Thương Khung Kiếm | Giáp Cuồng Nộ
+RUNES: Đỏ Tốc đánh-Tỉ lệ chí mạng x5 | Đỏ Công vật lý-Xuyên giáp x5 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
 SPELL: Trừng Trị
 ENCH: Vực hỗn mang: Dư ảnh, Cố Thủ, Đấu khí | Tháp quang minh: Tương phản, Xuyên tâm
+ENCH_SRC: https://aov-builds.com/tuong/tamyn/
 
 ## edras@top
 SRC: https://aov-builds.com/tuong/edras/

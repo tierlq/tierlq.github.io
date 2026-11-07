@@ -285,8 +285,8 @@ function buildHTML(h){
   // Build riêng cho đường đang xem, nguồn tiếng Việt (server Việt Nam)
   const b=BUILDS[h.key+"@"+h.lane];
   const title=h.lane==="sp"?"Build Trợ thủ":`Build đi ${LANES[h.lane]}`;
-  const host=b?new URL(b.l).hostname:"";
-  const head=`<div class="bld-h"><h4>${title}</h4>${b?`<a href="${b.l}" target="_blank" rel="noopener">${BSRC[host]||host} · server Việt</a>`:""}</div>`;
+  const host=b&&b.l?new URL(b.l).hostname:"";
+  const head=`<div class="bld-h"><h4>${title}</h4>${b&&b.l?`<a href="${b.l}" target="_blank" rel="noopener">${BSRC[host]||host} · server Việt</a>`:""}</div>`;
   if(!b)return `<section class="bld">${head}<p class="bld-note">Chưa có build cho ${h.name} đi ${LANES[h.lane]}.</p></section>`;
   const notes=b.n?[b.n]:[];
   const items=`<ol class="bld-items">${b.i.map((id,k)=>{const [vi,cat,ic,en]=BITEM[id],jg=cat==="jg";
