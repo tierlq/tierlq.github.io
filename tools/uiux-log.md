@@ -189,3 +189,6 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Ý tưởng để lần sau:
   - Máy tính: nút lên đầu trang (cố định góc phải dưới) che số ở cột "Trận" của bảng Số liệu khi cuộn; cân nhắc chừa lề phải cho bảng hoặc dời nút khi ở chế độ Số liệu.
   - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính (còn từ trước).
+
+## 07/11/2026 (chủ web báo lỗi)
+- Sửa: trên máy tính thẻ tướng rộng theo tên (`width:auto`), nên tên dài như "Wonder Woman" (ô Rừng mới thêm) làm thẻ rộng ra và đẩy thẻ cạnh nó (Yan) lệch khỏi cột. Nay `.card{width:var(--sz)}` ở mọi cỡ màn, tên dài (>10 ký tự, lớp `.ln`) thu chữ 11px, vẫn không xuống dòng (giữ mục Đã chốt); có `text-overflow:ellipsis` phòng tên dài hơn nữa. Đo 1440/1100/800/390: mọi thẻ cùng một độ rộng, không tên nào bị cắt.

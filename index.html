@@ -526,6 +526,8 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .card[data-t=S]{--tcard:var(--t-s)}.card[data-t=A]{--tcard:var(--t-a)}.card[data-t=B]{--tcard:var(--t-b)}.card[data-t=C]{--tcard:var(--t-c)}.card[data-t=D]{--tcard:var(--t-d)}
 .card[data-t=S] .por{border-color:var(--t-s);box-shadow:0 0 18px -4px color-mix(in srgb,var(--t-s) 60%,transparent)}
 .card .nm{font:500 13px var(--f-body);letter-spacing:.01em;text-transform:none;opacity:1}
+/* Thẻ rộng cố định theo ảnh để các thẻ trong ô thẳng hàng (tên dài như "Wonder Woman" từng đẩy thẻ bên cạnh lệch sang phải); tên dài thu chữ, không xuống dòng */
+.card{width:var(--sz)}.card .nm{max-width:calc(var(--sz) + 10px);overflow:hidden;text-overflow:ellipsis}.card.ln .nm{font-size:11px;letter-spacing:-.01em}
 .por .secl{font-size:9px;letter-spacing:.16em;line-height:18px}
 /* Hộp chi tiết + tooltip: chữ to hơn */
 .bd span{font:500 12.5px var(--f-body);letter-spacing:0;text-transform:none}
