@@ -47,3 +47,5 @@ main p a{color:inherit}
 .ic{width:40px;height:40px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:10px;background:rgba(127,127,127,.18)}
 .chg li[id]{scroll-margin-top:16px}
 .chg li[id]:target{background:rgba(231,207,154,.12)}
+
+.aff-n{margin:28px 0 0;font-size:13px;color:var(--muted)}   /* dòng nhỏ cuối trang tướng dẫn tới Phụ kiện (link tiếp thị) */

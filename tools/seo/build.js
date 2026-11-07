@@ -212,7 +212,7 @@ ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `
 ${others.length ? `<h2>${esc(h.name)} ở đường khác</h2><ul class="links">${others.map(x => `<li><a href="${url(x)}">${esc(LANES[x.lane])}${x.sec ? ' (phụ)' : ''} · tier ${x.tier}</a></li>`).join('')}</ul>` : ''}
 ${peers.length ? `<h2>Cùng tier ${h.tier} ở ${esc(L)}</h2><ul class="links">${peers.map(x => `<li><a href="${url(x)}">${esc(x.name)}</a></li>`).join('')}</ul>` : ''}
 <p><a href="${lurl(h.lane)}">Xem cả tier list ${esc(L)} →</a></p>
-<a class="go" href="/#tuong-${h.id}">Mở ${esc(h.name)} trên Bảng Tier →</a>
+<a class="go" href="/#tuong-${h.id}">Mở ${esc(h.name)} trên Bảng Tier →</a>${affItems.length ? '\n<p class="aff-n">Chơi lâu bị nóng máy, mỏi tay? Xem <a href="/phu-kien/">phụ kiện chơi Liên Quân</a> (trang có liên kết tiếp thị).</p>' : ''}
 </main>
 <footer><a href="/">Bảng Tier Liên Quân</a> · ${NAVF}<br>Dữ liệu cập nhật ${upd}. Hình tướng thuộc bản quyền Garena / TiMi Studio.</footer>
 </body>
