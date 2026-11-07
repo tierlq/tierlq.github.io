@@ -568,6 +568,7 @@ const SRC = {
     "arum-sp": "C",
     "grakk-sp": "C",
     "arduin-sp": "C",
+    "roxie-sp": "C",   // chủ web xác nhận ô T3 tóc xanh lá là Roxie
   },
   aogFull: true
 };
@@ -651,7 +652,7 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "erin-mid":"S","alice-mid":"A","aya-mid":"B","dolia-mid":"C","dyadia-mid":"C","theflash-mid":"D",
   // Tà Thần, Rừng, Trợ thủ ghim theo bảng TikTok @zena_sama 24/10/2026 (chủ web yêu cầu y chang 07/11/2026). Tướng không có trong bảng giữ tier theo điểm.
   "airi-top":"S","qi-top":"S","marja-top":"S","florentino-top":"S","taara-top":"A","yan-top":"A","richter-top":"A","yena-top":"A","biron-top":"A","maloch-top":"A","boltbaron-top":"A","omen-top":"A","skud-top":"A","ryoma-top":"A","volkath-top":"B","charlotte-top":"B","veres-top":"B","zuka-top":"B","max-top":"B","lubo-top":"B","allain-top":"C","amily-top":"C","kilgroth-top":"C","kaine-top":"C","arthur-top":"C","nakroth-jg":"S","tamyn-jg":"S","billow-jg":"S","astrid-jg":"S","sinestrea-jg":"S","aoi-jg":"S","tachi-jg":"S","ryoma-jg":"A","ngokhong-jg":"A","trieuvan-jg":"A","zephys-jg":"A","butterfly-jg":"A","enzo-jg":"B","keera-jg":"B","murad-jg":"B","zuka-jg":"B","kriknak-jg":"C","quillen-jg":"C","paine-jg":"C","bright-jg":"D","kaine-jg":"D","ybneth-sp":"S","thane-sp":"S","wiro-sp":"S","dolia-sp":"S","teemee-sp":"S","ata-sp":"S","cresht-sp":"S","krizzix-sp":"S","ormarr-sp":"A","baldum-sp":"A","toro-sp":"A","omega-sp":"A","alice-sp":"A","lumburr-sp":"B","xeniel-sp":"B","chaugnar-sp":"B","zip-sp":"B","aya-sp":"B","arum-sp":"C","grakk-sp":"C","arduin-sp":"C",
-  "elandorr-jg":"S","volkath-jg":"S","boltbaron-jg":"A","darcy-jg":"A","edras-jg":"A","wonderwoman-jg":"A","rourke-jg":"A","yan-jg":"A","veres-jg":"A","fennik-jg":"B","tulen-jg":"B","bijan-jg":"B","errol-jg":"B","zill-jg":"B","lubo-jg":"C","kilgroth-jg":"D","lindis-jg":"D","skud-jg":"D","tamyn-top":"S","mina-top":"A","murad-top":"B","ngokhong-top":"B","astrid-top":"B","xeniel-top":"B","roxie-top":"B","veres-sp":"S","maloch-sp":"A","richter-sp":"A","arthur-sp":"B"};
+  "elandorr-jg":"S","volkath-jg":"S","boltbaron-jg":"A","darcy-jg":"A","edras-jg":"A","wonderwoman-jg":"A","rourke-jg":"A","yan-jg":"A","veres-jg":"A","fennik-jg":"B","tulen-jg":"B","bijan-jg":"B","errol-jg":"B","zill-jg":"B","lubo-jg":"C","kilgroth-jg":"D","lindis-jg":"D","skud-jg":"D","tamyn-top":"S","mina-top":"A","murad-top":"B","ngokhong-top":"B","astrid-top":"B","xeniel-top":"B","roxie-top":"B","veres-sp":"S","maloch-sp":"A","richter-sp":"A","arthur-sp":"B","roxie-sp":"C"};
 const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
 // Lớp tướng theo phân loại chính thức trên lienquan.garena.vn
 const CLASSFIX={airi:"assassin",chaugnar:"support",cresht:"tank",zill:"mage",xeniel:"support",ata:"fighter",boltbaron:"mage",arum:"tank",bright:"marksman",roxie:"fighter",lumburr:"tank",ormarr:"fighter",theflash:"mage",arduin:"fighter",sephera:"support"};
