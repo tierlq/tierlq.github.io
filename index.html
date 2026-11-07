@@ -527,7 +527,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .card[data-t=S] .por{border-color:var(--t-s);box-shadow:0 0 18px -4px color-mix(in srgb,var(--t-s) 60%,transparent)}
 .card .nm{font:500 13px var(--f-body);letter-spacing:.01em;text-transform:none;opacity:1}
 /* Thẻ rộng cố định theo ảnh để các thẻ trong ô thẳng hàng (tên dài như "Wonder Woman" từng đẩy thẻ bên cạnh lệch sang phải); tên dài thu chữ, không xuống dòng */
-.card{width:var(--sz)}.card .nm{max-width:calc(var(--sz) + 10px);overflow:hidden;text-overflow:ellipsis}.card.ln .nm{font-size:11px;letter-spacing:-.01em}
+.card{width:var(--sz)}.card .nm{max-width:calc(var(--sz) + 10px);overflow:hidden;text-overflow:ellipsis}.card.ln .nm{font-size:11px;letter-spacing:-.01em;line-height:16px}   /* 16px = dòng chữ 13px của thẻ thường, để mọi thẻ cao bằng nhau */
 .por .secl{font-size:9px;letter-spacing:.16em;line-height:18px}
 /* Hộp chi tiết + tooltip: chữ to hơn */
 .bd span{font:500 12.5px var(--f-body);letter-spacing:0;text-transform:none}
@@ -746,7 +746,7 @@ html.lock{overflow:hidden}
   /* Luôn đủ 3 thẻ mỗi hàng: máy hẹp thì thu ảnh lại một chút */
   .hrow,.trow{grid-template-columns:var(--tlw,78px) 1fr}
   .card{--sz:min(88px,calc((100vw - var(--tlw,78px) - 68px) / 3));width:var(--sz)}
-  .card .nm{max-width:calc(var(--sz) + 8px)}.card.ln .nm{font-size:clamp(9.5px,calc(var(--sz) * .134),10.5px);letter-spacing:0}
+  .card .nm{max-width:calc(var(--sz) + 8px)}.card.ln .nm{font-size:clamp(9.5px,calc(var(--sz) * .134),10.5px);letter-spacing:0;line-height:15px}   /* 15px = dòng chữ 12px của thẻ thường trên điện thoại */
   /* Hộp chi tiết dạng tấm: có thanh kéo, vuốt xuống để đóng, vuốt ngang để đổi tướng */
   .modal{touch-action:pan-y;overscroll-behavior:contain}
   .modal::before{content:"";position:absolute;left:50%;top:8px;width:40px;height:4px;margin-left:-20px;border-radius:2px;background:rgba(255,255,255,.6);z-index:4;box-shadow:0 0 6px rgba(0,0,0,.5)}
@@ -786,6 +786,18 @@ html.lock{overflow:hidden}
   .tl{padding-left:12px}
   .hero h1{font-size:min(2rem,8.6vw)}
 }
+/* Máy tính bảng dọc (720–999px): bảng vừa khít khung, không phải vuốt ngang (trước đây cột Trợ thủ nằm ngoài màn) */
+@media (min-width:720px) and (max-width:999px){
+  .board{min-width:0!important}
+  .scroller{overflow:visible}
+  .hrow,.trow{grid-template-columns:110px repeat(var(--cols),minmax(0,1fr))}
+  .hrow>div{padding:14px 8px;font-size:11.5px;letter-spacing:.08em;gap:6px}
+  .tl{padding:16px 8px 16px 14px}
+  .tl em{display:none}
+  .cell{padding:16px 8px;gap:18px 10px}
+}
+/* Màn dưới 320px (Galaxy Fold gập…): 2 thẻ mỗi hàng thay vì 3 để tên không bị cắt */
+@media (max-width:319px){.card{--sz:min(88px,calc((100vw - var(--tlw,78px) - 58px) / 2))}.lanes-m button{font-size:9.5px;letter-spacing:0}.row1,.seg{gap:8px}.seg button{min-width:0;font-size:10.5px;letter-spacing:.04em}.st-m{display:none}.stats td b{font-size:11.5px}.stats td .dl{font-size:9px}.stats thead button{font-size:9px;gap:0;padding:0 1px}.st-n b{font-size:12.5px}.st-n small{font-size:10.5px}.st-h{gap:6px}.stats .c-pres{width:20%}.stats .c-wr,.stats .c-pk,.stats .c-bn{width:16%}.stats thead .c-pres button{padding-left:4px}}
 @media (max-width:350px){:root{--tlw:70px}.tl .L{font-size:2.5rem}.tl small{white-space:normal;line-height:1.2}.card.ln .nm{font-size:calc((var(--sz) + 8px) / 7.9)}}   /* màn 320px: "Wonder Woman" vừa khít thẻ (không bị cắt …), nhãn "Tình huống" xuống dòng thay vì chạm mép cột */
 .veil.nav{animation:none}
 /* ===== Build tham khảo trong hộp chi tiết ===== */
