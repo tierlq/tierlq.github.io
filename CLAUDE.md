@@ -93,7 +93,7 @@ Chủ repo giao tiếp bằng tiếng Việt, muốn sửa thẳng vào file và
   (trang này thường chặn bằng bước xác minh người dùng — không được vượt; nếu không đọc được thì giữ số cũ).
 - `SRC.prev` / `SRC.prevGames` — mùa trước, cùng định dạng.
 - `SRC.rpl` — RoV Pro League (Thái Lan): `[tỉ lệ thắng % hoặc null, pick %, cấm %]`. Nguồn: https://rovmeta.com/stats
-- `SRC.rm` — tier list rank cộng đồng (`S+`/`S`/`A`/`B`/`C`). Từ 15/10/2026 **chủ web tự tổng hợp** từ @darkiaov9126 và @blvkhanhhy
+- `SRC.rm` — tier list rank cộng đồng (`S+`/`S`/`A`/`B`/`C`). Khoá `"tướng"` áp mọi đường, khoá `"tướng-đường"` (ví dụ `"darcy-mid"`) chỉ áp đúng đường đó và ưu tiên hơn (`score()` trong data.js, `breakdown()` trong app.js). Từ 07/11/2026 có thêm khối theo đường lấy từ bài TikTok @zena_sama 24/10 (4 bảng Tà Thần/Rừng/Giữa/Trợ thủ do ANK WeiT, LiTing xếp; ảnh chỉ có chân dung, nhận bằng so màu với `p/<key>.webp` rồi kiểm bằng mắt, chỉ ghi tướng chắc chắn; nhãn quy đổi SS/S+/T0→S+, S/T0.5→S, A/T1→A, B/T2→B, C/T3/D→C, "special" bỏ qua; chưa có đường Rồng; tướng không có ô ở đường đó bị bỏ). Từ 15/10/2026 **chủ web tự tổng hợp** từ @darkiaov9126 và @blvkhanhhy
   (ghi chú ngay trên khối `rm`). Không thay bằng số của rovmeta.com hay nguồn khác, kể cả trong lịch tự cập nhật, trừ khi chủ web yêu cầu.
   Tướng chưa có trong `rm` (ví dụ tướng mới) thì để trống, không tự thêm.
 - Tên quốc tế → tên Việt: Riktor = Richter, Zanis = Triệu Vân, Wukong = Ngộ Không, Lu Bu = Lữ Bố,

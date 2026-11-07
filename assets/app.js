@@ -194,7 +194,7 @@ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
 
 /* Hộp chi tiết */
 function breakdown(h){
-  const r=SRC.rpl[h.key],m=SRC.rm[h.key],ps=proScore(r),a=aogOf(h.key,h.lane);
+  const r=SRC.rpl[h.key],m=SRC.rm[h.key+"-"+h.lane]||SRC.rm[h.key],ps=proScore(r),a=aogOf(h.key,h.lane);
   const bar=(label,val,txt)=>`<div class="bd"><span>${label}</span><div class="bdbar"><i style="width:${val==null?0:val/5*100}%"></i></div><b>${txt}</b></div>`;
   let pro="Chưa có dữ liệu";
   if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${(r[1]+r[2]).toFixed(1)}% pick+cấm)`:`Pick ${r[1]}% · Cấm ${r[2]}% · Thắng ${r[0]==null?"–":r[0]+"%"}`;

@@ -281,7 +281,7 @@ const SRC = {
     "tamyn": [71.4, 1.2, 0.2],
     "richter": [69.6, 7.9, 2.4]
   },
-  // Tier list rank cộng đồng (Đã tổng hợp từ @darkiaov9126 & @blvkhanhhy): S+ / S / A / B / C
+  // Tier list rank cộng đồng (Đã tổng hợp từ @darkiaov9126 & @blvkhanhhy; từ 07/11 thêm bảng theo từng đường của @zena_sama): S+ / S / A / B / C
   rm: {
     // === Bậc S+ (Đỉnh meta ở cả 2 bảng) ===
     "rouie": "S+",
@@ -422,7 +422,92 @@ const SRC = {
     "jinna": "C",
     "omega": "C",
     "sephera": "C",
-    "max": "C"
+    "max": "C",
+
+    // === Tier list theo từng đường (TikTok @zena_sama 24/10/2026, tuyển thủ ANK WeiT, LiTing xếp; chủ web yêu cầu 07/11/2026) ===
+    // Khoá "tướng-đường" ưu tiên hơn khoá "tướng" (đã tổng hợp ở trên) cho đúng đường đó. SS/S+/T0→S+, S/T0.5→S, A/T1→A, B/T2→B, C/T3/D→C, nhãn "special" bỏ qua.
+    // Chỉ ghi tướng nhận ra chắc chắn từ chân dung; đường Rồng không có trong bài.
+    // --- Tà Thần ---
+    "airi-top": "S+",
+    "qi-top": "S",
+    "marja-top": "S",
+    "florentino-top": "S",
+    "taara-top": "A",
+    "yan-top": "A",
+    "yena-top": "A",
+    "maloch-top": "A",
+    "omen-top": "A",
+    "skud-top": "A",
+    "ryoma-top": "A",
+    "charlotte-top": "B",
+    "veres-top": "B",
+    "zuka-top": "B",
+    "lubo-top": "B",
+    "kilgroth-top": "C",
+    // --- Rừng ---
+    "nakroth-jg": "S+",
+    "tamyn-jg": "S+",
+    "billow-jg": "S+",
+    "astrid-jg": "S+",
+    "sinestrea-jg": "S+",
+    "aoi-jg": "S",
+    "ryoma-jg": "A",
+    "ngokhong-jg": "A",
+    "trieuvan-jg": "A",
+    "butterfly-jg": "A",
+    "keera-jg": "B",
+    "murad-jg": "B",
+    "quillen-jg": "C",
+    "paine-jg": "C",
+    "bright-jg": "C",
+    // --- Giữa ---
+    "lorion-mid": "S+",
+    "rouie-mid": "S+",
+    "evita-mid": "S",
+    "darcy-mid": "S",
+    "ignis-mid": "S",
+    "zata-mid": "S",
+    "liliana-mid": "S",
+    "annette-mid": "A",
+    "iggy-mid": "A",
+    "mganga-mid": "A",
+    "preyta-mid": "A",
+    "raz-mid": "A",
+    "aleister-mid": "B",
+    "natalya-mid": "B",
+    "dirak-mid": "B",
+    "dieuthuyen-mid": "B",
+    "gildur-mid": "B",
+    "goverra-mid": "B",
+    "heino-mid": "B",
+    "kahlii-mid": "B",
+    "flowborn-mid": "B",
+    "jinna-mid": "C",
+    "krixi-mid": "C",
+    "lauriel-mid": "C",
+    "veera-mid": "C",
+    "bonnie-mid": "C",
+    "ishar-mid": "C",
+    // --- Trợ thủ ---
+    "ybneth-sp": "S+",
+    "thane-sp": "S+",
+    "wiro-sp": "S+",
+    "dolia-sp": "S+",
+    "teemee-sp": "S",
+    "ata-sp": "S",
+    "cresht-sp": "S",
+    "krizzix-sp": "S",
+    "ormarr-sp": "A",
+    "baldum-sp": "A",
+    "toro-sp": "A",
+    "omega-sp": "A",
+    "lumburr-sp": "B",
+    "xeniel-sp": "B",
+    "chaugnar-sp": "B",
+    "zip-sp": "B",
+    "arum-sp": "C",
+    "grakk-sp": "C",
+    "arduin-sp": "C",
   },
   aogFull: true
 };
@@ -497,7 +582,7 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
   // Mùa trước (299 trận): cùng cách tính, trọng số nhẹ hơn vì đã qua nhiều bản cập nhật
   parts.push([aogScore(prevOf(k,lane)),.15]);
   const r=SRC.rpl[k],ps=proScore(r);if(ps!=null)parts.push([ps,r[1]+r[2]>=5?.12:.04]);
-  const m=SRC.rm[k];if(m)parts.push([RMS[m],.2]);
+  const m=SRC.rm[k+"-"+lane]||SRC.rm[k];if(m)parts.push([RMS[m],.2]);
   return parts.reduce((s,[v,w])=>s+v*w,0)/parts.reduce((s,[,w])=>s+w,0)}
 // Điều chỉnh thủ công của người biên tập (ưu tiên cao nhất)
 const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","annette-mid":"S","rouie-mid":"S","boltbaron-ad":"A"};
@@ -545,7 +630,7 @@ for(const l of Object.keys(LANES)){const TO="SABCD";HEROES.filter(h=>h.lane===l)
 // Tier ở lần cập nhật trước: mũi tên lên/xuống bậc trên ảnh tướng (giống Prydwen). h.prev = tier cũ, h.move = "up"/"down"/"".
 // ĐỪNG SỬA TAY: chạy `node tools/tiers/snapshot.js <ngày dd/mm>` NGAY TRƯỚC mỗi lần cập nhật số liệu hoặc bản mới,
 // để mũi tên cho thấy những gì lần cập nhật đó thay đổi. Chỉnh tay lẻ của chủ web giữa hai lần cập nhật thì không chạy.
-const PREV_DATE="26/10";
+const PREV_DATE="30/10";
 const PREV_T="S:annette-mid,annette-sp,astrid-jg,billow-jg,dolia-sp,edras-top,elandorr-ad,hayate-ad,liliana-mid,lorion-mid,marja-top,rouie-mid,rouie-sp,ryoma-top,sinestrea-jg,tamyn-jg,violet-ad,ybneth-sp,zata-mid;A:airi-jg,airi-top,alice-sp,biron-top,boltbaron-ad,capheny-ad,cresht-sp,darcy-mid,evita-mid,florentino-top,flowborn-ad,gildur-mid,iggy-mid,ignis-mid,krizzix-sp,maloch-top,mganga-mid,mina-sp,nakroth-jg,preyta-mid,qi-jg,qi-top,raz-mid,ryoma-jg,skud-top,stuart-ad,taara-sp,taara-top,tachi-jg,teemee-sp,thane-sp,toro-sp,valhein-ad,yena-top,yue-mid,zephys-jg,zephys-top;B:aleister-mid,aoi-jg,arthur-sp,arthur-top,aya-sp,azzenka-mid,baldum-sp,billow-top,butterfly-jg,chaugnar-sp,dyadia-sp,elsu-ad,enzo-jg,errol-top,fennik-ad,flowborn-mid,goverra-mid,heino-mid,keera-jg,moren-ad,murad-jg,natalya-mid,omen-top,richter-top,slimz-ad,veres-top,volkath-top,wiro-sp,wiro-top,wisp-ad,yan-top,zuka-jg,zuka-top;C:allain-top,arduin-sp,arum-sp,ata-top,bijan-top,boltbaron-top,bright-jg,celica-ad,erin-ad,grakk-sp,helen-sp,ilumia-mid,jinna-mid,kahlii-mid,kriknak-jg,krixi-mid,laville-ad,lubo-top,max-top,ngokhong-jg,paine-jg,roxie-sp,sephera-mid,telannas-ad,thorne-ad,trieuvan-top,tulen-mid,wonderwoman-top,xeniel-sp,zip-sp;D:amily-top,arduin-top,ata-sp,bonnie-mid,charlotte-top,dextra-top,dieuthuyen-mid,dirak-mid,ishar-mid,kaine-jg,kaine-top,kilgroth-top,lauriel-mid,lindis-ad,lumburr-sp,ming-sp,omega-sp,ormarr-sp,quillen-jg,rourke-top,superman-top,teeri-ad,theflash-jg,trieuvan-jg,veera-mid,yorn-ad,zill-jg,zill-mid";
 {const pv={};PREV_T.split(";").forEach(s=>{const [t,ids]=s.split(":");ids&&ids.split(",").forEach(id=>pv[id]=t)});
   HEROES.forEach(h=>{const o=pv[h.id]||"";h.prev=o;h.move=o&&o!==h.tier?("SABCD".indexOf(h.tier)<"SABCD".indexOf(o)?"up":"down"):""})}
