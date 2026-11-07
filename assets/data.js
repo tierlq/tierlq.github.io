@@ -281,7 +281,7 @@ const SRC = {
     "tamyn": [71.4, 1.2, 0.2],
     "richter": [69.6, 7.9, 2.4]
   },
-  // Tier list rank cộng đồng (Đã tổng hợp từ @darkiaov9126 & @blvkhanhhy; từ 07/11 thêm bảng theo từng đường của @zena_sama): S+ / S / A / B / C
+  // Tier list rank cộng đồng (Đã tổng hợp từ @darkiaov9126 & @blvkhanhhy; từ 07/11 thêm bảng theo từng đường của @zena_sama): S+ / S / A / B / C (D chỉ dùng cho bảng Giữa 03/11)
   rm: {
     // === Bậc S+ (Đỉnh meta ở cả 2 bảng) ===
     "rouie": "S+",
@@ -461,33 +461,40 @@ const SRC = {
     "paine-jg": "C",
     "bright-jg": "C",
     // --- Giữa ---
+    // Từ 07/11/2026 theo bảng riêng của @zena_sama đăng 03/11/2026 ("Tier Mid Meta Tác Chiến Sa Hải", SS→S+, có thêm bậc D), thay bảng 24/10 cho đường này.
+    // Chủ web yêu cầu "y chang bảng này": tier cuối của các ô Giữa còn được ghim trong MANUAL (ô "-mid"). Bảng có thêm Erin, Alice, Aya, Dolia, Dyadia, The Flash nhưng web chưa có ô Giữa cho họ.
     "lorion-mid": "S+",
     "rouie-mid": "S+",
-    "evita-mid": "S",
     "darcy-mid": "S",
+    "evita-mid": "S",
     "ignis-mid": "S",
-    "zata-mid": "S",
     "liliana-mid": "S",
+    "zata-mid": "S",
     "annette-mid": "A",
+    "goverra-mid": "A",
     "iggy-mid": "A",
-    "mganga-mid": "A",
-    "preyta-mid": "A",
     "raz-mid": "A",
+    "yue-mid": "A",
     "aleister-mid": "B",
-    "natalya-mid": "B",
+    "azzenka-mid": "B",
     "dirak-mid": "B",
-    "dieuthuyen-mid": "B",
-    "gildur-mid": "B",
-    "goverra-mid": "B",
-    "heino-mid": "B",
-    "kahlii-mid": "B",
-    "flowborn-mid": "B",
+    "mganga-mid": "B",
+    "natalya-mid": "B",
+    "preyta-mid": "B",
+    "dieuthuyen-mid": "C",
+    "flowborn-mid": "C",
+    "heino-mid": "C",
+    "ilumia-mid": "C",
     "jinna-mid": "C",
+    "kahlii-mid": "C",
     "krixi-mid": "C",
     "lauriel-mid": "C",
+    "sephera-mid": "C",
+    "tulen-mid": "C",
     "veera-mid": "C",
-    "bonnie-mid": "C",
-    "ishar-mid": "C",
+    "bonnie-mid": "D",
+    "ishar-mid": "D",
+    "gildur-mid": "B",   // bảng 03/11 không có Gildur: giữ nguyên từ bảng 24/10
     // --- Trợ thủ ---
     "ybneth-sp": "S+",
     "thane-sp": "S+",
@@ -568,7 +575,7 @@ const RAW=[
 const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/gi,"d").toLowerCase().replace(/[^a-z]/g,"");
 const HEROES=[];
 // Điểm tổng hợp (trọng số chuẩn hoá): ĐTDV mùa Đông 46% · mùa trước 17% · RoV Pro League 14% · rank cộng đồng 23%. Đã bỏ tier list báo game VN (19/10/2026).
-const VNS={S:5,A:4,B:3,C:2,D:1}, RMS={"S+":5,S:4.5,A:3.5,B:2.5,C:1.5};
+const VNS={S:5,A:4,B:3,C:2,D:1}, RMS={"S+":5,S:4.5,A:3.5,B:2.5,C:1.5,D:1};
 function proScore(r){if(!r)return null;const [w,p,b]=r,P=p+b;let s=P>=50?5:P>=30?4.5:P>=20?4:P>=10?3.5:P>=5?3:2.5;
   if(w!=null&&p>=5){if(w>=55)s+=.5;else if(w<=45)s-=.5}return Math.max(1,Math.min(5,s))}
 const aogOf=(k,lane)=>SRC.aog[k+"-"+lane]||(k==="flowborn"?null:SRC.aog[k]);
@@ -585,7 +592,9 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
   const m=SRC.rm[k+"-"+lane]||SRC.rm[k];if(m)parts.push([RMS[m],.2]);
   return parts.reduce((s,[v,w])=>s+v*w,0)/parts.reduce((s,[,w])=>s+w,0)}
 // Điều chỉnh thủ công của người biên tập (ưu tiên cao nhất)
-const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","annette-mid":"S","rouie-mid":"S","boltbaron-ad":"A"};
+const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","boltbaron-ad":"A",
+  // Đường Giữa ghim theo bảng @zena_sama 03/11/2026 (chủ web yêu cầu "y chang bảng này" 07/11/2026). Xoá các dòng "-mid" dưới đây để đường Giữa tính lại theo điểm.
+  "lorion-mid":"S","rouie-mid":"S","darcy-mid":"S","evita-mid":"S","ignis-mid":"S","liliana-mid":"S","zata-mid":"S","annette-mid":"A","goverra-mid":"A","iggy-mid":"A","raz-mid":"A","yue-mid":"A","aleister-mid":"B","azzenka-mid":"B","dirak-mid":"B","mganga-mid":"B","natalya-mid":"B","preyta-mid":"B","dieuthuyen-mid":"C","flowborn-mid":"C","heino-mid":"C","ilumia-mid":"C","jinna-mid":"C","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"C","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D"};
 const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
 // Lớp tướng theo phân loại chính thức trên lienquan.garena.vn
 const CLASSFIX={airi:"assassin",chaugnar:"support",cresht:"tank",zill:"mage",xeniel:"support",ata:"fighter",boltbaron:"mage",arum:"tank",bright:"marksman",roxie:"fighter",lumburr:"tank",ormarr:"fighter",theflash:"mage",arduin:"fighter",sephera:"support"};

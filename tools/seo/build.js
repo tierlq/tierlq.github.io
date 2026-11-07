@@ -342,13 +342,13 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <li><b>ĐTDV mùa hiện tại (46%):</b> ${ctx.SRC.aogGames} trận của Đấu Trường Danh Vọng (Arena of Glory) theo bảng thống kê Liquipedia, ưu tiên số trận được chọn.</li>
 <li><b>ĐTDV mùa trước (17%):</b> ${ctx.SRC.prevGames} trận, cùng cách tính, trọng số nhẹ hơn vì đã qua nhiều bản cập nhật.</li>
 <li><b>RoV Pro League (14%):</b> giải đấu của server Thái Lan, lấy từ ROV META. Tướng ít xuất hiện chỉ được tính rất nhẹ.</li>
-<li><b>Tier list rank cộng đồng (23%):</b> người biên tập tổng hợp từ hai nhà sáng tạo nội dung (@darkiaov9126 và @blvkhanhhy), thêm bảng theo từng đường của @zena_sama (do tuyển thủ ANK WeiT và LiTing xếp, đăng 24/10/2026; có đường Tà Thần, Rừng, Giữa, Trợ thủ, chưa có Rồng) nên một tướng có thể có hai bậc ở hai đường. Đây là ý kiến, không phải số liệu.</li></ul>
+<li><b>Tier list rank cộng đồng (23%):</b> người biên tập tổng hợp từ hai nhà sáng tạo nội dung (@darkiaov9126 và @blvkhanhhy), thêm bảng theo từng đường của @zena_sama (do tuyển thủ ANK WeiT và LiTing xếp, đăng 24/10/2026; có đường Tà Thần, Rừng, Giữa, Trợ thủ, chưa có Rồng; riêng đường Giữa theo bảng đăng 03/11/2026 của chính @zena_sama, xếp đúng như bảng) nên một tướng có thể có hai bậc ở hai đường. Đây là ý kiến, không phải số liệu.</li></ul>
 <p>Trọng số được chia lại theo các nguồn có mặt: tướng chưa có trong tier list rank cộng đồng thì chỉ tính ba nguồn còn lại. Tướng không xuất hiện ở ĐTDV nhận 1,5 điểm ở nguồn đó. Tier list của báo game Việt Nam không còn được tính từ 19/10/2026.</p>
 <h2>Điểm của một tướng (thang 1 đến 5)</h2><ul class="items">
 <li><b>ĐTDV:</b> tỉ lệ chọn từ 30% số trận = 5 điểm, 25% = 4,5, 20% = 4, 15% = 3,5, 10% = 3, 5% = 2,5, 2% = 2, thấp hơn = 1,5. Bị cấm từ 40% số trận cộng 0,5, từ 20% cộng 0,25.</li>
 <li><b>Tỉ lệ thắng chỉ được tính khi tướng được chọn ở ít nhất 5% số trận:</b> thắng từ 55% cộng 0,5, từ 45% trở xuống trừ 0,5. Nhờ vậy tướng chỉ đánh vài trận với tỉ lệ thắng cao không tự nhảy lên tier cao.</li>
 <li><b>RoV Pro League:</b> tỉ lệ chọn cộng cấm từ 50% = 5 điểm, 30% = 4,5, 20% = 4, 10% = 3,5, 5% = 3, thấp hơn = 2,5; khi tướng chọn từ 5% số trận, thắng từ 55% cộng 0,5, từ 45% trở xuống trừ 0,5.</li>
-<li><b>Rank cộng đồng:</b> S+ = 5, S = 4,5, A = 3,5, B = 2,5, C = 1,5.</li></ul>
+<li><b>Rank cộng đồng:</b> S+ = 5, S = 4,5, A = 3,5, B = 2,5, C = 1,5, D = 1 (D chỉ có ở bảng Giữa).</li></ul>
 <h2>Từ điểm thành tier</h2><ul class="items">
 <li><b>Tier xếp theo từng đường:</b> tướng chỉ so với các tướng cùng đường. Top 12% của đường là S, 12–32% là A, 32–57% là B, 57–80% là C, còn lại là D.</li>
 <li><b>Đường phụ:</b> tướng thường được đưa sang đường khác bị trừ 0,4 điểm khi so và tối đa tier A, vì số liệu giải không tách theo đường.</li>
