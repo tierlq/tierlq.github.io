@@ -1,11 +1,12 @@
 {
-  "ghi_chu": "Link tiếp thị (Shopee Affiliate / TikTok Shop). Để mảng items rỗng thì build không tạo trang Phụ kiện. Mỗi mục: name (tên món), shop (Shopee hoặc TikTok Shop), desc (1–2 câu nói thật món dùng để làm gì), url (link affiliate, bắt đầu bằng https://). Chạy lại: node tools/seo/build.js",
+  "ghi_chu": "Link tiếp thị (Shopee Affiliate / TikTok Shop). Để mảng items rỗng thì build không tạo trang Phụ kiện. Mỗi mục: name (tên món), shop (Shopee hoặc TikTok Shop), desc (1–2 câu nói thật món dùng để làm gì), url (link affiliate, bắt đầu bằng https://). Chạy lại: node tools/seo/build.js Tuỳ chọn featured:true = món hiện ở khối \"Phụ kiện gợi ý\" cuối trang từng tướng (tối đa 2, không đánh dấu thì lấy 2 món đầu).",
   "items": [
     {
       "name": "Găng tay chơi game MEMO V7 (sợi bạc, chống mồ hôi)",
       "shop": "Shopee",
       "desc": "Găng ngón tay cho người chơi điện thoại, gian hàng gắn nhãn Shopee Mall. Giá khoảng 75.000đ, Shopee hiển thị hơn 100 nghìn lượt bán (ngày 31/10/2026).",
-      "url": "https://s.shopee.vn/9pfVXgABQa"
+      "url": "https://s.shopee.vn/9pfVXgABQa",
+      "featured": true
     },
     {
       "name": "Quạt tản nhiệt điện thoại T2 (sò lạnh bán dẫn, hút nam châm)",
@@ -23,7 +24,8 @@
       "name": "Quạt tản nhiệt điện thoại MEMO G6 (kẹp 2 chiều)",
       "shop": "Shopee",
       "desc": "Quạt kẹp làm mát điện thoại, mẫu rẻ nhất trong nhóm. Giá khoảng 33.900đ, hơn 30 nghìn lượt bán (ngày 31/10/2026).",
-      "url": "https://s.shopee.vn/AUvCL0Vl1V"
+      "url": "https://s.shopee.vn/AUvCL0Vl1V",
+      "featured": true
     }
   ]
 }

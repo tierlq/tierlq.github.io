@@ -31,6 +31,12 @@ const CSP0 = index.match(/<meta http-equiv="Content-Security-Policy"[^>]*>/)[0];
 const affItems = (JSON.parse(fs.readFileSync(path.join(__dirname, 'affiliate.json'), 'utf8')).items) || [];
 affItems.forEach((x, i) => { if (!x.name || !x.desc || !/^https:\/\//.test(x.url || '') || !['Shopee', 'TikTok Shop'].includes(x.shop)) throw Error(`tools/seo/affiliate.json mục ${i + 1}: cần name, desc, shop (Shopee hoặc TikTok Shop) và url bắt đầu bằng https://`); });
 const affShops = [...new Set(affItems.map(x => x.shop))].join(' và ');
+// Cách đặt giống các trang lớn (Wirecutter, trang công nghệ): khối sản phẩm đặt đúng chỗ liên quan, nhãn "Liên kết tiếp thị" ngay cạnh link,
+// link gắn rel="sponsored", tách khỏi bảng xếp hạng. affBox() = khối gợi ý cuối trang từng tướng.
+const AFFREL = 'sponsored nofollow noopener';
+const affFeat = (affItems.some(x => x.featured) ? affItems.filter(x => x.featured) : affItems).slice(0, 2);
+const affShort = n => n.replace(/\s*\(.*$/, '');
+const affBox = () => affItems.length ? `<aside class="aff" aria-label="Phụ kiện gợi ý, có liên kết tiếp thị"><p class="aff-t"><span class="aff-l">Liên kết tiếp thị</span>Phụ kiện cho người chơi trên điện thoại</p><ul>${affFeat.map(x => `<li><a href="${esc(x.url)}" rel="${AFFREL}" target="_blank"><b>${esc(affShort(x.name))}</b><span>Xem trên ${esc(x.shop)} →</span></a></li>`).join('')}</ul><p class="aff-s">Mua qua các liên kết này, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. <a href="/phu-kien/">Xem tất cả phụ kiện</a></p></aside>` : '';
 const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
 const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
 <html lang="vi">
@@ -212,7 +218,8 @@ ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `
 ${others.length ? `<h2>${esc(h.name)} ở đường khác</h2><ul class="links">${others.map(x => `<li><a href="${url(x)}">${esc(LANES[x.lane])}${x.sec ? ' (phụ)' : ''} · tier ${x.tier}</a></li>`).join('')}</ul>` : ''}
 ${peers.length ? `<h2>Cùng tier ${h.tier} ở ${esc(L)}</h2><ul class="links">${peers.map(x => `<li><a href="${url(x)}">${esc(x.name)}</a></li>`).join('')}</ul>` : ''}
 <p><a href="${lurl(h.lane)}">Xem cả tier list ${esc(L)} →</a></p>
-<a class="go" href="/#tuong-${h.id}">Mở ${esc(h.name)} trên Bảng Tier →</a>${affItems.length ? '\n<p class="aff-n">Chơi lâu bị nóng máy, mỏi tay? Xem <a href="/phu-kien/">phụ kiện chơi Liên Quân</a> (trang có liên kết tiếp thị).</p>' : ''}
+<a class="go" href="/#tuong-${h.id}">Mở ${esc(h.name)} trên Bảng Tier →</a>
+${affBox()}
 </main>
 <footer><a href="/">Bảng Tier Liên Quân</a> · ${NAVF}<br>Dữ liệu cập nhật ${upd}. Hình tướng thuộc bản quyền Garena / TiMi Studio.</footer>
 </body>
@@ -282,7 +289,7 @@ writePage('bai-viet', pageShell({ title: 'Bài viết về meta và cân bằng 
 
 // ---------- 3d. Phụ kiện (link tiếp thị), chỉ khi tools/seo/affiliate.json có món ----------
 if (affItems.length) writePage('phu-kien', pageShell({ title: 'Phụ kiện chơi Liên Quân: găng tay, quạt tản nhiệt điện thoại | Bảng Tier Liên Quân', desc: 'Gợi ý phụ kiện chơi Liên Quân Mobile trên điện thoại. Trang có liên kết tiếp thị ' + affShops + ', giá bạn trả không đổi.', path: '/phu-kien/', h1: 'Phụ kiện chơi Liên Quân', over: 'Gợi ý · có liên kết tiếp thị',
-  body: `<p class="lead">Vài món phụ kiện cho người chơi trên điện thoại, chọn theo lượt bán trên Shopee. Đây không phải bài đánh giá hay xếp hạng như bảng tier: hãy đọc đánh giá của người mua trước khi quyết định.</p><p><b>Lưu ý:</b> các liên kết bên dưới là liên kết tiếp thị (affiliate). Nếu bạn mua qua đó, người duy trì web có thể nhận một khoản hoa hồng, giá bạn trả không đổi. Hoa hồng không ảnh hưởng tier hay nhận định trong bài.</p><ul class="chg plain">${affItems.map(x => `<li><a href="${esc(x.url)}" rel="sponsored nofollow noopener" target="_blank"><b>${esc(x.name)}</b></a><span class="tb">${esc(x.shop)}</span><p>${esc(x.desc)}</p></li>`).join('')}</ul>` }));
+  body: `<p class="lead">Vài món phụ kiện cho người chơi trên điện thoại, chọn theo lượt bán trên Shopee. Đây không phải bài đánh giá hay xếp hạng như bảng tier: hãy đọc đánh giá của người mua trước khi quyết định.</p><p class="aff-note"><span class="aff-l">Liên kết tiếp thị</span> Các liên kết bên dưới là liên kết tiếp thị (affiliate). Nếu bạn mua qua đó, người duy trì web có thể nhận một khoản hoa hồng, giá bạn trả không đổi. Hoa hồng không ảnh hưởng tier hay nhận định trong bài.</p><ul class="pk">${affItems.map(x => `<li><div class="pk-h"><b>${esc(x.name)}</b><span class="tb">${esc(x.shop)}</span></div><p>${esc(x.desc)}</p><a class="go pk-go" href="${esc(x.url)}" rel="${AFFREL}" target="_blank">Xem trên ${esc(x.shop)} →</a></li>`).join('')}</ul><p class="aff-s">Giá, lượt bán và gian hàng đổi theo ngày: kiểm tra lại trên ${esc(affShops)} trước khi mua.</p>` }));
 
 // ---------- 3e. Trang tra cứu: trang bị, phù hiệu, bảng ngọc, phép bổ trợ (dữ liệu BITEM/BINFO/BENCH/BARC/BSPELL trong builds.js; "số build" = đếm trong BUILDS) ----------
 const { BINFO, BENCHB } = ctx;
@@ -358,7 +365,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
-<li>Liên kết tiếp thị và hoa hồng. Hiện chỉ có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'}, tách khỏi bảng tier và ghi rõ trên trang.</li>
+<li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
 <li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
 <h2>Giới hạn</h2><ul class="items">
@@ -375,7 +382,7 @@ writePage('quyen-rieng-tu', pageShell({ title: 'Chính sách quyền riêng tư 
 <h2>Thống kê lượt xem</h2><p>Web dùng Google Analytics để biết có bao nhiêu người xem, xem trang nào, bằng thiết bị và ở quốc gia nào. Google Analytics dùng cookie hoặc mã định danh trình duyệt cho việc này. Tính năng tín hiệu Google và cá nhân hoá quảng cáo đã tắt. Bạn có thể từ chối bằng cách chặn cookie bên thứ ba hoặc cài <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">tiện ích từ chối Google Analytics</a> của Google.</p>
 <h2>Dữ liệu lưu trên thiết bị của bạn</h2><p>Bảng Tự xếp, chế độ xem, giao diện sáng/tối, các tướng xem gần đây và lựa chọn về gợi ý cài ứng dụng được lưu trong bộ nhớ trình duyệt của bạn (localStorage). Dữ liệu này không gửi đi đâu. Một bộ nhớ đệm (service worker) cũng lưu ảnh và tệp của web để mở nhanh và dùng được khi mất mạng. Xoá dữ liệu trang web trong trình duyệt là xoá hết.</p>
 <h2>Dịch vụ bên ngoài</h2><ul><li>Phông chữ tải từ Google Fonts.</li><li>Hình biểu tượng chiêu thức tải từ máy chủ của Garena (lienquan.garena.vn), không gửi kèm địa chỉ trang bạn đang xem.</li><li>Web được lưu trữ trên GitHub Pages; GitHub có thể ghi nhật ký truy cập theo chính sách của họ.</li><li>Các liên kết ra ngoài (TikTok, Garena, trang nguồn) thuộc chính sách riêng của từng nơi.</li></ul>
-<h2>${affItems.length ? 'Quảng cáo và liên kết tiếp thị' : 'Quảng cáo'}</h2><p>${affItems.length ? 'Web không chạy quảng cáo hiển thị. Trang <a href="/phu-kien/">Phụ kiện</a> có liên kết tiếp thị (affiliate) tới ' + affShops + ': nếu bạn mua qua liên kết đó, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. Các liên kết này được ghi rõ trên trang và không xuất hiện ở bảng tier.' : 'Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.'}</p>
+<h2>${affItems.length ? 'Quảng cáo và liên kết tiếp thị' : 'Quảng cáo'}</h2><p>${affItems.length ? 'Web không chạy quảng cáo hiển thị. Trang <a href="/phu-kien/">Phụ kiện</a> và khối "Phụ kiện gợi ý" ở cuối trang từng tướng có liên kết tiếp thị (affiliate) tới ' + affShops + ': nếu bạn mua qua liên kết đó, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. Các liên kết này được ghi rõ ngay cạnh link, gắn rel="sponsored" và không xuất hiện trong bảng tier hay cách xếp hạng.' : 'Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.'}</p>
 <h2>Liên hệ</h2><p>Câu hỏi về trang này: xem <a href="/lien-he/">Liên hệ</a>.</p>` }));
 
 // mục lục liên kết tới mọi trang (để Google và người đọc tìm thấy mọi trang tướng bằng liên kết thường)
@@ -393,7 +400,9 @@ ${Object.keys(LANES).map(l => `      <h3>${esc(LANES[l])}</h3><p class="faq-l">$
   <!--/HEROLINKS-->`;
 let idx2 = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 if (!/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/.test(idx2)) throw Error('index.html thiếu chỗ đánh dấu <!--HEROLINKS-->');
-fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML));
+const affStrip = `<!--AFF-->${affItems.length ? '<section class="social aff-strip" aria-label="Phụ kiện chơi Liên Quân"><div><span class="over">Gợi ý · liên kết tiếp thị</span><h2>Phụ kiện chơi trên điện thoại</h2><p>Găng tay, quạt tản nhiệt chọn theo lượt bán trên Shopee. Có liên kết tiếp thị, giá bạn trả không đổi.</p></div><a class="tt-go" href="/phu-kien/">Xem phụ kiện <i>→</i></a></section>' : ''}<!--/AFF-->`;
+if (!/<!--AFF-->[\s\S]*<!--\/AFF-->/.test(idx2)) throw Error('index.html thiếu chỗ đánh dấu <!--AFF-->');
+fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML).replace(/<!--AFF-->[\s\S]*<!--\/AFF-->/, affStrip));
 
 // ---------- 5. sitemap ----------
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
