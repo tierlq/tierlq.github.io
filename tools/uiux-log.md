@@ -175,3 +175,17 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   chạm vùng tối phía trên bảng chi tiết thì đóng cả bảng (đúng kiểu tấm trượt); tên ngắn trong mục lục Hỏi nhanh (Qi, Ata…) rộng 19–40px nhưng cao 44–50px.
 - Cần chủ web thử máy thật: Zalo, Messenger, app TikTok (trình duyệt trong app), Chrome Android còn màn trắng/xanh không; thông báo nhỏ khi đặt tướng ở Tự xếp giờ nằm một dòng.
 - Ghi chú cho lần sau: `Input.synthesizeScrollGesture` của CDP không cuộn được trang trong Playwright giả lập điện thoại; dùng chuỗi `Input.dispatchTouchEvent` (touchStart → nhiều touchMove → touchEnd) mới cuộn và kích hoạt hút điểm dừng như người thật.
+
+## 2026-11-07 (việc định kỳ Thứ Bảy)
+- Rà 1440/390/360 sáng/tối + xoay ngang 844×390: đầu trang, sân khấu, bảng tier, bảng chi tiết (build), bộ lọc điện thoại, tìm có/không kết quả, Tự xếp, Số liệu, Cách xếp và nguồn. axe-core 4.10: trang chính và bảng chi tiết không lỗi; không tràn ngang.
+- Sửa: **mục Cách xếp và nguồn trên điện thoại**, dòng đầu "Công thức đầy đủ…: trang Phương pháp." bị vỡ: link nhảy xuống dòng riêng, dấu chấm rơi xuống dòng thứ ba (cao 112px).
+  Nguyên nhân: quy tắc nới vùng chạm `.box li>a:only-child{display:block}` dành cho danh sách nguồn, nhưng `:only-child` không tính chữ thường nên link nằm giữa câu cũng khớp.
+  Nay link giữa câu gắn `class="inl"` (inline-block, padding 11px, margin âm: vẫn cao 44px nhưng nằm trong dòng). Thêm link giữa câu trong `.box li` sau này thì nhớ gắn `inl`.
+- Sửa: **bảng Số liệu trên điện thoại**, tên cột "CẤM" và "CÓ MẶT ⌄" (cột sắp mặc định, có mũi tên) chỉ cách 4px nên đọc như một cụm "CẤM CÓ MẶT". Cột Có mặt rộng 19% (trước 15%) + đệm trái 12px: khoảng cách 4 → 14px (320–414px), tên tướng không xuống dòng thêm.
+- Nhỏ: tiêu đề "Không có tướng nào khớp" chia dòng cân (`text-wrap:balance`), chú thích bảng Số liệu và lời gợi ý không để một chữ mồ côi (`text-wrap:pretty`; trình duyệt cũ bỏ qua).
+- `smoke.js` thêm 2 điều kiện: tên cột Số liệu cách nhau ≥6px; link giữa câu trong mục Cách xếp không bị `display:block`. Đã thử trên bản cũ: báo đúng 2 lỗi.
+- Kiểm tra: `tools/check/all.sh` TẤT CẢ ĐẠT (1440/390: 5 slide, 147/38 thẻ, mở 147 bảng chi tiết, không ảnh 404, không tràn ngang). So ảnh trước/sau: máy tính không đổi (khác biệt chỉ do hoạt ảnh). Chỉ CSS/HTML, không sửa JS nên không đổi `?v=`.
+- Đã xem rồi để lại: điện thoại xoay ngang, chạm ô tìm thì bộ lọc dạng chip (cao 238px) nằm ngay dưới nên không thấy kết quả. Thử nghĩ ẩn bộ lọc khi ô tìm có focus, nhưng trên máy thật bàn phím che gần hết màn ngang nên lợi ích không rõ; vẫn để dành (cân nhắc tấm trượt như điện thoại dọc).
+- Ý tưởng để lần sau:
+  - Máy tính: nút lên đầu trang (cố định góc phải dưới) che số ở cột "Trận" của bảng Số liệu khi cuộn; cân nhắc chừa lề phải cho bảng hoặc dời nút khi ở chế độ Số liệu.
+  - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính (còn từ trước).

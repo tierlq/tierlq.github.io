@@ -224,8 +224,9 @@ a{color:inherit}
 .trow.target .cell{cursor:copy;background:color-mix(in srgb,var(--fg) 4%,transparent)}
 @media (hover:hover){.trow.target:hover .cell{background:color-mix(in srgb,var(--fg) 8%,transparent)}}
 .none{color:var(--faint);font-size:12px;opacity:.5}
-.empty{padding:64px 16px;text-align:center;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.empty b{font:300 1.3rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--fg)}
+.empty{padding:64px 16px;text-align:center;text-wrap:pretty;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.empty b{font:300 1.3rem var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--fg);text-wrap:balance}
+.st-cap span{text-wrap:pretty}
 
 /* Thẻ tướng */
 .card{--sz:80px;width:auto;min-width:var(--sz);display:flex;flex-direction:column;align-items:flex-start;gap:9px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
@@ -302,6 +303,7 @@ a{color:inherit}
   .stats td b{font-size:13px}
   .stats td .dl{font-size:10px}
   .stats .c-wr,.stats .c-pk,.stats .c-bn,.stats .c-pres{width:15%}
+  .stats .c-pres{width:19%}.stats thead .c-pres button{padding-left:12px}   /* "CÓ MẶT ⌄" (cột sắp mặc định) cần chỗ, không dính vào "CẤM" */
   .stats thead .pc{display:none}
   .st-i{display:none}
   .st-h{gap:8px}
@@ -761,7 +763,8 @@ html.lock{overflow:hidden}
   .log.short li:nth-child(n+7){display:none}
   .log-more:not([hidden]){display:flex;width:100%;justify-content:center;margin-top:12px;min-height:44px}
   .log li button::after{content:"";position:absolute;inset:-12px -8px}
-  .box li>a:only-child{display:block;padding:11px 0}
+  .box li>a:only-child:not(.inl){display:block;padding:11px 0}
+  .box li>a.inl{display:inline-block;padding:11px 0;margin:-11px 0}   /* link nằm giữa câu: không tách dòng */
   .foot{font-size:12px;letter-spacing:.12em}
   .totop{width:48px;height:48px}
   body.picking .totop{display:none}
@@ -1222,7 +1225,7 @@ body.picking .instbar{display:none}
     <div class="box">
       <h2 id="method">Cách xếp và nguồn</h2>
       <ul>
-        <li>Công thức đầy đủ, ngưỡng điểm và giới hạn của số liệu: <a href="/phuong-phap/">trang Phương pháp</a>.</li>
+        <li>Công thức đầy đủ, ngưỡng điểm và giới hạn của số liệu: <a class="inl" href="/phuong-phap/">trang Phương pháp</a>.</li>
         <li><b>ĐTDV mùa Đông (46%):</b> ưu tiên số trận được chọn. Tỉ lệ chọn từ 30% số trận trở lên = 5 điểm, 25% = 4,5, 20% = 4, 15% = 3,5, 10% = 3, 5% = 2,5, 2% = 2, thấp hơn = 1,5. Bị cấm từ 40% số trận cộng 0,5, từ 20% cộng 0,25. Tỉ lệ thắng chỉ được tính khi tướng được chọn từ 5% số trận: từ 55% cộng 0,5, từ 45% trở xuống trừ 0,5 (dưới 5% số trận bảng chi tiết ghi "mẫu nhỏ").</li>
         <li><b>Mùa trước (17%):</b> bảng thống kê 299 trận, cùng cách tính với ĐTDV mùa Đông.</li>
         <li><b>RoV Pro League (14%):</b> tỉ lệ pick + cấm quy ra điểm 2,5–5, cộng trừ theo tỉ lệ thắng. Tướng ít xuất hiện chỉ được tính rất nhẹ.</li>

@@ -86,6 +86,13 @@ const errs = [], log = (...a) => console.log(...a);
     await p.click('#m-stats'); await p.waitForTimeout(200);
     const stats = await p.evaluate(() => document.querySelectorAll('#board table tr, #board [role=row]').length);
     if (stats < 10) bad(`chế độ Số liệu chỉ có ${stats} dòng`);
+    // tên cột Số liệu không dính nhau (≥6px giữa chữ hai cột, cả khi có mũi tên sắp xếp)
+    const gap = await p.evaluate(() => { const e = [...document.querySelectorAll('table.stats thead th button')].filter(b => b.offsetWidth).map(b => { const r = document.createRange(); r.selectNodeContents(b); return r.getBoundingClientRect(); });
+      return Math.min(...e.slice(1).map((r, i) => r.left - e[i].right)); });
+    if (gap < 6) bad(`tên cột Số liệu dính nhau (cách ${Math.round(gap)}px)`);
+    // link nằm giữa câu trong mục Cách xếp không bị tách thành dòng riêng
+    if (await p.evaluate(() => [...document.querySelectorAll('.box li>a')].some(a => getComputedStyle(a).display === 'block' && [...a.parentElement.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))))
+      bad('link giữa câu trong mục Cách xếp bị tách dòng (thêm class="inl")');
     await p.click('#m-mine'); await p.waitForTimeout(200);
     if (await p.evaluate(() => document.getElementById('m-mine').getAttribute('aria-pressed') !== 'true')) bad('không bật được chế độ Tự xếp');
     await p.click('#m-meta'); await p.waitForTimeout(200);
