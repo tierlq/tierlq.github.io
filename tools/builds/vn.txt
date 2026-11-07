@@ -427,6 +427,186 @@ SPELL: Tốc Biến
 ENCH: Rừng nguyên sinh: Nhạy bén, Bơm máu, Du hiệp | Thành khởi nguyên: Mật ngữ | Vực hỗn mang: Hấp huyết
 NOTE: Nguồn không có build riêng đi Giữa, ở đây dùng bộ Full dame cùng trang và bỏ món trợ thủ Liệt Hoả Mở Trói (5 món).
 
+# ===== Ô mới 07/11/2026 theo 3 bảng TikTok @zena_sama 24/10 (Rừng, Tà Thần, Trợ thủ; chủ web yêu cầu thêm hết) =====
+
+## elandorr@jg
+SRC: https://aov-builds.com/tuong/elandorr/
+ITEMS: Cung Bão Tố | Giày Du Mục | Kiếm Fafnir | Thánh Kiếm | Diệt Thần Cung | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng-Sát thương chí mạng x10 | Tím Tốc đánh-Tốc chạy x7 | Tím Hút máu x3 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Tinh linh | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## volkath@jg
+SRC: https://aov-builds.com/tuong/volkath/
+ITEMS: Rìu Leviathan | Giày Kiên Cường | Thương Longinus | Phức Hợp Kiếm | Liềm Đoạt Mệnh | Nanh Fenrir
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Đấu khí | Thành khởi nguyên: Siêu hồi máu, Thợ săn
+
+## boltbaron@jg
+SRC: https://aov-builds.com/tuong/bolt-baron/
+ITEMS: Gươm Loki | Giày Du Mục | Thập Tự Kiếm | Thương Khung Kiếm | Ma Pháp Trường Bào | Sách Thánh
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Trừng Trị
+ENCH: Tháp quang minh: Thánh châu, Xuyên tâm, Tinh linh | Vực hỗn mang: Ma Hỏa, Cường công
+
+## darcy@jg
+SRC: https://aov-builds.com/tuong/darcy/
+ITEMS: Gươm Loki | Giày Kiên Cường | Mặt Nạ Ma Quái | Vương Miện Hecate | Quyền Trượng Rhea | Quả Cầu Băng Sương
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x7 | Tím Hút máu phép x3 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Trừng Trị
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thánh thuẫn | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## edras@jg
+SRC: https://aov-builds.com/tuong/edras/
+ITEMS: Kiếm Truy Hồn | Giày Hộ Vệ | Thương Longinus | Thương Khung Kiếm | Kiếm Muramasa | Giáp Hộ Mệnh
+RUNES: Đỏ Công Vật lý x7 | Đỏ Công vật lý-Xuyên giáp x3 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
+
+## wonderwoman@jg
+SRC: https://aov-builds.com/tuong/wonder-woman/
+ITEMS: Kiếm Truy Hồn | Giày Kiên Cường | Thương Longinus | Phức Hợp Kiếm | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tốc đánh-Tỉ lệ chí mạng x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Ma tính | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## rourke@jg
+SRC: https://aov-builds.com/tuong/rourke/
+ITEMS: Cung Bão Tố | Giày Du Mục | Thương Xuyên Phá | Phức Hợp Kiếm | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tốc đánh-Tỉ lệ chí mạng x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Tháp quang minh: Thánh châu, Xuyên tâm
+
+## yan@jg
+SRC: https://aov-builds.com/tuong/yan/
+ITEMS: Rìu Leviathan | Giày Kiên Cường | Thương Longinus | Phức Hợp Kiếm | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Dư ảnh, Cường công, Ma tính | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## veres@jg
+SRC: https://aov-builds.com/tuong/veres/
+ITEMS: Rìu Leviathan | Giày Kiên Cường | Thương Longinus | Phức Hợp Kiếm | Nham Thuẫn | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Đấu khí | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## fennik@jg
+SRC: https://aov-builds.com/tuong/fennik/
+ITEMS: Cung Bão Tố | Giày Du Mục | Thánh Kiếm | Diệt Thần Cung | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Công vật lý-Xuyên giáp x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Ma tính | Thành khởi nguyên: Siêu hồi máu, Thợ săn
+
+## tulen@jg
+SRC: https://aov-builds.com/tuong/tulen/
+ITEMS: Gươm Loki | Giày Kiên Cường | Mặt Nạ Berith | Mặt Nạ Ma Quái | Quyền Trượng Rhea | Quả Cầu Băng Sương
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Trừng Trị
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Thành khởi nguyên: Siêu hồi máu, Thợ săn
+
+## bijan@jg
+SRC: https://aov-builds.com/tuong/bijan/
+ITEMS: Kiếm Truy Hồn | Giày Kiên Cường | Thương Xuyên Phá | Phức Hợp Kiếm | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Dư ảnh, Cường công, Ma chú | Thành khởi nguyên: Siêu hồi máu, Thợ săn
+
+## errol@jg
+SRC: https://aov-builds.com/tuong/errol/
+ITEMS: Rìu Leviathan | Giày Kiên Cường | Thương Longinus | Phức Hợp Kiếm | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Công vật lý-Xuyên giáp x9 | Đỏ Tỉ lệ chí mạng x1 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Dư ảnh, Cường công, Đấu khí | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## lubo@jg
+SRC: https://aov-builds.com/tuong/lu-bo/
+ITEMS: Kiếm Truy Hồn | Giày Kiên Cường | Thương Longinus | Chùy Băng Sương | Thương Khung Kiếm | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Dư ảnh, Cường công, Ma tính | Tháp quang minh: Tương phản, Xuyên tâm
+
+## kilgroth@jg
+SRC: https://aov-builds.com/tuong/kilgroth/
+ITEMS: Kiếm Truy Hồn | Giày Du Mục | Thánh Kiếm | Song Đao Bão Táp | Thương Xuyên Phá | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng-Sát thương chí mạng x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Ma tính | Thành khởi nguyên: Siêu hồi máu, Thợ săn
+
+## lindis@jg
+SRC: https://aov-builds.com/tuong/lindis/
+ITEMS: Cung Bão Tố | Giày Du Mục | Thánh Kiếm | Diệt Thần Cung | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng-Sát thương chí mạng x10 | Tím Tốc đánh-Tốc chạy x7 | Tím Hút máu x3 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Trừng Trị
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma chú | Tháp quang minh: Tương phản, Bí quyết
+
+## skud@jg
+SRC: https://aov-builds.com/tuong/skud/
+ITEMS: Rìu Leviathan | Giày Kiên Cường | Giáp Gaia | Nham Thuẫn | Khiên Thất Truyền | Giáp Thống Khổ
+RUNES: Đỏ Tốc Đánh-Máu-Giáp x10 | Tím Tốc đánh-Tốc chạy x5 | Tím Máu tối đa x5 | Xanh Máu tối đa-Giảm hồi chiêu x10
+SPELL: Trừng Trị
+ENCH: Rừng nguyên sinh: Nhạy bén, Sinh tồn, Mộc giáp | Vực hỗn mang: Hấp huyết, Cố Thủ
+
+## tamyn@top
+SRC: https://aov-builds.com/tuong/tamyn/
+ITEMS: Giày Thuật Sĩ | Thương Longinus | Kiếm Fafnir | Chùy Băng Sương | Giáp Cuồng Nộ | Thương Khung Kiếm
+RUNES: Đỏ Tốc Đánh-Máu-Giáp x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến
+ENCH: Vực hỗn mang: Dư ảnh, Cố Thủ, Đấu khí | Tháp quang minh: Tương phản, Xuyên tâm
+
+## roxie@top
+SRC: https://aov-builds.com/tuong/roxie/
+ITEMS: Giày Kiên Cường | Áo Choàng Thần Ra | Mặt Nạ Berith | Huân Chương Troy | Khiên Thất Truyền | Nham Thuẫn
+RUNES: Đỏ Tốc Đánh-Máu-Giáp x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Máu tối đa-Giảm hồi chiêu x10
+SPELL: Tốc Biến
+ENCH: Rừng nguyên sinh: Canh gác, Sinh tồn, Trói buộc | Thành khởi nguyên: Mật ngữ | Vực hỗn mang: Hấp huyết
+
+## murad@top
+SRC: https://aov-builds.com/tuong/murad/
+ITEMS: Giày Thuật Sĩ | Thương Longinus | Phức Hợp Kiếm | Nanh Fenrir | Thương Xuyên Phá | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến / Bộc Phá
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma chú | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+NOTE: Nguồn không có build riêng đi Tà Thần; đồ lấy bộ thứ hai cùng trang (không có đồ rừng), ngọc và phù hiệu là bộ chung của trang. Phép theo mục "đi đường" của trang.
+
+## ngokhong@top
+SRC: https://aov-builds.com/tuong/ngo-khong/
+ITEMS: Giày Hermes | Thánh Kiếm | Song Đao Bão Táp | Kiếm Muramasa | Nanh Fenrir | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng-Sát thương chí mạng x10 | Tím Tốc đánh-Tốc chạy x7 | Tím Hút máu x3 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến / Bộc Phá
+ENCH: Vực hỗn mang: Dư ảnh, Cường công, Ma tính | Tháp quang minh: Tương phản, Bí quyết
+NOTE: Đồ theo bộ "Đi đường" cùng trang; ngọc và phù hiệu là bộ chung của trang. Phép theo mục "đi đường" của trang.
+
+## xeniel@top
+SRC: https://aov-builds.com/tuong/xeniel/
+ITEMS: Giày Phù Thủy | Trượng Bùng Nổ | Vương Miện Hecate | Xuyên Tâm Lệnh | Quả Cầu Băng Sương | Sách Thánh
+RUNES: Đỏ Tốc Đánh-Máu-Giáp x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Máu tối đa-Giảm hồi chiêu x10
+SPELL: Tốc Biến
+ENCH: Rừng nguyên sinh: Canh gác, Bơm máu, Mộc giáp | Tháp quang minh: Thánh châu | Vực hỗn mang: Hấp huyết
+NOTE: Nguồn không có build riêng đi Tà Thần; đồ lấy bộ "full dame" cùng trang (không có món trợ thủ), ngọc, phép và phù hiệu là bộ chung của trang.
+
+## veres@sp
+SRC: https://aov-builds.com/tuong/veres/
+ITEMS: Đại Địa Mở Trói | Giày Kiên Cường | Khiên Thất Truyền | Huân Chương Troy | Nham Thuẫn | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Tốc đánh-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Đấu khí | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## maloch@sp
+SRC: https://aov-builds.com/tuong/maloch/
+ITEMS: Liệt Hoả Mở Trói | Giày Kiên Cường | Đao Truy Hồn | Nanh Fenrir | Huân Chương Troy | Giáp Thống Khổ
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công Vật lý x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Giảm hồi chiêu x10
+SPELL: Tốc Biến / Tốc Hành
+ENCH: Vực hỗn mang: Hấp huyết, Cường công, Ma tính | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+
+## richter@sp
+SRC: https://aov-builds.com/tuong/richter/
+ITEMS: Đại Địa Mở Trói | Giày Kiên Cường | Áo Choàng Thần Ra | Khiên Thất Truyền | Huân Chương Troy | Giáp Hộ Mệnh
+RUNES: Đỏ Công vật lý-Xuyên giáp x10 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến
+ENCH: Rừng nguyên sinh: Ám kích, Sinh tồn, Du hiệp | Vực hỗn mang: Dư ảnh, Cố Thủ
+
 # ===== Các ô tướng còn lại (thay build ROV META server Thái, 12/10/2026) =====
 
 ## marja@mid
