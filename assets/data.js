@@ -462,7 +462,7 @@ const SRC = {
     "bright-jg": "C",
     // --- Giữa ---
     // Từ 07/11/2026 theo bảng riêng của @zena_sama đăng 03/11/2026 ("Tier Mid Meta Tác Chiến Sa Hải", SS→S+, có thêm bậc D), thay bảng 24/10 cho đường này.
-    // Chủ web yêu cầu "y chang bảng này": tier cuối của các ô Giữa còn được ghim trong MANUAL (ô "-mid"). Bảng có thêm Erin, Alice, Aya, Dolia, Dyadia, The Flash nhưng web chưa có ô Giữa cho họ.
+    // Chủ web yêu cầu "y chang bảng này": tier cuối của các ô Giữa còn được ghim trong MANUAL (ô "-mid"). Erin, Alice, Aya, Dolia, Dyadia, The Flash được thêm ô Giữa (đường phụ trong SECONDARY).
     "lorion-mid": "S+",
     "rouie-mid": "S+",
     "darcy-mid": "S",
@@ -494,6 +494,12 @@ const SRC = {
     "veera-mid": "C",
     "bonnie-mid": "D",
     "ishar-mid": "D",
+    "erin-mid": "S",
+    "alice-mid": "A",
+    "aya-mid": "B",
+    "dolia-mid": "C",
+    "dyadia-mid": "C",
+    "theflash-mid": "D",
     "gildur-mid": "B",   // bảng 03/11 không có Gildur: giữ nguyên từ bảng 24/10
     // --- Trợ thủ ---
     "ybneth-sp": "S+",
@@ -594,7 +600,8 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
 // Điều chỉnh thủ công của người biên tập (ưu tiên cao nhất)
 const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","boltbaron-ad":"A",
   // Đường Giữa ghim theo bảng @zena_sama 03/11/2026 (chủ web yêu cầu "y chang bảng này" 07/11/2026). Xoá các dòng "-mid" dưới đây để đường Giữa tính lại theo điểm.
-  "lorion-mid":"S","rouie-mid":"S","darcy-mid":"S","evita-mid":"S","ignis-mid":"S","liliana-mid":"S","zata-mid":"S","annette-mid":"A","goverra-mid":"A","iggy-mid":"A","raz-mid":"A","yue-mid":"A","aleister-mid":"B","azzenka-mid":"B","dirak-mid":"B","mganga-mid":"B","natalya-mid":"B","preyta-mid":"B","dieuthuyen-mid":"C","flowborn-mid":"C","heino-mid":"C","ilumia-mid":"C","jinna-mid":"C","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"C","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D"};
+  "lorion-mid":"S","rouie-mid":"S","darcy-mid":"S","evita-mid":"S","ignis-mid":"S","liliana-mid":"S","zata-mid":"S","annette-mid":"A","goverra-mid":"A","iggy-mid":"A","raz-mid":"A","yue-mid":"A","aleister-mid":"B","azzenka-mid":"B","dirak-mid":"B","mganga-mid":"B","natalya-mid":"B","preyta-mid":"B","dieuthuyen-mid":"C","flowborn-mid":"C","heino-mid":"C","ilumia-mid":"C","jinna-mid":"C","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"C","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D",
+  "erin-mid":"S","alice-mid":"A","aya-mid":"B","dolia-mid":"C","dyadia-mid":"C","theflash-mid":"D"};
 const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
 // Lớp tướng theo phân loại chính thức trên lienquan.garena.vn
 const CLASSFIX={airi:"assassin",chaugnar:"support",cresht:"tank",zill:"mage",xeniel:"support",ata:"fighter",boltbaron:"mage",arum:"tank",bright:"marksman",roxie:"fighter",lumburr:"tank",ormarr:"fighter",theflash:"mage",arduin:"fighter",sephera:"support"};
@@ -610,7 +617,9 @@ function addHero(lane,cls,vn,n,sec){const k=slug(n),p=P[k+"-"+lane]||P[k]||[],sc
 RAW.forEach(([lane,cls,vn,names])=>names.split(",").forEach(n=>addHero(lane,cls,vn,n)));
 // Đường phụ: tướng thường được đưa sang đường khác ngoài đường chính (đã bỏ Toro và Marja)
 const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],Qi:["jg"],Airi:["jg"],"Triệu Vân":["jg"],
-  Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Arthur:["sp"],Arduin:["top"],"Bolt Baron":["ad"]};
+  Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Arthur:["sp"],Arduin:["top"],"Bolt Baron":["ad"],
+  // Thêm ô Giữa 07/11/2026 theo bảng Giữa của @zena_sama 03/11 (chủ web yêu cầu)
+  Erin:["mid"],Alice:["mid"],Aya:["mid"],Dolia:["mid"],Dyadia:["mid"],"The Flash":["mid"]};
 for(const [n,lanes] of Object.entries(SECONDARY)){const base=HEROES.find(h=>h.name===n&&!h.sec);if(!base)continue;
   lanes.forEach(l=>{if(!HEROES.some(h=>h.key===base.key&&h.lane===l))addHero(l,base.cls,base.vn,n,true)})}
 HEROES.filter(h=>h.lane==="mid"&&["annette","rouie"].includes(h.key)).forEach(h=>h.sec=true);

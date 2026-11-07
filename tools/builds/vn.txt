@@ -380,6 +380,53 @@ RUNES: Đỏ Công phép x10 | Tím Hút máu phép x5 | Tím Tốc đánh-Tốc
 SPELL: Tốc Biến
 ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
 
+# ===== Ô Giữa thêm 07/11/2026 theo bảng Giữa của @zena_sama 03/11 (chủ web yêu cầu) =====
+
+## erin@mid
+SRC: https://aov-builds.com/tuong/erin/
+ITEMS: Giày Phù Thủy | Mặt Nạ Berith | Trượng Bùng Nổ | Vương Miện Hecate | Trượng Hỗn Mang | Quả Cầu Băng Sương
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
+
+## theflash@mid
+SRC: https://aov-builds.com/tuong/the-flash/
+ITEMS: Giày Kiên Cường | Trượng Bùng Nổ | Gươm Tận Thế | Vương Miện Hecate | Trượng Hỗn Mang | Quyền Trượng Rhea
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Hút máu phép x3 | Tím Tốc đánh-Tốc chạy x7 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma chú | Tháp quang minh: Tương phản, Xuyên tâm
+
+## dolia@mid
+SRC: https://aov-builds.com/tuong/dolia/
+ITEMS: Giày Thuật Sĩ | Mặt Nạ Berith | Sách Truy Hồn | Trượng Băng | Băng Nhẫn Skadi | Vương Miện Hecate
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x7 | Tím Máu-Hồi máu-Tốc chạy x3 | Xanh Công phép-Giảm hồi chiêu x10
+SPELL: Tốc Biến
+ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Rừng nguyên sinh: Nhạy bén, Bơm máu
+
+## aya@mid
+SRC: https://aov-builds.com/tuong/aya/
+ITEMS: Giày Phù Thủy | Trượng Bùng Nổ | Mặt Nạ Berith | Vương Miện Hecate | Trượng Hỗn Mang | Sách Thánh
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Suy Nhược / Ngất Ngư / Thanh Tẩy
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Thành khởi nguyên: Siêu hồi máu | Tháp quang minh: Thánh châu
+NOTE: Nguồn không có build riêng đi Giữa, ở đây dùng bộ Full phép cùng trang.
+
+## alice@mid
+SRC: https://aov-builds.com/tuong/alice/
+ITEMS: Giày Thuật Sĩ | Trượng Bùng Nổ | Mặt Nạ Ma Quái | Vương Miện Hecate | Sách Thánh
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến
+ENCH: Tháp quang minh: Sung mãn, Bí quyết, Thần quang | Vực hỗn mang: Hấp huyết, Cường công
+NOTE: Nguồn không có build riêng đi Giữa, ở đây dùng bộ Full phép cùng trang và bỏ món trợ thủ Liệt Hoả Hồi Huyết (5 món).
+
+## dyadia@mid
+SRC: https://aov-builds.com/tuong/dyadia/
+ITEMS: Giày Thuật Sĩ | Trượng Bùng Nổ | Gươm Tận Thế | Vương Miện Hecate | Sách Thánh
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến
+ENCH: Rừng nguyên sinh: Nhạy bén, Bơm máu, Du hiệp | Thành khởi nguyên: Mật ngữ | Vực hỗn mang: Hấp huyết
+NOTE: Nguồn không có build riêng đi Giữa, ở đây dùng bộ Full dame cùng trang và bỏ món trợ thủ Liệt Hoả Mở Trói (5 món).
+
 # ===== Các ô tướng còn lại (thay build ROV META server Thái, 12/10/2026) =====
 
 ## marja@mid
