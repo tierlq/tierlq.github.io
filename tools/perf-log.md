@@ -170,3 +170,29 @@ Ghi chú:
 Ý tưởng để lần sau:
 - Thời gian mở bảng chi tiết trên điện thoại dao động mạnh (509–823 ms); trace cho thấy phần lớn là vẽ/hợp lớp (Paint, Layerize, Raster) khi thiên hà còn chạy phía sau lúc đang ở đầu trang. Thử đo khi đã cuộn xuống bảng (trường hợp thật hay gặp) trước khi kết luận.
 - Khởi tạo thiên hà (`galaxy`, ~100–160 ms CPU chậm, chạy sau khung hình đầu) vẫn là tác vụ dài thứ hai; phần tạo hạt có thể chia nhỏ nhưng thiên hà sẽ hiện chậm hơn — cần so mắt.
+
+## 2026-11-08 — việc định kỳ Chủ nhật (không đổi mã)
+Đo bằng `tools/perf` (measure.js, trung vị 5 lần, bản fcf4f50 — 180 ô tướng, có trang Phụ kiện). Không tính Google Fonts và Google Analytics (môi trường đo không vào được).
+
+| | Điện thoại (390px, CPU chậm 4×, 4G chậm) | Máy tính (1440px) |
+|---|---|---|
+| LCP / CLS | 480 ms / 0 | 128 ms / 0,007 |
+| TBT | 274 ms | 13 ms |
+| Bảng tier có thẻ | 1461 ms | 376 ms |
+| Mở bảng chi tiết (đầu trang) | 234 ms | 340 ms |
+| Tải tới lúc bảng hiện | 85 kB / 5 yêu cầu | 85 kB / 5 yêu cầu |
+| Tổng sau 3 giây | 137 kB / 15 yêu cầu | 502 kB / 18 yêu cầu (2 ảnh sân khấu s3/ 360 kB) |
+So với 01/11 (môi trường đo hôm nay nhanh hơn, nên chỉ so tương đối): mọi chỉ số bằng hoặc tốt hơn; tải trước khi bảng hiện +3 kB (82 → 85 kB) do index.html lớn thêm (dải Phụ kiện, mục lục 180 trang tướng).
+Độ mượt khi cuộn cả trang (lăn 400 px mỗi 60 ms, 3 lần): điện thoại CPU chậm 4× 178–185 khung, 1–5 khung > 34 ms, p95 33 ms, chậm nhất 50–83 ms;
+máy tính 143–152 khung, 6–9 khung > 34 ms, p95 33–50 ms (phần lớn do thiên hà vẽ bằng CPU, máy đo không có GPU).
+
+Trace lúc mở trang (điện thoại): bố cục HTML đầu 109 ms (trước khi chạy JS), data.js 49 ms, app.js 252 ms (trong đó 3 lần bố cục bắt buộc ở `innerWidth` dòng 661,
+`scrollFx` dòng 688, `document.fonts.ready` dòng 929, cộng ~230 ms kể cả tính kiểu — đã thử dời ngày 01/11, chỉ chuyển việc sang khung kế tiếp nên không làm lại),
+khởi tạo thiên hà 76 ms (sau khung đầu). Không thấy chỗ nào đổi được mà có số đo chứng minh, nên tuần này không sửa mã.
+
+Đo thêm (ý tưởng tuần trước): mở bảng chi tiết khi đã cuộn xuống bảng tier, gọi `openModal` trực tiếp: 323–485 ms điện thoại, 138–158 ms máy tính.
+Trace cho thấy phần thêm so với lúc ở đầu trang là chạy skills.js + counters.js (63 ms CPU chậm) vì gọi thẳng không qua chạm thẻ; người dùng thật chạm thẻ
+(`pointerdown`) nên hai tệp này đã tải trước. Tác vụ của chính `openModal` ~100 ms (37 ms là bố cục bắt buộc trong `fitNames`, cần để đo tên tướng) — không cần sửa.
+Ý tưởng để lần sau:
+- `icon-192.png` (3 kB) vẫn tải ngay lúc mở trang cùng app.js; lợi quá nhỏ để đo được, để dành.
+- Nếu index.html tiếp tục lớn thêm (mục lục, FAQ), cân nhắc rút gọn phần HTML tĩnh dài ở cuối trang (lần bố cục đầu 109 ms trên điện thoại chậm phần lớn là mục "Cách xếp và nguồn" + mục lục) — phải giữ cho Google đọc được.
