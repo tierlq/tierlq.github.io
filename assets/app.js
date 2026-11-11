@@ -89,7 +89,7 @@ function buildFilters(){
     b.onclick=()=>{F[key].has(k)?F[key].delete(k):F[key].add(k);b.setAttribute("aria-pressed",F[key].has(k));draw()};el.appendChild(b)})};
   mk("f-lane","lane",LANES,(b,k,v)=>{b.innerHTML=`<span class="d" style="background:var(--l-${k})"></span>${v}`});
   mk("f-class","cls",CLASSES,(b,k,v)=>{b.innerHTML=ICON[k]+v});
-  mk("f-trend","trend",{rise:"Lên bậc",fall:"Xuống bậc",up:"Tăng sức mạnh",down:"Giảm sức mạnh",mix:"Điều chỉnh",new:"Mới"},(b,k,v)=>{b.innerHTML=(k==="rise"||k==="fall"?mkMove(k==="rise"?"up":"down"):mkTrend(k))+v});
+  mk("f-trend","trend",{up:"Tăng sức mạnh",down:"Giảm sức mạnh",mix:"Điều chỉnh",new:"Mới"},(b,k,v)=>{b.innerHTML=(k==="rise"||k==="fall"?mkMove(k==="rise"?"up":"down"):mkTrend(k))+v});
   $("lanesM").innerHTML=Object.entries(LANES).map(([k,v])=>`<button data-l="${k}" style="--lc:var(--l-${k})" aria-pressed="${k===mLane}"><i></i>${v}</button>`).join("");
   $("lanesM").onclick=e=>{const b=e.target.closest("button");if(b)setLane(b.dataset.l)};
 }
@@ -693,7 +693,7 @@ function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3
 document.querySelectorAll(".lgm[data-mk]").forEach(el=>{const k=el.dataset.mk;el.innerHTML=k==="rise"?mkMove("up"):k==="fall"?mkMove("down"):mkTrend(k)});
 /* Chú giải luôn hiện */
 $("legendStrip").innerHTML=`<div class="ls-t">${TIERS.map(t=>`<span class="ls-tier" style="--tc:var(--t-${t.toLowerCase()})"><b>${t}</b>${TNAME[t]}</span>`).join("")}</div>
-  <div class="ls-b"><span>${mkMove("up")}Lên bậc</span><span>${mkMove("down")}Xuống bậc</span><span>${mkTrend("up")}Tăng sức mạnh</span><span>${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span>${mkTrend("mix")}Điều chỉnh</span>`:""}<span>${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
+  <div class="ls-b"><span>${mkTrend("up")}Tăng sức mạnh</span><span>${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span>${mkTrend("mix")}Điều chỉnh</span>`:""}<span>${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
 
 /* ===== Hiệu ứng cuộn ===== */
 const seenRows=new Set();

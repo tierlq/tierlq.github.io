@@ -367,8 +367,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <li><b>Tier xếp theo từng đường:</b> tướng chỉ so với các tướng cùng đường. Tier theo ngưỡng điểm cố định: từ 4,25 là S, từ 2,9 là A, từ 2,15 là B, từ 1,65 là C, thấp hơn là D, nên thêm hay bớt tướng khác không làm tướng này đổi bậc.</li>
 <li><b>Đường phụ:</b> tướng thường được đưa sang đường khác bị trừ 0,4 điểm khi so và tối đa tier A, vì số liệu giải không tách theo đường.</li>
 <li><b>Sàn theo ĐTDV (chỉ đường chính):</b> chọn cộng cấm từ 75% số trận luôn là S, từ 55% tối thiểu A. Chọn từ 30% số trận (thắng từ 45%) là S, từ 20% tối thiểu A.</li>
-<li><b>Chỉnh tay của người biên tập</b> ghi đè mọi quy tắc trên và được giữ khi cập nhật số liệu.</li>
-<li>Mũi tên lên hoặc xuống trên ảnh tướng so tier hiện tại với tier ở lần cập nhật trước (${esc(PREV_DATE)}).</li></ul>
+<li><b>Chỉnh tay của người biên tập</b> ghi đè mọi quy tắc trên và được giữ khi cập nhật số liệu.</li></ul>
 <h2 id="chinh-tay">Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
