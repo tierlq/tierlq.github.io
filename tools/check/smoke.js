@@ -45,8 +45,13 @@ const errs = [], log = (...a) => console.log(...a);
         const m = document.querySelector('.modal'); if (!m) { out.bad.push(h.id + ': không mở được'); continue; }
         const t = m.innerText;
         if (/Đang tải/.test(t)) out.bad.push(h.id + ': còn "Đang tải"');
-        if (!m.querySelector('.bd.rk')) out.bad.push(h.id + ': không có dòng Game rank (Garena)');
-        else if (!/Bậc Garena T[0-4] ·/.test(m.querySelector('.bd.rk').innerText)) out.bad.push(h.id + ': dòng Game rank thiếu bậc Garena T0–T4');
+        if (!m.querySelector('.bd.gr')) out.bad.push(h.id + ': không có thanh Game rank (Garena)');
+        else {
+          const g = m.querySelector('.bd.gr');
+          if (!/Bậc Garena T[0-4] ·/.test(g.innerText)) out.bad.push(h.id + ': thanh Game rank thiếu bậc Garena T0–T4');
+          const wd = parseFloat(g.querySelector('.bdbar i').style.width);
+          if (!(wd > 0 && wd <= 100)) out.bad.push(h.id + ': thanh Game rank rỗng hoặc quá 100% (' + g.querySelector('.bdbar i').style.width + ')');
+        }
         if (!m.querySelector('.bld-items li')) out.bad.push(h.id + ': không có build');
         if (m.querySelectorAll('.bld-ar li').length < 1) out.bad.push(h.id + ': không có ngọc');
         if (!m.querySelector('.bld-sp li')) out.bad.push(h.id + ': không có phép bổ trợ');
@@ -104,7 +109,7 @@ const errs = [], log = (...a) => console.log(...a);
     if (rk.hasN) bad('Số liệu Game rank vẫn còn cột Trận');
     if (!rk.hasGt || rk.gtN < minRows) bad(`Số liệu Game rank thiếu cột Garena (${rk.gtN} ô)`);
     if (rk.tam && rk.tam !== 'T3') bad(`Tamyn bậc Garena hiện "${rk.tam}", cần T3`);
-    if (!/Garena/.test(rk.cap) || !/không tính vào điểm/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
+    if (!/Garena/.test(rk.cap) || !/vào điểm tier/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
     if (rk.nak && !/^49,1/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 49,1`);
     // Flowborn có hai dạng với số khác nhau: xạ thủ (Rồng) 53,04 / pháp sư (Giữa) 52,74
     const fb = await p.evaluate(() => { const a = rankOf(HEROES.find(h => h.id === 'flowborn-ad')), m = rankOf(HEROES.find(h => h.id === 'flowborn-mid')); return [a && a[0], m && m[0]]; });

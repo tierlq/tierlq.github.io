@@ -626,7 +626,7 @@ const RAW=[
  ["sp","support","S","Alice,Dolia,Aya"],["sp","support","A","Annette,Dyadia"],["sp","support","B","Cresht,Grakk,Rouie"],
  ["sp","support","C","Krizzix,Arum"],["sp","support","D","Lumburr,Helen,TeeMee,Zip,Ming"]
 ];
-/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %, bậc Garena 0–4 = T0–T4]; chỉ hiển thị, không vào điểm tier*/
+/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %, bậc Garena 0–4 = T0–T4]; thắng/chọn/cấm vào điểm tổng qua rankScore, bậc Garena chỉ hiển thị*/
 const RANK={src:"Garena Liên Quân Mobile",where:"Cẩm nang → Bảng Phân Bậc Tướng",filter:"Đấu hạng (Tất cả)",read:"11/11/2026",d:{
 "trieuvan":[55.24,35.18,13.42,0],"omega":[55.05,2.1,0.28,4],"preyta":[54.98,7.37,4.8,2],"tamyn":[54.63,3.2,22.36,3],"moren":[54.34,5.65,1.2,2],
 "dyadia":[54.25,3.36,20.25,3],"erin":[53.98,10.72,3.67,2],"evita":[53.75,11.47,69.68,0],"thorne":[53.53,2.01,0.1,4],"astrid":[53.32,3.41,1.07,3],
@@ -658,7 +658,7 @@ const RANK={src:"Garena Liên Quân Mobile",where:"Cẩm nang → Bảng Phân B
 /*RANK:END*/
 const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/gi,"d").toLowerCase().replace(/[^a-z]/g,"");
 const HEROES=[];
-// Điểm tổng hợp (trọng số chuẩn hoá): ĐTDV mùa Đông 46% · mùa trước 17% · RoV Pro League 14% · rank cộng đồng 23%. Đã bỏ tier list báo game VN (19/10/2026).
+// Điểm tổng hợp (trọng số chuẩn hoá): ĐTDV mùa Đông 36% · mùa trước 13% · RoV Pro League 11% · rank cộng đồng 18% · game rank 22% (thêm 11/11/2026 theo yêu cầu chủ web). Đã bỏ tier list báo game VN (19/10/2026).
 const VNS={S:5,A:4,B:3,C:2,D:1}, RMS={"S+":5,S:4.5,A:3.5,B:2.5,C:1.5,D:1};
 function proScore(r){if(!r)return null;const [w,p,b]=r,P=p+b;let s=P>=50?5:P>=30?4.5:P>=20?4:P>=10?3.5:P>=5?3:2.5;
   if(w!=null&&p>=5){if(w>=55)s+=.5;else if(w<=45)s-=.5}return Math.max(1,Math.min(5,s))}
@@ -666,6 +666,13 @@ const aogOf=(k,lane)=>SRC.aog[k+"-"+lane]||(k==="flowborn"?null:SRC.aog[k]);
 function aogScore(a){if(!a)return 1.5;const [w,p,bn]=a;let s=p>=30?5:p>=25?4.5:p>=20?4:p>=15?3.5:p>=10?3:p>=5?2.5:p>=2?2:1.5;
   if(bn>=40)s+=.5;else if(bn>=20)s+=.25;
   if(p>=5){if(w>=55)s+=.5;else if(w<=45)s-=.5}return Math.max(1,Math.min(5,s))}
+// Game rank (số trong game của Garena, khối RANK ở trên): cùng cách tính với ĐTDV nhưng ngưỡng theo thang của người chơi rank
+// (số trận lớn hơn giải đấu rất nhiều nên tỉ lệ chọn thấp hơn; tỉ lệ thắng dao động hẹp quanh 50%, phân vị 10%/90% ≈ 47,7%/52,8%).
+// Game không ghi số trận nên tỉ lệ thắng chỉ tính khi tướng được chọn từ 3% số trận. Bậc T0–T4 của Garena không vào điểm vì chỉ là cách Garena gộp chính các số này.
+const rankData=(k,lane)=>RANK.d[k+"-"+lane]||(k==="flowborn"?null:RANK.d[k]);
+function rankScore(r){if(!r)return null;const [w,p,bn]=r;let s=p>=25?5:p>=20?4.5:p>=15?4:p>=10?3.5:p>=6?3:p>=3?2.5:p>=1?2:1.5;
+  if(bn>=40)s+=.5;else if(bn>=20)s+=.25;
+  if(p>=3){if(w>=53)s+=.5;else if(w>=51.5)s+=.25;else if(w<=46)s-=.5;else if(w<=47)s-=.25}return Math.max(1,Math.min(5,s))}
 const prevOf=(k,lane)=>SRC.prev[k+"-"+lane]||(k==="flowborn"?null:SRC.prev[k]);
 function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ khỏi điểm (chủ web yêu cầu 19/10/2026)
   // ĐTDV (đủ 310 trận, gồm vòng bảng và playoffs) là nguồn nặng nhất, ưu tiên số trận được CHỌN; cấm nhiều chỉ cộng thêm
@@ -674,6 +681,8 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
   parts.push([aogScore(prevOf(k,lane)),.15]);
   const r=SRC.rpl[k],ps=proScore(r);if(ps!=null)parts.push([ps,r[1]+r[2]>=5?.12:.04]);
   const m=SRC.rm[k+"-"+lane]||SRC.rm[k];if(m)parts.push([RMS[m],.2]);
+  // Game rank (người chơi rank, số trong game của Garena): thêm 11/11/2026, trọng số .25
+  const gr=rankScore(rankData(k,lane));if(gr!=null)parts.push([gr,.25]);
   return parts.reduce((s,[v,w])=>s+v*w,0)/parts.reduce((s,[,w])=>s+w,0)}
 // Điều chỉnh thủ công của người biên tập (ưu tiên cao nhất)
 const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"B","boltbaron-ad":"A",

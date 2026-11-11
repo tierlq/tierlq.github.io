@@ -195,7 +195,7 @@ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
 /* Hộp chi tiết */
 function breakdown(h){
   const r=SRC.rpl[h.key],m=SRC.rm[h.key+"-"+h.lane]||SRC.rm[h.key],ps=proScore(r),a=aogOf(h.key,h.lane);
-  const bar=(label,val,txt)=>`<div class="bd"><span>${label}</span><div class="bdbar"><i style="width:${val==null?0:val/5*100}%"></i></div><b>${txt}</b></div>`;
+  const bar=(label,val,txt,cls="")=>`<div class="bd${cls?" "+cls:""}"><span>${label}</span><div class="bdbar"><i style="width:${val==null?0:val/5*100}%"></i></div><b>${txt}</b></div>`;
   let pro="Chưa có dữ liệu";
   if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${(r[1]+r[2]).toFixed(1)}% pick+cấm)`:`Pick ${r[1]}% · Cấm ${r[2]}% · Thắng ${r[0]==null?"–":r[0]+"%"}`;
   // Tỉ lệ thắng chỉ vào điểm khi tướng được chọn từ 5% số trận (aogScore trong data.js): dưới mức đó ghi rõ là mẫu nhỏ
@@ -206,18 +206,19 @@ function breakdown(h){
     ${(()=>{const pv=prevOf(h.key,h.lane);return bar("Mùa trước",aogScore(pv),pv?`${pv[3]} pick · ${pv[4]} cấm / ${SRC.prevGames} trận${wrTxt(pv)}`:`Không được chọn trong ${SRC.prevGames} trận`)})()}
     ${bar("RoV Pro League",ps,pro)}
     ${bar("Rank cộng đồng",m?RMS[m]:null,m?"Tier "+m:"Chưa có dữ liệu")}
+    ${(()=>{const g=rankOf(h);return bar("Game rank",g?rankScore(g):null,g?rankTxt(g):"Chưa có dữ liệu","gr")})()}
     <div class="bd total"><span>Điểm tổng</span><div class="bdbar"><i style="width:${h.score/5*100}%"></i></div><b>${h.score.toFixed(2)} / 5 · hạng ${h.rank}/${h.laneN} ở ${LANES[h.lane]}${h.sec?" (đường phụ: trừ 0,4, tối đa tier A)":""}</b></div>
     ${h.floor==="manual"?`<p class="floor">Tier ${h.tier} do người biên tập điều chỉnh thủ công, không theo điểm tổng.</p>`:h.floor==="pickS"||h.floor==="pickA"?`<p class="floor">Được nâng lên tier ${h.tier} vì được chọn ở ${aogOf(h.key,h.lane)[1]}% số trận ĐTDV mùa Đông.</p>`:h.floor?`<p class="floor">Được nâng lên tier ${h.floor} vì xuất hiện (pick hoặc cấm) ở ${h.pres.toFixed(0)}% số trận ĐTDV mùa Đông.</p>`:""}
-    ${rankRow(h)}
+    ${rankNote(h)}
   </div>`;
 }
-/* Game rank (Bảng Phân Bậc Tướng trong game của Garena, khối RANK trong data.js): chỉ để xem, không tính vào điểm tier.
+/* Game rank (Bảng Phân Bậc Tướng trong game của Garena, khối RANK trong data.js): thắng/chọn/cấm tính vào điểm tổng từ 11/11/2026 (rankScore trong data.js), bậc T0–T4 thì chỉ để xem.
    Số theo tướng; Flowborn có hai khoá (-ad, -mid) như SRC.aog. Game không ghi số trận và ngày cập nhật của bảng */
 const rankOf=h=>typeof RANK!=="undefined"&&(RANK.d[h.key+"-"+h.lane]||(h.key==="flowborn"?null:RANK.d[h.key]))||null;
 const pc2=v=>v.toFixed(2).replace(".",",");
-function rankRow(h){const r=rankOf(h);if(!r)return "";
-  return `<div class="bd rk"><span>Game rank</span><b>${[r[3]==null?"":`Bậc Garena T${r[3]}`,`Thắng ${pc2(r[0])}%`,`Chọn ${pc2(r[1])}%`,`Cấm ${pc2(r[2])}%`].filter(Boolean).map(t=>`<i>${t}</i>`).join(" · ")}</b></div>
-    <p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ${RANK.read}. Bậc T0–T4 là Garena tự xếp, khác tier S–D của web. Không tính vào điểm tier; game không ghi số trận.</p>`}
+function rankTxt(r){return [r[3]==null?"":`Bậc Garena T${r[3]}`,`Thắng ${pc2(r[0])}%`,`Chọn ${pc2(r[1])}%`,`Cấm ${pc2(r[2])}%`].filter(Boolean).map(t=>`<i>${t}</i>`).join(" · ")}
+function rankNote(h){const r=rankOf(h);if(!r)return "";
+  return `<p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ${RANK.read}. Thắng, chọn, cấm có tính vào điểm tổng; bậc T0–T4 do Garena xếp, khác tier S–D của web, không tính vào điểm. ${r[1]<3?"Tướng được chọn dưới 3% số trận nên tỉ lệ thắng chưa tính vào điểm. ":""}Game không ghi số trận.</p>`}
 /* Build tham khảo: đồ, bảng ngọc, phép bổ trợ (dữ liệu ở assets/builds.js, tải sau khi trang hiện xong để bảng tier hiện sớm hơn) */
 // Không nạp builds.js bằng thẻ script trong HTML: app.js tự tải nó khi trang đã hiện xong (hoặc ngay khi cần mở bảng chi tiết),
 // dùng cùng số ?v= với app.js để trình duyệt nhận bản mới
@@ -432,7 +433,7 @@ function renderStats(list){
     const pv=s.p?(k==="pk"?s.p[1]:k==="bn"?s.p[2]:k==="pres"?s.p[1]+s.p[2]:null):null;
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
   const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
-  const cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Bậc T0–T4 do Garena xếp (khác tier S–D) · không ghi số trận · không tính vào điểm tier · bấm tên cột để sắp xếp</span>`
+  const cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Thắng, chọn, cấm có tính vào điểm tier, bậc T0–T4 do Garena xếp thì không · không ghi số trận · bấm tên cột để sắp xếp</span>`
     :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
   board.innerHTML=`${src}<div class="st-cap">${cap}</div>
   <table class="stats${rank?" rk":""}"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo Garena":t}">${l}${k==="n"||k==="gt"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>

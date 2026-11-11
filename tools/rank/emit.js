@@ -2,7 +2,7 @@
 // Đọc tools/rank/garena.txt (tỉ lệ thắng / chọn / cấm game rank, chép từ Bảng Phân Bậc Tướng trong game Liên Quân Mobile của Garena)
 // và ghi khối `RANK` vào assets/data.js, giữa /*RANK:BEGIN*/ và /*RANK:END*/ (chưa có thì chèn ngay trên dòng `const slug=`).
 // Dùng: node tools/rank/emit.js [--dry]
-// Số chỉ để HIỂN THỊ (chế độ Số liệu, bảng chi tiết, trang tướng), không tính vào điểm tier.
+// Thắng/chọn/cấm vào điểm tổng từ 11/11/2026 (rankScore trong data.js, trọng số .25) và hiện ở chế độ Số liệu, bảng chi tiết, trang tướng; bậc Garena T0–T4 (phần tử thứ 4) chỉ để hiển thị.
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..', '..');
 const DATA = path.join(ROOT, 'assets', 'data.js');
@@ -55,7 +55,7 @@ const parts = Object.keys(d).map(k => `${JSON.stringify(k)}:${JSON.stringify(d[k
 const body = []; let cur = '';
 for (const p of parts) { if (cur && (cur + p).length > 150) { body.push(cur); cur = ''; } cur += p + ','; }
 if (cur) body.push(cur);
-const block = '/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %, bậc Garena 0–4 = T0–T4]; chỉ hiển thị, không vào điểm tier*/\n' +
+const block = '/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %, bậc Garena 0–4 = T0–T4]; thắng/chọn/cấm vào điểm tổng qua rankScore, bậc Garena chỉ hiển thị*/\n' +
   `const RANK={src:"Garena Liên Quân Mobile",where:"Cẩm nang → Bảng Phân Bậc Tướng",filter:"Đấu hạng (Tất cả)",read:${JSON.stringify(read)},d:{\n${body.join('\n')}\n}};\n/*RANK:END*/`;
 
 const re = /\/\*(?:RANK|LQ):BEGIN[\s\S]*?\/\*(?:RANK|LQ):END\*\//;
