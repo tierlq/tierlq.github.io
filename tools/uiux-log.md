@@ -199,3 +199,9 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Màn dưới 320px (Galaxy Fold gập 280px): 2 thẻ mỗi hàng thay vì 3 (`--sz` chia 2); tab đường chữ 9,5px (trước bị "TÀ TH…", "TRỢ T…"); hàng Meta/Tự xếp/Số liệu/ô tìm/Lọc gọn lại (nút Lọc không còn đè ô tìm); bảng Số liệu thu chữ, ẩn biểu tượng nhỏ cạnh tên (`.st-m`) để vừa 248px (trước tràn tới 313px, cột "Có mặt %" bị cắt). 280/300/319px: không tên bị cắt, không tràn.
   - Chiều cao thẻ: `.card.ln .nm{line-height:16px}` (15px trên điện thoại) bằng dòng chữ của thẻ thường nên mọi thẻ cao bằng nhau ở mọi cỡ màn.
 - Đã xem rồi để lại: ở 320px hàng Rừng, khung bảng rộng hơn khung nhìn 3px do hộp tên (rộng thẻ + 8px) của cột thứ 3 chạm lề; nằm trong lề trang 16px nên không thấy và không tràn trang. Nút tên tướng ở mục "Đổi bậc" có `scrollWidth` lớn hơn 8px (vùng bấm mở rộng), không phải chữ tràn.
+
+## 11/11/2026 (chủ web yêu cầu thêm tỉ lệ thắng game rank)
+- Chế độ Số liệu có nút chuyển nguồn "ĐTDV (giải) | Game rank" (dùng lại kiểu `.seg`, đặt trên dòng chú thích). Game rank: cột Thắng / Chọn / Cấm / Có mặt, bỏ cột Trận, không hiện số nhỏ so mùa trước, không có kiểu "mẫu nhỏ"; chú thích ghi nguồn LQMB GG, ngày đọc và "không nêu bậc rank, số trận, ngày cập nhật · không tính vào điểm tier". Cột Trận đang sắp xếp mà chuyển sang Game rank thì về sắp xếp theo Có mặt.
+- Bảng chi tiết: hàng "Game rank" (Thắng · Chọn · Cấm) đặt SAU điểm tổng và dòng giải thích tier, có vạch ngăn riêng và dòng nhỏ ghi nguồn, để không bị hiểu là một phần của điểm. Không có thanh, vì không vào điểm.
+- Đã xem ở 390px và 1440px; không tràn ngang.
+

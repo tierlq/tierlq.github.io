@@ -48,7 +48,7 @@ const TZ=(function fixTextZoom(){
 function loadMine(){const m=freshMine(),saved=store("lq-mine2");
   if(saved&&typeof saved==="object")for(const id of Object.keys(m)){const t=saved[id];if(TIERS.includes(t)||t==="X")m[id]=t}
   return m}
-let mode=store("lq-mode")==="mine"?"mine":"meta",sortK="pres",sortD=-1,q="",selected=null,mine=loadMine();
+let mode=store("lq-mode")==="mine"?"mine":"meta",sortK="pres",sortD=-1,statSrc="aog",q="",selected=null,mine=loadMine();
 let mLane=LANES[store("lq-mlane")]?store("lq-mlane"):"top";
 const F={lane:new Set(),cls:new Set(),trend:new Set()};
 HEROES.forEach(h=>{if(!(h.id in mine))mine[h.id]=h.tier});
@@ -208,8 +208,14 @@ function breakdown(h){
     ${bar("Rank cộng đồng",m?RMS[m]:null,m?"Tier "+m:"Chưa có dữ liệu")}
     <div class="bd total"><span>Điểm tổng</span><div class="bdbar"><i style="width:${h.score/5*100}%"></i></div><b>${h.score.toFixed(2)} / 5 · hạng ${h.rank}/${h.laneN} ở ${LANES[h.lane]}${h.sec?" (đường phụ: trừ 0,4, tối đa tier A)":""}</b></div>
     ${h.floor==="manual"?`<p class="floor">Tier ${h.tier} do người biên tập điều chỉnh thủ công, không theo điểm tổng.</p>`:h.floor==="pickS"||h.floor==="pickA"?`<p class="floor">Được nâng lên tier ${h.tier} vì được chọn ở ${aogOf(h.key,h.lane)[1]}% số trận ĐTDV mùa Đông.</p>`:h.floor?`<p class="floor">Được nâng lên tier ${h.floor} vì xuất hiện (pick hoặc cấm) ở ${h.pres.toFixed(0)}% số trận ĐTDV mùa Đông.</p>`:""}
+    ${rankRow(h)}
   </div>`;
 }
+/* Game rank (LQMB GG, khối LQ trong data.js): chỉ để xem, không tính vào điểm tier. Nguồn không nêu bậc rank, số trận, ngày cập nhật */
+const rankOf=h=>typeof LQ!=="undefined"&&LQ.d[h.key]||null;
+function rankRow(h){const r=rankOf(h);if(!r)return "";
+  return `<div class="bd rk"><span>Game rank</span><b>Thắng ${r[0]}% · Chọn ${r[1]}% · Cấm ${r[2]}%</b></div>
+    <p class="rk-n">Số của <a href="${LQ.url}" target="_blank" rel="nofollow noopener">LQMB GG</a> đọc ${LQ.read}, không tính vào điểm tier. Nguồn không nêu bậc rank, số trận và ngày cập nhật.</p>`}
 /* Build tham khảo: đồ, bảng ngọc, phép bổ trợ (dữ liệu ở assets/builds.js, tải sau khi trang hiện xong để bảng tier hiện sớm hơn) */
 // Không nạp builds.js bằng thẻ script trong HTML: app.js tự tải nó khi trang đã hiện xong (hoặc ngay khi cần mở bảng chi tiết),
 // dùng cùng số ?v= với app.js để trình duyệt nhận bản mới
@@ -398,28 +404,40 @@ function openModal(id,dir,via){
    Số liệu ĐTDV tính theo tướng, không theo đường, nên mỗi tướng một dòng (giữ ô đường chính); điện thoại xem từng đường như bảng tier */
 const SCOL=[["wr","Thắng","Tỉ lệ thắng các trận được chọn ở ĐTDV"],["pk","Chọn","Tỉ lệ số trận được chọn"],["bn","Cấm","Tỉ lệ số trận bị cấm"],["pres","Có mặt","Chọn + cấm: tỉ lệ số trận tướng xuất hiện ở lượt cấm chọn"],["n","Trận","Số trận được chọn"]];
 const nf1=v=>v.toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1});
-function statOf(h){const a=aogOf(h.key,h.lane),p=prevOf(h.key,h.lane);
-  if(!a)return {wr:null,pk:null,bn:null,pres:null,n:0,p};
-  return {wr:a[3]?a[0]:null,pk:a[1],bn:a[2],pres:Math.round((a[1]+a[2])*10)/10,n:a[3],p}}
+function statOf(h){
+  if(statSrc==="rank"){const r=rankOf(h);   // game rank: không có số trận, không có mùa trước để so
+    if(!r)return {wr:null,pk:null,bn:null,pres:null,n:0,p:null,few:false};
+    return {wr:r[0],pk:r[1],bn:r[2],pres:Math.round((r[1]+r[2])*10)/10,n:null,p:null,few:false}}
+  const a=aogOf(h.key,h.lane),p=prevOf(h.key,h.lane);
+  if(!a)return {wr:null,pk:null,bn:null,pres:null,n:0,p,few:false};
+  return {wr:a[3]?a[0]:null,pk:a[1],bn:a[2],pres:Math.round((a[1]+a[2])*10)/10,n:a[3],p,few:a[3]<10}}
 function delta(cur,prev,ok){if(!ok||prev==null)return "";const d=Math.round((cur-prev)*10)/10;if(Math.abs(d)<.1)return `<small class="dl">±0</small>`;
   return `<small class="dl ${d>0?"up":"down"}">${d>0?"+":"−"}${nf1(Math.abs(d))}</small>`}
 function renderStats(list){
+  const rank=statSrc==="rank",cols=rank?SCOL.filter(c=>c[0]!=="n"):SCOL;
+  if(rank&&sortK==="n"){sortK="pres";sortD=-1}   // game rank không có cột Trận
   const board=$("board"),seen=new Map();
   for(const h of list){const k=h.key==="flowborn"?h.id:h.key,o=seen.get(k);if(!o||(o.sec&&!h.sec))seen.set(k,h)}
   const rows=[...seen.values()].map(h=>[h,statOf(h)]);
-  rows.sort(([a,x],[b,y])=>{const u=x[sortK],v=y[sortK];if(sortK==="wr"&&u!=null&&v!=null&&(x.n<10)!==(y.n<10))return (x.n<10)-(y.n<10);if(u==null||v==null)return (u==null)-(v==null)||(y.pres||0)-(x.pres||0)||a.name.localeCompare(b.name,"vi");
+  rows.sort(([a,x],[b,y])=>{const u=x[sortK],v=y[sortK];if(sortK==="wr"&&u!=null&&v!=null&&x.few!==y.few)return x.few-y.few;if(u==null||v==null)return (u==null)-(v==null)||(y.pres||0)-(x.pres||0)||a.name.localeCompare(b.name,"vi");
     return (u-v)*sortD||(y.pres||0)-(x.pres||0)||a.name.localeCompare(b.name,"vi")});
   const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}(?=\/\d{4})/)||[""])[0];
   const arrow=k=>k===sortK?ui(sortD<0?"M7 10l5 5 5-5":"M7 14l5-5 5 5"):"";
   const cell=(h,s,k)=>{const v=s[k];if(v==null)return `<td class="c-${k} na">—</td>`;
-    if(k==="wr"){const few=s.n<10,cls=few?"few":v>=53?"hi":v<=47?"lo":"";return `<td class="c-wr ${cls}"${few?' title="Dưới 10 trận, tỉ lệ thắng chưa đáng tin"':""}><b>${nf1(v)}</b>${delta(v,s.p&&s.p[3]>=10?s.p[0]:null,!few)}</td>`}
+    if(k==="wr"){const few=s.few,cls=few?"few":v>=53?"hi":v<=47?"lo":"";return `<td class="c-wr ${cls}"${few?' title="Dưới 10 trận, tỉ lệ thắng chưa đáng tin"':""}><b>${nf1(v)}</b>${delta(v,s.p&&s.p[3]>=10?s.p[0]:null,!few)}</td>`}
     const pv=s.p?(k==="pk"?s.p[1]:k==="bn"?s.p[2]:k==="pres"?s.p[1]+s.p[2]:null):null;
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
-  board.innerHTML=`<div class="st-cap"><span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span></div>
-  <table class="stats"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${SCOL.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${t}">${l}${k==="n"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
-  <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="nodata"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?", chưa có số liệu ĐTDV":""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${SCOL.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;
+  const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
+  const cap=rank?`<span>Game rank · ${LQ.src} · đọc ${LQ.read}</span><span>Nguồn không nêu bậc rank, số trận và ngày cập nhật · không tính vào điểm tier · bấm tên cột để sắp xếp</span>`
+    :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
+  board.innerHTML=`${src}<div class="st-cap">${cap}</div>
+  <table class="stats"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo LQMB GG":t}">${l}${k==="n"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
+  <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="nodata"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?(rank?", chưa có số liệu game rank":", chưa có số liệu ĐTDV"):""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${cols.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;
   syncPick()}
-$("board").addEventListener("click",e=>{if(mode!=="stats")return;const b=e.target.closest("[data-sort]");
+$("board").addEventListener("click",e=>{if(mode!=="stats")return;
+  const sb=e.target.closest("[data-src]");
+  if(sb){const v=sb.dataset.src;if(v!==statSrc){statSrc=v;track("doi_nguon_so_lieu",{nguon:v==="rank"?"game_rank":"dtdv"});draw();const nb=$("board").querySelector(`[data-src="${v}"]`);nb&&nb.focus({preventScroll:true})}return}
+  const b=e.target.closest("[data-sort]");
   if(b){const k=b.dataset.sort;if(k===sortK)sortD=-sortD;else{sortK=k;sortD=-1}draw();const nb=$("board").querySelector(`[data-sort="${k}"]`);nb&&nb.focus({preventScroll:true});return}
   const r=e.target.closest("tr[data-id]");if(r)openModal(r.dataset.id)});
 

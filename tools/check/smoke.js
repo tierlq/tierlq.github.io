@@ -45,6 +45,7 @@ const errs = [], log = (...a) => console.log(...a);
         const m = document.querySelector('.modal'); if (!m) { out.bad.push(h.id + ': không mở được'); continue; }
         const t = m.innerText;
         if (/Đang tải/.test(t)) out.bad.push(h.id + ': còn "Đang tải"');
+        if (!m.querySelector('.bd.rk')) out.bad.push(h.id + ': không có dòng Game rank (LQMB GG)');
         if (!m.querySelector('.bld-items li')) out.bad.push(h.id + ': không có build');
         if (m.querySelectorAll('.bld-ar li').length < 1) out.bad.push(h.id + ': không có ngọc');
         if (!m.querySelector('.bld-sp li')) out.bad.push(h.id + ': không có phép bổ trợ');
@@ -90,6 +91,24 @@ const errs = [], log = (...a) => console.log(...a);
     const gap = await p.evaluate(() => { const e = [...document.querySelectorAll('table.stats thead th button')].filter(b => b.offsetWidth).map(b => { const r = document.createRange(); r.selectNodeContents(b); return r.getBoundingClientRect(); });
       return Math.min(...e.slice(1).map((r, i) => r.left - e[i].right)); });
     if (gap < 6) bad(`tên cột Số liệu dính nhau (cách ${Math.round(gap)}px)`);
+    // nút "Game rank" ở chế độ Số liệu: đủ tướng, bỏ cột Trận, có ghi nguồn, sắp xếp được, không tràn ngang; bấm lại ĐTDV thì cột Trận trở về
+    await p.click('#board [data-src="rank"]'); await p.waitForTimeout(200);
+    const rk = await p.evaluate(() => { const rows = [...document.querySelectorAll('#board table.stats tbody tr')];
+      const nak = rows.find(r => r.dataset.id.startsWith('nakroth-'));
+      return { n: rows.length, hasN: !!document.querySelector('table.stats th.c-n'), cap: document.querySelector('.st-cap').innerText, nak: nak ? nak.querySelector('td.c-wr').innerText : null,
+        pressed: document.querySelector('#board [data-src="rank"]').getAttribute('aria-pressed'), ov: document.documentElement.scrollWidth > document.documentElement.clientWidth }; });
+    const minRows = w > 700 ? 100 : 15;   // điện thoại chỉ hiện một đường
+    if (rk.n < minRows) bad(`Số liệu Game rank chỉ có ${rk.n} dòng`);
+    if (rk.hasN) bad('Số liệu Game rank vẫn còn cột Trận');
+    if (!/LQMB GG/.test(rk.cap) || !/không tính vào điểm/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
+    if (rk.nak && !/^50,8/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 50,8`);
+    if (rk.pressed !== 'true') bad('nút Game rank không ở trạng thái bấm');
+    if (rk.ov) bad('Số liệu Game rank tràn ngang');
+    await p.click('#board th.c-wr button'); await p.waitForTimeout(100);
+    const wrs = await p.evaluate(() => [...document.querySelectorAll('#board table.stats td.c-wr b')].map(b => parseFloat(b.innerText.replace(',', '.'))).filter(x => !isNaN(x)));
+    if (wrs.length < minRows || wrs.some((x, i) => i && x > wrs[i - 1] + 1e-9)) bad('sắp xếp theo Thắng ở Game rank sai thứ tự');
+    await p.click('#board [data-src="aog"]'); await p.waitForTimeout(200);
+    if (!(await p.evaluate(() => !!document.querySelector('table.stats th.c-n')))) bad('bấm lại ĐTDV (giải) mà cột Trận không trở về');
     // link nằm giữa câu trong mục Cách xếp không bị tách thành dòng riêng
     if (await p.evaluate(() => [...document.querySelectorAll('.box li>a')].some(a => getComputedStyle(a).display === 'block' && [...a.parentElement.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))))
       bad('link giữa câu trong mục Cách xếp bị tách dòng (thêm class="inl")');

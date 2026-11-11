@@ -1,0 +1,134 @@
+# Số liệu tỉ lệ thắng / chọn / cấm từng tướng của LQMB GG (https://lienquanmobile.gg/champions/)
+# Đọc ngày 11/11/2026 bằng Chrome của chủ web, lấy nguyên từ bảng "Danh Sách Tướng" (129 tướng).
+# Trang nguồn KHÔNG ghi chế độ chơi, bậc rank và ngày cập nhật. Cột tier là của nguồn, web không dùng.
+# Định dạng: slug|tên|tier nguồn|thắng %|chọn %|cấm %
+# Tạo lại bằng tools/rank/extract.js (chạy trong tab Chrome ở trang nguồn) rồi chạy: node tools/rank/emit.js
+biron|Biron|S|50.43|6.21|0.25
+thane|Thane|S|50.97|5.88|0.08
+mina|Mina|S|52.04|7.47|0.17
+butterfly|Butterfly|S|47.35|13.68|0.22
+toro|Toro|S|48.04|19.39|0.54
+nakroth|Nakroth|S|50.82|36.69|2.24
+maloch|Maloch|S|50.36|7.96|0.09
+ignis|Ignis|S|49.98|3.22|0.02
+astrid|Astrid|S|53.7|0.9|0.01
+wonder-woman|Wonder Woman|S|55.72|1.63|0.01
+teemee|TeeMee|S|53.23|6.78|3.49
+tulen|Tulen|S|50.98|15.04|0.11
+liliana|Liliana|S|49.32|13.99|0.11
+richter|Richter|S|48.2|7.06|0.04
+sephera|Sephera|S|51.29|2.26|0.03
+florentino|Florentino|S|50.86|17.39|5.54
+hayate|Hayate|S|48.61|24.22|0.46
+capheny|Capheny|S|49.74|10.8|0.06
+celica|Celica|S|48.96|1.22|0.01
+volkath|Vol'kath|S|51.15|5.55|0.12
+elandorr|Eland'orr|S|48.27|2.08|0.04
+keera|Keera|S|49.77|5.45|0.07
+paine|Paine|S|52.33|3.33|0.1
+zata|Zata|S|50.59|6.19|1.05
+allain|Allain|S|46.76|22.88|0.54
+lorion|Lorion|S|50.48|1.27|0.02
+bright|Bright|S|49.95|5.17|0.04
+iggy|Iggy|S|50.58|4.4|0.04
+aoi|Aoi|S|52.78|6.69|1.28
+aya|Aya|S|48.54|10.93|36.27
+teeri|Teeri|S|53.83|8.13|0.43
+bonnie|Bonnie|S|50.59|2.04|0.03
+ming|Ming|S|52.65|2.51|0.2
+erin|Erin|S|49.65|3.46|0.07
+tachi|Tachi|S|48.92|0.9|0.01
+charlotte|Charlotte|S|47.6|1.78|0.02
+dolia|Dolia|S|50.41|5.34|2.69
+bolt-baron|Bolt Baron|S|59.62|4.82|2.15
+billow|Billow|S|49.88|25.41|8.78
+dyadia|Dyadia|S|48.62|1.15|8.28
+evita|Evita|S|52.5|22.8|48.7
+airi|Airi|A|49.52|6.48|0.03
+lu-bo|Lữ Bố|A|49.46|3.91|0.03
+krixi|Krixi|A|49.86|23.21|0.17
+trieu-van|Triệu Vân|A|51.4|28.95|0.33
+kahlii|Kahlii|A|49.23|5.25|0.07
+zephys|Zephys|A|49.07|3.03|0.01
+dieu-thuyen|Điêu Thuyền|A|51.3|5.57|0.23
+chaugnar|Chaugnar|A|54.12|3.41|0.37
+violet|Violet|A|50.7|34.67|0.13
+ormarr|Ormarr|A|52.17|1.98|0.02
+azzenka|Azzen'Ka|A|50.36|4.62|0.06
+alice|Alice|A|50.85|13.94|0.66
+gildur|Gildur|A|50.87|20.3|0.77
+grakk|Grakk|A|54.71|11.58|36.98
+aleister|Aleister|A|51.82|5.53|34.71
+fennik|Fennik|A|52.11|10.42|0.15
+helen|Helen|A|48.89|2.57|0.69
+ngo-khong|Ngộ Không|A|48.03|18.01|3.98
+kriknak|Kriknak|A|51.85|3.26|0.02
+arthur|Arthur|A|47.06|9.12|0.03
+slimz|Slimz|A|51.25|7.4|0.03
+ilumia|Ilumia|A|52.87|4.76|0.05
+raz|Raz|A|53.62|22.9|0.77
+lauriel|Lauriel|A|50.83|10.39|0.48
+kaine|Kaine|A|50.58|6.9|7.03
+murad|Murad|A|50.36|17|2.94
+zill|Zill|A|49.35|5.74|0.03
+arduin|Arduin|A|51.01|5.16|0.02
+stuart|Stuart|A|51.02|12.58|0.67
+ryoma|Ryoma|A|50.92|10.75|0.08
+telannas|Tel'Annas|A|49.54|22.19|0.15
+superman|Superman|A|59.42|0.56|0.01
+xeniel|Xeniel|A|50.68|1.89|0.03
+kilgroth|Kil'Groth|A|48.38|2.87|0.05
+moren|Moren|A|53.1|0.69|0.02
+omen|Omen|A|48.61|6.65|0.07
+the-flash|The Flash|A|49.46|1.27|0.04
+rourke|Rourke|A|53.61|1.21|0.02
+roxie|Roxie|A|47.95|0.26|0.01
+baldum|Baldum|A|49.09|3.06|0.06
+amily|Amily|A|47.71|3.57|0.02
+ybneth|Y'bneth|A|52.92|6.15|0.22
+elsu|Elsu|A|50.24|16.7|32.21
+quillen|Quillen|A|47.63|4.07|0.1
+veres|Veres|A|50.25|6.67|0.03
+darcy|D'Arcy|A|50.63|2|0.02
+yena|Yena|A|49.28|10|0.03
+zip|Zip|A|52.65|2.93|5.25
+krizzix|Krizzix|A|51.73|1.33|0.07
+ishar|Ishar|A|48.24|6.47|0.3
+ata|Ata|A|48.64|0.42|0.01
+laville|Laville|A|49.36|5.97|0.02
+sinestrea|Sinestrea|A|50.51|1.42|0.01
+dextra|Dextra|A|49.66|0.33|0.01
+yan|Yan|A|47.06|4.87|0.05
+yue|Yue|A|49.36|11.93|0.87
+bijan|Bijan|A|50.09|14.04|0.82
+qi|Qi|A|52.54|3.33|0.02
+dirak|Dirak|A|53.41|6.91|0.2
+flowborn|Flowborn|A|52.5|0.89|0.25
+goverra|Goverra|A|52.3|0.65|0.05
+edras|Edras|A|51.89|1.28|0.05
+heino|Heino|A|50.82|2.05|0.23
+tamyn|Tamyn|A|62.32|25.6|3.8
+valhein|Valhein|B|48.88|40.05|2.7
+veera|Veera|B|50.09|28.55|7.33
+mganga|Mganga|B|47.82|4.46|0.07
+omega|Omega|B|51.42|1.01|0.02
+yorn|Yorn|B|48.77|10.43|0.1
+lumburr|Lumburr|B|53.32|3.05|0.03
+natalya|Natalya|B|48.44|31.38|1.28
+jinna|Jinna|B|58.82|28.2|46.3
+zuka|Zuka|B|47.98|15.5|0.06
+lindis|Lindis|B|48.35|1.37|0.02
+wisp|Wisp|B|53.9|0.95|0.01
+marja|Marja|B|54.1|8.85|4.2
+enzo|Enzo|B|52.59|11.91|11.41
+rouie|Rouie|B|49.04|5.59|3.62
+thorne|Thorne|B|51.15|2.24|0.02
+cresht|Cresht|C|50.44|3.75|0.04
+preyta|Preyta|C|55.24|0.57|0.02
+skud|Skud|C|50.34|2.95|0.03
+max|Max|C|51.25|0.84|0.01
+arum|Arum|C|50.02|4.82|18.63
+errol|Errol|C|47.32|5.54|0.03
+taara|Taara|D|47.37|4.44|0.07
+annette|Annette|D|49.54|4.08|0.06
+wiro|Wiro|D|50.68|0.57|0.05
