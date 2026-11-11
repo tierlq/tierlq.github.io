@@ -46,6 +46,7 @@ const errs = [], log = (...a) => console.log(...a);
         const t = m.innerText;
         if (/Đang tải/.test(t)) out.bad.push(h.id + ': còn "Đang tải"');
         if (!m.querySelector('.bd.rk')) out.bad.push(h.id + ': không có dòng Game rank (Garena)');
+        else if (!/Bậc Garena T[0-4] ·/.test(m.querySelector('.bd.rk').innerText)) out.bad.push(h.id + ': dòng Game rank thiếu bậc Garena T0–T4');
         if (!m.querySelector('.bld-items li')) out.bad.push(h.id + ': không có build');
         if (m.querySelectorAll('.bld-ar li').length < 1) out.bad.push(h.id + ': không có ngọc');
         if (!m.querySelector('.bld-sp li')) out.bad.push(h.id + ': không có phép bổ trợ');
@@ -95,11 +96,14 @@ const errs = [], log = (...a) => console.log(...a);
     await p.click('#board [data-src="rank"]'); await p.waitForTimeout(200);
     const rk = await p.evaluate(() => { const rows = [...document.querySelectorAll('#board table.stats tbody tr')];
       const nak = rows.find(r => r.dataset.id.startsWith('nakroth-'));
-      return { n: rows.length, hasN: !!document.querySelector('table.stats th.c-n'), cap: document.querySelector('.st-cap').innerText, nak: nak ? nak.querySelector('td.c-wr').innerText : null,
+      const tam = rows.find(r => r.dataset.id.startsWith('tamyn-'));
+      return { n: rows.length, hasN: !!document.querySelector('table.stats th.c-n'), hasGt: !!document.querySelector('table.stats th.c-gt'), gtN: document.querySelectorAll('#board table.stats td.c-gt').length, tam: tam ? tam.querySelector('td.c-gt')?.innerText : null, cap: document.querySelector('.st-cap').innerText, nak: nak ? nak.querySelector('td.c-wr').innerText : null,
         pressed: document.querySelector('#board [data-src="rank"]').getAttribute('aria-pressed'), ov: document.documentElement.scrollWidth > document.documentElement.clientWidth }; });
     const minRows = w > 700 ? 100 : 15;   // điện thoại chỉ hiện một đường
     if (rk.n < minRows) bad(`Số liệu Game rank chỉ có ${rk.n} dòng`);
     if (rk.hasN) bad('Số liệu Game rank vẫn còn cột Trận');
+    if (!rk.hasGt || rk.gtN < minRows) bad(`Số liệu Game rank thiếu cột Garena (${rk.gtN} ô)`);
+    if (rk.tam && rk.tam !== 'T3') bad(`Tamyn bậc Garena hiện "${rk.tam}", cần T3`);
     if (!/Garena/.test(rk.cap) || !/không tính vào điểm/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
     if (rk.nak && !/^49,1/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 49,1`);
     // Flowborn có hai dạng với số khác nhau: xạ thủ (Rồng) 53,04 / pháp sư (Giữa) 52,74
@@ -107,11 +111,16 @@ const errs = [], log = (...a) => console.log(...a);
     if (fb[0] !== 53.04 || fb[1] !== 52.74) bad(`Flowborn Game rank sai: Rồng ${fb[0]}, Giữa ${fb[1]} (cần 53,04 và 52,74)`);
     if (rk.pressed !== 'true') bad('nút Game rank không ở trạng thái bấm');
     if (rk.ov) bad('Số liệu Game rank tràn ngang');
-    await p.click('#board th.c-wr button'); await p.waitForTimeout(100);
+    // vào Game rank thì mặc định sắp theo Thắng giảm dần (đúng thứ tự trong game)
     const wrs = await p.evaluate(() => [...document.querySelectorAll('#board table.stats td.c-wr b')].map(b => parseFloat(b.innerText.replace(',', '.'))).filter(x => !isNaN(x)));
     if (wrs.length < minRows || wrs.some((x, i) => i && x > wrs[i - 1] + 1e-9)) bad('sắp xếp theo Thắng ở Game rank sai thứ tự');
+    await p.click('#board th.c-gt button'); await p.waitForTimeout(100);
+    const gts = await p.evaluate(() => [...document.querySelectorAll('#board table.stats td.c-gt b')].map(b => parseInt(b.innerText.slice(1))));
+    if (gts.length < minRows || gts.some((x, i) => i && x < gts[i - 1]) || gts[0] !== 0) bad('sắp xếp theo Garena sai: T0 phải đứng đầu và bậc không được giảm lên');
+    if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad('Số liệu Game rank (sắp theo Garena) tràn ngang');
     await p.click('#board [data-src="aog"]'); await p.waitForTimeout(200);
     if (!(await p.evaluate(() => !!document.querySelector('table.stats th.c-n')))) bad('bấm lại ĐTDV (giải) mà cột Trận không trở về');
+    if (await p.evaluate(() => !!document.querySelector('table.stats th.c-gt'))) bad('ĐTDV (giải) không được có cột Garena');
     // link nằm giữa câu trong mục Cách xếp không bị tách thành dòng riêng
     if (await p.evaluate(() => [...document.querySelectorAll('.box li>a')].some(a => getComputedStyle(a).display === 'block' && [...a.parentElement.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))))
       bad('link giữa câu trong mục Cách xếp bị tách dòng (thêm class="inl")');

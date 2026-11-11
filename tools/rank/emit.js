@@ -35,7 +35,7 @@ lines.forEach((ln, i) => {
   // Bảng trong game sắp theo thắng giảm dần: dòng nào chép sai chữ số hay sai chỗ sẽ làm vỡ thứ tự này
   if (w > prevW + 1e-9) errs.push(`${at} (${key}): thắng ${w} lớn hơn dòng trên ${prevW}, bảng phải giảm dần (chép sai số hoặc sai thứ tự)`);
   prevW = w;
-  d[key] = [w, p, b];
+  d[key] = [w, p, b, Number(f[3].trim()[1])];   // [thắng, chọn, cấm, bậc Garena 0–4 (T0 mạnh nhất)]
 });
 
 // Đối chiếu với danh sách ô tướng của web: mỗi ô phải có số (khoá tướng-đường, hoặc khoá tướng).
@@ -55,7 +55,7 @@ const parts = Object.keys(d).map(k => `${JSON.stringify(k)}:${JSON.stringify(d[k
 const body = []; let cur = '';
 for (const p of parts) { if (cur && (cur + p).length > 150) { body.push(cur); cur = ''; } cur += p + ','; }
 if (cur) body.push(cur);
-const block = '/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %]; chỉ hiển thị, không vào điểm tier*/\n' +
+const block = '/*RANK:BEGIN tự sinh bằng `node tools/rank/emit.js` từ tools/rank/garena.txt, đừng sửa tay. [thắng %, chọn %, cấm %, bậc Garena 0–4 = T0–T4]; chỉ hiển thị, không vào điểm tier*/\n' +
   `const RANK={src:"Garena Liên Quân Mobile",where:"Cẩm nang → Bảng Phân Bậc Tướng",filter:"Đấu hạng (Tất cả)",read:${JSON.stringify(read)},d:{\n${body.join('\n')}\n}};\n/*RANK:END*/`;
 
 const re = /\/\*(?:RANK|LQ):BEGIN[\s\S]*?\/\*(?:RANK|LQ):END\*\//;

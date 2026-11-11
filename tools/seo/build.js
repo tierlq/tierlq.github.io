@@ -132,7 +132,7 @@ const faq = [
    `Bấm vào một tướng trên bảng tier: mục "Điểm mạnh, điểm yếu" tóm tắt 3 điểm mạnh và 3 điểm yếu, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Cả hai lấy từ ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
    `Ví dụ: <a href="${url(tops.find(([l]) => l === 'mid')[1][0])}">khắc chế ${esc(tops.find(([l]) => l === 'mid')[1][0].name)}</a>`],
   ['Xem tỉ lệ thắng của tướng trong game rank ở đâu?',
-   `Có hai chỗ: chế độ "Số liệu" trên trang chủ có nút "Game rank" xếp mọi tướng theo tỉ lệ thắng, chọn, cấm (sắp xếp được theo cột), và bảng chi tiết của từng tướng có dòng "Game rank". Đó là số trong game của Garena (Cẩm nang, Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận nên chỉ để tham khảo, không tính vào điểm tier. Số của giải đấu (ĐTDV) nằm ở nút "ĐTDV (giải)".`, ''],
+   `Có hai chỗ: chế độ "Số liệu" trên trang chủ có nút "Game rank" xếp mọi tướng theo bậc Garena (T0–T4), tỉ lệ thắng, chọn, cấm (sắp xếp được theo cột), và bảng chi tiết của từng tướng có dòng "Game rank". Đó là số và bậc trong game của Garena (Cẩm nang, Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận nên chỉ để tham khảo, không tính vào điểm tier. Số của giải đấu (ĐTDV) nằm ở nút "ĐTDV (giải)".`, ''],
   ['Tra giá và tác dụng trang bị, bảng ngọc, phù hiệu, phép bổ trợ ở đâu?',
    'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu, Bảng ngọc và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
    '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/bang-ngoc/">Bảng ngọc</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
@@ -206,7 +206,7 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 <p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
-${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}. Game không ghi số trận; số này chỉ để tham khảo và không tính vào điểm tier.</p>` : ''}
+${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Game không ghi số trận; số này chỉ để tham khảo và không tính vào điểm tier.</p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
@@ -371,7 +371,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
 <li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
-<li>Tỉ lệ thắng game rank (chế độ Số liệu, bảng chi tiết và trang từng tướng): số trong game của Garena (Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận.</li>
+<li>Tỉ lệ thắng và bậc T0–T4 game rank (chế độ Số liệu, bảng chi tiết và trang từng tướng): số trong game của Garena (Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận.</li>
 <li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
 <h2>Giới hạn</h2><ul class="items">
