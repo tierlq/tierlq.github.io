@@ -65,4 +65,5 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
   - 07/11: thêm lối vào Phụ kiện: menu nhóm Tra cứu, chân trang, khối "Phụ kiện gợi ý" 2 món cuối trang từng tướng, dải mỏng ở trang chủ. Chưa có số click (xem ở bảng điều khiển Shopee Affiliate, web không đo link này).
   - 07/11: sửa bố cục thẻ tướng (máy tính, 320px, máy tính bảng 720–999px). Không kỳ vọng đổi lưu lượng, ghi để loại trừ khi số thay đổi.
 - 11/11/2026: thêm tỉ lệ thắng / chọn / cấm game rank (LQMB GG) vào chế độ Số liệu, bảng chi tiết và 180 trang tướng. Ghi để so: sự kiện GA `doi_nguon_so_lieu` (bấm chuyển nguồn), lượt hiển thị trang tướng ở Search Console, và truy vấn kiểu "tỉ lệ thắng … game rank / rank".
+- 11/11/2026 (sau đó cùng ngày): nguồn Game rank đổi từ LQMB GG sang số trong game Garena (Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng, ghi từ video quay màn hình), vì số LQMB GG lệch hẳn số trong game. Mục trên về sự kiện `doi_nguon_so_lieu` và truy vấn "tỉ lệ thắng … rank" vẫn dùng để so.
 

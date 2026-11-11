@@ -14,8 +14,9 @@ const ROOT = path.join(__dirname, '..', '..'), SITE = JSON.parse(fs.readFileSync
 const ctx = {}; vm.createContext(ctx);
 for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js', 'assets/counters.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/^const /gm, 'var '), ctx);
-const { LQ, HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC, STRWK } = ctx;
-const nfv = v => String(v).replace('.', ',');   // 62.32 -> 62,32
+const { RANK, HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC, STRWK } = ctx;
+const nfv = v => v.toFixed(2).replace('.', ',');   // 54.6 -> 54,60 (như hiển thị trong game)
+const rankOf = h => RANK.d[h.key + '-' + h.lane] || (h.key === 'flowborn' ? null : RANK.d[h.key]);   // Flowborn có -ad và -mid
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const upd = (index.match(/Dữ liệu cập nhật (\d{1,2}\/\d{1,2}\/\d{4})/) || [])[1] || '';
@@ -131,7 +132,7 @@ const faq = [
    `Bấm vào một tướng trên bảng tier: mục "Điểm mạnh, điểm yếu" tóm tắt 3 điểm mạnh và 3 điểm yếu, mục "Khắc chế và hợp cặp" có ba danh sách: bị khắc chế bởi, khắc chế và hợp cặp. Cả hai lấy từ ghi chú viết tay của người biên tập ROV META cho server Thái (bản ${CNSRC.patch}), không phải tỉ lệ thắng, nên server Việt Nam có thể lệch. Mỗi trang tướng riêng cũng có mục này.`,
    `Ví dụ: <a href="${url(tops.find(([l]) => l === 'mid')[1][0])}">khắc chế ${esc(tops.find(([l]) => l === 'mid')[1][0].name)}</a>`],
   ['Xem tỉ lệ thắng của tướng trong game rank ở đâu?',
-   `Có hai chỗ: chế độ "Số liệu" trên trang chủ có nút "Game rank" xếp mọi tướng theo tỉ lệ thắng, chọn, cấm (sắp xếp được theo cột), và bảng chi tiết của từng tướng có dòng "Game rank". Số do ${LQ.src} công bố, đọc ${LQ.read}; nguồn không nêu bậc rank, số trận và ngày cập nhật nên chỉ để tham khảo, không tính vào điểm tier. Số của giải đấu (ĐTDV) nằm ở nút "ĐTDV (giải)".`, ''],
+   `Có hai chỗ: chế độ "Số liệu" trên trang chủ có nút "Game rank" xếp mọi tướng theo tỉ lệ thắng, chọn, cấm (sắp xếp được theo cột), và bảng chi tiết của từng tướng có dòng "Game rank". Đó là số trong game của Garena (Cẩm nang, Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận nên chỉ để tham khảo, không tính vào điểm tier. Số của giải đấu (ĐTDV) nằm ở nút "ĐTDV (giải)".`, ''],
   ['Tra giá và tác dụng trang bị, bảng ngọc, phù hiệu, phép bổ trợ ở đâu?',
    'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu, Bảng ngọc và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
    '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/bang-ngoc/">Bảng ngọc</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
@@ -173,7 +174,7 @@ for (const h of HEROES) {
     { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' },
     { '@type': 'ListItem', position: 2, name: `${h.name} ${L}`, item: SITE + url(h) }] };
   const ench = b && b.e ? b.e.map(id => BENCH[id][0]) : [];
-  const cn = COUNTERS[h.key], sw = STRWK[h.key], rk = LQ.d[h.key];
+  const cn = COUNTERS[h.key], sw = STRWK[h.key], rk = rankOf(h);
   const cnRow = (t, l) => l.length ? `<p><b>${esc(t)}:</b> ${l.map(k => { const x = heroOf(k); return x ? `<a href="${url(x)}">${esc(x.name)}</a>` : ''; }).filter(Boolean).join(', ')}</p>` : '';
   const html = `<!doctype html>
 <html lang="vi">
@@ -205,7 +206,7 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 <p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
-${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% theo bảng tướng của <a href="${LQ.url}" rel="nofollow noopener">${esc(LQ.src)}</a> (đọc ${LQ.read}). Nguồn không nêu bậc rank, số trận và ngày cập nhật; số này chỉ để tham khảo và không tính vào điểm tier.</p>` : ''}
+${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}. Game không ghi số trận; số này chỉ để tham khảo và không tính vào điểm tier.</p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
@@ -337,11 +338,11 @@ ${otherConcepts('/phep-bo-tro/')}` }));
 const TT = 'https://www.tiktok.com/@bangtierlienquan';
 writePage('gioi-thieu', pageShell({ title: 'Giới thiệu Bảng Tier Liên Quân: tier list tướng theo từng đường', desc: 'Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường từ số liệu giải đấu và rank, cập nhật sau mỗi bản cân bằng.', path: '/gioi-thieu/', h1: 'Giới thiệu', over: 'Về web',
   body: `<p class="lead">Bảng Tier Liên Quân xếp hạng tướng Liên Quân Mobile theo từng đường (Tà Thần, Rừng, Giữa, Rồng, Trợ thủ). Web do một người chơi duy trì, không thuộc Garena hay TiMi Studio.</p>
-<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, điểm mạnh, điểm yếu và danh sách tướng khắc chế, hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV và ở game rank (theo LQMB GG), và chế độ Tự xếp để làm tier list của riêng bạn.</p>
+<h2>Mỗi tướng có gì</h2><p>Tier từ S đến D, điểm tổng hợp trên thang 5, build tham khảo theo từng đường, bảng ngọc, phù hiệu, bộ chiêu thức tóm tắt, điểm mạnh, điểm yếu và danh sách tướng khắc chế, hợp cặp (theo ROV META, server Thái) và ghi chú khi tướng thay đổi ở bản cập nhật. Có chế độ Số liệu để so tỉ lệ thắng, chọn, cấm ở ĐTDV và ở game rank (theo bảng trong game của Garena), và chế độ Tự xếp để làm tier list của riêng bạn.</p>
 <h2>Tra cứu</h2><p>Trang riêng cho từng món <a href="/trang-bi/">trang bị</a>, từng <a href="/phu-hieu/">phù hiệu</a>, <a href="/bang-ngoc/">bảng ngọc</a> (30 loại ngọc) và <a href="/phep-bo-tro/">phép bổ trợ</a> (giá, chỉ số, tác dụng), cùng <a href="/phuong-phap/">trang Phương pháp</a> ghi công thức xếp tier.</p>
 <h2>Tier được xếp thế nào</h2><p>Điểm gộp từ số liệu ĐTDV mùa Đông 2026 (46%), mùa trước (17%), RoV Pro League (14%) và tier list rank cộng đồng do người biên tập tổng hợp (23%). Tier xếp theo thứ hạng trong từng đường. Một số tướng được người biên tập chỉnh tay, danh sách công khai trong mục "Cách xếp và nguồn" ở <a href="/#method">trang chủ</a>. Công thức đầy đủ, ngưỡng điểm và giới hạn: <a href="/phuong-phap/">trang Phương pháp</a>.</p>
 <h2>Cập nhật</h2><p>Bảng được cập nhật sau mỗi bản cân bằng của Garena và khoảng 2 tuần một lần theo số liệu giải. Ngày cập nhật ghi ở cuối mỗi trang; lịch sử các bản ở mục <a href="/ban-cap-nhat/">Bản cập nhật</a>.</p>
-<h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://rovmeta.com/heroes" rel="noopener">ROV META (khắc chế và hợp cặp, server Thái)</a></li><li><a href="${LQ.url}" rel="nofollow noopener">${LQ.src} (tỉ lệ thắng, chọn, cấm game rank)</a></li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>
+<h2>Nguồn dữ liệu</h2><ul class="links"><li><a href="https://liquipedia.net/honorofkings/Arena_of_Glory" rel="noopener">Liquipedia (ĐTDV)</a></li><li><a href="https://rovmeta.com/stats" rel="noopener">ROV META (RoV Pro League)</a></li><li><a href="https://rovmeta.com/heroes" rel="noopener">ROV META (khắc chế và hợp cặp, server Thái)</a></li><li>Garena Liên Quân Mobile, Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng (số game rank, ghi ${RANK.read})</li><li><a href="https://lienquan.garena.vn/category/cap-nhat/" rel="noopener">Garena Liên Quân</a></li><li><a href="https://aov-builds.com/" rel="noopener">AOV-Builds</a></li><li><a href="https://github.com/AoV-IndeX/avix-data" rel="noopener">AoV-IndeX</a></li></ul>
 <h2>Lưu ý</h2><p>Thông tin để tham khảo. Meta đổi theo bản vá, trình độ và cách chơi, nên tier không thay cho cảm nhận của bạn khi chơi. Tên và hình ảnh tướng thuộc bản quyền Garena / TiMi Studio.</p>
 <p>Kênh TikTok: <a href="${TT}" rel="noopener">@bangtierlienquan</a> · Góp ý, báo sai số liệu: <a href="/lien-he/">Liên hệ</a>.</p>` }));
 // Phương pháp (phuong-phap/): công thức xếp tier. Số trận, danh sách chỉnh tay và đường phụ đọc thẳng từ data.js; ngưỡng điểm phải khớp aogScore/proScore/QUOTA trong data.js
@@ -370,13 +371,13 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
 <li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
-<li>Tỉ lệ thắng game rank (chế độ Số liệu, bảng chi tiết và trang từng tướng) theo <a href="${LQ.url}" rel="nofollow noopener">${esc(LQ.src)}</a>, đọc ${LQ.read}. Nguồn không nêu bậc rank, số trận và ngày cập nhật.</li>
+<li>Tỉ lệ thắng game rank (chế độ Số liệu, bảng chi tiết và trang từng tướng): số trong game của Garena (Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng, tất cả bậc), người biên tập ghi ngày ${RANK.read}. Game không ghi số trận.</li>
 <li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
 <h2>Giới hạn</h2><ul class="items">
 <li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này; tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
 <li>Số liệu giải không tách theo đường nên tier ở đường phụ chỉ là ước tính.</li>
-<li>Số game rank của LQMB GG không ghi rõ bậc rank hay ngày cập nhật và khác nhiều so với số giải đấu (ĐTDV), nên chỉ để tham khảo.</li>
+<li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng, và khác số giải đấu (ĐTDV) vì là số của người chơi rank, nên chỉ để tham khảo.</li>
 <li>RoV Pro League là giải của server Thái Lan, tham khảo cho xu hướng chứ không thay số liệu server Việt Nam.</li></ul>
 <p>Thấy tướng xếp sai hoặc số liệu lệch: <a href="/lien-he/">báo cho người duy trì</a>. Nguồn đầy đủ ở <a href="/gioi-thieu/">trang Giới thiệu</a>.</p>` }));
 writePage('lien-he', pageShell({ title: 'Liên hệ Bảng Tier Liên Quân: góp ý, báo sai số liệu, hợp tác', desc: 'Cách liên hệ Bảng Tier Liên Quân để góp ý, báo sai số liệu, đề nghị hợp tác hoặc báo lỗi bảo mật.', path: '/lien-he/', h1: 'Liên hệ', over: 'Về web',

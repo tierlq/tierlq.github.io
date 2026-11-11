@@ -204,4 +204,5 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Chế độ Số liệu có nút chuyển nguồn "ĐTDV (giải) | Game rank" (dùng lại kiểu `.seg`, đặt trên dòng chú thích). Game rank: cột Thắng / Chọn / Cấm / Có mặt, bỏ cột Trận, không hiện số nhỏ so mùa trước, không có kiểu "mẫu nhỏ"; chú thích ghi nguồn LQMB GG, ngày đọc và "không nêu bậc rank, số trận, ngày cập nhật · không tính vào điểm tier". Cột Trận đang sắp xếp mà chuyển sang Game rank thì về sắp xếp theo Có mặt.
 - Bảng chi tiết: hàng "Game rank" (Thắng · Chọn · Cấm) đặt SAU điểm tổng và dòng giải thích tier, có vạch ngăn riêng và dòng nhỏ ghi nguồn, để không bị hiểu là một phần của điểm. Không có thanh, vì không vào điểm.
 - Đã xem ở 390px và 1440px; không tràn ngang.
+- Cùng ngày, đổi nguồn Game rank từ LQMB GG sang số trong game Garena (chủ web quay video bảng Phân Bậc Tướng). Giao diện giữ nguyên; chú thích nay ghi "Garena, Đấu hạng (Tất cả) · ghi 11/11/2026 · số trong game, không ghi số trận · không tính vào điểm tier"; dòng Game rank trong bảng chi tiết hiện hai chữ số thập phân với dấu phẩy như trong game (54,63%), không còn link ngoài. Flowborn Rồng và Giữa có hai số riêng.
 

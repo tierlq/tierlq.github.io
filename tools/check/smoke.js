@@ -45,7 +45,7 @@ const errs = [], log = (...a) => console.log(...a);
         const m = document.querySelector('.modal'); if (!m) { out.bad.push(h.id + ': không mở được'); continue; }
         const t = m.innerText;
         if (/Đang tải/.test(t)) out.bad.push(h.id + ': còn "Đang tải"');
-        if (!m.querySelector('.bd.rk')) out.bad.push(h.id + ': không có dòng Game rank (LQMB GG)');
+        if (!m.querySelector('.bd.rk')) out.bad.push(h.id + ': không có dòng Game rank (Garena)');
         if (!m.querySelector('.bld-items li')) out.bad.push(h.id + ': không có build');
         if (m.querySelectorAll('.bld-ar li').length < 1) out.bad.push(h.id + ': không có ngọc');
         if (!m.querySelector('.bld-sp li')) out.bad.push(h.id + ': không có phép bổ trợ');
@@ -100,8 +100,11 @@ const errs = [], log = (...a) => console.log(...a);
     const minRows = w > 700 ? 100 : 15;   // điện thoại chỉ hiện một đường
     if (rk.n < minRows) bad(`Số liệu Game rank chỉ có ${rk.n} dòng`);
     if (rk.hasN) bad('Số liệu Game rank vẫn còn cột Trận');
-    if (!/LQMB GG/.test(rk.cap) || !/không tính vào điểm/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
-    if (rk.nak && !/^50,8/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 50,8`);
+    if (!/Garena/.test(rk.cap) || !/không tính vào điểm/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
+    if (rk.nak && !/^49,1/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 49,1`);
+    // Flowborn có hai dạng với số khác nhau: xạ thủ (Rồng) 53,04 / pháp sư (Giữa) 52,74
+    const fb = await p.evaluate(() => { const a = rankOf(HEROES.find(h => h.id === 'flowborn-ad')), m = rankOf(HEROES.find(h => h.id === 'flowborn-mid')); return [a && a[0], m && m[0]]; });
+    if (fb[0] !== 53.04 || fb[1] !== 52.74) bad(`Flowborn Game rank sai: Rồng ${fb[0]}, Giữa ${fb[1]} (cần 53,04 và 52,74)`);
     if (rk.pressed !== 'true') bad('nút Game rank không ở trạng thái bấm');
     if (rk.ov) bad('Số liệu Game rank tràn ngang');
     await p.click('#board th.c-wr button'); await p.waitForTimeout(100);

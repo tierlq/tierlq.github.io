@@ -1,0 +1,137 @@
+# Tỉ lệ thắng / chọn / cấm game rank, lấy từ GAME Liên Quân Mobile của Garena.
+# Nguồn: trong game → Cẩm nang → Bảng Phân Bậc Tướng, bộ lọc "Đấu hạng (Tất cả)", sắp theo "Tỷ lệ thắng" giảm dần.
+# Ghi ngày 11/11/2026 từ video quay màn hình điện thoại của chủ web (66 giây; đọc từng khung hình, 130 dòng = 129 tướng, Flowborn có 2 dạng).
+# Màn hình KHÔNG ghi số trận và ngày cập nhật của bảng. Cột "Garena" là bậc T0 (mạnh nhất) đến T4 do Garena xếp, web chưa dùng.
+# Số giữ nguyên dạng trong game (dấu phẩy thập phân). Đã kiểm: thắng giảm dần đúng thứ tự trong video; đủ 129 tướng của web; đọc chữ tự động lượt hai không thấy dòng sai.
+# Định dạng: khoá|tên|vai trò|Garena|thắng %|chọn %|cấm %    (khoá = tên bỏ dấu a–z; Flowborn xạ thủ = flowborn-ad, pháp sư = flowborn-mid)
+# Cập nhật: quay lại bảng này (cuộn chậm, dừng ~1 giây mỗi màn), chép lại các dòng theo đúng thứ tự trong game, rồi chạy: node tools/rank/emit.js
+trieuvan|Triệu Vân|Đấu sĩ|T0|55,24|35,18|13,42
+omega|Omega|Đỡ đòn|T4|55,05|2,10|0,28
+preyta|Preyta|Pháp sư|T2|54,98|7,37|4,80
+tamyn|Tamyn|Đấu sĩ|T3|54,63|3,20|22,36
+moren|Moren|Xạ thủ|T2|54,34|5,65|1,20
+dyadia|Dyadia|Trợ thủ|T3|54,25|3,36|20,25
+erin|Erin|Xạ thủ|T2|53,98|10,72|3,67
+evita|Evita|Pháp sư|T0|53,75|11,47|69,68
+thorne|Thorne|Xạ thủ|T4|53,53|2,01|0,10
+astrid|Astrid|Đấu sĩ|T3|53,32|3,41|1,07
+flowborn-ad|Flowborn|Xạ thủ|T0|53,04|14,92|29,20
+roxie|Roxie|Đỡ đòn|T4|53,03|1,34|0,36
+dextra|Dextra|Đấu sĩ|T4|52,81|0,50|0,10
+lumburr|Lumburr|Trợ thủ|T4|52,78|0,70|0,10
+ybneth|Y'bneth|Đỡ đòn|T2|52,76|7,09|10,66
+flowborn-mid|Flowborn|Pháp sư|T4|52,74|1,13|1,17
+zata|Zata|Sát thủ|T0|52,70|10,83|56,51
+max|Max|Đỡ đòn|T4|52,52|1,27|0,13
+rourke|Rourke|Đấu sĩ|T4|52,26|1,02|0,10
+xeniel|Xeniel|Đỡ đòn|T4|52,22|2,26|0,43
+marja|Marja|Pháp sư|T2|52,20|6,49|7,83
+cresht|Cresht|Trợ thủ|T3|52,19|5,30|0,45
+teemee|TeeMee|Trợ thủ|T4|52,06|1,08|0,49
+wisp|Wisp|Xạ thủ|T4|51,92|1,86|0,10
+dirak|Dirak|Pháp sư|T4|51,86|1,75|0,13
+fennik|Fennik|Xạ thủ|T2|51,82|5,70|0,62
+helen|Helen|Trợ thủ|T4|51,77|2,43|1,65
+thane|Thane|Đỡ đòn|T3|51,73|4,29|0,25
+yorn|Yorn|Xạ thủ|T2|51,72|13,71|0,79
+telannas|Tel'Annas|Xạ thủ|T0|51,69|20,53|1,39
+darcy|D'Arcy|Pháp sư|T2|51,63|6,89|23,85
+volkath|Volkath|Đấu sĩ|T2|51,56|4,65|16,92
+veres|Veres|Đấu sĩ|T2|51,52|13,93|0,73
+laville|Laville|Xạ thủ|T3|51,50|5,38|0,13
+sinestrea|Sinestrea|Sát thủ|T2|51,46|5,71|5,55
+boltbaron|Bolt Baron|Đấu sĩ|T2|51,38|9,22|1,10
+azzenka|Azzen'Ka|Pháp sư|T3|51,28|4,95|0,50
+arthur|Arthur|Đấu sĩ|T1|51,23|19,07|2,51
+ilumia|Ilumia|Pháp sư|T3|51,10|5,11|0,22
+kahlii|Kahlii|Pháp sư|T3|50,95|4,17|0,23
+chaugnar|Chaugnar|Đỡ đòn|T3|50,85|3,72|1,27
+zip|Zip|Trợ thủ|T4|50,81|1,56|3,50
+lorion|Lorion|Pháp sư|T3|50,78|4,17|0,86
+quillen|Quillen|Sát thủ|T2|50,75|6,49|1,72
+edras|Edras|Đấu sĩ|T2|50,69|9,82|8,53
+ming|Ming|Trợ thủ|T4|50,65|0,64|0,10
+mina|Mina|Đỡ đòn|T2|50,64|8,47|1,01
+slimz|Slimz|Xạ thủ|T2|50,59|6,35|0,12
+goverra|Goverra|Pháp sư|T2|50,52|6,21|14,88
+wiro|Wiro|Đỡ đòn|T4|50,47|0,59|0,10
+krizzix|Krizzix|Trợ thủ|T3|50,44|2,66|10,10
+bijan|Bijan|Đấu sĩ|T2|50,44|13,10|4,05
+ryoma|Ryoma|Đấu sĩ|T1|50,32|15,21|1,67
+violet|Violet|Xạ thủ|T0|50,24|33,78|1,06
+tachi|Tachi|Đấu sĩ|T2|50,22|6,77|0,20
+airi|Airi|Đấu sĩ|T2|50,17|10,65|0,41
+maloch|Maloch|Đấu sĩ|T2|50,16|9,76|0,81
+baldum|Baldum|Đỡ đòn|T3|50,16|3,35|0,58
+alice|Alice|Trợ thủ|T2|50,11|13,73|5,04
+butterfly|Butterfly|Sát thủ|T1|50,08|16,98|6,58
+annette|Annette|Trợ thủ|T2|50,04|7,61|31,12
+teeri|Teeri|Xạ thủ|T4|49,96|2,58|0,10
+zill|Zill|Sát thủ|T3|49,93|4,53|0,16
+ata|Ata|Đỡ đòn|T4|49,91|0,97|0,10
+ormarr|Ormarr|Đỡ đòn|T4|49,75|1,56|0,10
+arum|Arum|Trợ thủ|T3|49,72|4,11|18,49
+enzo|Enzo|Sát thủ|T2|49,72|5,89|17,57
+taara|Taara|Đỡ đòn|T2|49,71|9,25|4,22
+biron|Biron|Đấu sĩ|T3|49,70|4,74|0,52
+arduin|Arduin|Đỡ đòn|T4|49,67|2,68|0,10
+qi|Qi|Đấu sĩ|T3|49,65|3,74|0,10
+dieuthuyen|Điêu Thuyền|Pháp sư|T3|49,55|4,87|0,43
+sephera|Sephera|Pháp sư|T4|49,49|2,05|0,71
+toro|Toro|Đỡ đòn|T0|49,47|23,85|7,22
+dolia|Dolia|Trợ thủ|T1|49,40|8,26|55,61
+allain|Allain|Đấu sĩ|T2|49,30|10,91|3,05
+bonnie|Bonnie|Pháp sư|T3|49,19|3,30|0,65
+nakroth|Nakroth|Sát thủ|T0|49,07|35,28|30,65
+stuart|Stuart|Xạ thủ|T2|49,04|6,89|3,25
+celica|Celica|Xạ thủ|T4|48,98|0,55|0,10
+iggy|Iggy|Pháp sư|T4|48,98|2,67|0,12
+keera|Keera|Sát thủ|T2|48,97|5,84|1,97
+krixi|Krixi|Pháp sư|T1|48,95|19,13|0,77
+omen|Omen|Đấu sĩ|T3|48,93|4,52|0,46
+veera|Veera|Pháp sư|T0|48,89|17,03|18,54
+tulen|Tulen|Pháp sư|T2|48,87|9,24|0,34
+kaine|Kaine|Sát thủ|T2|48,78|7,00|12,47
+zephys|Zephys|Đấu sĩ|T2|48,74|6,32|0,14
+amily|Amily|Đấu sĩ|T3|48,73|3,12|0,10
+elsu|Elsu|Xạ thủ|T0|48,72|18,47|26,83
+ngokhong|Ngộ Không|Sát thủ|T0|48,64|25,82|10,68
+yue|Yue|Pháp sư|T0|48,62|17,28|39,23
+aleister|Aleister|Pháp sư|T2|48,59|5,02|40,82
+murad|Murad|Sát thủ|T0|48,56|23,21|22,68
+lubo|Lữ Bố|Đấu sĩ|T4|48,49|2,20|0,19
+hayate|Hayate|Xạ thủ|T0|48,48|29,61|16,84
+lindis|Lindis|Xạ thủ|T4|48,47|1,60|0,14
+florentino|Florentino|Đấu sĩ|T0|48,46|16,27|23,98
+heino|Heino|Pháp sư|T3|48,43|5,00|2,49
+liliana|Liliana|Pháp sư|T2|48,37|7,10|0,27
+bright|Bright|Sát thủ|T3|48,37|3,52|0,10
+billow|Billow|Sát thủ|T2|48,37|8,53|4,01
+lauriel|Lauriel|Pháp sư|T2|48,33|7,23|1,91
+natalya|Natalya|Pháp sư|T0|48,30|21,12|5,83
+errol|Errol|Đấu sĩ|T2|48,29|6,97|0,63
+valhein|Valhein|Xạ thủ|T1|48,23|16,28|1,33
+skud|Skud|Đấu sĩ|T4|48,23|1,48|0,12
+yena|Yena|Đấu sĩ|T4|48,14|2,57|0,10
+kriknak|Kriknak|Sát thủ|T4|48,05|2,18|0,10
+gildur|Gildur|Pháp sư|T0|48,01|17,15|19,04
+wonderwoman|Wonder Woman|Đấu sĩ|T4|48,01|0,29|0,10
+raz|Raz|Sát thủ|T0|47,99|23,38|3,83
+ishar|Ishar|Pháp sư|T3|47,93|3,42|0,40
+paine|Paine|Sát thủ|T2|47,81|7,72|1,41
+aoi|Aoi|Sát thủ|T4|47,81|1,39|0,22
+ignis|Ignis|Pháp sư|T4|47,79|1,36|0,10
+capheny|Capheny|Xạ thủ|T2|47,72|10,84|0,39
+zuka|Zuka|Đấu sĩ|T2|47,67|10,58|0,27
+jinna|Jinna|Pháp sư|T4|47,54|0,74|0,10
+elandorr|Eland'orr|Xạ thủ|T3|47,50|4,39|0,18
+grakk|Grakk|Trợ thủ|T1|47,49|10,76|32,24
+mganga|Mganga|Pháp sư|T3|47,25|4,22|0,21
+yan|Yan|Đấu sĩ|T3|47,06|2,94|0,13
+kilgroth|Kil'Groth|Đấu sĩ|T3|47,04|3,84|0,93
+richter|Richter|Đấu sĩ|T3|46,95|4,91|0,21
+rouie|Rouie|Trợ thủ|T3|46,78|2,94|11,40
+aya|Aya|Trợ thủ|T0|46,71|10,37|70,74
+charlotte|Charlotte|Đấu sĩ|T4|46,61|0,42|0,10
+theflash|The Flash|Sát thủ|T4|46,11|0,53|0,20
+superman|Superman|Đấu sĩ|T4|45,01|0,30|0,37

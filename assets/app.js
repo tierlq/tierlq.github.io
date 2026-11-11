@@ -211,11 +211,13 @@ function breakdown(h){
     ${rankRow(h)}
   </div>`;
 }
-/* Game rank (LQMB GG, khối LQ trong data.js): chỉ để xem, không tính vào điểm tier. Nguồn không nêu bậc rank, số trận, ngày cập nhật */
-const rankOf=h=>typeof LQ!=="undefined"&&LQ.d[h.key]||null;
+/* Game rank (Bảng Phân Bậc Tướng trong game của Garena, khối RANK trong data.js): chỉ để xem, không tính vào điểm tier.
+   Số theo tướng; Flowborn có hai khoá (-ad, -mid) như SRC.aog. Game không ghi số trận và ngày cập nhật của bảng */
+const rankOf=h=>typeof RANK!=="undefined"&&(RANK.d[h.key+"-"+h.lane]||(h.key==="flowborn"?null:RANK.d[h.key]))||null;
+const pc2=v=>v.toFixed(2).replace(".",",");
 function rankRow(h){const r=rankOf(h);if(!r)return "";
-  return `<div class="bd rk"><span>Game rank</span><b>Thắng ${r[0]}% · Chọn ${r[1]}% · Cấm ${r[2]}%</b></div>
-    <p class="rk-n">Số của <a href="${LQ.url}" target="_blank" rel="nofollow noopener">LQMB GG</a> đọc ${LQ.read}, không tính vào điểm tier. Nguồn không nêu bậc rank, số trận và ngày cập nhật.</p>`}
+  return `<div class="bd rk"><span>Game rank</span><b>Thắng ${pc2(r[0])}% · Chọn ${pc2(r[1])}% · Cấm ${pc2(r[2])}%</b></div>
+    <p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ${RANK.read}. Không tính vào điểm tier; game không ghi số trận.</p>`}
 /* Build tham khảo: đồ, bảng ngọc, phép bổ trợ (dữ liệu ở assets/builds.js, tải sau khi trang hiện xong để bảng tier hiện sớm hơn) */
 // Không nạp builds.js bằng thẻ script trong HTML: app.js tự tải nó khi trang đã hiện xong (hoặc ngay khi cần mở bảng chi tiết),
 // dùng cùng số ?v= với app.js để trình duyệt nhận bản mới
@@ -428,10 +430,10 @@ function renderStats(list){
     const pv=s.p?(k==="pk"?s.p[1]:k==="bn"?s.p[2]:k==="pres"?s.p[1]+s.p[2]:null):null;
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
   const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
-  const cap=rank?`<span>Game rank · ${LQ.src} · đọc ${LQ.read}</span><span>Nguồn không nêu bậc rank, số trận và ngày cập nhật · không tính vào điểm tier · bấm tên cột để sắp xếp</span>`
+  const cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Số trong game, không ghi số trận · không tính vào điểm tier · bấm tên cột để sắp xếp</span>`
     :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
   board.innerHTML=`${src}<div class="st-cap">${cap}</div>
-  <table class="stats"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo LQMB GG":t}">${l}${k==="n"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
+  <table class="stats"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo Garena":t}">${l}${k==="n"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
   <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="nodata"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?(rank?", chưa có số liệu game rank":", chưa có số liệu ĐTDV"):""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${cols.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;
   syncPick()}
 $("board").addEventListener("click",e=>{if(mode!=="stats")return;
