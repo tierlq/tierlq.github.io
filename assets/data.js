@@ -705,7 +705,10 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   // Chủ web yêu cầu 11/11/2026 20:11: D'Arcy Rừng B→C, Bolt Baron Rừng B→D, Keera Rừng C→B ("kerra" = Keera, web chỉ có ô Rừng)
   // Annette, Rouie không có trong bảng Trợ thủ; chủ web chốt 07/11/2026: Rouie Trợ thủ S, Annette Trợ thủ A
   "rouie-sp":"S","annette-sp":"A"};
-const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
+// Ngưỡng điểm cố định (11/11/2026, chủ web yêu cầu tướng không bị xê dịch khi thêm bớt tướng): tier của một tướng chỉ phụ thuộc điểm của chính nó.
+// Ngưỡng chọn sao cho giữ đúng tier đang hiện của các ô không chỉnh tay (trước đó chia theo tỉ lệ trong đường: 12/32/57/80%).
+const CUT=[["S",4.25],["A",2.9],["B",2.15],["C",1.65]];
+const toTier=s=>(CUT.find(([,v])=>s>=v)||["D"])[0];
 // Lớp tướng theo phân loại chính thức trên lienquan.garena.vn
 const CLASSFIX={airi:"assassin",chaugnar:"support",cresht:"tank",zill:"mage",xeniel:"support",ata:"fighter",boltbaron:"mage",arum:"tank",bright:"marksman",roxie:"fighter",lumburr:"tank",ormarr:"fighter",theflash:"mage",arduin:"fighter",sephera:"support"};
 function addHero(lane,cls,vn,n,sec){const k=slug(n),p=P[k+"-"+lane]||P[k]||[],sc=score(k,vn,lane);cls=CLASSFIX[k]||cls;
@@ -736,11 +739,10 @@ HEROES.filter(h=>["ybneth-sp","omega-sp"].includes(h.id)).forEach(h=>h.sec=false
 for(const id of ["ybneth-top","omega-top"]){const i=HEROES.findIndex(h=>h.id===id);if(i>=0)HEROES.splice(i,1)}
 // Xếp tier theo từng đường: so tướng với các tướng cùng đường (đường phụ trừ 0,4 điểm, tối đa tier A)
 // Top 12% của đường → S, 12–32% → A, 32–57% → B, 57–80% → C, còn lại → D; sau đó áp sàn ĐTDV và chỉnh tay
-const QUOTA=[["S",.12],["A",.32],["B",.57],["C",.8],["D",1]];
 for(const l of Object.keys(LANES)){
   const arr=HEROES.filter(h=>h.lane===l).map(h=>(h.adj=h.score-(h.sec?.4:0),h)).sort((a,b)=>b.adj-a.adj);
   const n=arr.length;
-  arr.forEach((h,i)=>{h.rank=i+1;h.laneN=n;h.tier=QUOTA.find(([,q])=>i<Math.round(n*q))[0];h.floor="";
+  arr.forEach((h,i)=>{h.rank=i+1;h.laneN=n;h.tier=toTier(h.adj);h.floor="";
     const a=aogOf(h.key,h.lane),pres=a?a[1]+a[2]:0,pk=a?a[1]:0,wr=a?a[0]:0;h.pres=pres;
     if(!h.sec){
       if(pres>=75&&h.tier!=="S"){h.tier="S";h.floor="S"}else if(pres>=55&&"BCD".includes(h.tier)){h.tier="A";h.floor="A"}
