@@ -1117,6 +1117,22 @@ SPELL: Tốc Biến / Gầm Thét
 ENCH: Tháp quang minh: Thánh châu, Xuyên tâm, Tinh linh | Vực hỗn mang: Ma Hỏa, Cường công
 NOTE: Nguồn chưa có build riêng cho đường Rồng, ở đây dùng build đi đường (Top/Mid) cùng trang.
 
+## murad@ad
+SRC: https://aov-builds.com/tuong/murad/
+ITEMS: Giày Thuật Sĩ | Thương Longinus | Phức Hợp Kiếm | Nanh Fenrir | Thương Xuyên Phá | Giáp Hộ Mệnh
+RUNES: Đỏ Tỉ lệ chí mạng x2 | Đỏ Công vật lý-Xuyên giáp x8 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến / Bộc Phá
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma chú | Thành khởi nguyên: Quả cầu băng sương, Thợ săn
+NOTE: Chưa có build riêng cho đường Rồng (ô thêm 11/11/2026 theo yêu cầu chủ web), ở đây dùng bộ đồ đi đường (không có đồ rừng) của cùng trang nguồn, giống ô Tà Thần.
+
+## edras@ad
+SRC: https://aov-builds.com/tuong/edras/
+ITEMS: Giày Hộ Vệ | Thương Longinus | Thương Khung Kiếm | Kiếm Muramasa | Huân Chương Troy | Giáp Hộ Mệnh
+RUNES: Đỏ Công vật lý x7 | Đỏ Công vật lý-Xuyên giáp x3 | Tím Công vật lý-Tốc chạy x10 | Xanh Công vật lý-Xuyên giáp x10
+SPELL: Tốc Biến
+ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
+NOTE: Chưa có build riêng cho đường Rồng (ô thêm 11/11/2026 theo yêu cầu chủ web), ở đây dùng build đi đường Tà Thần của cùng trang nguồn.
+
 ## helen@sp
 SRC: https://aov-builds.com/tuong/helen/
 ITEMS: Liệt Hoả Mở Trói | Giày Kiên Cường | Dây Chuyền Lục Bảo | Băng Nhẫn Skadi | Huân Chương Troy | Khiên Thất Truyền
