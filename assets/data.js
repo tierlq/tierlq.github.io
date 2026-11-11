@@ -695,6 +695,8 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "elandorr-jg":"A","volkath-jg":"A","boltbaron-jg":"B","darcy-jg":"B","edras-jg":"B","wonderwoman-jg":"B","rourke-jg":"B","yan-jg":"B","veres-jg":"B","fennik-jg":"C","tulen-jg":"C","bijan-jg":"C","errol-jg":"C","zill-jg":"C","lubo-jg":"D","kilgroth-jg":"D","lindis-jg":"D","skud-jg":"D","tamyn-top":"A","mina-top":"B","murad-top":"C","ngokhong-top":"C","astrid-top":"C","xeniel-top":"C","roxie-top":"C","veres-sp":"A","maloch-sp":"B","richter-sp":"B","arthur-sp":"C","roxie-sp":"D",
   // Chủ web yêu cầu 11/11/2026: Ata Tà Thần lên A (theo công thức ra D, kể cả sau khi thêm game rank)
   "ata-top":"A",
+  // Chủ web yêu cầu 11/11/2026: Erin và Yorn đường Rồng lên B (theo điểm đang ra C; Erin Giữa đã ghim A)
+  "erin-ad":"B","yorn-ad":"B",
   // Annette, Rouie không có trong bảng Trợ thủ; chủ web chốt 07/11/2026: Rouie Trợ thủ S, Annette Trợ thủ A
   "rouie-sp":"S","annette-sp":"A"};
 const toTier=s=>s>=4.2?"S":s>=3.5?"A":s>=2.7?"B":s>=2?"C":"D";
