@@ -702,6 +702,8 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   // Chủ web yêu cầu 11/11/2026 21:08: Chaugnar Trợ thủ C→B, Omega Trợ thủ B→A (sửa giá trị ở trên)
   // Chủ web yêu cầu 11/11/2026 21:07: "lindis lên C" (đường chính Rồng; Lindis Rừng giữ D)
   "lindis-ad":"C",
+  // Chủ web yêu cầu 11/11/2026 21:09: Wisp Rồng xuống C, Dyadia Trợ thủ (đường chính) lên A; Dyadia Giữa giữ D
+  "wisp-ad":"C","dyadia-sp":"A",
   // Chủ web yêu cầu 11/11/2026 20:18: Bolt Baron Rừng D (lần 20:14 hiểu sai chữ "thêm"; Rừng giữ D như 20:11); thêm ô Rồng cho Murad và Edras, ghim B
   "murad-ad":"B","edras-ad":"B",
   // Chủ web yêu cầu 11/11/2026 20:16: Marja và Florentino Tà Thần A→S
