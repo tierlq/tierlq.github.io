@@ -716,6 +716,8 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "wisp-ad":"C","dyadia-sp":"A",
   // Chủ web yêu cầu 11/11/2026 21:13: Gildur Giữa xuống B
   "gildur-mid":"B",
+  // Chủ web yêu cầu 11/11/2026 21:20: Elsu Rồng lên A
+  "elsu-ad":"A",
   // Chủ web yêu cầu 11/11/2026 20:18: Bolt Baron Rừng D (lần 20:14 hiểu sai chữ "thêm"; Rừng giữ D như 20:11); thêm ô Rồng cho Murad và Edras, ghim B
   "murad-ad":"B","edras-ad":"B",
   // Chủ web yêu cầu 11/11/2026 20:16: Marja và Florentino Tà Thần A→S
