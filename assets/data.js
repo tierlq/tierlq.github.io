@@ -697,6 +697,8 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "ata-top":"A",
   // Chủ web yêu cầu 11/11/2026: Erin và Yorn đường Rồng lên B (theo điểm đang ra C; Erin Giữa đã ghim A)
   "erin-ad":"B","yorn-ad":"B",
+  // Chủ web yêu cầu 11/11/2026 21:05: Edras Tà Thần S, Thorne Rồng D
+  "edras-top":"S","thorne-ad":"D",
   // Chủ web yêu cầu 11/11/2026 20:18: Bolt Baron Rừng D (lần 20:14 hiểu sai chữ "thêm"; Rừng giữ D như 20:11); thêm ô Rồng cho Murad và Edras, ghim B
   "murad-ad":"B","edras-ad":"B",
   // Chủ web yêu cầu 11/11/2026 20:16: Marja và Florentino Tà Thần A→S
