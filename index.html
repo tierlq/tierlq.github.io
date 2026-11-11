@@ -36,7 +36,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611112040"></script>
+<script defer src="assets/boot.js?v=202611112110"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -1064,6 +1064,8 @@ html.lock{overflow:hidden}
 /* Hỏi nhanh (FAQ, tạo bằng tools/seo/build.js) */
 .faq{border-top:1px solid var(--line);padding:clamp(40px,6vw,72px) 0 0;margin-top:clamp(40px,6vw,72px)}
 .faq h2{margin:0 0 18px;font:300 clamp(1.4rem,3vw,2.2rem) var(--f-display);text-transform:uppercase;letter-spacing:.04em}
+/* Danh sách dài trong mục Cách xếp (chỉnh tay, đường phụ): gập lại, bấm mới mở */
+.nl{display:inline}.nl[open]{display:block;margin-top:2px}.nl summary{display:inline-flex;align-items:center;gap:6px;min-height:28px;cursor:pointer;list-style:none;font:400 12px var(--f-mono,ui-monospace,monospace);letter-spacing:.04em;color:var(--fg);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line)}.nl summary::-webkit-details-marker{display:none}.nl summary::after{content:"+";font:300 16px var(--f-display);color:var(--muted);text-decoration:none}.nl[open] summary::after{content:"−"}
 .faq details{border-bottom:1px solid var(--line)}
 .faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;position:relative;font:500 15px var(--f-body)}
 .faq summary::-webkit-details-marker{display:none}
@@ -1253,8 +1255,8 @@ body.picking .instbar{display:none}
         <li><b>Tier xếp theo từng đường:</b> tướng chỉ so với các tướng cùng đường. Top 12% của đường là S, 12–32% là A, 32–57% là B, 57–80% là C, còn lại là D. Thẻ đường phụ bị trừ 0,4 điểm khi so và tối đa tier A, vì số liệu giải không tách theo đường.</li>
         <li>Ở đường chính, tướng được chọn ở ĐTDV từ 30% số trận trở lên (tỉ lệ thắng ≥ 45%) xếp S, từ 20% trở lên tối thiểu A. Tướng có pick + cấm từ 75% số trận trở lên luôn xếp S, từ 55% trở lên tối thiểu A.</li>
         <li>Trong mỗi ô, tướng được chọn nhiều trận ở ĐTDV đứng trước.</li>
-        <li id="manualNote"><b>Chỉnh tay của người biên tập</b> (luôn giữ khi cập nhật số liệu): <span id="manualList"></span>.</li>
-        <li id="secNote"><b>Đường phụ:</b> <span id="secList"></span>.</li>
+        <li id="manualNote"><b>Chỉnh tay của người biên tập</b> (luôn giữ khi cập nhật số liệu, ghi đè điểm): <details class="nl"><summary><span id="manualN">Xem danh sách</span></summary><span id="manualList"></span>.</details></li>
+        <li id="secNote"><b>Đường phụ:</b> <details class="nl"><summary><span id="secN">Xem danh sách</span></summary><span id="secList"></span>.</details></li>
         <li>Mỗi tướng có một đường chính. Tướng thường được đưa sang đường khác có thêm thẻ "Phụ" ở cột đó. Danh sách đường phụ dựa trên lối chơi phổ biến, chưa có số liệu theo đường.</li>
         <li>Lớp tướng (biểu tượng góc thẻ) theo phân loại chính thức của Garena.</li>
         <li><b>Build tham khảo</b> (bấm vào tướng): mỗi đường có build riêng, lấy từ trang hướng dẫn build tiếng Việt cho server Việt Nam (chủ yếu AOV-Builds, bản 29/09). Tướng hiện ở cột Rừng (kể cả đường phụ) luôn có món đồ rừng và Trừng Trị; tướng đi đường không mang đồ rừng; tướng đi Trợ thủ có đồ trợ thủ. Khi nguồn có nhiều build cho cùng một đường, bảng lấy build nguồn ghi đầu tiên. Phù hiệu (nhánh chính 3 phù hiệu, 2 phù hiệu phụ) lấy cùng trang nguồn, ưu tiên bộ ghi cho đúng đường, không có thì lấy bộ ghi đầu tiên. Tên đồ, phù hiệu bản Việt và mô tả theo dữ liệu AoV-IndeX. Mỗi bảng có link tới trang gốc.</li>
@@ -1344,7 +1346,7 @@ body.picking .instbar{display:none}
     </div>
   </aside>
 </div>
-<script defer src="assets/data.js?v=202611112040"></script>
-<script defer src="assets/app.js?v=202611112040"></script>
+<script defer src="assets/data.js?v=202611112110"></script>
+<script defer src="assets/app.js?v=202611112110"></script>
 </body>
 </html>

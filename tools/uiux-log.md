@@ -209,3 +209,8 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Điện thoại: 5 cột số làm bảng tràn ngang 20px ở 390px (cột hero có độ rộng tối thiểu ~174px) nên ở Game rank ẩn cột "Có mặt" (số tự tính chọn + cấm, game không có), còn 4 cột như trong game; máy tính vẫn đủ 5 cột. Vào Game rank thì mặc định sắp theo Thắng giảm dần (đúng thứ tự trong game); về ĐTDV thì sắp theo Có mặt như cũ.
 - `smoke.js`: bảng chi tiết nào cũng có "Bậc Garena T0–T4", cột Garena có đủ ô, Tamyn T3, sắp theo Garena không giảm bậc và T0 đứng đầu, ĐTDV không có cột Garena, không tràn ngang cả khi sắp theo Garena.
 - Cùng ngày (11/11), chủ web yêu cầu tính cả số game rank vào điểm: bảng chi tiết bỏ hàng "Game rank" riêng có vạch ngăn, thay bằng thanh "Game rank" cùng kiểu các nguồn khác (giữa Rank cộng đồng và Điểm tổng; chữ "Bậc Garena T3 · Thắng · Chọn · Cấm" vẫn xuống dòng theo mục), dòng nhỏ nguồn đặt dưới điểm tổng và nói rõ thắng/chọn/cấm có tính vào điểm còn bậc T0–T4 thì không. Chú thích bảng Số liệu Game rank đổi theo. Ngày "Dữ liệu cập nhật" đổi 07/11 → 11/11.
+
+## 2026-11-11 (rà toàn web theo yêu cầu chủ web)
+- Đã quét 16 loại trang ở 390/1440 (không lỗi JS, không tràn ngang, không nút nhỏ hơn 24px, đủ h1/description) và axe-core 4 chế độ: chỉ còn `label-content-name-mismatch` (nhãn "Airi, hạng 2, tier S" so với chữ "02 Airi", không phải lỗi) và tương phản đo lúc đang mờ dần (báo nhầm).
+- Trang tướng và trang đường ghi rõ tier chỉnh tay (câu trong đoạn mở đầu, nhãn "chỉnh tay" ở trang đường), vì 146/182 ô đang ghim nên điểm và tier hay lệch nhau.
+- Mục Cách xếp và nguồn: hai danh sách dài "Chỉnh tay" (146 ô) và "Đường phụ" (52 ô) gập lại sau nút "Xem danh sách (N ô) +" (`details.nl`); trang chủ trên điện thoại ngắn đi ~930px (14.844 → 13.914px).

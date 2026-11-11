@@ -687,6 +687,7 @@ function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3
 (function notes(){const ord=Object.keys(LANES),by=(a,b)=>ord.indexOf(a.lane)-ord.indexOf(b.lane)||a.name.localeCompare(b.name,"vi");
   const man=ord.map(l=>[l,HEROES.filter(h=>h.floor==="manual"&&h.lane===l).sort(by).map(h=>`${h.name} ${h.tier}${h.sec?" (phụ)":""}`)]).filter(x=>x[1].length).map(([l,n])=>`${LANES[l]}: ${n.join(", ")}`);
   const ml=$("manualList");if(ml)ml.textContent=man.join("; ")||"chưa có";
+  const cnt=(id,n)=>{const e=$(id);if(e)e.textContent=`Xem danh sách (${n} ô)`};cnt("manualN",HEROES.filter(h=>h.floor==="manual").length);cnt("secN",HEROES.filter(h=>h.sec).length);
   const sec=ord.map(l=>[l,HEROES.filter(h=>h.sec&&h.lane===l).sort(by).map(h=>h.name)]).filter(x=>x[1].length).map(([l,n])=>`${LANES[l]}: ${n.join(", ")}`);
   const sl=$("secList");if(sl)sl.textContent=sec.join("; ")})();
 document.querySelectorAll(".lgm[data-mk]").forEach(el=>{const k=el.dataset.mk;el.innerHTML=k==="rise"?mkMove("up"):k==="fall"?mkMove("down"):mkTrend(k)});
