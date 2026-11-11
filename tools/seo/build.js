@@ -203,7 +203,7 @@ ${CSP}
 ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" height="852"></div>` : ''}
 <p class="over">${esc(L)}${h.sec ? ' · đường phụ' : ''} · ${esc(CLASSES[h.cls] || '')} · ${esc(season)}</p>
 <h1>${esc(h.name)} <span>tier ${h.tier}</span></h1>
-<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
+<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''}${h.floor === 'manual' ? ` Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không theo điểm tổng.` : h.floor ? ` Tier được nâng theo sàn số liệu ĐTDV (xem <a href="/phuong-phap/">Phương pháp</a>).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
 ${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Ba số này (thắng, chọn, cấm) được tính vào điểm tổng của web với trọng số 22%; bậc T0–T4 của Garena thì không tính. Game không ghi số trận.</p>` : ''}
@@ -263,7 +263,7 @@ writePage('ban-cap-nhat', pageShell({ title: 'Các bản cập nhật cân bằn
 
 // ---------- 3b. Tier list từng đường (duong/<slug>/): trang đích cho "tier list rừng liên quân"... ----------
 fs.rmSync(path.join(ROOT, 'duong'), { recursive: true, force: true });
-const rowL = h => `<li><a href="${url(h)}"><b>${esc(h.name)}</b></a>${h.sec ? '<span class="tb">đường phụ</span>' : ''}<span class="tb">hạng ${h.rank}/${h.laneN}</span><span class="tb">${h.score.toFixed(2)}/5</span>${h.move ? `<span class="tb">${h.move === 'up' ? '↑ lên' : '↓ xuống'} từ tier ${h.prev}</span>` : ''}${h.note ? `<p>Bản ${PATCH}: ${esc(strip(h.note))}</p>` : ''}</li>`;
+const rowL = h => `<li><a href="${url(h)}"><b>${esc(h.name)}</b></a>${h.sec ? '<span class="tb">đường phụ</span>' : ''}<span class="tb">hạng ${h.rank}/${h.laneN}</span><span class="tb">${h.score.toFixed(2)}/5</span>${h.floor === 'manual' ? '<span class="tb">chỉnh tay</span>' : ''}${h.move ? `<span class="tb">${h.move === 'up' ? '↑ lên' : '↓ xuống'} từ tier ${h.prev}</span>` : ''}${h.note ? `<p>Bản ${PATCH}: ${esc(strip(h.note))}</p>` : ''}</li>`;
 for (const l of Object.keys(LANES)) {
   const L = LANES[l], a = HEROES.filter(h => h.lane === l).sort((x, y) => TO.indexOf(x.tier) - TO.indexOf(y.tier) || x.rank - y.rank);   // cùng cách đếm hạng/tổng như trang từng tướng (gồm đường phụ)
   const nSec = a.filter(h => h.sec).length, S = a.filter(h => h.tier === 'S'), Sm = S.filter(h => !h.sec), Ss = S.filter(h => h.sec), topN = Sm.length ? Sm : a.slice(0, 3);   // tier S ghi đường chính trước, đường phụ sau (khớp mục Hỏi nhanh)
@@ -272,7 +272,7 @@ for (const l of Object.keys(LANES)) {
   let desc = mkDesc(5); for (let n = 4; desc.length > 160 && n >= 1; n--) desc = mkDesc(n);
   const body = `<p class="lead">Bảng xếp ${a.length} tướng đi ${esc(L)} trong Liên Quân ${esc(season)}${nSec ? ` (gồm ${nSec} tướng đi như đường phụ)` : ''}, từ mạnh đến yếu: ${esc(cnt)}. ${S.length ? `Tier S gồm ${esc(names(Sm.length ? Sm : Ss, 10))}${Sm.length && Ss.length ? ` và ${esc(names(Ss, 5))} (đường phụ)` : ''}.` : `Đứng đầu là ${esc(names(topN, 3))}.`} Cập nhật ${upd}, bản ${PATCH}.</p>
 ${TO.split('').map(t => { const g = a.filter(h => h.tier === t); return g.length ? `<h2>Tier ${t} · ${TNAME[t]} (${g.length})</h2><ul class="chg plain">${g.map(rowL).join('')}</ul>` : ''; }).join('\n')}
-<h2>Tier được xếp thế nào</h2><p>Điểm tổng hợp trên thang 5 từ số liệu ĐTDV mùa hiện tại (36%), mùa trước (13%), RoV Pro League (11%), tier list rank cộng đồng (18%) và số game rank của Garena (22%). Tier xếp theo thứ hạng trong riêng đường ${esc(L)}, nên một tướng đi nhiều đường có thể có tier khác nhau ở mỗi đường. Thông tin để tham khảo, meta đổi theo bản vá và cách chơi. <a href="/phuong-phap/">Chi tiết cách xếp</a> ·<a href="${purl(curP)}">Thay đổi của bản ${PATCH}</a>.</p>
+<h2>Tier được xếp thế nào</h2><p>Điểm tổng hợp trên thang 5 từ số liệu ĐTDV mùa hiện tại (36%), mùa trước (13%), RoV Pro League (11%), tier list rank cộng đồng (18%) và số game rank của Garena (22%). Tier xếp theo thứ hạng trong riêng đường ${esc(L)}, nên một tướng đi nhiều đường có thể có tier khác nhau ở mỗi đường. Tướng có nhãn "chỉnh tay" là tier do người biên tập ghim, không theo điểm, nên có thể đứng khác bậc với tướng cùng điểm. Thông tin để tham khảo, meta đổi theo bản vá và cách chơi. <a href="/phuong-phap/">Chi tiết cách xếp</a> ·<a href="${purl(curP)}">Thay đổi của bản ${PATCH}</a>.</p>
 <h2>Các đường khác</h2><ul class="links">${Object.keys(LANES).filter(x => x !== l).map(x => `<li><a href="${lurl(x)}">Tier list ${esc(LANES[x])}</a></li>`).join('')}</ul>`;
   writePage(lurl(l).slice(1, -1), pageShell({ title: `Tier list ${L} Liên Quân ${season}: tướng mạnh nhất | Bảng Tier Liên Quân`, desc, path: lurl(l), h1: `Tier list ${L}`, over: `Liên Quân ${season} · cập nhật ${upd}`, body }));
 }
@@ -369,7 +369,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <li><b>Sàn theo ĐTDV (chỉ đường chính):</b> chọn cộng cấm từ 75% số trận luôn là S, từ 55% tối thiểu A. Chọn từ 30% số trận (thắng từ 45%) là S, từ 20% tối thiểu A.</li>
 <li><b>Chỉnh tay của người biên tập</b> ghi đè mọi quy tắc trên và được giữ khi cập nhật số liệu.</li>
 <li>Mũi tên lên hoặc xuống trên ảnh tướng so tier hiện tại với tier ở lần cập nhật trước (${esc(PREV_DATE)}).</li></ul>
-<h2>Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
+<h2 id="chinh-tay">Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
 <li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
