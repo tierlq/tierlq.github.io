@@ -116,6 +116,23 @@ const errs = [], log = (...a) => console.log(...a);
     if (fb[0] !== 53.04 || fb[1] !== 52.74) bad(`Flowborn Game rank sai: Rồng ${fb[0]}, Giữa ${fb[1]} (cần 53,04 và 52,74)`);
     if (rk.pressed !== 'true') bad('nút Game rank không ở trạng thái bấm');
     if (rk.ov) bad('Số liệu Game rank tràn ngang');
+    // nút chọn nguồn ĐTDV / Game rank đủ cao để chạm (≥40px); tên cột Game rank không dính nhau ở mọi cách sắp
+    const segH = await p.evaluate(() => Math.min(...[...document.querySelectorAll('#board .st-src button')].map(b => { b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(), x = r.left + r.width / 2;
+      let t = 0, d = 0; while (d < 30 && document.elementFromPoint(x, r.top + r.height / 2 - d - 1) === b) d++; while (t < 30 && document.elementFromPoint(x, r.top + r.height / 2 + t + 1) === b) t++; return d + t + 1; })));
+    if (segH < 40) bad(`nút ĐTDV / Game rank chỉ chạm được trong ${Math.round(segH)}px chiều cao`);
+    const colGap = () => p.evaluate(() => { const e = [...document.querySelectorAll('table.stats thead th button')].filter(b => b.offsetWidth).map(b => { const r = document.createRange(); r.selectNodeContents(b); return r.getBoundingClientRect(); });
+      return Math.min(...e.slice(1).map((r, i) => r.left - e[i].right)); });
+    const laneN = w > 700 ? 1 : await p.evaluate(() => document.querySelectorAll('#lanesM button').length);   // điện thoại: độ rộng cột đổi theo tên tướng của từng đường
+    for (let li = 0; li < laneN; li++) {
+      if (w <= 700) { await p.evaluate(i => document.querySelectorAll('#lanesM button')[i].click(), li); await p.waitForTimeout(150); }
+      for (const k of ['c-gt', 'c-pk', 'c-bn', 'c-wr']) {
+        await p.click(`#board th.${k} button`); await p.waitForTimeout(80);
+        const g = await colGap(); if (g < 6) bad(`tên cột Game rank dính nhau khi sắp theo ${k}, đường ${li} (cách ${Math.round(g)}px)`);
+        if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad(`Số liệu Game rank tràn ngang khi sắp theo ${k}, đường ${li}`);
+      }
+    }
+    if (w <= 700) { await p.evaluate(() => document.querySelectorAll('#lanesM button')[0].click()); await p.waitForTimeout(150); }
+    if (await p.evaluate(() => document.querySelector('#board th.c-wr').getAttribute('aria-sort') !== 'descending')) { await p.click('#board th.c-wr button'); await p.waitForTimeout(80); }
     // vào Game rank thì mặc định sắp theo Thắng giảm dần (đúng thứ tự trong game)
     const wrs = await p.evaluate(() => [...document.querySelectorAll('#board table.stats td.c-wr b')].map(b => parseFloat(b.innerText.replace(',', '.'))).filter(x => !isNaN(x)));
     if (wrs.length < minRows || wrs.some((x, i) => i && x > wrs[i - 1] + 1e-9)) bad('sắp xếp theo Thắng ở Game rank sai thứ tự');

@@ -264,6 +264,8 @@ a{color:inherit}
 .board.is-stats{min-width:0}
 .scroller:has(>.board.is-stats){overflow:visible}
 .st-src{padding:0 0 14px}
+/* Nút chọn nguồn chỉ cao 14px theo dòng chữ: lớp vô hình nới vùng chạm lên ~44px, bố cục và viền focus giữ nguyên */
+.st-src button::before{content:"";position:absolute;left:-6px;right:-6px;top:-15px;bottom:-15px}
 .st-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;padding:0 0 14px;font:400 11.5px/1.5 var(--f-mono,ui-monospace,monospace);letter-spacing:.04em;color:var(--muted)}
 .stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .stats thead th{position:sticky;top:calc(var(--sat,0px) + var(--barh));z-index:2;background:var(--bg);border-bottom:1px solid var(--line-2);padding:0;text-align:right;font-weight:400}
@@ -305,7 +307,7 @@ a{color:inherit}
   .stats td .dl{font-size:10px}
   .stats .c-wr,.stats .c-pk,.stats .c-bn,.stats .c-pres{width:15%}
   .stats .c-pres{width:19%}.stats thead .c-pres button{padding-left:12px}
-  .stats.rk .c-gt{width:15%}.stats.rk .c-pres{display:none}   /* Game rank: điện thoại chỉ hiện 4 cột như trong game (Garena, Thắng, Chọn, Cấm), bỏ "Có mặt" để tên tướng còn chỗ */   /* "CÓ MẶT ⌄" (cột sắp mặc định) cần chỗ, không dính vào "CẤM" */
+  .stats.rk .c-gt{width:15%}.stats.rk .c-pres{display:none}.stats thead th:not([aria-sort="none"]):not(.c-pres) button{padding-left:8px}.stats.rk thead .c-wr button{padding-left:12px}   /* Game rank: điện thoại chỉ hiện 4 cột như trong game (Garena, Thắng, Chọn, Cấm), bỏ "Có mặt" để tên tướng còn chỗ; cột Thắng và cột đang sắp (có mũi tên) chừa lề trái để tên cột không dính nhau ("GARENA THẮNG") */   /* "CÓ MẶT ⌄" (cột sắp mặc định) cần chỗ, không dính vào "CẤM" */
   .stats thead .pc{display:none}
   .st-i{display:none}
   .st-h{gap:8px}

@@ -216,3 +216,19 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Mục Cách xếp và nguồn: hai danh sách dài "Chỉnh tay" (146 ô) và "Đường phụ" (52 ô) gập lại sau nút "Xem danh sách (N ô) +" (`details.nl`); trang chủ trên điện thoại ngắn đi ~930px (14.844 → 13.914px).
 
 - 11/11/2026 21:22 chủ web: "không cần icon tăng giảm tier nữa chỉ chừa lại icon tăng giảm sức mạnh". Bỏ ô vuông chữ V lên/xuống bậc trên ảnh (cả ảnh tải về), danh sách "Đổi bậc", nút lọc Lên/Xuống bậc, hai dòng chú giải, câu "lên/xuống từ tier" ở trang tướng, trang đường, Phương pháp. Giữ dấu tròn tăng/giảm sức mạnh, điều chỉnh, tướng mới.
+
+## 2026-11-13 (việc định kỳ: rà UI/UX điện thoại)
+- Đã thử bằng Playwright, thao tác chạm: iPhone 13, iPhone SE, Pixel 7, Android 360px, màn 320px, xoay ngang 844×390; sáng và tối. Các bước: tải trang, thiên hà, menu (mở, đóng ×, bấm 3 mục từ đầu/giữa/cuối trang, ảnh thẻ menu), sân khấu (đổi tab, Xem chi tiết, nút Quay lại),
+  thanh dính + hàng đường, chọn 5 đường, tìm có/không kết quả, bộ lọc, bảng chi tiết (`#tuong-zata-mid`, `#tuong-flowborn-ad`: build, hộp thông tin món đồ, thanh Game rank, khắc chế, bộ chiêu, đóng ×), Số liệu (ĐTDV và Game rank, sắp theo từng cột), Tự xếp, cuối trang, nút lên đầu trang, đổi sáng/tối.
+  Không lỗi JS, không ảnh 404, không tràn ngang, menu tới đúng mục, ảnh menu và sân khấu tải đủ.
+- Sửa: **nút "ĐTDV (giải) | Game rank"** (chế độ Số liệu, thêm 11/11) chỉ cao 14px theo dòng chữ, khó chạm trên điện thoại. Thêm lớp vô hình `::before` nới vùng chạm lên ~44px; bố cục, vạch gạch dưới và viền focus giữ nguyên chỗ (đo vị trí trước/sau ở 390 và 1440px: không xê dịch). (Thử padding + margin âm trước, nhưng viền focus to chùm lên dòng chú thích nên bỏ.)
+- Sửa: **bảng Số liệu Game rank trên điện thoại**, tên cột "GARENA" và "THẮNG ⌄" (cột sắp mặc định) chỉ cách 2–5px nên đọc như một cụm (cùng kiểu lỗi "CẤM CÓ MẶT" đã sửa 07/11); khi sắp theo Chọn/Cấm thì "THẮNG" dính "CHỌN ⌄", "CHỌN" dính "CẤM ⌄".
+  Bảng dùng bố cục tự động nên đổi `width:%` không có tác dụng; nay header cột Thắng (Game rank) chừa lề trái 12px, cột đang sắp (có mũi tên) chừa 8px (≤760px, trừ cột Có mặt đã có 12px). Đo 280–760px, cả hai nguồn, mọi cách sắp: cách nhau ≥6px, không tràn ngang, không tên tướng nào xuống dòng thêm.
+- `smoke.js` thêm: nút ĐTDV / Game rank chạm được ≥40px chiều cao; tên cột Game rank không dính nhau và không tràn ngang khi sắp theo từng cột, ở cả 5 đường trên điện thoại (độ rộng cột đổi theo tên tướng mỗi đường). Đã thử trên bản cũ: báo đúng lỗi.
+- Hiệu năng (measure.js, 3 lần): điện thoại LCP 516 ms, TBT 223 ms, bảng có thẻ 1439 ms, mở bảng chi tiết 413 ms, 91 kB / 5 yêu cầu tới lúc bảng hiện (85 kB ngày 08/11, tăng do số Game rank trong data.js); máy tính LCP 128 ms. Chỉ sửa CSS nên không đổi.
+- Không sửa JS nên không đổi `?v=`.
+- Đã xem rồi để lại:
+  - Điện thoại xoay ngang, bấm "Cách xếp và nguồn" trong menu từ đầu trang: trang cao dần lên (7.954 → 15.506px) trong lúc cuộn mượt nên phải nhờ vòng chỉnh của `goTo` mất ~3 giây mới tới đúng chỗ (cuối cùng vẫn tới đúng). Điện thoại dọc tới trong ~1 giây.
+  - Xoay ngang: nút lên đầu trang (góc phải dưới) che số cột "Có mặt" của bảng Số liệu khi cuộn (đã ghi ý tưởng từ 07/11 cho máy tính).
+  - 280px (Galaxy Fold gập), ĐTDV: "CẤM" và "CÓ MẶT ⌄" cách 5px (từ trước, chỉ màn <320px).
+- Cần chủ web thử máy thật: chạm nút "Game rank" ở chế độ Số liệu trên điện thoại; Zalo, Messenger, app TikTok (trình duyệt trong app); Chrome Android còn màn trắng/xanh không.
