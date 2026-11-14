@@ -45,6 +45,7 @@ const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld 
 <head>
 <meta charset="utf-8">
 <meta name="color-scheme" content="dark light only">
+<meta name="google-adsense-account" content="ca-pub-5558696479126692">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 ${CSP0}
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -201,6 +202,7 @@ for (const h of HEROES) {
 <head>
 <meta charset="utf-8">
 <meta name="color-scheme" content="dark light only">
+<meta name="google-adsense-account" content="ca-pub-5558696479126692">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 ${CSP}
 <meta name="referrer" content="strict-origin-when-cross-origin">
