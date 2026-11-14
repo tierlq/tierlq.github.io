@@ -97,6 +97,12 @@ const errs = [], log = (...a) => console.log(...a);
     const gap = await p.evaluate(() => { const e = [...document.querySelectorAll('table.stats thead th button')].filter(b => b.offsetWidth).map(b => { const r = document.createRange(); r.selectNodeContents(b); return r.getBoundingClientRect(); });
       return Math.min(...e.slice(1).map((r, i) => r.left - e[i].right)); });
     if (gap < 6) bad(`tên cột Số liệu dính nhau (cách ${Math.round(gap)}px)`);
+    // máy tính: nút lên đầu trang (cố định góc phải dưới) không che số ở cột cuối của bảng Số liệu
+    if (w > 760) {
+      const tt = await p.evaluate(() => { const t = document.getElementById('totop'), hid = t.hidden; t.hidden = false; const L = t.getBoundingClientRect().left; t.hidden = hid;
+        const r = document.createRange(); r.selectNodeContents(document.querySelector('table.stats tbody td:last-child')); return L - r.getBoundingClientRect().right; });
+      if (tt < 4) bad(`nút lên đầu trang che số cột cuối bảng Số liệu (cách ${Math.round(tt)}px)`);
+    }
     // nút "Game rank" ở chế độ Số liệu: đủ tướng, bỏ cột Trận, có ghi nguồn, sắp xếp được, không tràn ngang; bấm lại ĐTDV thì cột Trận trở về
     await p.click('#board [data-src="rank"]'); await p.waitForTimeout(200);
     const rk = await p.evaluate(() => { const rows = [...document.querySelectorAll('#board table.stats tbody tr')];

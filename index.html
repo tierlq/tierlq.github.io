@@ -296,6 +296,7 @@ a{color:inherit}
 .st-m .mk{width:17px;height:17px;border-radius:4px}.st-m .mk svg{width:10px;height:10px}.st-m .mk.new{font-size:8px;padding:0 4px}
 .stats .c-wr,.stats .c-pk,.stats .c-bn,.stats .c-pres{width:118px}.stats .c-n{width:84px}.stats .c-gt{width:96px}
 @media (hover:hover){.stats tbody tr:hover{background:var(--surface-2)}.stats thead button:hover{color:var(--fg)}}
+@media (min-width:761px){.stats tbody td:last-child,.stats thead th:last-child button{padding-right:max(4px,calc(clamp(16px,3vw,32px) + 68px - max(20px,(100vw - 1320px) / 2)))}}   /* máy tính: cột cuối chừa chỗ cho nút lên đầu trang (cố định góc phải dưới) để nút không che số; màn rộng (lề ≥ nút) thì như cũ */
 .st-h:focus-visible{outline:2px solid var(--fg);outline-offset:2px;border-radius:6px}
 @media (max-width:760px){
   .stats .c-n{display:none}

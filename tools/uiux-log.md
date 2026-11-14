@@ -232,3 +232,14 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Xoay ngang: nút lên đầu trang (góc phải dưới) che số cột "Có mặt" của bảng Số liệu khi cuộn (đã ghi ý tưởng từ 07/11 cho máy tính).
   - 280px (Galaxy Fold gập), ĐTDV: "CẤM" và "CÓ MẶT ⌄" cách 5px (từ trước, chỉ màn <320px).
 - Cần chủ web thử máy thật: chạm nút "Game rank" ở chế độ Số liệu trên điện thoại; Zalo, Messenger, app TikTok (trình duyệt trong app); Chrome Android còn màn trắng/xanh không.
+
+## 2026-11-14 (việc định kỳ Thứ Bảy)
+- Rà 1440/390/360 sáng/tối: đầu trang, sân khấu, bảng tier, bảng chi tiết (`#tuong-zata-mid`: build, bộ chiêu, khắc chế), bộ lọc điện thoại, tìm có/không kết quả, Tự xếp, Số liệu (ĐTDV và Game rank), Cách xếp và nguồn. axe-core 4.10: trang chính và bảng chi tiết không lỗi; không lỗi JS/CSP, không tràn ngang.
+- Sửa (ý tưởng để dành từ 07/11): **máy tính, nút lên đầu trang che số cột cuối bảng Số liệu** (ĐTDV: cột Trận; Game rank: cột Có mặt). Nút cố định góc phải dưới, ở 761–1440px nằm đè lên cột cuối (1440px: đè 20px).
+  Nay ở >760px ô cột cuối (và nút tên cột) có `padding-right: max(4px, clamp(16px,3vw,32px) + 68px − max(20px,(100vw − 1320px)/2))` = chừa đúng phần nút lấn vào, cộng 8px dư cho thanh cuộn 15px của Chrome máy tính; màn ≥ ~1500px (lề đủ rộng) như cũ. Số luôn cách nút ≥16px ở 761–1920px, cả hai nguồn; không tràn ngang, tên tướng không xuống dòng. Điện thoại không đổi (nút chỉ hiện khi vuốt ngược lên, chừa 56px thì mất chỗ cho tên tướng).
+- `smoke.js` thêm: ở 1440px chữ số cột cuối bảng Số liệu không nằm dưới nút lên đầu trang. Đã thử trên bản cũ: báo đúng lỗi (cách −20px).
+- Kiểm tra: `tools/check/all.sh` TẤT CẢ ĐẠT (1440/390: 5 slide, 182/45 thẻ, mở 182/182 bảng chi tiết, 384 ảnh, không tràn ngang). So ảnh trước/sau: chỉ cột cuối bảng Số liệu máy tính dịch trái. Chỉ CSS, không sửa JS nên không đổi `?v=`.
+- Để dành:
+  - Điện thoại: nút lên đầu trang (hiện khi vuốt ngược lên) vẫn che số cột Có mặt/Cấm của một dòng ở bảng Số liệu.
+  - Xoay ngang: bộ lọc dạng chip che kết quả tìm khi bàn phím mở (từ 31/10).
+  - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính (từ trước).
