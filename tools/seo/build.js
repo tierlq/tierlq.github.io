@@ -154,6 +154,24 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 // ---------- 2. Trang từng tướng ----------
 const CSP = index.match(/<meta http-equiv="Content-Security-Policy"[^>]*>/)[0];
 const outDir = path.join(ROOT, 'tuong'); fs.rmSync(outDir, { recursive: true, force: true });
+// "Vì sao tier này": điểm từng nguồn, cùng số với bảng chi tiết trên trang chủ (breakdown trong app.js). Thêm 14/11/2026 để trang tướng tự giải thích được tier.
+const { SRC, aogOf, prevOf, aogScore, proScore, RMS, rankScore } = ctx;
+const sc5 = v => v == null ? 'chưa có' : v.toFixed(1).replace('.', ',') + '/5';
+function whyHTML(h) {
+  const a = aogOf(h.key, h.lane), pv = prevOf(h.key, h.lane), r = SRC.rpl[h.key], m = SRC.rm[h.key + '-' + h.lane] || SRC.rm[h.key], g = rankOf(h);
+  const wr = x => x[3] ? `, thắng ${x[0]}%${x[1] < 5 ? ' (chọn dưới 5% số trận nên chưa tính)' : ''}` : '';
+  const giai = (x, n) => x ? `${x[3]} lượt chọn, ${x[4]} lượt cấm trong ${n} trận${wr(x)}` : `không được chọn trong ${n} trận`;
+  const rows = [
+    ['ĐTDV mùa này', giai(a, SRC.aogGames), aogScore(a)],
+    ['ĐTDV mùa trước', giai(pv, SRC.prevGames), aogScore(pv)],
+    ['RoV Pro League', r ? (r[1] + r[2] < 5 ? `ít xuất hiện (${(r[1] + r[2]).toFixed(1)}% chọn + cấm)` : `chọn ${r[1]}%, cấm ${r[2]}%${r[0] == null ? '' : ', thắng ' + r[0] + '%'}`) : 'chưa có dữ liệu', proScore(r)],
+    ['Tier list rank cộng đồng', m ? 'tier ' + m : 'chưa có dữ liệu', m ? RMS[m] : null],
+    ['Game rank (Garena)', g ? `thắng ${nfv(g[0])}%, chọn ${nfv(g[1])}%, cấm ${nfv(g[2])}%` : 'chưa có dữ liệu', g ? rankScore(g) : null]];
+  const end = h.floor === 'manual' ? `Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không lấy theo điểm tổng này.` : h.floor ? `Tier được nâng theo sàn số liệu ĐTDV (tướng được chọn hoặc cấm rất nhiều ở giải).` : `Tier ${h.tier} lấy theo điểm tổng này.`;
+  return `<h2>Vì sao ${esc(h.name)} ${esc(LANES[h.lane])} ở tier ${h.tier}</h2>
+<ul class="why">${rows.map(([l, t, v]) => `<li><b>${l}:</b> ${esc(t)} <span class="tb">${sc5(v)}</span></li>`).join('')}</ul>
+<p>Điểm tổng <b>${h.score.toFixed(2).replace('.', ',')}/5</b>${h.sec ? ' (đường phụ: trừ 0,4 khi xếp bậc)' : ''}, hạng ${h.rank}/${h.laneN} ở ${esc(LANES[h.lane])}. ${end} Cách tính ở trang <a href="/phuong-phap/">Phương pháp</a>.</p>`;
+}
 for (const h of HEROES) {
   const L = LANES[h.lane], b = BUILDS[h.key + '@' + h.lane], sk = SKILLS[h.key === 'flowborn' ? 'flowborn-' + h.lane : h.key];
   const items = b ? b.i.map(id => BITEM[id][0]) : [], spells = b ? b.s.map(s => BSPELL[s][0]) : [];
@@ -207,6 +225,7 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 <h1>${esc(h.name)} <span>tier ${h.tier}</span></h1>
 <p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''}${h.floor === 'manual' ? ` Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không theo điểm tổng.` : h.floor ? ` Tier được nâng theo sàn số liệu ĐTDV (xem <a href="/phuong-phap/">Phương pháp</a>).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
+${whyHTML(h)}
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
 ${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Ba số này (thắng, chọn, cấm) được tính vào điểm tổng của web với trọng số 22%; bậc T0–T4 của Garena thì không tính. Game không ghi số trận.</p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
