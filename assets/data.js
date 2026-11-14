@@ -713,7 +713,9 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   // Chủ web yêu cầu 11/11/2026 21:11: Lauriel, Veera, Krixi, Flowborn (phép), Ilumia, Kahlii, Heino ở Giữa D→C (sửa giá trị ở trên)
   // Chủ web yêu cầu 11/11/2026 21:09: Grakk Trợ thủ D→C (sửa giá trị ở trên)
   // Chủ web yêu cầu 11/11/2026 21:09: Wisp Rồng xuống C, Dyadia Trợ thủ (đường chính) lên A; Dyadia Giữa giữ D
-  "wisp-ad":"C","dyadia-sp":"A",
+  "wisp-ad":"B","dyadia-sp":"A",   // 14/11/2026 chủ web: Wisp C→B
+  // Chủ web yêu cầu 14/11/2026: Tel'Annas Rồng xuống C
+  "telannas-ad":"C",
   // Chủ web yêu cầu 11/11/2026 21:13: Gildur Giữa xuống B
   "gildur-mid":"B",
   // Chủ web yêu cầu 11/11/2026 21:20: Elsu Rồng lên A
