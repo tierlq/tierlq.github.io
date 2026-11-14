@@ -82,3 +82,5 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
     - Chữ hộp cài web: `cai_dat_bam` / `cai_dat_hien` = 12/116 (10,3%) → 30/473 (6,3%), theo người dùng 27/339 (8,0%). Hộp hiện nhiều hơn (473 lần so 116) nhưng tỉ lệ bấm lại thấp hơn mốc cũ, nên chữ mới chưa tăng được tỉ lệ bấm. `cai_dat_xong` 8 → 20 (tính theo số lần hiện: 6,9% → 4,2%). Lưu ý `cai_dat_hien` tăng gấp 4 có thể do cách hiện/đếm sự kiện thay đổi, chưa kiểm.
   - Số liệu GA qua Supermetrics là nguồn thứ hai, chưa đối chiếu với giao diện GA.
 
+
+- 14/11/2026: theo lệnh chủ web ("làm đi"), đã bấm "Yêu cầu lập chỉ mục" ở Search Console `tierlq.com` cho 5 trang đang ở nhóm "Đã phát hiện – hiện chưa được lập chỉ mục": `/tuong/ata-top/`, `/tuong/airi-top/`, `/tuong/allain-top/`, `/tuong/arthur-top/`, `/tuong/bijan-top/` (cả 5 hiện thông báo "Đã yêu cầu lập chỉ mục"). Đo lại ngày 21/11: 5 trang này đã lập chỉ mục chưa, so với 45 trang còn lại cùng nhóm không yêu cầu, để biết việc yêu cầu có đẩy nhanh không.
