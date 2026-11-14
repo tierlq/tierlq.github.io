@@ -1217,6 +1217,14 @@ RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy
 SPELL: Tốc Biến
 ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
 
+## sephera@sp
+SRC: https://aov-builds.com/tuong/sephera/
+ITEMS: Liệt Hoả Hồi Huyết | Giày Kiên Cường | Mặt Nạ Berith | Vương Miện Hecate | Gươm Hiền Triết | Quả Cầu Băng Sương
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+SPELL: Tốc Biến
+ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
+NOTE: Chưa có build riêng cho Trợ thủ (ô thêm 14/11/2026 theo yêu cầu chủ web): dùng build Giữa của cùng trang nguồn, thay Gươm Tận Thế bằng đồ trợ thủ Liệt Hoả Hồi Huyết.
+
 ## ishar@mid
 SRC: https://aov-builds.com/tuong/ishar/
 ITEMS: Giày Phù Thủy | Trượng Bùng Nổ | Vương Miện Hecate | Trượng Hỗn Mang | Sách Thánh | Quả Cầu Băng Sương

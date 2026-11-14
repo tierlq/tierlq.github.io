@@ -718,6 +718,8 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "gildur-mid":"B",
   // Chủ web yêu cầu 11/11/2026 21:20: Elsu Rồng lên A
   "elsu-ad":"A",
+  // Chủ web yêu cầu 14/11/2026: Sephera Trợ thủ (ô mới) C; Triệu Vân Rừng B (đã B, ghi lại cho chắc)
+  "sephera-sp":"C","trieuvan-jg":"B",
   // Chủ web yêu cầu 11/11/2026 20:18: Bolt Baron Rừng D (lần 20:14 hiểu sai chữ "thêm"; Rừng giữ D như 20:11); thêm ô Rồng cho Murad và Edras, ghim B
   "murad-ad":"B","edras-ad":"B",
   // Chủ web yêu cầu 11/11/2026 20:16: Marja và Florentino Tà Thần A→S
@@ -743,12 +745,15 @@ function addHero(lane,cls,vn,n,sec){const k=slug(n),p=P[k+"-"+lane]||P[k]||[],sc
   HEROES.push({id:k+"-"+lane,key:k,name:n,lane,cls,vn,score:sc,tier,floor,pres,sec:!!sec,trend:p[0]||"",note:p[1]||"",vnAdj:!!p[2]})}
 RAW.forEach(([lane,cls,vn,names])=>names.split(",").forEach(n=>addHero(lane,cls,vn,n)));
 // Đường phụ: tướng thường được đưa sang đường khác ngoài đường chính (đã bỏ Toro và Marja)
-const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],Qi:["jg"],Airi:["jg"],"Triệu Vân":["jg"],
+const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],Qi:["jg"],"Triệu Vân":["jg"],   // 14/11/2026 chủ web bỏ ô Airi Rừng
+ 
   Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Arthur:["sp"],Arduin:["top"],"Bolt Baron":["ad"],
   // Thêm ô Giữa 07/11/2026 theo bảng Giữa của @zena_sama 03/11 (chủ web yêu cầu)
   Erin:["mid"],Alice:["mid"],Aya:["mid"],Dolia:["mid"],Dyadia:["mid"],"The Flash":["mid"]};
 // Thêm ô 07/11/2026 cho tướng có trong 3 bảng TikTok @zena_sama 24/10 (Rừng, Tà Thần, Trợ thủ) mà web chưa có ô ở đường đó (chủ web yêu cầu)
 for(const [n,ls] of Object.entries({"Eland'orr": ["jg"], "Volkath": ["jg"], "Bolt Baron": ["jg"], "D'Arcy": ["jg"], "Edras": ["jg"], "Wonder Woman": ["jg"], "Rourke": ["jg"], "Yan": ["jg"], "Veres": ["jg", "sp"], "Fennik": ["jg"], "Tulen": ["jg"], "Bijan": ["jg"], "Errol": ["jg"], "Lữ Bố": ["jg"], "Kil'Groth": ["jg"], "Lindis": ["jg"], "Skud": ["jg"], "Tamyn": ["top"], "Mina": ["top"], "Murad": ["top"], "Ngộ Không": ["top"], "Astrid": ["top"], "Xeniel": ["top"], "Roxie": ["top"], "Maloch": ["sp"], "Richter": ["sp"]}))(SECONDARY[n]=SECONDARY[n]||[]).push(...ls);
+// Thêm ô Trợ thủ 14/11/2026 cho Sephera (chủ web yêu cầu "thêm sephera đi sp tier C"); tier ghim C trong MANUAL
+for(const [n,ls] of Object.entries({"Sephera":["sp"]}))(SECONDARY[n]=SECONDARY[n]||[]).push(...ls);
 // Thêm ô Rồng 11/11/2026 cho Murad và Edras (chủ web yêu cầu "thêm murad và edras ad ở B"); tier ghim B trong MANUAL
 for(const [n,ls] of Object.entries({"Murad":["ad"],"Edras":["ad"]}))(SECONDARY[n]=SECONDARY[n]||[]).push(...ls);
 for(const [n,lanes] of Object.entries(SECONDARY)){const base=HEROES.find(h=>h.name===n&&!h.sec);if(!base)continue;

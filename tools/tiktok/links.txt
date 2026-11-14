@@ -15,23 +15,24 @@ Airi · tier S · tierlq.com/#tuong-airi-top
 Edras · tier S · tierlq.com/#tuong-edras-top
 Florentino · tier S · tierlq.com/#tuong-florentino-top
 Qi · tier A · tierlq.com/#tuong-qi-top
-Zephys (phụ) · tier A · tierlq.com/#tuong-zephys-top
+Biron · tier A · tierlq.com/#tuong-biron-top
+Mina (phụ) · tier A · tierlq.com/#tuong-mina-top
 Tamyn (phụ) · tier A · tierlq.com/#tuong-tamyn-top
+Taara · tier A · tierlq.com/#tuong-taara-top
 Ata · tier A · tierlq.com/#tuong-ata-top
 Ryoma · tier B · tierlq.com/#tuong-ryoma-top
-Billow (phụ) · tier B · tierlq.com/#tuong-billow-top
-Biron · tier B · tierlq.com/#tuong-biron-top
 Maloch · tier B · tierlq.com/#tuong-maloch-top
-Mina (phụ) · tier B · tierlq.com/#tuong-mina-top
+Zephys (phụ) · tier B · tierlq.com/#tuong-zephys-top
 Murad (phụ) · tier B · tierlq.com/#tuong-murad-top
 Richter · tier B · tierlq.com/#tuong-richter-top
 Skud · tier B · tierlq.com/#tuong-skud-top
-Taara · tier B · tierlq.com/#tuong-taara-top
 Yena · tier B · tierlq.com/#tuong-yena-top
 Omen · tier B · tierlq.com/#tuong-omen-top
 Triệu Vân · tier B · tierlq.com/#tuong-trieuvan-top
 Bolt Baron · tier B · tierlq.com/#tuong-boltbaron-top
 Yan · tier B · tierlq.com/#tuong-yan-top
+Arthur · tier B · tierlq.com/#tuong-arthur-top
+Billow (phụ) · tier C · tierlq.com/#tuong-billow-top
 Astrid (phụ) · tier C · tierlq.com/#tuong-astrid-top
 Zuka · tier C · tierlq.com/#tuong-zuka-top
 Volkath · tier C · tierlq.com/#tuong-volkath-top
@@ -39,14 +40,13 @@ Veres · tier C · tierlq.com/#tuong-veres-top
 Ngộ Không (phụ) · tier C · tierlq.com/#tuong-ngokhong-top
 Wiro (phụ) · tier C · tierlq.com/#tuong-wiro-top
 Bijan · tier C · tierlq.com/#tuong-bijan-top
+Allain · tier C · tierlq.com/#tuong-allain-top
 Errol · tier C · tierlq.com/#tuong-errol-top
 Lữ Bố · tier C · tierlq.com/#tuong-lubo-top
 Max · tier C · tierlq.com/#tuong-max-top
 Charlotte · tier C · tierlq.com/#tuong-charlotte-top
 Xeniel (phụ) · tier C · tierlq.com/#tuong-xeniel-top
 Roxie (phụ) · tier C · tierlq.com/#tuong-roxie-top
-Arthur · tier D · tierlq.com/#tuong-arthur-top
-Allain · tier D · tierlq.com/#tuong-allain-top
 Kil'Groth · tier D · tierlq.com/#tuong-kilgroth-top
 Amily · tier D · tierlq.com/#tuong-amily-top
 Rourke · tier D · tierlq.com/#tuong-rourke-top
@@ -63,7 +63,6 @@ Tamyn · tier S · tierlq.com/#tuong-tamyn-jg
 Nakroth · tier S · tierlq.com/#tuong-nakroth-jg
 Eland'orr (phụ) · tier A · tierlq.com/#tuong-elandorr-jg
 Tachi · tier A · tierlq.com/#tuong-tachi-jg
-Airi (phụ) · tier A · tierlq.com/#tuong-airi-jg
 Qi (phụ) · tier A · tierlq.com/#tuong-qi-jg
 Volkath (phụ) · tier A · tierlq.com/#tuong-volkath-jg
 Ryoma (phụ) · tier B · tierlq.com/#tuong-ryoma-jg
@@ -84,11 +83,11 @@ D'Arcy (phụ) · tier C · tierlq.com/#tuong-darcy-jg
 Zuka (phụ) · tier C · tierlq.com/#tuong-zuka-jg
 Fennik (phụ) · tier C · tierlq.com/#tuong-fennik-jg
 Zill · tier C · tierlq.com/#tuong-zill-jg
+Paine · tier C · tierlq.com/#tuong-paine-jg
 Bijan (phụ) · tier C · tierlq.com/#tuong-bijan-jg
 Errol (phụ) · tier C · tierlq.com/#tuong-errol-jg
 Tulen (phụ) · tier C · tierlq.com/#tuong-tulen-jg
 Skud (phụ) · tier D · tierlq.com/#tuong-skud-jg
-Paine · tier D · tierlq.com/#tuong-paine-jg
 Bolt Baron (phụ) · tier D · tierlq.com/#tuong-boltbaron-jg
 Quillen · tier D · tierlq.com/#tuong-quillen-jg
 Kaine · tier D · tierlq.com/#tuong-kaine-jg
@@ -106,33 +105,33 @@ Liliana · tier A · tierlq.com/#tuong-liliana-mid
 Evita · tier A · tierlq.com/#tuong-evita-mid
 D'Arcy · tier A · tierlq.com/#tuong-darcy-mid
 Ignis · tier A · tierlq.com/#tuong-ignis-mid
-Gildur · tier A · tierlq.com/#tuong-gildur-mid
 Erin (phụ) · tier A · tierlq.com/#tuong-erin-mid
 Annette (phụ) · tier B · tierlq.com/#tuong-annette-mid
 Yue · tier B · tierlq.com/#tuong-yue-mid
+Mganga · tier B · tierlq.com/#tuong-mganga-mid
+Gildur · tier B · tierlq.com/#tuong-gildur-mid
 Iggy · tier B · tierlq.com/#tuong-iggy-mid
 Alice (phụ) · tier B · tierlq.com/#tuong-alice-mid
 Raz · tier B · tierlq.com/#tuong-raz-mid
+Preyta · tier B · tierlq.com/#tuong-preyta-mid
 Goverra · tier B · tierlq.com/#tuong-goverra-mid
-Mganga · tier C · tierlq.com/#tuong-mganga-mid
 Natalya · tier C · tierlq.com/#tuong-natalya-mid
-Preyta · tier C · tierlq.com/#tuong-preyta-mid
+Krixi · tier C · tierlq.com/#tuong-krixi-mid
+Veera · tier C · tierlq.com/#tuong-veera-mid
 Azzen'Ka · tier C · tierlq.com/#tuong-azzenka-mid
 Aleister · tier C · tierlq.com/#tuong-aleister-mid
 Aya (phụ) · tier C · tierlq.com/#tuong-aya-mid
+Flowborn · tier C · tierlq.com/#tuong-flowborn-mid
+Lauriel · tier C · tierlq.com/#tuong-lauriel-mid
+Heino · tier C · tierlq.com/#tuong-heino-mid
 Dirak · tier C · tierlq.com/#tuong-dirak-mid
+Kahlii · tier C · tierlq.com/#tuong-kahlii-mid
+Ilumia · tier C · tierlq.com/#tuong-ilumia-mid
+Sephera · tier C · tierlq.com/#tuong-sephera-mid
 Dolia (phụ) · tier D · tierlq.com/#tuong-dolia-mid
-Krixi · tier D · tierlq.com/#tuong-krixi-mid
-Veera · tier D · tierlq.com/#tuong-veera-mid
 Tulen · tier D · tierlq.com/#tuong-tulen-mid
-Flowborn · tier D · tierlq.com/#tuong-flowborn-mid
-Lauriel · tier D · tierlq.com/#tuong-lauriel-mid
-Heino · tier D · tierlq.com/#tuong-heino-mid
 Dyadia (phụ) · tier D · tierlq.com/#tuong-dyadia-mid
-Kahlii · tier D · tierlq.com/#tuong-kahlii-mid
-Ilumia · tier D · tierlq.com/#tuong-ilumia-mid
 Điêu Thuyền · tier D · tierlq.com/#tuong-dieuthuyen-mid
-Sephera · tier D · tierlq.com/#tuong-sephera-mid
 Bonnie · tier D · tierlq.com/#tuong-bonnie-mid
 Ishar · tier D · tierlq.com/#tuong-ishar-mid
 Jinna · tier D · tierlq.com/#tuong-jinna-mid
@@ -146,20 +145,20 @@ Flowborn · tier A · tierlq.com/#tuong-flowborn-ad
 Valhein · tier A · tierlq.com/#tuong-valhein-ad
 Stuart · tier A · tierlq.com/#tuong-stuart-ad
 Capheny · tier A · tierlq.com/#tuong-capheny-ad
+Elsu · tier A · tierlq.com/#tuong-elsu-ad
 Bolt Baron (phụ) · tier A · tierlq.com/#tuong-boltbaron-ad
 Edras (phụ) · tier B · tierlq.com/#tuong-edras-ad
 Murad (phụ) · tier B · tierlq.com/#tuong-murad-ad
-Wisp · tier B · tierlq.com/#tuong-wisp-ad
-Elsu · tier B · tierlq.com/#tuong-elsu-ad
 Tel'Annas · tier B · tierlq.com/#tuong-telannas-ad
 Fennik · tier B · tierlq.com/#tuong-fennik-ad
+Moren · tier B · tierlq.com/#tuong-moren-ad
 Erin · tier B · tierlq.com/#tuong-erin-ad
 Yorn · tier B · tierlq.com/#tuong-yorn-ad
-Moren · tier C · tierlq.com/#tuong-moren-ad
+Wisp · tier C · tierlq.com/#tuong-wisp-ad
 Slimz · tier C · tierlq.com/#tuong-slimz-ad
 Laville · tier C · tierlq.com/#tuong-laville-ad
+Lindis · tier C · tierlq.com/#tuong-lindis-ad
 Thorne · tier D · tierlq.com/#tuong-thorne-ad
-Lindis · tier D · tierlq.com/#tuong-lindis-ad
 Teeri · tier D · tierlq.com/#tuong-teeri-ad
 Celica · tier D · tierlq.com/#tuong-celica-ad
 ### Trợ thủ
@@ -174,25 +173,26 @@ Mina · tier A · tierlq.com/#tuong-mina-sp
 Cresht · tier A · tierlq.com/#tuong-cresht-sp
 Krizzix · tier A · tierlq.com/#tuong-krizzix-sp
 Taara (phụ) · tier A · tierlq.com/#tuong-taara-sp
+Dyadia · tier A · tierlq.com/#tuong-dyadia-sp
 Veres (phụ) · tier A · tierlq.com/#tuong-veres-sp
+Omega · tier A · tierlq.com/#tuong-omega-sp
 Ata (phụ) · tier A · tierlq.com/#tuong-ata-sp
 Toro · tier B · tierlq.com/#tuong-toro-sp
 Alice · tier B · tierlq.com/#tuong-alice-sp
 Maloch (phụ) · tier B · tierlq.com/#tuong-maloch-sp
-Dyadia · tier B · tierlq.com/#tuong-dyadia-sp
 Richter (phụ) · tier B · tierlq.com/#tuong-richter-sp
 Baldum · tier B · tierlq.com/#tuong-baldum-sp
-Omega · tier B · tierlq.com/#tuong-omega-sp
+Chaugnar · tier B · tierlq.com/#tuong-chaugnar-sp
 Ormarr · tier B · tierlq.com/#tuong-ormarr-sp
 Aya · tier C · tierlq.com/#tuong-aya-sp
-Chaugnar · tier C · tierlq.com/#tuong-chaugnar-sp
+Grakk · tier C · tierlq.com/#tuong-grakk-sp
 Arthur (phụ) · tier C · tierlq.com/#tuong-arthur-sp
 Xeniel · tier C · tierlq.com/#tuong-xeniel-sp
 Zip · tier C · tierlq.com/#tuong-zip-sp
+Arduin · tier C · tierlq.com/#tuong-arduin-sp
 Lumburr · tier C · tierlq.com/#tuong-lumburr-sp
-Grakk · tier D · tierlq.com/#tuong-grakk-sp
+Helen · tier C · tierlq.com/#tuong-helen-sp
+Sephera (phụ) · tier C · tierlq.com/#tuong-sephera-sp
 Arum · tier D · tierlq.com/#tuong-arum-sp
-Arduin · tier D · tierlq.com/#tuong-arduin-sp
 Roxie · tier D · tierlq.com/#tuong-roxie-sp
-Helen · tier D · tierlq.com/#tuong-helen-sp
 Ming · tier D · tierlq.com/#tuong-ming-sp
