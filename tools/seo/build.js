@@ -159,7 +159,9 @@ for (const h of HEROES) {
   const items = b ? b.i.map(id => BITEM[id][0]) : [], spells = b ? b.s.map(s => BSPELL[s][0]) : [];
   const others = HEROES.filter(x => x.key === h.key && x.id !== h.id);
   const peers = HEROES.filter(x => x.lane === h.lane && x.tier === h.tier && x.id !== h.id).slice(0, 12);
-  const title = `${h.name} ${L} – tier ${h.tier} ${season} | Bảng Tier Liên Quân`;
+  // Tiêu đề nhắm đúng thứ người chơi gõ tìm ("<tướng> lên đồ", "bảng ngọc <tướng>", "khắc chế <tướng>"); chỉ ghi phần trang thật sự có (14/11/2026)
+  const tParts = [b && 'lên đồ', b && 'bảng ngọc', COUNTERS[h.key] && 'khắc chế'].filter(Boolean);
+  const title = `${h.name} ${L}: ${tParts.length ? tParts.join(', ') + ' · ' : ''}tier ${h.tier} ${season} | Bảng Tier Liên Quân`;
   // Mô tả cho Google: tối đa ~160 ký tự (dài hơn bị cắt trên trang kết quả) → bớt dần số món đồ trong build
   const cn0 = COUNTERS[h.key], cnNames = cn0 ? cn0[0].slice(0, 3).map(k => (heroOf(k) || {}).name).filter(Boolean) : [];
   const mkDesc = (n, c) => `${h.name} đi ${L}${h.sec ? ' (đường phụ)' : ''}: tier ${h.tier} (${TNAME[h.tier]}), hạng ${h.rank}/${h.laneN} đường ${L}.` +
