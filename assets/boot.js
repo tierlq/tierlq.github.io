@@ -36,7 +36,7 @@ document.addEventListener("click", function (e) {
   if (!a) return;
   try {
     if ((a.rel || "").indexOf("sponsored") > -1)
-      gtag("event", "bam_phu_kien", { mon: (a.getAttribute("data-mon") || a.textContent || "").trim().slice(0, 80), link: a.href, trang: location.pathname, cho: a.closest(".aff") ? "trang_tuong" : "trang_phu_kien" });
+      gtag("event", "bam_phu_kien", { mon: (a.getAttribute("data-mon") || a.textContent || "").trim().slice(0, 80), link: a.href, trang: location.pathname, cho: a.closest(".modal") ? "bang_chi_tiet" : a.closest(".aff") ? "trang_tuong" : "trang_phu_kien" });
     else if (a.getAttribute("href") === "/phu-kien/" && a.closest(".aff,.aff-strip"))
       gtag("event", "mo_phu_kien", { trang: location.pathname });
   } catch (err) {}

@@ -392,7 +392,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2 id="chinh-tay">Chỉnh tay hiện tại</h2><p>${manualList.join(' · ')}.</p>
 <h2>Tướng đang ghi đường phụ</h2><p>${secList.join(' · ')}.</p>
 <h2>Điều không ảnh hưởng tier</h2><ul class="items">
-<li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
+<li>Liên kết tiếp thị và hoa hồng. Hiện có trang ${affItems.length ? '<a href="/phu-kien/">Phụ kiện</a>' : 'Phụ kiện (khi có)'} và khối "Phụ kiện gợi ý" ở cuối trang từng tướng và cuối bảng chi tiết từng tướng, đều ghi rõ là liên kết tiếp thị và tách khỏi bảng tier.</li>
 <li>Bậc T0–T4 của Garena (cột Garena ở chế độ Số liệu, bảng chi tiết và trang từng tướng): chỉ để xem, không tính vào điểm, vì đó là cách Garena gộp chính các số thắng, chọn, cấm đã vào điểm ở trên.</li>
 <li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
@@ -411,7 +411,7 @@ writePage('quyen-rieng-tu', pageShell({ title: 'Chính sách quyền riêng tư 
 <h2>Thống kê lượt xem</h2><p>Web dùng Google Analytics để biết có bao nhiêu người xem, xem trang nào, bằng thiết bị và ở quốc gia nào. Google Analytics dùng cookie hoặc mã định danh trình duyệt cho việc này. Tính năng tín hiệu Google và cá nhân hoá quảng cáo đã tắt. Bạn có thể từ chối bằng cách chặn cookie bên thứ ba hoặc cài <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">tiện ích từ chối Google Analytics</a> của Google.</p>
 <h2>Dữ liệu lưu trên thiết bị của bạn</h2><p>Bảng Tự xếp, chế độ xem, giao diện sáng/tối, các tướng xem gần đây và lựa chọn về gợi ý cài ứng dụng được lưu trong bộ nhớ trình duyệt của bạn (localStorage). Dữ liệu này không gửi đi đâu. Một bộ nhớ đệm (service worker) cũng lưu ảnh và tệp của web để mở nhanh và dùng được khi mất mạng. Xoá dữ liệu trang web trong trình duyệt là xoá hết.</p>
 <h2>Dịch vụ bên ngoài</h2><ul><li>Phông chữ tải từ Google Fonts.</li><li>Hình biểu tượng chiêu thức tải từ máy chủ của Garena (lienquan.garena.vn), không gửi kèm địa chỉ trang bạn đang xem.</li><li>Web được lưu trữ trên GitHub Pages; GitHub có thể ghi nhật ký truy cập theo chính sách của họ.</li><li>Các liên kết ra ngoài (TikTok, Garena, trang nguồn) thuộc chính sách riêng của từng nơi.</li></ul>
-<h2>${affItems.length ? 'Quảng cáo và liên kết tiếp thị' : 'Quảng cáo'}</h2><p>${affItems.length ? 'Web không chạy quảng cáo hiển thị. Trang <a href="/phu-kien/">Phụ kiện</a> và khối "Phụ kiện gợi ý" ở cuối trang từng tướng có liên kết tiếp thị (affiliate) tới ' + affShops + ': nếu bạn mua qua liên kết đó, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. Các liên kết này được ghi rõ ngay cạnh link, gắn rel="sponsored" và không xuất hiện trong bảng tier hay cách xếp hạng.' : 'Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.'}</p>
+<h2>${affItems.length ? 'Quảng cáo và liên kết tiếp thị' : 'Quảng cáo'}</h2><p>${affItems.length ? 'Web không chạy quảng cáo hiển thị. Trang <a href="/phu-kien/">Phụ kiện</a> và khối "Phụ kiện gợi ý" ở cuối trang từng tướng, cuối bảng chi tiết từng tướng có liên kết tiếp thị (affiliate) tới ' + affShops + ': nếu bạn mua qua liên kết đó, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. Các liên kết này được ghi rõ ngay cạnh link, gắn rel="sponsored" và không xuất hiện trong bảng tier hay cách xếp hạng.' : 'Hiện web không chạy quảng cáo. Nếu có thay đổi, trang này sẽ được cập nhật.'}</p>
 <h2>Liên hệ</h2><p>Câu hỏi về trang này: xem <a href="/lien-he/">Liên hệ</a>.</p>` }));
 
 // mục lục liên kết tới mọi trang (để Google và người đọc tìm thấy mọi trang tướng bằng liên kết thường)
@@ -431,7 +431,10 @@ let idx2 = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 if (!/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/.test(idx2)) throw Error('index.html thiếu chỗ đánh dấu <!--HEROLINKS-->');
 const affStrip = `<!--AFF-->${affItems.length ? '<section class="social aff-strip" aria-label="Phụ kiện chơi Liên Quân"><div><span class="over">Gợi ý · liên kết tiếp thị</span><h2>Phụ kiện chơi trên điện thoại</h2><p>Găng tay, quạt tản nhiệt chọn theo lượt bán trên Shopee. Có liên kết tiếp thị, giá bạn trả không đổi.</p></div><a class="tt-go" href="/phu-kien/">Xem phụ kiện <i>→</i></a></section>' : ''}<!--/AFF-->`;
 if (!/<!--AFF-->[\s\S]*<!--\/AFF-->/.test(idx2)) throw Error('index.html thiếu chỗ đánh dấu <!--AFF-->');
-fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML).replace(/<!--AFF-->[\s\S]*<!--\/AFF-->/, affStrip));
+// Khối phụ kiện cuối bảng chi tiết (14/11/2026): app.js chép nội dung <template id="affTpl"> vào cuối bảng; rỗng thì không hiện
+if (!/<!--AFFM-->[\s\S]*<!--\/AFFM-->/.test(idx2)) throw Error('index.html thiếu chỗ đánh dấu <!--AFFM-->');
+const affTpl = `<!--AFFM--><template id="affTpl">${affBox()}</template><!--/AFFM-->`;
+fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML).replace(/<!--AFF-->[\s\S]*<!--\/AFF-->/, affStrip).replace(/<!--AFFM-->[\s\S]*<!--\/AFFM-->/, affTpl));
 
 // ---------- 5. sitemap ----------
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>

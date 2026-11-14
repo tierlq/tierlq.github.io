@@ -45,6 +45,8 @@ const errs = [], log = (...a) => console.log(...a);
         const m = document.querySelector('.modal'); if (!m) { out.bad.push(h.id + ': không mở được'); continue; }
         const t = m.innerText;
         if (/Đang tải/.test(t)) out.bad.push(h.id + ': còn "Đang tải"');
+        if (document.getElementById('affTpl') && document.getElementById('affTpl').innerHTML && m.querySelectorAll('.aff a[rel~="sponsored"]').length < 1) out.bad.push(h.id + ': thiếu khối phụ kiện cuối bảng chi tiết');
+        if (m.querySelector('.aff') && !/Liên kết tiếp thị/i.test(m.querySelector('.aff').innerText)) out.bad.push(h.id + ': khối phụ kiện thiếu nhãn Liên kết tiếp thị');
         if (!m.querySelector('.bd.gr')) out.bad.push(h.id + ': không có thanh Game rank (Garena)');
         else {
           const g = m.querySelector('.bd.gr');

@@ -243,3 +243,4 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Điện thoại: nút lên đầu trang (hiện khi vuốt ngược lên) vẫn che số cột Có mặt/Cấm của một dòng ở bảng Số liệu.
   - Xoay ngang: bộ lọc dạng chip che kết quả tìm khi bàn phím mở (từ 31/10).
   - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính (từ trước).
+- 14/11/2026: cuối bảng chi tiết thêm khối "Phụ kiện gợi ý" (nhãn "Liên kết tiếp thị", 2 món, câu giải thích hoa hồng), sau bộ chiêu và trước nút gửi bạn bè; không chen vào phần build hay điểm. Chủ web cho phép đặt, vì các chỗ cũ gần như không ai thấy.

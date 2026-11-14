@@ -370,6 +370,7 @@ function openModal(id,dir,via){
       <p>${h.note||`Không có thay đổi ở bản ${PATCH}.`}</p>
       ${counterHTML(h)}
       ${skillHTML(h)}
+      ${(()=>{const t=$("affTpl");return t?t.innerHTML:""})()}
       <button class="cta m-share2" id="mshare2" type="button">${ui("m8.3 10.9 7.4-3.8M8.3 13.1l7.4 3.8",'<circle cx="17.5" cy="6" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18" r="2.5"/>')}Gửi tướng này cho bạn bè</button>
       ${(()=>{const n=HEROES.find(x=>x.id===order[i+1]);return n?`<button class="m-next" id="mnext2" type="button"><span>Tiếp theo · ${LANES[n.lane]} · tier ${n.tier}</span><b>${n.name}</b><i aria-hidden="true">${ui("M5 12h14m-5.5-5.5L19 12l-5.5 5.5")}</i></button>`:""})()}
     </div></div></div></div>`;
