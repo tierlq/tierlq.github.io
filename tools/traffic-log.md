@@ -20,7 +20,7 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
 
 | Ngày | Việc |
 |---|---|
-| 14/11/2026 | Search Console tài sản `tierlq.com`: số trang đã lập chỉ mục (sitemap hiện 200 link), truy vấn mới, trang nào có lượt hiển thị. |
+| Cuối 21/11/2026 | Search Console `tierlq.com`: 50 trang "Đã phát hiện – hiện chưa được lập chỉ mục" và 8 trang "Đã thu thập dữ liệu – hiện chưa được lập chỉ mục" đã vào chưa; nếu chưa, chủ web bấm "Yêu cầu lập chỉ mục" cho vài trang `/tuong/…`. Đo lại chia_se, cai_dat_bam. |
 | Đầu mỗi tháng | Ghi lại: lượt xem + người dùng của GA trong tháng trước, lượt nhấp/hiển thị/vị trí TB của Search Console, 5 trang vào nhiều nhất. |
 
 ## Quy ước
@@ -66,4 +66,19 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
   - 07/11: sửa bố cục thẻ tướng (máy tính, 320px, máy tính bảng 720–999px). Không kỳ vọng đổi lưu lượng, ghi để loại trừ khi số thay đổi.
 - 11/11/2026: thêm tỉ lệ thắng / chọn / cấm game rank (LQMB GG) vào chế độ Số liệu, bảng chi tiết và 180 trang tướng. Ghi để so: sự kiện GA `doi_nguon_so_lieu` (bấm chuyển nguồn), lượt hiển thị trang tướng ở Search Console, và truy vấn kiểu "tỉ lệ thắng … game rank / rank".
 - 11/11/2026 (sau đó cùng ngày): nguồn Game rank đổi từ LQMB GG sang số trong game Garena (Cẩm nang → Bảng Phân Bậc Tướng, Đấu hạng, ghi từ video quay màn hình), vì số LQMB GG lệch hẳn số trong game. Mục trên về sự kiện `doi_nguon_so_lieu` và truy vấn "tỉ lệ thắng … rank" vẫn dùng để so.
+
+- 14/11/2026: Search Console tài sản `https://tierlq.com/`, 30/10–13/11 (đọc qua Supermetrics, chưa đối chiếu với giao diện Search Console; ngày 14/11 chưa có):
+  - 1.089 lượt nhấp, 4.379 lượt hiển thị (cộng theo ngày). 7 ngày 07–13/11: 886 nhấp, 3.376 hiển thị. Theo ngày (nhấp/hiển thị): 07/11 137/587, 08/11 139/585, 09/11 106/574, 10/11 187/611 (cao nhất), 11/11 94/262, 12/11 131/451, 13/11 92/306. Vị trí trung bình theo ngày 5,1–9,5.
+  - Trang: `/` 1.066 nhấp, 3.863 hiển thị, vị trí 5,48. Có 124 trang có lượt hiển thị (so với khoảng 10 trang ở mốc 07/11), nhưng ngoài trang chủ chỉ có 24 trang có nhấp, mỗi trang 1–2 nhấp, tổng khoảng 30.
+  - Trang không phải trang chủ nhiều lượt hiển thị nhất (hiển thị/nhấp/vị trí): `/phu-hieu/` 59/1/7,8; `/gioi-thieu/` 46/1/3,7; `/trang-bi/` 26/0/7,8; `/tuong/boltbaron-ad/` 25/1/6,9; `/ban-cap-nhat/` 22/1/5,8; `/duong/tro-thu/` 17/0/7,6; `/bang-ngoc/` 17/1/6,5; `/phep-bo-tro/` 16/0/6,3; `/tuong/ilumia-mid/` 16/1/13,9; `/tuong/qi-jg/` 16/0/12,4; `/tuong/ybneth-sp/` 16/0/6,3. Trang đường: `/duong/rong/` 13/2, `/duong/rung/` 10/2, `/duong/giua/` 8/2, `/duong/ta-than/` 5/0.
+  - 10 truy vấn hàng đầu (nhấp/hiển thị/vị trí): `(unknown)` 402/2.647/6,8; "meta liên quân" 103/185/2,5; "tierlq" 81/93/1,2; "tier lq" 65/70/1,7; "tier list liên quân" 54/67/2,2; "meta liên quân mới nhất" 32/64/2,5; "liên quân meta" 27/41/2,1; "liên quân tier list" 26/42/2,2; "meta liên quân 2026" 19/44/3,4; "meta lq" 18/25/1,9. Truy vấn tên thương hiệu ("tierlq", "tier lq") đã lên 146 nhấp.
+  - Lập chỉ mục (giao diện Search Console, đọc bằng Chrome của chủ web): **143 trang đã lập chỉ mục**, **58 chưa** (50 "Đã phát hiện – hiện chưa được lập chỉ mục", 8 "Đã thu thập dữ liệu – hiện chưa được lập chỉ mục"), cộng 201 trang (sitemap 167 link ở lúc giao việc; 200 theo ghi chú trước). So với 31/10 (chưa trang tướng nào có chỉ mục): các trang tướng, trang đường và trang tra cứu đã bắt đầu hiện trên Google, chưa mang lại nhiều nhấp.
+- 14/11/2026: GA4 `558437004` (Supermetrics, Asia/Ho_Chi_Minh), tuần 07–13/11, so với 31/10–06/11 (1.888 phiên) và 24–30/10 (996 phiên):
+  - 2.425 phiên (+28% so tuần trước; gấp 2,4 lần tuần 24–30/10), 1.268 người dùng hoạt động (trước 1.057), 1.120 người dùng mới (trước 1.025), tỉ lệ tương tác 58,8% (trước 56,7%).
+  - Kênh (phiên, tương tác): Organic Search 1.543 (59%), Direct 616 (55,7%), Referral 136 (69,9%), AI Assistant 103 (67%), Unassigned 91 (5,5%: nhiều khả năng bot), Organic Social 9, Cross-network 2. Organic Social vẫn gần như không có: link bio TikTok chưa dán được.
+  - Sự kiện (số lần / người dùng): `xem_tuong` 5.318/708 (tuần 24–30/10: 2.039), `doi_che_do` 701/232, `cai_dat_hien` 473/339, `tuong_tiep` 104/44, `khac_che` 96/51, `cai_dat_dong` 92, `tai_anh` 80/45, `xem_gan_day` 61, `xem_thay_doi` 52, `doi_nguon_so_lieu` 38/20, `cai_dat_bam` 30/27, `cai_dat_xong` 20/14, `chia_se` 11/10, `mo_tiktok` 10.
+  - Tác dụng hai thay đổi 31/10 (tuần 24–30/10 là mốc trước; phiên tăng 2,4 lần nên so tỉ lệ):
+    - Nút "Gửi tướng này cho bạn bè" (`chia_se`): 4 lần → 11 lần (10 người); trên 1.000 phiên: 4,0 → 4,5. Gần như không đổi, nút ít được dùng. `khac_che` (tính năng cùng ngày) có 96 lần, 51 người, nghĩa là mục Khắc chế được dùng.
+    - Chữ hộp cài web: `cai_dat_bam` / `cai_dat_hien` = 12/116 (10,3%) → 30/473 (6,3%), theo người dùng 27/339 (8,0%). Hộp hiện nhiều hơn (473 lần so 116) nhưng tỉ lệ bấm lại thấp hơn mốc cũ, nên chữ mới chưa tăng được tỉ lệ bấm. `cai_dat_xong` 8 → 20 (tính theo số lần hiện: 6,9% → 4,2%). Lưu ý `cai_dat_hien` tăng gấp 4 có thể do cách hiện/đếm sự kiện thay đổi, chưa kiểm.
+  - Số liệu GA qua Supermetrics là nguồn thứ hai, chưa đối chiếu với giao diện GA.
 
