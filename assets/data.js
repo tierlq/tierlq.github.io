@@ -745,7 +745,7 @@ function addHero(lane,cls,vn,n,sec){const k=slug(n),p=P[k+"-"+lane]||P[k]||[],sc
   HEROES.push({id:k+"-"+lane,key:k,name:n,lane,cls,vn,score:sc,tier,floor,pres,sec:!!sec,trend:p[0]||"",note:p[1]||"",vnAdj:!!p[2]})}
 RAW.forEach(([lane,cls,vn,names])=>names.split(",").forEach(n=>addHero(lane,cls,vn,n)));
 // Đường phụ: tướng thường được đưa sang đường khác ngoài đường chính (đã bỏ Toro và Marja)
-const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],Qi:["jg"],"Triệu Vân":["jg"],   // 14/11/2026 chủ web bỏ ô Airi Rừng
+const SECONDARY={"Y'bneth":["sp"],Taara:["sp"],Omega:["sp"],Ata:["sp"],Zuka:["jg"],Ryoma:["jg"],"Triệu Vân":["jg"],   // 14/11/2026 chủ web bỏ ô Airi Rừng và Qi Rừng
  
   Billow:["top"],Zephys:["top"],Kaine:["top"],Zill:["mid"],Wiro:["top"],Arthur:["sp"],Arduin:["top"],"Bolt Baron":["ad"],
   // Thêm ô Giữa 07/11/2026 theo bảng Giữa của @zena_sama 03/11 (chủ web yêu cầu)
