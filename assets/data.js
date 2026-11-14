@@ -687,7 +687,7 @@ function score(k,vn,lane){const parts=[];   // tier list báo game VN đã bỏ 
 // Điều chỉnh thủ công của người biên tập (ưu tiên cao nhất)
 const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A",airi:"A","arthur-sp":"B",krizzix:"A",chaugnar:"B",taara:"A",qi:"A",yena:"A","billow-top":"C","boltbaron-ad":"A",
   // Đường Giữa ghim theo bảng @zena_sama 03/11/2026 (chủ web yêu cầu "y chang bảng này" 07/11/2026). Xoá các dòng "-mid" dưới đây để đường Giữa tính lại theo điểm.
-  "lorion-mid":"S","rouie-mid":"S","darcy-mid":"A","evita-mid":"A","ignis-mid":"A","liliana-mid":"A","zata-mid":"A","annette-mid":"B","goverra-mid":"B","iggy-mid":"B","raz-mid":"B","yue-mid":"B","aleister-mid":"C","azzenka-mid":"C","dirak-mid":"C","mganga-mid":"B","natalya-mid":"C","preyta-mid":"B","dieuthuyen-mid":"D","flowborn-mid":"C","heino-mid":"C","ilumia-mid":"C","jinna-mid":"D","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"D","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D",
+  "lorion-mid":"S","rouie-mid":"S","darcy-mid":"A","evita-mid":"A","ignis-mid":"A","liliana-mid":"A","zata-mid":"A","annette-mid":"B","goverra-mid":"B","iggy-mid":"B","raz-mid":"B","yue-mid":"B","aleister-mid":"C","azzenka-mid":"C","dirak-mid":"C","mganga-mid":"B","natalya-mid":"C","preyta-mid":"B","dieuthuyen-mid":"D","flowborn-mid":"C","heino-mid":"B","ilumia-mid":"C","jinna-mid":"D","kahlii-mid":"C","krixi-mid":"C","lauriel-mid":"C","sephera-mid":"C","tulen-mid":"D","veera-mid":"C","bonnie-mid":"D","ishar-mid":"D",
   "erin-mid":"A","alice-mid":"B","aya-mid":"C","dolia-mid":"D","dyadia-mid":"D","theflash-mid":"D",
   // Tà Thần, Rừng, Trợ thủ ghim theo bảng TikTok @zena_sama 24/10/2026 (chủ web yêu cầu y chang 07/11/2026). Tướng không có trong bảng giữ tier theo điểm.
   // Từ 07/11/2026 18:11 chủ web yêu cầu lùi một bậc cho cả 4 bảng: bậc cao nhất của bảng (SS/S+/T0) = S, bậc kế = A, rồi B, C; hai bậc thấp nhất (C và D, hoặc T3) đều = D.
@@ -718,6 +718,7 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   "gildur-mid":"B",
   // Chủ web yêu cầu 11/11/2026 21:20: Elsu Rồng lên A
   "elsu-ad":"A",
+  // Chủ web yêu cầu 14/11/2026: Heino Giữa C→B (sửa giá trị ở trên)
   // Chủ web yêu cầu 14/11/2026: "zephys lên A" = Zephys Rừng (đường chính) B→A; Zephys Tà Thần giữ B
   // Chủ web yêu cầu 14/11/2026: Veres, Ngộ Không, Wonder Woman, Rourke Rừng B→C (sửa giá trị ở trên)
   // Chủ web yêu cầu 14/11/2026: Aoi Rừng B→C (sửa giá trị ở trên)
