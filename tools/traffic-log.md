@@ -84,3 +84,4 @@ Số đo luôn ghi kèm khoảng ngày và nguồn; không làm tròn lên, khô
 
 
 - 14/11/2026: theo lệnh chủ web ("làm đi"), đã bấm "Yêu cầu lập chỉ mục" ở Search Console `tierlq.com` cho 5 trang đang ở nhóm "Đã phát hiện – hiện chưa được lập chỉ mục": `/tuong/ata-top/`, `/tuong/airi-top/`, `/tuong/allain-top/`, `/tuong/arthur-top/`, `/tuong/bijan-top/` (cả 5 hiện thông báo "Đã yêu cầu lập chỉ mục"). Đo lại ngày 21/11: 5 trang này đã lập chỉ mục chưa, so với 45 trang còn lại cùng nhóm không yêu cầu, để biết việc yêu cầu có đẩy nhanh không.
+- 14/11/2026 (sau đó): yêu cầu lập chỉ mục thêm `/tuong/arthur-sp/` (đã hiện "Đã yêu cầu lập chỉ mục"). Ba trang định làm tiếp (`arum-sp`, `billow-jg`, `biron-top`) chưa xác nhận được vì Chrome ngừng phản hồi giữa chừng; có thể một số đã được gửi, chưa kiểm. Tổng đã yêu cầu chắc chắn: 6 trang.
