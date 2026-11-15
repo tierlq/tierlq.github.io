@@ -196,3 +196,28 @@ Trace cho thấy phần thêm so với lúc ở đầu trang là chạy skills.j
 Ý tưởng để lần sau:
 - `icon-192.png` (3 kB) vẫn tải ngay lúc mở trang cùng app.js; lợi quá nhỏ để đo được, để dành.
 - Nếu index.html tiếp tục lớn thêm (mục lục, FAQ), cân nhắc rút gọn phần HTML tĩnh dài ở cuối trang (lần bố cục đầu 109 ms trên điện thoại chậm phần lớn là mục "Cách xếp và nguồn" + mục lục) — phải giữ cho Google đọc được.
+
+## 2026-11-15 — việc định kỳ Chủ nhật
+Đo bằng `tools/perf` (measure.js, trung vị 5 lần, bản 9c9c1c9 — 181 ô tướng, có game rank và khối Phụ kiện trong bảng chi tiết). Không tính Google Fonts và Google Analytics (môi trường đo không vào được).
+
+| | Điện thoại (390px, CPU chậm 4×, 4G chậm) | Máy tính (1440px) |
+|---|---|---|
+| LCP / CLS | 440 ms / 0 | 116 ms / 0,007 |
+| TBT | 203 ms (dao động 108–217) | 0 ms |
+| Bảng tier có thẻ | 1271 ms | 321 ms |
+| Mở bảng chi tiết (đầu trang) | 221 ms | 206 ms |
+| Tải tới lúc bảng hiện | 92 kB / 5 yêu cầu | 92 kB / 5 yêu cầu |
+| Tổng sau 3 giây | 139 kB / 14 yêu cầu | 455 kB / 18 yêu cầu |
+So với 08/11: tải trước khi bảng hiện +7 kB (85 → 92 kB; data.js có khối RANK, index.html có mẫu Phụ kiện `affTpl`); các chỉ số thời gian bằng hoặc tốt hơn (môi trường đo hôm nay hơi nhanh hơn).
+
+Đã làm: dời `<script defer>` của data.js và app.js từ cuối `<body>` lên `<head>` (ngay sau boot.js).
+- Vì sao: xem thứ tự yêu cầu trên điện thoại giả lập chậm, data.js/app.js chỉ bắt đầu tải ở ~466 ms (khi trình duyệt đọc tới cuối HTML 34 kB nén) và xong ở ~907 ms;
+  để trong `<head>` thì bắt đầu ở ~200 ms cùng boot.js, xong ở ~750 ms. `defer` nên thứ tự chạy và thời điểm chạy (sau khi đọc xong HTML, trước DOMContentLoaded) y như cũ.
+- Kết quả (ab.js xen kẽ từng lần, 3 lượt 12/12/16 cặp, trung vị): bảng có thẻ 1242/1326/1293 → 1122/1159/1088 ms (−120 đến −205 ms); DOMContentLoaded ~1075 → ~900 ms;
+  LCP/FCP 456/460/456 → 448/456/460 ms (như cũ); TBT 133/182/138 → 183/188/119 ms (lượt đầu xấu hơn, hai lượt sau bằng/tốt hơn: trong mức dao động, tổng việc trên luồng chính không đổi). Máy tính không đổi.
+- Kiểm tra: all.sh TẤT CẢ ĐẠT (181/181 bảng chi tiết ở 1440/390, 5 slide, không tràn ngang); ảnh chụp trước/sau 1440/390 sáng/tối gần như trùng (390px trùng hoàn toàn, 1440px khác ≤22 điểm ảnh do ảnh tải lệch nhịp);
+  không lỗi JS/CSP; link `#tuong-zata-mid` mở bảng chi tiết; tải ảnh tier list ra tệp ở cả hai khổ. Không đổi tệp JS nào nên không đổi `?v=`.
+Ý tưởng để lần sau:
+- Sau khi script tải sớm, đường găng giờ là đọc xong HTML (domInteractive ~480 ms) + chạy data.js/app.js (~210 ms CPU chậm). HTML 138 kB (34 kB nén) — phần dài cuối trang (mục lục 181 trang tướng, FAQ, Cách xếp) vẫn là ứng viên rút gọn nếu còn lớn thêm, phải giữ cho Google đọc được.
+- `icon-192.png` (3 kB) vẫn tải sớm; lợi quá nhỏ, để dành.
+- Không đo độ mượt khi cuộn tuần này vì không đổi gì ở phần cuộn (số 08/11 vẫn dùng được).
