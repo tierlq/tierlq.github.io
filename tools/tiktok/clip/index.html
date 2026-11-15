@@ -1,0 +1,119 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:transparent;overflow:hidden}
+*{box-sizing:border-box}
+#root{position:relative;width:1080px;height:1920px;font-family:Inter,sans-serif;color:#fff;overflow:hidden}
+#top{position:absolute;left:0;right:0;top:78px;text-align:center;font:800 25px Inter;letter-spacing:.24em;color:#e9e9ee}
+#hero{position:absolute;left:24px;top:238px;display:flex;align-items:center;gap:14px}
+#hero img{width:78px;height:78px;border-radius:8px;border:3px solid #fff;object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#hero .n{font:900 76px Inter;letter-spacing:.04em;text-shadow:0 4px 14px rgba(0,0,0,.65)}
+#hero .t{font:900 24px Inter;background:#46dcb1;color:#08261d;padding:6px 14px;border-radius:6px;letter-spacing:.08em;transform:translateY(-10px)}
+.srcbar{position:absolute;left:0;right:0;top:1168px;height:52px;background:rgba(0,0,0,.66);display:flex;align-items:center;justify-content:center;font:800 25px Inter;letter-spacing:.06em;color:#fff;opacity:0}
+.stamp{position:absolute;left:44px;transform-origin:0 50%;opacity:0;padding:12px 28px;border-radius:12px;font-weight:900;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.45);line-height:1.08}
+.stamp.r{background:#ff5a4d;color:#fff}
+.stamp.y{background:#ffd24a;color:#1b1500}
+.stamp.g{background:#46dcb1;color:#08261d}
+.stamp small{display:block;font:800 26px Inter;letter-spacing:.05em;margin-top:6px;opacity:.9}
+#subs{position:absolute;left:40px;width:900px;top:1292px;text-align:center;font:800 52px/1.22 Inter;text-shadow:0 3px 12px rgba(0,0,0,.7);opacity:0}
+#subs .r{color:#ff6b5e}#subs .y{color:#ffd24a}#subs .g{color:#4ee0b5}
+#wm{position:absolute;left:0;width:980px;top:1560px;text-align:center;font:700 26px Inter;letter-spacing:.08em;color:#fff;opacity:.45}
+#web{position:absolute;left:0;top:0;width:1080px;height:1240px;background:#0b0b10;opacity:0}
+#web .h{position:absolute;left:50px;width:850px;top:64px;text-align:center;font:900 60px Inter;letter-spacing:.22em}
+#win{position:absolute;left:50px;top:170px;width:850px;height:822px;border-radius:16px;overflow:hidden;background:#f3f2ef;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#win .bar{height:42px;background:#1b1b22;display:flex;align-items:center;gap:8px;padding-left:16px}
+#win .bar i{width:12px;height:12px;border-radius:50%;display:block}
+#win .bar b{margin-left:14px;font:600 16px Inter;color:#cfcfd6;background:#2b2b34;padding:4px 16px;border-radius:6px}
+#area{position:absolute;left:0;top:42px;width:850px;height:780px;overflow:hidden}
+#board{position:absolute;left:-850px;top:-376px;width:1700px}
+#ring{position:absolute;left:679px;top:193px;width:126px;height:166px;border:6px solid #ffd24a;border-radius:16px;box-shadow:0 0 0 4px rgba(255,210,74,.25)}
+#bars{position:absolute;left:0;top:0;width:850px;opacity:0}
+#hl{position:absolute;left:168px;top:686px;width:660px;height:50px;border:5px solid #ff5a4d;border-radius:10px;opacity:0}
+#lab{position:absolute;left:50px;width:850px;top:1022px;text-align:center}
+#lab span{display:inline-block;padding:12px 30px;border-radius:10px;font:900 44px Inter;letter-spacing:.03em;background:#ffd24a;color:#1b1500;opacity:0;position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap}
+</style></head><body><div id="root">
+<div id="top">TIERLQ.COM · CẬP NHẬT 11/11</div>
+<div id="hero"><img src="aya.webp"><span class="n">AYA</span><span class="t">TRỢ THỦ</span></div>
+<div class="srcbar" id="s1">GAME RANK 11/11 · GARENA KHÔNG GHI SỐ TRẬN</div>
+<div class="srcbar" id="s2">ĐTDV MÙA ĐÔNG · 310 TRẬN · 2 PICK · 3 CẤM</div>
+<div class="srcbar" id="s3"></div>
+<div class="stamp r" id="a1" style="top:905px;font-size:78px">BỊ CẤM 70,7%</div>
+<div class="stamp g" id="a1b" style="top:1030px;font-size:44px;padding:10px 24px">CAO NHẤT 129 TƯỚNG</div>
+<div class="stamp r" id="a2" style="top:905px;font-size:78px">THẮNG CHỈ 46,7%</div>
+<div class="stamp y" id="a2b" style="top:1030px;font-size:37px;padding:10px 22px">THẤP NHẤT TRONG 5 TƯỚNG CẤM &gt;40%</div>
+<div class="stamp g" id="a3" style="top:905px;font-size:74px">GARENA: T0</div>
+<div class="stamp y" id="a3b" style="top:1030px;font-size:74px">WEB: TIER C</div>
+<div class="stamp g" id="a4" style="top:905px;font-size:62px">ĐTDV: 2 PICK / 310 TRẬN</div>
+<div class="stamp y" id="a5" style="top:880px;font-size:52px">ĐIỂM YẾU:<br>PHỤ THUỘC ĐỒNG ĐỘI</div>
+<div class="stamp y" id="a6" style="top:905px;font-size:70px">TIER C: ĐÚNG KHÔNG?</div>
+<div id="subs"></div>
+<div id="wm">@bangtierlienquan</div>
+<div id="web"><div class="h">TIERLQ.COM</div>
+<div id="win"><div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><b>tierlq.com</b></div>
+<div id="area"><img id="board" src="web_board2.png"><div id="ring"></div><img id="bars" src="web_modal_bars.png"><div id="hl"></div></div></div>
+<div id="lab"><span id="l1">ĐỦ 33 TƯỚNG TRỢ THỦ</span><span id="l2">FOLLOW · TƯỚNG TIẾP THEO</span></div></div>
+</div>
+<script src="tl.js"></script><script>
+const T=window.TL,c=T.c,e=T.e,B=T.blocks;
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const easeOut=x=>1-Math.pow(1-x,3);
+function back(x){const s=1.9;x=x-1;return x*x*((s+1)*x+s)+1}
+const SUBS=[
+ [B[0][0][0],B[0][0][1],'Aya bị cấm <span class="r">70,7%</span>,'],
+ [B[0][1][0],B[0][1][1],'mà thắng chỉ <span class="r">46,7%</span>.'],
+ [c[1],e[1],'thấp nhất trong năm tướng<br>bị cấm trên <span class="y">40%</span>.'],
+ [B[2][0][0],B[2][0][1],'Garena xếp <span class="g">T0</span>,'],
+ [B[2][1][0],B[2][1][1],'web xếp <span class="y">tier C</span>.'],
+ [B[3][0][0],B[3][0][1],'Ở Đấu Trường Danh Vọng,'],
+ [B[3][1][0],B[3][1][1],'310 trận chỉ chọn Aya <span class="r">hai lần</span>.'],
+ [B[4][0][0],B[4][0][1],'<span class="y">Vì sao?</span>'],
+ [B[4][1][0],B[4][1][1],'Đồng đội được bám mà yếu thì<br>Aya gần như <span class="r">vô dụng</span>.'],
+ [c[5],e[5],'Bạn thấy <span class="y">tier C</span> có đúng không?'],
+ [B[6][0][0],B[6][0][1],'Xem đủ tier trợ thủ ở <span class="g">tierlq.com</span>,'],
+ [B[6][1][0],B[6][1][1],'follow để biết<br>tướng tiếp theo.']
+];
+// subtitle display windows: stay until next start (max +0.35s past end)
+const SW=SUBS.map((s,i)=>{const nx=SUBS[i+1]?SUBS[i+1][0]:T.D;return [s[0]>0?s[0]-0.02:0,Math.min(nx-0.01,s[1]+0.35),s[2]]});
+const STAMPS=[ ['a1',-0.2,B[0][1][0]-0.02],['a1b',0.9,B[0][1][0]-0.02],
+ ['a2',B[0][1][0],e[1]+0.3],['a2b',c[1]+0.15,e[1]+0.3],
+ ['a3',c[2],e[2]+0.3],['a3b',B[2][1][0],e[2]+0.3],
+ ['a4',B[3][1][0],e[3]+0.3],
+ ['a5',B[4][1][0],e[4]+0.3],
+ ['a6',c[5],e[5]+0.3]];
+const WEB0=c[6]-0.02;
+function render(t){
+  // header/src bars
+  $('top').style.opacity=t<WEB0?1:0;
+  $('hero').style.opacity=t<WEB0?1:0;
+  const sb=(id,a,b)=>{const el=$(id);const on=t>=a&&t<b;el.style.opacity=on?clamp((t-a)/0.15):0};
+  sb('s1',0.15,c[3]-0.03);sb('s2',c[3]-0.03,B[4][1][0]-0.03);
+  for(const [id,a,b] of STAMPS){
+    const el=$(id);
+    if(t<a||t>=b){el.style.opacity=0;continue}
+    const p=clamp((t-a)/0.22);const s=1+0.45*(1-back(p));const rot=-3;
+    const out=clamp((b-t)/0.1);
+    el.style.opacity=Math.min(1,(t-a)/0.05+0.02)*out;
+    el.style.transform=`rotate(${rot}deg) scale(${p>=1?1:s})`;
+  }
+  // subs
+  let h='',op=0;
+  for(const [a,b,html] of SW){ if(t>=a&&t<b){h=html;op=clamp((t-a)/0.08);} }
+  const sub=$('subs');sub.innerHTML=h;sub.style.opacity=h?(t<0.12?1:(op<1?op:1)):0;
+  // web scene
+  const web=$('web');
+  const wo=clamp((t-WEB0)/0.18);web.style.opacity=wo;
+  const tx=B[6][0][1]+0.0; // switch to modal after first block
+  const sw=clamp((t-tx)/0.3);
+  $('board').style.opacity=1-sw*1;
+  $('ring').style.opacity=sw<1?1-sw:0;
+  $('ring').style.transform=`scale(${1+0.06*Math.sin((t-WEB0)*9)})`;
+  $('bars').style.opacity=sw;
+  $('bars').style.transform=`translateY(${(1-easeOut(sw))*30}px)`;
+  const hlon=clamp((t-(tx+0.4))/0.2);
+  $('hl').style.opacity=hlon*(0.6+0.4*Math.sin(t*10));
+  $('l1').style.opacity=(t>=WEB0+0.1&&t<tx)?1:0;
+  const l2=t>=B[6][1][0]-0.02?1:0;
+  $('l2').style.opacity=l2;
+  $('l1').style.transform='translateX(-50%) scale('+(1+0.0)+')';
+}
+window.render=render;
+</script></body></html>
