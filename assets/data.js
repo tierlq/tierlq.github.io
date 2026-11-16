@@ -92,6 +92,7 @@ const SRC = {
     "tulen": [0.0, 0.3, 0.0, 1, 0]
   },
   aogGames: 310, // tổng số trận ĐTDV mùa hiện tại
+  aogTo: "26/10", // số ĐTDV chỉ tính đến ngày này (vòng bảng + playoffs), chưa có chung kết 07/11; đổi khi đọc lại bảng Liquipedia
   // Mùa trước: cùng định dạng với aog
   prev: {
     "toro": [52.29, 36.5, 33.4, 109, 100],

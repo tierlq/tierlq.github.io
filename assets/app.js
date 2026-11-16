@@ -200,7 +200,7 @@ function breakdown(h){
   if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${(r[1]+r[2]).toFixed(1)}% pick+cấm)`:`Pick ${r[1]}% · Cấm ${r[2]}% · Thắng ${r[0]==null?"–":r[0]+"%"}`;
   // Tỉ lệ thắng chỉ vào điểm khi tướng được chọn từ 5% số trận (aogScore trong data.js): dưới mức đó ghi rõ là mẫu nhỏ
   const wrTxt=x=>x[3]?` · Thắng ${x[0]}%${x[1]<5?" (mẫu nhỏ, chọn dưới 5% số trận nên chưa tính vào điểm)":""}`:"";
-  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận`;
+  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận (đến ${SRC.aogTo}, chưa có chung kết 07/11)${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận (đến ${SRC.aogTo})`;
   return `<div class="bds">
     ${bar("ĐTDV mùa Đông",aogScore(a),aTxt)}
     ${(()=>{const pv=prevOf(h.key,h.lane);return bar("Mùa trước",aogScore(pv),pv?`${pv[3]} pick · ${pv[4]} cấm / ${SRC.prevGames} trận${wrTxt(pv)}`:`Không được chọn trong ${SRC.prevGames} trận`)})()}
@@ -435,7 +435,7 @@ function renderStats(list){
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
   const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
   const cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Thắng, chọn, cấm có tính vào điểm tier, bậc T0–T4 do Garena xếp thì không · không ghi số trận · bấm tên cột để sắp xếp</span>`
-    :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận${upd?" · tới "+upd:""}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
+    :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận · đến ${SRC.aogTo}, chưa có chung kết 07/11</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
   board.innerHTML=`${src}<div class="st-cap">${cap}</div>
   <table class="stats${rank?" rk":""}"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo Garena":t}">${l}${k==="n"||k==="gt"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
   <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="nodata"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?(rank?", chưa có số liệu game rank":", chưa có số liệu ĐTDV"):""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${cols.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;
