@@ -118,10 +118,10 @@ const errs = [], log = (...a) => console.log(...a);
     if (!rk.hasGt || rk.gtN < minRows) bad(`Số liệu Game rank thiếu cột Garena (${rk.gtN} ô)`);
     if (rk.tam && rk.tam !== 'T3') bad(`Tamyn bậc Garena hiện "${rk.tam}", cần T3`);
     if (!/Garena/.test(rk.cap) || !/vào điểm tier/.test(rk.cap)) bad('Số liệu Game rank thiếu dòng ghi nguồn');
-    if (rk.nak && !/^49,1/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 49,1`);
+    if (rk.nak && !/^49,2/.test(rk.nak)) bad(`Nakroth Game rank hiện "${rk.nak}", cần 49,2`);
     // Flowborn có hai dạng với số khác nhau: xạ thủ (Rồng) 53,04 / pháp sư (Giữa) 52,74
     const fb = await p.evaluate(() => { const a = rankOf(HEROES.find(h => h.id === 'flowborn-ad')), m = rankOf(HEROES.find(h => h.id === 'flowborn-mid')); return [a && a[0], m && m[0]]; });
-    if (fb[0] !== 53.04 || fb[1] !== 52.74) bad(`Flowborn Game rank sai: Rồng ${fb[0]}, Giữa ${fb[1]} (cần 53,04 và 52,74)`);
+    if (fb[0] !== 53.19 || fb[1] !== 52.52) bad(`Flowborn Game rank sai: Rồng ${fb[0]}, Giữa ${fb[1]} (cần 53,19 và 52,52)`);
     if (rk.pressed !== 'true') bad('nút Game rank không ở trạng thái bấm');
     if (rk.ov) bad('Số liệu Game rank tràn ngang');
     // nút chọn nguồn ĐTDV / Game rank đủ cao để chạm (≥40px); tên cột Game rank không dính nhau ở mọi cách sắp

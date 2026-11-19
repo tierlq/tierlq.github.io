@@ -229,7 +229,7 @@ ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" he
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${whyHTML(h)}
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
-${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Ba số này (thắng, chọn, cấm) được tính vào điểm tổng của web với trọng số 22%; bậc T0–T4 của Garena thì không tính. Game không ghi số trận.</p>` : ''}
+${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${rk[4] ? rk[4] + '/2026 (bảng ngày ' + RANK.read.slice(0, 5) + ' không có dòng của ' + esc(h.name) + ', web giữ số lần đọc trước cho tới khi có số mới)' : RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Ba số này (thắng, chọn, cấm) được tính vào điểm tổng của web với trọng số 22%; bậc T0–T4 của Garena thì không tính. Game không ghi số trận.</p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
 <ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
@@ -401,7 +401,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Giới hạn</h2><ul class="items">
 <li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này (tính đến ${ctx.SRC.aogTo}, chưa gồm các trận ngày 07/11); tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
 <li>Số liệu giải không tách theo đường nên tier ở đường phụ chỉ là ước tính.</li>
-<li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng; bảng này cập nhật theo người ghi, không tự động. Nó khác số giải đấu (ĐTDV) vì là số của người chơi rank.</li>
+<li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng; bảng này cập nhật theo người ghi, không tự động. Nó khác số giải đấu (ĐTDV) vì là số của người chơi rank. Tướng nào không có dòng trong bảng lần ghi mới nhất thì web giữ số lần ghi trước và ghi rõ ngày của số đó.</li>
 <li>RoV Pro League là giải của server Thái Lan, tham khảo cho xu hướng chứ không thay số liệu server Việt Nam.</li></ul>
 <p>Thấy tướng xếp sai hoặc số liệu lệch: <a href="/lien-he/">báo cho người duy trì</a>. Nguồn đầy đủ ở <a href="/gioi-thieu/">trang Giới thiệu</a>.</p>` }));
 writePage('lien-he', pageShell({ title: 'Liên hệ Bảng Tier Liên Quân: góp ý, báo sai số liệu, hợp tác', desc: 'Cách liên hệ Bảng Tier Liên Quân để góp ý, báo sai số liệu, đề nghị hợp tác hoặc báo lỗi bảo mật.', path: '/lien-he/', h1: 'Liên hệ', over: 'Về web',

@@ -216,8 +216,9 @@ function breakdown(h){
    Số theo tướng; Flowborn có hai khoá (-ad, -mid) như SRC.aog. Game không ghi số trận và ngày cập nhật của bảng */
 const rankOf=h=>typeof RANK!=="undefined"&&(RANK.d[h.key+"-"+h.lane]||(h.key==="flowborn"?null:RANK.d[h.key]))||null;
 const pc2=v=>v.toFixed(2).replace(".",",");
-function rankTxt(r){return [r[3]==null?"":`Bậc Garena T${r[3]}`,`Thắng ${pc2(r[0])}%`,`Chọn ${pc2(r[1])}%`,`Cấm ${pc2(r[2])}%`].filter(Boolean).map(t=>`<i>${t}</i>`).join(" · ")}
+function rankTxt(r){return [r[3]==null?"":`Bậc Garena T${r[3]}`,`Thắng ${pc2(r[0])}%`,`Chọn ${pc2(r[1])}%`,`Cấm ${pc2(r[2])}%`,r[4]?`số ngày ${r[4]}`:""].filter(Boolean).map(t=>`<i>${t}</i>`).join(" · ")}
 function rankNote(h){const r=rankOf(h);if(!r)return "";
+  if(r[4])return `<p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ngày ${r[4]}. Bảng ngày ${RANK.read.slice(0,5)} không có dòng của ${h.name} nên web giữ số lần đọc trước và vẫn tính vào điểm tổng; có số mới sẽ thay. Bậc T0–T4 do Garena xếp, khác tier S–D của web, không tính vào điểm. Game không ghi số trận.</p>`;
   return `<p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ${RANK.read}. Thắng, chọn, cấm có tính vào điểm tổng; bậc T0–T4 do Garena xếp, khác tier S–D của web, không tính vào điểm. ${r[1]<3?"Tướng được chọn dưới 3% số trận nên tỉ lệ thắng chưa tính vào điểm. ":""}Game không ghi số trận.</p>`}
 /* Build tham khảo: đồ, bảng ngọc, phép bổ trợ (dữ liệu ở assets/builds.js, tải sau khi trang hiện xong để bảng tier hiện sớm hơn) */
 // Không nạp builds.js bằng thẻ script trong HTML: app.js tự tải nó khi trang đã hiện xong (hoặc ngay khi cần mở bảng chi tiết),
@@ -412,7 +413,7 @@ const nf1=v=>v.toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDi
 function statOf(h){
   if(statSrc==="rank"){const r=rankOf(h);   // game rank: không có số trận, không có mùa trước để so
     if(!r)return {wr:null,pk:null,bn:null,pres:null,n:0,p:null,few:false};
-    return {gt:r[3]==null?null:4-r[3],wr:r[0],pk:r[1],bn:r[2],pres:Math.round((r[1]+r[2])*10)/10,n:null,p:null,few:false}}
+    return {gt:r[3]==null?null:4-r[3],wr:r[0],pk:r[1],bn:r[2],pres:Math.round((r[1]+r[2])*10)/10,n:null,p:null,few:false,old:r[4]||null}}
   const a=aogOf(h.key,h.lane),p=prevOf(h.key,h.lane);
   if(!a)return {wr:null,pk:null,bn:null,pres:null,n:0,p,few:false};
   return {wr:a[3]?a[0]:null,pk:a[1],bn:a[2],pres:Math.round((a[1]+a[2])*10)/10,n:a[3],p,few:a[3]<10}}
@@ -429,12 +430,13 @@ function renderStats(list){
   const upd=(document.querySelector(".foot")?.textContent.match(/\d{1,2}\/\d{1,2}(?=\/\d{4})/)||[""])[0];
   const arrow=k=>k===sortK?ui(sortD<0?"M7 10l5 5 5-5":"M7 14l5-5 5 5"):"";
   const cell=(h,s,k)=>{const v=s[k];if(v==null)return `<td class="c-${k} na">—</td>`;
-    if(k==="gt")return `<td class="c-gt"><b>T${4-v}</b></td>`;
+    if(k==="gt")return `<td class="c-gt"><b>T${4-v}</b>${s.old?`<small class="dl" title="Số ngày ${s.old}: bảng ngày ${RANK.read.slice(0,5)} không có dòng của tướng này">*</small>`:""}</td>`;
+    if(s.old&&(k==="wr"||k==="pk"||k==="bn"||k==="pres"))return `<td class="c-${k}"><b>${nf1(v)}</b><small class="dl" title="Số ngày ${s.old}: bảng ngày ${RANK.read.slice(0,5)} không có dòng của tướng này">*</small></td>`;
     if(k==="wr"){const few=s.few,cls=few?"few":v>=53?"hi":v<=47?"lo":"";return `<td class="c-wr ${cls}"${few?' title="Dưới 10 trận, tỉ lệ thắng chưa đáng tin"':""}><b>${nf1(v)}</b>${delta(v,s.p&&s.p[3]>=10?s.p[0]:null,!few)}</td>`}
     const pv=s.p?(k==="pk"?s.p[1]:k==="bn"?s.p[2]:k==="pres"?s.p[1]+s.p[2]:null):null;
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
   const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
-  const cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Thắng, chọn, cấm có tính vào điểm tier, bậc T0–T4 do Garena xếp thì không · không ghi số trận · bấm tên cột để sắp xếp</span>`
+  const nOld=rank?rows.filter(([,x])=>x.old).length:0,cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Thắng, chọn, cấm có tính vào điểm tier, bậc T0–T4 do Garena xếp thì không · không ghi số trận · bấm tên cột để sắp xếp${nOld?` · * = ${nOld} tướng không có trong bảng ngày ${RANK.read.slice(0,5)}, giữ số ngày ${[...new Set(rows.filter(([,x])=>x.old).map(([,x])=>x.old))].join(", ")}`:""}</span>`
     :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận · đến ${SRC.aogTo}, chưa có các trận ngày 07/11</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
   board.innerHTML=`${src}<div class="st-cap">${cap}</div>
   <table class="stats${rank?" rk":""}"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo Garena":t}">${l}${k==="n"||k==="gt"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
