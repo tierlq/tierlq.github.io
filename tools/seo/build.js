@@ -173,6 +173,11 @@ function whyHTML(h) {
 <ul class="why">${rows.map(([l, t, v]) => `<li><b>${l}:</b> ${esc(t)} <span class="tb">${sc5(v)}</span></li>`).join('')}</ul>
 <p>Điểm tổng <b>${h.score.toFixed(2).replace('.', ',')}/5</b>${h.sec ? ' (đường phụ: trừ 0,4 khi xếp bậc)' : ''}, hạng ${h.rank}/${h.laneN} ở ${esc(LANES[h.lane])}. ${end} Cách tính ở trang <a href="/phuong-phap/">Phương pháp</a>.</p>`;
 }
+// Một bộ build (đồ, phép bổ trợ, ngọc, phù hiệu). Ô nhiều bộ: BUILDS[...] là bộ 1, các bộ thêm nằm ở .v (mỗi bộ có tên .t và mô tả .d)
+const setHTML = s => `<ol class="items">${s.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
+<p><b>Phép bổ trợ:</b> ${s.s.map(x => `<a href="/phep-bo-tro/#${x}">${esc(BSPELL[x][0])}</a>`).join(' hoặc ')}</p>
+<p><b>Bảng ngọc:</b> ${s.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
+${s.e && s.e.length ? `<p><b>Phù hiệu:</b> ${s.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}`;
 for (const h of HEROES) {
   const L = LANES[h.lane], b = BUILDS[h.key + '@' + h.lane], sk = SKILLS[h.key === 'flowborn' ? 'flowborn-' + h.lane : h.key];
   const items = b ? b.i.map(id => BITEM[id][0]) : [], spells = b ? b.s.map(s => BSPELL[s][0]) : [];
@@ -232,10 +237,7 @@ ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)
 ${rk ? `<h2>Tỉ lệ thắng game rank của ${esc(h.name)}</h2><p>${esc(h.name)} có tỉ lệ thắng <b>${nfv(rk[0])}%</b>, tỉ lệ chọn ${nfv(rk[1])}% và tỉ lệ cấm ${nfv(rk[2])}% ở Đấu hạng (tất cả bậc) theo Bảng Phân Bậc Tướng trong Cẩm nang của game Liên Quân Mobile, người biên tập ghi ngày ${rk[4] ? rk[4] + '/2026 (bảng ngày ' + RANK.read.slice(0, 5) + ' không có dòng của ' + esc(h.name) + ', web giữ số lần đọc trước cho tới khi có số mới)' : RANK.read}.${rk[3] != null ? ` Garena xếp ${esc(h.name)} vào <b>bậc T${rk[3]}</b> (T0 mạnh nhất, T4 yếu nhất; đây là bậc do Garena xếp, khác tier S–D của web).` : ''} Ba số này (thắng, chọn, cấm) được tính vào điểm tổng của web với trọng số 22%; bậc T0–T4 của Garena thì không tính. Game không ghi số trận.</p>` : ''}
 ${artsOf(h).length ? `<h2>Bài viết liên quan</h2><ul class="links">${artsOf(h).map(a => `<li><a href="${aurl(a)}">${esc(a.h1)}</a></li>`).join('')}</ul>` : ''}
 ${b ? `<h2>Build ${h.lane === 'sp' ? 'Trợ thủ' : 'đi ' + esc(L)}</h2>
-<ol class="items">${b.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
-<p><b>Phép bổ trợ:</b> ${b.s.map(s => `<a href="/phep-bo-tro/#${s}">${esc(BSPELL[s][0])}</a>`).join(' hoặc ')}</p>
-<p><b>Bảng ngọc:</b> ${b.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
-${ench.length ? `<p><b>Phù hiệu:</b> ${b.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}
+${b.v ? [b, ...b.v].map((s, k) => `<h3>Bộ ${k + 1}: ${esc(s.t)}</h3>${s.d ? `\n<p>${esc(s.d)}</p>` : ''}\n${setHTML(s)}`).join('\n') + (b.n ? `\n<p class="src">${esc(b.n)}</p>` : '') : setHTML(b)}
 ${b.l ? `<p class="src">Nguồn build: <a href="${esc(b.l)}" rel="noopener">${esc(new URL(b.l).hostname)}</a> (server Việt).</p>` : ''}` : ''}
 ${sw ? `<h2>Điểm mạnh, điểm yếu của ${esc(h.name)}</h2>
 <h3>Điểm mạnh</h3><ul>${sw[0].map(t => `<li>${esc(t)}</li>`).join('')}</ul><h3>Điểm yếu</h3><ul>${sw[1].map(t => `<li>${esc(t)}</li>`).join('')}</ul><p class="src">Tóm tắt tiếng Việt theo mục Strengths / Weaknesses của <a href="${CNSRC.base}${esc(sw[2])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}): nhận định của người biên tập trang đó, không phải số liệu.</p>` : ''}
@@ -321,8 +323,10 @@ if (affItems.length) writePage('phu-kien', pageShell({ title: 'Phụ kiện chơ
 
 // ---------- 3e. Trang tra cứu: trang bị, phù hiệu, bảng ngọc, phép bổ trợ (dữ liệu BITEM/BINFO/BENCH/BARC/BSPELL trong builds.js; "số build" = đếm trong BUILDS) ----------
 const { BINFO, BENCHB } = ctx;
-const nB = Object.keys(BUILDS).length;
-const countBy = pick => { const m = {}; Object.values(BUILDS).forEach(b => pick(b).forEach(x => { m[x] = (m[x] || 0) + 1; })); return m; };
+// "build" = một bộ: ô nhiều bộ tính mỗi bộ một build
+const BSETS = Object.values(BUILDS).flatMap(b => [b, ...(b.v || [])]);
+const nB = BSETS.length;
+const countBy = pick => { const m = {}; BSETS.forEach(b => pick(b).forEach(x => { m[x] = (m[x] || 0) + 1; })); return m; };
 const cItem = countBy(b => b.i), cSpell = countBy(b => b.s), cEnch = countBy(b => b.e || []), cArc = countBy(b => b.r.map(([a]) => a));
 const goldFmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 const byCountName = (cm, nameOf) => (a, b) => (cm[b] || 0) - (cm[a] || 0) || nameOf(a).localeCompare(nameOf(b), 'vi');

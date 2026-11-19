@@ -60,6 +60,25 @@ const errs = [], log = (...a) => console.log(...a);
         if (![...m.querySelectorAll('.bld-ar b')].every(b => /^(Đỏ|Tím|Xanh) III .+ ×\d+$/.test(b.textContent))) out.bad.push(h.id + ': ngọc thiếu tên Việt');
         if (!m.querySelector('.bld-hint a[href="/bang-ngoc/"]')) out.bad.push(h.id + ': gợi ý build thiếu link Bảng ngọc');
         { const b2 = m.querySelector('#mshare2'); if (!b2) out.bad.push(h.id + ': thiếu nút Gửi tướng này cho bạn bè'); else if (b2.getBoundingClientRect().height > 80) out.bad.push(h.id + ': nút Gửi tướng quá cao (biểu tượng không có cỡ)'); }
+        { // nhiều bộ build: nút chọn bộ, mỗi bộ một khung riêng; ô một bộ thì không có nút
+          const bb = BUILDS[h.key + '@' + h.lane], nset = bb ? 1 + (bb.v || []).length : 1, tabs = [...m.querySelectorAll('.bld-tab')], panes = [...m.querySelectorAll('.bld-pane')];
+          if (nset === 1 && (tabs.length || panes.length)) out.bad.push(h.id + ': ô một bộ mà có nút chọn bộ');
+          if (nset > 1) {
+            if (tabs.length !== nset || panes.length !== nset) out.bad.push(h.id + ': số nút/khung bộ build không khớp (' + tabs.length + '/' + panes.length + ' so với ' + nset + ')');
+            else {
+              if (!tabs.every(t => t.querySelector('span') && t.querySelector('span').textContent.trim())) out.bad.push(h.id + ': nút bộ thiếu tên');
+              if (panes.some((pn, k) => pn.hidden !== (k > 0))) out.bad.push(h.id + ': chỉ bộ 1 được hiện khi mở bảng');
+              if (!panes.every(pn => pn.querySelector('.bld-items li') && pn.querySelector('.bld-ar li') && pn.querySelector('.bld-sp li') && pn.querySelector('.bld-en .en-b'))) out.bad.push(h.id + ': có bộ thiếu đồ/ngọc/phép/phù hiệu');
+              const first = panes[0].querySelector('.bi-n').textContent;
+              tabs[1].click();   // chuyển sang bộ 2: bộ 1 ẩn, bộ 2 hiện và có đồ khác
+              if (!(panes[0].hidden && !panes[1].hidden && tabs[1].getAttribute('aria-selected') === 'true' && tabs[0].getAttribute('aria-selected') === 'false')) out.bad.push(h.id + ': bấm Bộ 2 không đổi khung');
+              else if (panes[1].querySelector('.bi-n').textContent === first && panes[1].innerHTML === panes[0].innerHTML) out.bad.push(h.id + ': Bộ 2 giống Bộ 1');
+              tabs[0].click();
+              if (panes[0].hidden || !panes[1].hidden) out.bad.push(h.id + ': bấm lại Bộ 1 không trở về');
+              out.multi = (out.multi || 0) + 1;
+            }
+          }
+        }
         if (!m.querySelector('.sk-list li')) out.bad.push(h.id + ': không có bộ chiêu');
         if (!noCn.includes(h.key) && !m.querySelector('.cn .cn-b')) out.bad.push(h.id + ': không có mục khắc chế');
         if (h.key !== 'tamyn' && m.querySelectorAll('.sw li').length < 2) out.bad.push(h.id + ': không có điểm mạnh/yếu');
@@ -69,6 +88,7 @@ const errs = [], log = (...a) => console.log(...a);
       out.srcs = [...out.srcs]; return out;
     }, [...NO_COUNTERS]);
     res.bad.forEach(x => bad(x));
+    if ((res.multi || 0) < 2) bad(`chỉ ${res.multi || 0} ô có nhiều bộ build, đáng ra phải ≥ 2 (Aya Giữa, Aya Trợ thủ)`);
     for (const s of res.srcs) if (!fs.existsSync(fileOf('/' + s))) bad('ảnh không có: ' + s);
     // khắc chế → sang tướng khác; hộp thông tin món đồ; nút Quay lại
     // tải lại trang (tài liệu mới) rồi bấm thẻ tướng như người dùng thật, để lịch sử trình duyệt giống thật
@@ -158,7 +178,7 @@ const errs = [], log = (...a) => console.log(...a);
     if (await p.evaluate(() => document.getElementById('m-mine').getAttribute('aria-pressed') !== 'true')) bad('không bật được chế độ Tự xếp');
     await p.click('#m-meta'); await p.waitForTimeout(200);
     if (!(await p.evaluate(() => document.querySelectorAll('#board .card').length))) bad('về Meta không còn thẻ tướng');
-    log(`[${vp}] trang chủ: ${home.slides} slide, ${home.cards} thẻ, mở ${res.n}/${home.heroes} bảng chi tiết, ${res.srcs.length} ảnh`);
+    log(`[${vp}] trang chủ: ${home.slides} slide, ${home.cards} thẻ, mở ${res.n}/${home.heroes} bảng chi tiết (${res.multi || 0} ô nhiều bộ build), ${res.srcs.length} ảnh`);
     // trang tĩnh tiêu biểu
     const ALL = process.argv.includes('--all');
     const pages = ALL ? fs.readFileSync(path.join(R, 'sitemap.xml'), 'utf8').match(/<loc>[^<]+<\/loc>/g).map(x => x.replace(/<\/?loc>/g, '').replace(/^https?:\/\/[^/]+/, '')).concat('/404.html')

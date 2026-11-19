@@ -252,3 +252,7 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - MỚI: chữ đậm font thường 9px thay font đánh máy (dấu Ớ bị ép). Chấm màu đường trong chip 7→8px.
 - Ảnh tier list tải về (`drawMarks` trong app.js) vẽ dấu theo kiểu mới: lưới 24, nền tối pha màu, không quầng sáng, MỚI chữ đậm font thường.
 - Kiểm tra: ảnh trước/sau ở 1440 tối/sáng và 390, thử vẽ dấu trên canvas; all.sh đạt.
+
+## 2026-11-19 tối (làm tay theo yêu cầu chủ web)
+- Bảng chi tiết, phần build: ô có nhiều bộ (Aya Giữa, Aya Trợ thủ) hiện hai nút "Bộ 1 / Bộ 2" kiểu gạch chân như thanh chế độ (`.bld-tab`, hai nút chia đều chiều ngang, tên bộ dưới nhãn "Bộ N"), bên dưới là khung của bộ đang chọn: một dòng mô tả (`.bld-desc`), 6 món đồ, bảng ngọc, phép bổ trợ, phù hiệu. Chọn bằng chạm hoặc phím ←/→, đổi chỉ bằng ẩn/hiện (không dựng lại, không chuyển động mới ngoài gạch chân trượt 0,4s như `.seg`, tắt khi giảm chuyển động). Chọn tab thay vì xếp chồng hai bộ để bảng không dài gấp đôi trên điện thoại.
+- Kiểm tra ảnh 390 và 1440: không tràn ngang, tên bộ không bị cắt.

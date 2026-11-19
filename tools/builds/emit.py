@@ -21,7 +21,8 @@ def icon(src,dst,size=72):
     if im.size!=(size,size):
         c=Image.new('RGBA',(size,size),(0,0,0,0));c.paste(im,((size-im.size[0])//2,(size-im.size[1])//2));im=c
     im.save(dst,'WEBP',quality=72,method=6)
-used_i=sorted({i for b in B.values() for i in b['i']});used_a=sorted({a for b in B.values() for a,_ in b['r']});used_t=sorted({t for b in B.values() for t in b['s']})
+SETS=[s for b in B.values() for s in [b,*b.get('v',[])]]   # bộ 1 và các bộ thêm của từng ô
+used_i=sorted({i for b in SETS for i in b['i']});used_a=sorted({a for b in SETS for a,_ in b['r']});used_t=sorted({t for b in SETS for t in b['s']})
 keep=set()
 # Thông tin trang bị hiện khi trỏ/chạm vào đồ (giá, chỉ số, nội tại) — từ avix-data bản Việt, khớp trang Học viện của Garena
 VIEQ={e['equipmentId']:e for e in vi}

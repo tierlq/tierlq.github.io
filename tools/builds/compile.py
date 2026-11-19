@@ -123,7 +123,9 @@ def parse_ench(bid,txt):
 LANEK={'top','jg','mid','ad','sp'}
 for blk in open('vn.txt',encoding='utf-8').read().split('\n## ')[1:]:
     lines=[l for l in blk.strip().split('\n') if l.strip() and not l.startswith('#')];bid=lines[0].strip()
-    key,lane=bid.split('@');assert lane in LANEK,bid
+    # "<key>@<đường>" là bộ 1 của ô; "<key>@<đường>#2", "#3"… là bộ thêm của cùng ô (đặt ngay sau bộ 1; RUNES/SPELL/ENCH bỏ trống thì lấy của bộ 1)
+    base,_,vno=bid.partition('#');key,lane=base.split('@');assert lane in LANEK,bid
+    if vno: assert vno.isdigit() and base in B and int(vno)==len(B[base].get('v',[]))+2,(bid,'bộ thêm phải đặt sau bộ 1 của cùng ô, đánh số liên tiếp từ 2')
     f={l.split(':',1)[0]:l.split(':',1)[1].strip() for l in lines[1:]}
     items=[]
     for it in f['ITEMS'].split('|'):
@@ -131,31 +133,41 @@ for blk in open('vn.txt',encoding='utf-8').read().split('\n## ')[1:]:
         if not eid: warn.append((bid,'item?',it.strip()));continue
         if eid not in items: items.append(eid);used_i.add(eid)
     runes=[]
-    for r in f['RUNES'].split('|'):
+    for r in (f['RUNES'].split('|') if 'RUNES' in f else []):
         m=re.match(r'\s*(\S+)\s+(.+?)\s+x(\d+)\s*$',r);col=strip(m.group(1));aid=VIRUNE[col].get(strip(m.group(2)))
         if not aid: warn.append((bid,'rune?',r.strip()));continue
         runes.append([aid,int(m.group(3))]);used_a.add(aid)
+    if vno and 'RUNES' not in f: runes=[list(x) for x in B[base]['r']]
     for c in ('red','purple','teal'): assert sum(n for a,n in runes if a.startswith(c))==10,(bid,c,'phải đủ 10 viên')
     sp=[];own=[]
-    for s in f['SPELL'].split(' / '):
+    for s in (f['SPELL'].split(' / ') if 'SPELL' in f else []):
         mark=s.strip().endswith('*');t=VITAL.get(strip(s.strip().rstrip('*')))
         if not t: warn.append((bid,'spell?',s));continue
         sp.append(t);used_t.add(t)
         if mark: own.append(t)
+    if vno and 'SPELL' not in f: sp=list(B[base]['s']);own=list(B[base].get('o',[]))
     b={'i':items,'r':runes,'s':sp}
     if f.get('SRC'): b['l']=f['SRC']
     if own: b['o']=own
     if f.get('ENCH'): b['e']=parse_ench(bid,f['ENCH'])
+    elif vno and B[base].get('e'): b['e']=list(B[base]['e'])
     if f.get('ENCH_SRC'): b['el']=f['ENCH_SRC']
     if f.get('NOTE'):b['n']=f['NOTE']
+    # tên bộ (nút chọn bộ trong bảng chi tiết) và một dòng mô tả; chỉ cần khi ô có nhiều bộ
+    if f.get('TITLE'): assert len(f['TITLE'])<=40,(bid,'TITLE quá dài');b['t']=f['TITLE']
+    if f.get('DESC'): assert len(f['DESC'])<=220,(bid,'DESC quá dài');b['d']=f['DESC']
+    if vno: assert not any(k in f for k in ('SRC','NOTE','ENCH_SRC')) and b.get('t'),(bid,'bộ thêm cần TITLE; SRC, NOTE, ENCH_SRC chỉ đặt ở bộ 1')
     # luật game: đồ rừng chỉ mua được khi mang Trừng Trị; đi đường thì không mang đồ rừng
     jg=[i for i in items if EQ[i]['categoryId']=='jungling']
     if lane=='jg': assert jg and sp==['punish'],(bid,'rừng phải có đồ rừng + Trừng Trị')
     else: assert not jg and ('punish' not in sp or 'punish' in own),(bid,'đi đường không có đồ rừng; Trừng Trị chỉ khi chủ web thêm (*)')
     if lane=='sp' and not any(EQ[i]['categoryId']=='support' for i in items): warn.append((bid,'trợ thủ thiếu đồ trợ thủ'))
+    if vno: B[base].setdefault('v',[]).append(b);continue
     assert bid not in B,(bid,'trùng')
     B[bid]=b
-print('vn builds:',sum('@' in k for k in B),'warn',warn[-10:])
+for k,b in B.items():
+    if 'v' in b: assert b.get('t'),(k,'ô có nhiều bộ thì bộ 1 cũng cần TITLE')
+print('vn builds:',sum('@' in k for k in B),'trong đó nhiều bộ:',{k:1+len(b['v']) for k,b in B.items() if 'v' in b},'warn',warn)
 json.dump({'B':B,'I':sorted(used_i),'A':sorted(used_a),'T':sorted(used_t),'E':sorted(used_e)},open('compiled.json','w'),ensure_ascii=False,indent=0)
 print(len(B),'heroes;',len(used_i),'items;',len(used_a),'arcana;',len(used_t),'spells;',len(used_e),'phù hiệu')
 print('thiếu phù hiệu:',[k for k,b in B.items() if '@' in k and not b.get('e')])

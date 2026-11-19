@@ -298,15 +298,34 @@ function buildHTML(h){
   const head=`<div class="bld-h"><h4>${title}</h4>${b&&b.l?`<a href="${b.l}" target="_blank" rel="noopener">${BSRC[host]||host} · server Việt</a>`:""}</div>`;
   if(!b)return `<section class="bld">${head}<p class="bld-note">Chưa có build cho ${h.name} đi ${LANES[h.lane]}.</p></section>`;
   const notes=b.n?[b.n]:[];
+  const sets=[b,...(b.v||[])];
+  // Ô có nhiều bộ (BUILDS[...].v): nút chọn bộ + mỗi bộ một khung riêng (đồ, ngọc, phép bổ trợ, phù hiệu); bộ 1 hiện sẵn
+  const tabs=sets.length>1?`<div class="bld-tabs" role="tablist" aria-label="Chọn bộ build">${sets.map((x,k)=>`<button type="button" role="tab" class="bld-tab" id="bt-${h.id}-${k}" aria-selected="${k===0}" aria-controls="bp-${h.id}-${k}" tabindex="${k?-1:0}" data-bo="${k}" data-hero="${h.id}"><b>Bộ ${k+1}</b><span>${esc(x.t||"")}</span></button>`).join("")}</div>`:"";
+  const panes=sets.map((x,k)=>{const body=bldSet(x);
+    return sets.length>1?`<div class="bld-pane" role="tabpanel" id="bp-${h.id}-${k}" aria-labelledby="bt-${h.id}-${k}"${k?" hidden":""}>${x.d?`<p class="bld-desc">${esc(x.d)}</p>`:""}${body}</div>`:body}).join("");
+  return `<section class="bld" aria-label="${title}">${head}${notes.map(n=>`<p class="bld-note">${n}</p>`).join("")}${tabs}${panes}</section>`;
+}
+/* Một bộ build: 6 món đồ, bảng ngọc, phép bổ trợ, phù hiệu */
+function bldSet(b){
   const items=`<ol class="bld-items">${b.i.map((id,k)=>{const [vi,cat,ic,en]=BITEM[id],jg=cat==="jg";
       return `<li class="bi${jg?" jg":""}"><button type="button" class="bi-b" data-item="${id}" aria-describedby="itip"><span class="bi-ic"><img src="b/i-${ic}.webp" alt="" loading="lazy" decoding="async" width="56" height="56"><b>${k+1}</b></span><span class="bi-n">${vi}</span>${jg?"<em>Đồ rừng</em>":cat==="sup"?"<em>Đồ trợ thủ</em>":""}</button></li>`}).join("")}</ol>
     <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số. Tra cứu đầy đủ: <a href="/trang-bi/" target="_blank" rel="noopener">Trang bị</a> · <a href="/phu-hieu/" target="_blank" rel="noopener">Phù hiệu</a> · <a href="/bang-ngoc/" target="_blank" rel="noopener">Bảng ngọc</a> · <a href="/phep-bo-tro/" target="_blank" rel="noopener">Phép bổ trợ</a>.</p>`;
   // tên ngọc theo Học viện Garena (BARC[a][2], ví dụ "Đỏ III Công phép"), dữ liệu cũ thiếu tên thì ghi theo màu
   const ar=b.r.map(([a,n])=>{const [c,t,vn]=BARC[a];return `<li><img src="b/a-${a}.webp" alt="" loading="lazy" width="30" height="30"><span><b>${vn?esc(vn):"Ngọc "+COLVI[c]} ×${n}</b>${t}</span></li>`}).join("");
   const sp=b.s.map(s=>`<li><button type="button" class="sp-b" data-spell="${s}" aria-describedby="itip"><img src="b/t-${s}.webp" alt="" loading="lazy" width="36" height="36"><span><b>${BSPELL[s][0]}</b>${(b.o||[]).includes(s)?"<em>Phương án thêm</em>":""}</span></button></li>`).join("");
-  return `<section class="bld" aria-label="${title}">${head}${notes.map(n=>`<p class="bld-note">${n}</p>`).join("")}${items}
-    <div class="bld-row"><div><h5>Bảng ngọc</h5><ul class="bld-ar">${ar}</ul></div><div><h5>Phép bổ trợ${b.s.length>1?" (chọn một)":""}</h5><ul class="bld-sp">${sp}</ul></div></div>${enchHTML(b)}</section>`;
+  return `${items}
+    <div class="bld-row"><div><h5>Bảng ngọc</h5><ul class="bld-ar">${ar}</ul></div><div><h5>Phép bổ trợ${b.s.length>1?" (chọn một)":""}</h5><ul class="bld-sp">${sp}</ul></div></div>${enchHTML(b)}`;
 }
+/* Chọn bộ build (chạm hoặc phím ←/→/Home/End trên nút bộ); chỉ đổi phần hiện, không dựng lại bảng */
+(function boTabs(){
+  const pick=(tab,focus)=>{const list=tab.parentElement,hero=tab.dataset.hero,k=+tab.dataset.bo;if(tab.getAttribute("aria-selected")==="true"){if(focus)tab.focus();return}
+    list.querySelectorAll(".bld-tab").forEach(t=>{const on=t===tab;t.setAttribute("aria-selected",on);t.tabIndex=on?0:-1;const pn=$("bp-"+hero+"-"+t.dataset.bo);if(pn)pn.hidden=!on});
+    if(focus)tab.focus();hideItip();track("doi_bo_do",{tuong:hero,bo:k+1})};
+  document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest(".modal .bld-tab");if(t)pick(t)});
+  document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".modal .bld-tab");if(!t)return;
+    const all=[...t.parentElement.querySelectorAll(".bld-tab")],i=all.indexOf(t);let j=-1;
+    if(e.key==="ArrowRight"||e.key==="ArrowDown")j=(i+1)%all.length;else if(e.key==="ArrowLeft"||e.key==="ArrowUp")j=(i+all.length-1)%all.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=all.length-1;
+    if(j>=0){e.preventDefault();pick(all[j],true)}})})();
 /* Hộp thông tin khi trỏ (máy tính) hoặc chạm (điện thoại) vào món đồ / phép bổ trợ trong phần build:
    giá, chỉ số và nội tại như trang Học viện · Trang bị của Garena (dữ liệu BINFO trong assets/builds.js) */
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

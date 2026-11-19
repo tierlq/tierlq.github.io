@@ -404,12 +404,19 @@ SPELL: Tốc Biến
 ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Rừng nguyên sinh: Nhạy bén, Bơm máu
 
 ## aya@mid
-SRC: https://aov-builds.com/tuong/aya/
+TITLE: Full phép xả dame
+DESC: Tối đa sát thương phép: Vương Miện Hecate +35% công phép, Trượng Hỗn Mang +40% xuyên giáp phép, Sách Thánh +350 công phép. Đi kèm ngọc Full phép.
 ITEMS: Giày Thuật Sĩ | Mặt Nạ Berith | Trượng Bùng Nổ | Vương Miện Hecate | Trượng Hỗn Mang | Sách Thánh
 RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 SPELL: Suy Nhược / Ngất Ngư / Thanh Tẩy
 ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Tháp quang minh: Thánh châu | Thành khởi nguyên: Mật ngữ
-NOTE: Theo clip Aya trên TikTok @bangtierlienquan: bộ Full phép xả dame, ngọc Full phép. Bộ 2 Giữa hỗ trợ của clip: Giày Phù Thuỷ, Mặt Nạ Berith, Sách Truy Hồn, Sách Thánh, Trượng Băng, Vương Miện Hecate (ngọc Toàn diện, tím Máu-Hồi máu-Tốc chạy).
+NOTE: Theo clip Aya trên TikTok @bangtierlienquan (phù hiệu dùng chung cho hai bộ). Clip không ghi phép bổ trợ nên giữ như cũ.
+
+## aya@mid#2
+TITLE: Giữa hỗ trợ
+DESC: Vẫn đủ sát thương, thêm chống hồi máu (Sách Truy Hồn) và làm chậm (Trượng Băng) để giữ chân địch cho đồng đội. Đi kèm ngọc Toàn diện (trâu hơn).
+ITEMS: Giày Phù Thủy | Mặt Nạ Berith | Sách Truy Hồn | Sách Thánh | Trượng Băng | Vương Miện Hecate
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 
 ## alice@mid
 SRC: https://aov-builds.com/tuong/alice/
@@ -948,12 +955,19 @@ SPELL: Tốc Biến / Tốc Hành / Gầm Thét
 ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Vực hỗn mang: Ma Hỏa, Cường công
 
 ## aya@sp
-SRC: https://aov-builds.com/tuong/aya/
+TITLE: Trợ thủ thường
+DESC: Hồi máu cho đồng đội (Liệt Hoả Hồi Huyết), chống hồi máu (Sách Truy Hồn), làm chậm (Trượng Băng), gây thêm sát thương theo máu hiện tại của mục tiêu (Mặt Nạ Berith). Đi kèm ngọc Toàn diện (trâu hơn).
 ITEMS: Liệt Hoả Hồi Huyết | Sách Truy Hồn | Trượng Băng | Mặt Nạ Berith | Trượng Hỗn Mang | Sách Thánh
 RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 SPELL: Suy Nhược / Ngất Ngư / Thanh Tẩy
 ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Tháp quang minh: Thánh châu | Thành khởi nguyên: Mật ngữ
-NOTE: Theo clip Aya trên TikTok @bangtierlienquan: bộ Trợ thủ thường, ngọc Toàn diện (trâu hơn). Bộ 2 Buff khiên (giáp ảo) của clip: Liệt Hoả Hồi Huyết, Giày Thuật Sĩ, Sách Truy Hồn, Xuyên Tâm Lệnh, Trượng Băng, Khiên Thánh Quang. Phép bổ trợ chưa có trong clip nên giữ như cũ.
+NOTE: Theo clip Aya trên TikTok @bangtierlienquan (phù hiệu dùng chung cho hai bộ). Clip không ghi phép bổ trợ nên giữ như cũ.
+
+## aya@sp#2
+TITLE: Buff khiên (giáp ảo)
+DESC: Khiên Thánh Quang chắn cho bản thân và đồng đội thấp máu nhất lân cận; Xuyên Tâm Lệnh giảm công phép và giáp phép của địch. Đi kèm ngọc Toàn diện (trâu hơn).
+ITEMS: Liệt Hoả Hồi Huyết | Giày Thuật Sĩ | Sách Truy Hồn | Xuyên Tâm Lệnh | Trượng Băng | Khiên Thánh Quang
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 
 ## azzenka@mid
 SRC: https://aov-builds.com/tuong/azzenka/
