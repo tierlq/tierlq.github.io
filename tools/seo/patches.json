@@ -1,5 +1,48 @@
 [
  {
+  "date": "17/11",
+  "year": 2026,
+  "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",
+  "url": "https://lienquan.garena.vn/dieu-chinh-giua-mua-pb-vet-nut-thoi-khong-17-11-2026/",
+  "changes": [
+   {
+    "id": "butterfly-jg",
+    "trend": "mix",
+    "note": "Làm lại một số kỹ năng: chiêu 1 bỏ hiệu ứng tăng 25% sát thương lên mỗi mục tiêu trúng đích, thêm đao ảnh gây 80 (+16/cấp, +0,25 công vật lý); chiêu 2 bỏ hiệu ứng tăng tỉ lệ chí mạng, mục tiêu đầu chịu 50 (+10/cấp, +0,15 công vật lý) sát thương phép chắc chắn chí mạng (trước là 100, +20/cấp, +0,3 sát thương vật lý), ba đòn đánh cường hóa thêm 20 (+4/cấp, +0,3 công vật lý) sát thương phép chí mạng; chiêu 3 hồi máu mỗi lần gây sát thương lên mục tiêu bị đánh dấu, 20% khi đánh tướng và 10% với mục tiêu khác (trước là 35% khi dấu kết thúc hoặc mục tiêu bị hạ)."
+   },
+   {
+    "id": "arduin-sp",
+    "trend": "up",
+    "note": "Tăng sức mạnh: nội tại hồi 180 (+13/cấp, +0,05 máu cộng thêm) máu, trước là 4% máu tối đa; sát thương chuẩn chiêu 2 thành 150 (+30/cấp, +0,5 công vật lý cộng thêm), trước là 125 (+25/cấp); sát thương gốc chiêu 3 thành 300 (+150/cấp, +1,5 công vật lý), trước là 300 (+125/cấp, +1,2)."
+   },
+   {
+    "id": "grakk-sp",
+    "trend": "up",
+    "note": "Tăng sức mạnh: sát thương gốc của nội tại thành 55 (+4/cấp, +0,2 SMPT, +0,02 máu tối đa), trước là 40; sát thương kích nổ thành 225 (+16/cấp, +0,8 SMPT, +0,08 máu tối đa), trước là 160; sát thương gốc chiêu 1 thành 180 (+36/cấp, +0,55 SMPT), trước là 150 (+30/cấp, +0,5)."
+   },
+   {
+    "id": "dirak-mid",
+    "trend": "up",
+    "note": "Tăng sức mạnh: hồi chiêu 2 còn 10s (−0,4s/cấp), trước là 12,5s (−0,5s/cấp)."
+   },
+   {
+    "id": "richter-top",
+    "trend": "mix",
+    "note": "Điều chỉnh: hồi chiêu 1 thành 8s (−0,3s/cấp), sát thương lướt chặt thành 75 (+15/cấp, +0,5 công vật lý), trước là 20 (+20/cấp, +0,4), sát thương chém thành 150 (+30/cấp, +1,0), trước là 50 (+50/cấp); chiêu 3 sát thương gốc còn 50 (+25/cấp, +0,2 công vật lý), trước là 60 (+30/cấp, +0,13), sát thương nổ còn 300 (+150/cấp, +1,2), trước là 330 (+165/cấp, +1,0)."
+   },
+   {
+    "id": "fennik-ad",
+    "trend": "up",
+    "note": "Tăng sức mạnh: sát thương gốc và sát thương nổ của chiêu 1 cùng thành 125 (+25/cấp, +0,75 công vật lý), trước là 90 (+18/cấp, +0,65)."
+   },
+   {
+    "id": "dyadia-sp",
+    "trend": "down",
+    "note": "Giảm sức mạnh: sát thương gốc của nội tại còn 140–280 (+1,0 công vật lý, +0,25 SMPT), trước là 150–300 (+1,0, +0,3); sát thương kéo dài của chiêu 2 còn 540 (+108/cấp, +1,0 SMPT), trước là 640 (+128/cấp, +0,95)."
+   }
+  ]
+ },
+ {
   "date": "30/10",
   "year": 2026,
   "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",

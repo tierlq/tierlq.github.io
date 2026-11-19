@@ -591,18 +591,17 @@ const TIERS=["S","A","B","C","D"];
 const TNAME={S:"Rất mạnh",A:"Mạnh",B:"Ổn",C:"Tình huống",D:"Yếu"};
 const GROUPS={S:["Đỉnh meta","nên cấm hoặc chọn sớm"],A:["Meta","lựa chọn an toàn khi leo rank"],C:["Ngoài meta","cần đội hình phù hợp"],D:["Ít được dùng","đang yếu ở bản hiện tại"]};
 const TR={up:["+ Tăng","up","Được tăng sức mạnh"],down:["− Giảm","down","Bị giảm sức mạnh"],mix:["± Chỉnh","mix","Điều chỉnh"],new:["Mới","new","Tướng mới / làm lại"]};
-// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 30/10/2026 (lienquan.garena.vn)
+// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 17/11/2026 (lienquan.garena.vn)
 // key: [xu hướng, ghi chú, true nếu phần báo VN đã chỉnh theo bản này]; key có thể kèm đường (flowborn-ad)
-const PATCH="30/10";
+const PATCH="17/11";
 const P={
- evita:["down","Giảm sức mạnh: sát thương chiêu 1 còn 300 (+60/cấp, +0,6 SMPT), trước là 325 (+65/cấp, +0,65); sát thương chiêu 3 còn 30 (+15/cấp, +0,06 SMPT), hồi chiêu 3 tăng lên 55s (−5s/cấp)."],
- astrid:["down","Giảm sức mạnh: tốc đánh cộng thêm của chiêu 1 còn 15% (+3%/cấp), trước là 20% (+4%/cấp); sát thương chiêu 1 còn 275 (+55/cấp, +1,0 công vật lý), trước là 300 (+60/cấp, +1,1)."],
- tamyn:["down","Giảm sức mạnh: đòn đánh cường hóa của nội tại còn 182–364 (+0,28 công vật lý cộng thêm), trước là 200–396 (+0,3)."],
- hayate:["mix","Điều chỉnh: sát thương chuẩn của nội tại thành 45 (+0,23 công vật lý), trước là 40 (+0,25); chiêu 1 gây 110 (+22/cấp, +0,18 công vật lý), trước là 105 (+21/cấp, +0,2). Mạnh hơn đầu trận, nhẹ hơn cuối trận."],
- keera:["up","Tăng sức mạnh: hồi chiêu 1 còn 5s (−0,2s/cấp), trước là 6s (−0,4s/cấp); chiêu 2 gây 100 (+20/cấp, +0,2 SMPT) trên đường lướt và 400 (+80/cấp, +0,8 SMPT) ở vùng tam giác."],
- erin:["up","Tăng sức mạnh: chiêu 1 gây 450 (+90/cấp, +1,05 SMPT, +0,6 công vật lý), trước là 350 (+70/cấp, +0,8, +0,45); sát thương trúng đích 150 (+30/cấp, +0,35 SMPT); hồi chiêu giảm 0,3s mỗi cấp.",true],
- xeniel:["up","Tăng sức mạnh: lá chắn chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa), trước là 350 (+110/cấp, +0,4, +4%); sát thương chiêu 1 thành 500 (+100/cấp, +0,5 SMPT, +5% máu tối đa).",true],
- sephera:["up","Tăng sức mạnh: nội tại thêm hiệu ứng tự hồi máu bằng 4% máu tối đa cộng thêm.",true]
+ butterfly:["mix","Làm lại một số kỹ năng: chiêu 1 bỏ hiệu ứng tăng 25% sát thương lên mỗi mục tiêu trúng đích, thêm đao ảnh gây 80 (+16/cấp, +0,25 công vật lý); chiêu 2 bỏ hiệu ứng tăng tỉ lệ chí mạng, mục tiêu đầu chịu 50 (+10/cấp, +0,15 công vật lý) sát thương phép chắc chắn chí mạng (trước là 100, +20/cấp, +0,3 sát thương vật lý), ba đòn đánh cường hóa thêm 20 (+4/cấp, +0,3 công vật lý) sát thương phép chí mạng; chiêu 3 hồi máu mỗi lần gây sát thương lên mục tiêu bị đánh dấu, 20% khi đánh tướng và 10% với mục tiêu khác (trước là 35% khi dấu kết thúc hoặc mục tiêu bị hạ)."],
+ arduin:["up","Tăng sức mạnh: nội tại hồi 180 (+13/cấp, +0,05 máu cộng thêm) máu, trước là 4% máu tối đa; sát thương chuẩn chiêu 2 thành 150 (+30/cấp, +0,5 công vật lý cộng thêm), trước là 125 (+25/cấp); sát thương gốc chiêu 3 thành 300 (+150/cấp, +1,5 công vật lý), trước là 300 (+125/cấp, +1,2)."],
+ grakk:["up","Tăng sức mạnh: sát thương gốc của nội tại thành 55 (+4/cấp, +0,2 SMPT, +0,02 máu tối đa), trước là 40; sát thương kích nổ thành 225 (+16/cấp, +0,8 SMPT, +0,08 máu tối đa), trước là 160; sát thương gốc chiêu 1 thành 180 (+36/cấp, +0,55 SMPT), trước là 150 (+30/cấp, +0,5)."],
+ dirak:["up","Tăng sức mạnh: hồi chiêu 2 còn 10s (−0,4s/cấp), trước là 12,5s (−0,5s/cấp)."],
+ richter:["mix","Điều chỉnh: hồi chiêu 1 thành 8s (−0,3s/cấp), sát thương lướt chặt thành 75 (+15/cấp, +0,5 công vật lý), trước là 20 (+20/cấp, +0,4), sát thương chém thành 150 (+30/cấp, +1,0), trước là 50 (+50/cấp); chiêu 3 sát thương gốc còn 50 (+25/cấp, +0,2 công vật lý), trước là 60 (+30/cấp, +0,13), sát thương nổ còn 300 (+150/cấp, +1,2), trước là 330 (+165/cấp, +1,0)."],
+ fennik:["up","Tăng sức mạnh: sát thương gốc và sát thương nổ của chiêu 1 cùng thành 125 (+25/cấp, +0,75 công vật lý), trước là 90 (+18/cấp, +0,65)."],
+ dyadia:["down","Giảm sức mạnh: sát thương gốc của nội tại còn 140–280 (+1,0 công vật lý, +0,25 SMPT), trước là 150–300 (+1,0, +0,3); sát thương kéo dài của chiêu 2 còn 540 (+108/cấp, +1,0 SMPT), trước là 640 (+128/cấp, +0,95)."]
 };
 // đường|lớp|tier: danh sách
 const RAW=[
