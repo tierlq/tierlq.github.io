@@ -1,13 +1,14 @@
 # Tỉ lệ thắng / chọn / cấm game rank, lấy từ GAME Liên Quân Mobile của Garena.
 # Nguồn: trong game → Cẩm nang → Bảng Phân Bậc Tướng, bộ lọc "Đấu hạng (Tất cả)", sắp theo "Tỷ lệ thắng" giảm dần.
-# Ghi ngày 19/11/2026 từ video quay màn hình điện thoại của chủ web (43 giây, 2520×1080; đọc từng khung hình, 121 dòng = 120 tướng, Flowborn có 2 dạng).
-# Bảng ngày 19/11 chỉ có 121 dòng, ít hơn bảng 11/11 (130 dòng): KHÔNG có dòng của 9 tướng Triệu Vân, TeeMee, Kahlii, Wiro, Annette, Ormarr, Aleister, Liliana, Natalya.
-# Video bắt đầu ở Preyta (ngay dưới tiêu đề cột) và kết thúc ở Superman, thắng giảm dần liên tục từ 54,95 đến 45,11, nên các tướng này không nằm trong đoạn đã quay; chưa rõ lý do Garena không liệt kê.
-# Cách xử lý: 9 dòng ở CUỐI file giữ số đọc ngày 11/11/2026 (cột 8 = ngày của số đó); web ghi rõ "số ngày 11/11" ở chỗ hiện và vẫn tính vào điểm để tier không đổi vì thiếu số. Khi bảng có lại các tướng này, thay bằng dòng 7 cột đúng thứ tự thắng.
+# Ghi ngày 19/11/2026 từ video quay màn hình điện thoại của chủ web (43 giây, 2520×1080; 121 dòng) và 8 ảnh chụp màn hình gửi cùng tối (20:59) cho 9 dòng mà video không có.
+# Video bắt đầu dưới dòng Triệu Vân và thiếu thêm 8 dòng giữa bảng (TeeMee, Kahlii, Wiro, Annette, Ormarr, Aleister, Liliana, Natalya: bảng ở video không hiện các dòng này dù thắng giảm dần liên tục); 8 ảnh chụp theo từng tab vai trò (Trợ thủ, Pháp sư, Đỡ đòn…) cùng bộ lọc Đấu hạng (Tất cả) bổ sung đủ. Số các dòng trùng nhau giữa ảnh và video khớp từng chữ số.
+# Tổng 130 dòng = 129 tướng (Flowborn xạ thủ và pháp sư là hai dòng), đủ như lần 11/11.
 # Màn hình KHÔNG ghi số trận và ngày cập nhật của bảng. Cột "Garena" là bậc T0 (mạnh nhất) đến T4 do Garena xếp.
-# Số giữ nguyên dạng trong game (dấu phẩy thập phân). Đã kiểm: thắng giảm dần đúng thứ tự; 121 dòng đều khớp một tướng của web; các số chênh nhiều so với bảng 11/11 (Butterfly, Ilumia, Nakroth, Violet, Murad, Raz) xem lại ở khung độ phân giải đầy đủ.
+# Số giữ nguyên dạng trong game (dấu phẩy thập phân). Đã kiểm: thắng giảm dần đúng thứ tự; mọi dòng khớp một tướng của web; số chênh nhiều so với bảng 11/11 (Butterfly, Ilumia, Nakroth, Violet, Murad, Raz) xem lại ở khung độ phân giải đầy đủ.
+# Dòng 8 cột (thêm ngày dd/mm/yyyy ở cột 8, đặt cuối file) = tướng không có trong bảng lần ghi này, giữ số lần đọc trước kèm ngày đó; hiện chưa dùng dòng nào.
 # Định dạng: khoá|tên|vai trò|Garena|thắng %|chọn %|cấm %    (khoá = tên bỏ dấu a–z; Flowborn xạ thủ = flowborn-ad, pháp sư = flowborn-mid)
-# Cập nhật: quay lại bảng này (cuộn từ trên cùng, cuộn chậm, dừng ~1 giây mỗi màn), chép lại các dòng theo đúng thứ tự trong game, rồi chạy: node tools/rank/emit.js
+# Cập nhật: quay lại bảng này (cuộn từ trên cùng, cuộn chậm, dừng ~1 giây mỗi màn; nên chụp thêm từng tab vai trò để bù dòng bị thiếu), chép lại các dòng theo đúng thứ tự trong game, rồi chạy: node tools/rank/emit.js
+trieuvan|Triệu Vân|Đấu sĩ|T0|55,07|34,82|16,56
 preyta|Preyta|Pháp sư|T2|54,95|8,18|4,40
 omega|Omega|Đỡ đòn|T4|54,50|2,38|0,39
 dyadia|Dyadia|Trợ thủ|T3|54,08|3,58|20,74
@@ -32,6 +33,7 @@ cresht|Cresht|Trợ thủ|T3|52,03|5,20|0,44
 rourke|Rourke|Đấu sĩ|T4|51,87|1,10|0,10
 butterfly|Butterfly|Sát thủ|T0|51,81|22,98|9,85
 thane|Thane|Đỡ đòn|T3|51,79|4,49|0,26
+teemee|TeeMee|Trợ thủ|T4|51,73|1,08|0,54
 azzenka|Azzen'Ka|Pháp sư|T3|51,64|5,60|0,54
 veres|Veres|Đấu sĩ|T2|51,54|13,92|0,75
 wisp|Wisp|Xạ thủ|T4|51,52|2,06|0,10
@@ -49,11 +51,14 @@ arthur|Arthur|Đấu sĩ|T1|50,94|18,18|2,41
 boltbaron|Bolt Baron|Đấu sĩ|T2|50,94|9,88|1,17
 lorion|Lorion|Pháp sư|T3|50,91|4,20|0,85
 ming|Ming|Trợ thủ|T4|50,83|0,70|0,10
+kahlii|Kahlii|Pháp sư|T3|50,77|4,27|0,21
+wiro|Wiro|Đỡ đòn|T4|50,49|0,67|0,11
 mina|Mina|Đỡ đòn|T2|50,43|8,12|1,00
 slimz|Slimz|Xạ thủ|T2|50,42|6,85|0,11
 edras|Edras|Đấu sĩ|T2|50,40|13,28|9,56
 baldum|Baldum|Đỡ đòn|T3|50,38|3,90|0,72
 krizzix|Krizzix|Trợ thủ|T3|50,23|3,22|11,99
+annette|Annette|Trợ thủ|T2|50,23|7,55|32,19
 ata|Ata|Đỡ đòn|T4|50,21|1,11|0,10
 maloch|Maloch|Đấu sĩ|T2|50,18|11,12|0,92
 bijan|Bijan|Đấu sĩ|T2|50,16|13,08|4,16
@@ -72,6 +77,7 @@ enzo|Enzo|Sát thủ|T2|49,75|6,53|17,97
 taara|Taara|Đỡ đòn|T2|49,69|13,15|4,28
 ilumia|Ilumia|Pháp sư|T2|49,63|11,70|0,53
 dieuthuyen|Điêu Thuyền|Pháp sư|T3|49,63|5,04|0,41
+ormarr|Ormarr|Đỡ đòn|T4|49,60|1,67|0,10
 violet|Violet|Xạ thủ|T0|49,59|26,70|0,81
 biron|Biron|Đấu sĩ|T3|49,53|5,24|0,51
 allain|Allain|Đấu sĩ|T2|49,49|11,36|3,24
@@ -96,6 +102,9 @@ amily|Amily|Đấu sĩ|T3|48,54|3,20|0,10
 murad|Murad|Sát thủ|T1|48,51|15,48|21,24
 hayate|Hayate|Xạ thủ|T0|48,51|29,00|15,66
 yena|Yena|Đấu sĩ|T3|48,45|3,26|0,10
+aleister|Aleister|Pháp sư|T2|48,44|4,98|40,10
+liliana|Liliana|Pháp sư|T2|48,44|7,77|0,28
+natalya|Natalya|Pháp sư|T0|48,43|21,44|7,15
 kaine|Kaine|Sát thủ|T2|48,41|7,10|12,26
 elsu|Elsu|Xạ thủ|T0|48,41|18,79|26,78
 zephys|Zephys|Đấu sĩ|T2|48,30|6,59|0,14
@@ -129,12 +138,3 @@ charlotte|Charlotte|Đấu sĩ|T4|46,73|0,47|0,10
 rouie|Rouie|Trợ thủ|T3|46,72|2,71|11,86
 theflash|The Flash|Sát thủ|T4|45,94|0,60|0,19
 superman|Superman|Đấu sĩ|T4|45,11|0,33|0,38
-trieuvan|Triệu Vân|Đấu sĩ|T0|55,24|35,18|13,42|11/11/2026
-natalya|Natalya|Pháp sư|T0|48,30|21,12|5,83|11/11/2026
-aleister|Aleister|Pháp sư|T2|48,59|5,02|40,82|11/11/2026
-liliana|Liliana|Pháp sư|T2|48,37|7,10|0,27|11/11/2026
-annette|Annette|Trợ thủ|T2|50,04|7,61|31,12|11/11/2026
-kahlii|Kahlii|Pháp sư|T3|50,95|4,17|0,23|11/11/2026
-teemee|TeeMee|Trợ thủ|T4|52,06|1,08|0,49|11/11/2026
-ormarr|Ormarr|Đỡ đòn|T4|49,75|1,56|0,10|11/11/2026
-wiro|Wiro|Đỡ đòn|T4|50,47|0,59|0,10|11/11/2026

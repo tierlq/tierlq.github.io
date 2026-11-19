@@ -401,7 +401,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <h2>Giới hạn</h2><ul class="items">
 <li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này (tính đến ${ctx.SRC.aogTo}, chưa gồm các trận ngày 07/11); tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
 <li>Số liệu giải không tách theo đường nên tier ở đường phụ chỉ là ước tính.</li>
-<li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng; bảng này cập nhật theo người ghi, không tự động. Nó khác số giải đấu (ĐTDV) vì là số của người chơi rank. Tướng nào không có dòng trong bảng lần ghi mới nhất thì web giữ số lần ghi trước và ghi rõ ngày của số đó.</li>
+<li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng; bảng này cập nhật theo người ghi, không tự động. Nó khác số giải đấu (ĐTDV) vì là số của người chơi rank.</li>
 <li>RoV Pro League là giải của server Thái Lan, tham khảo cho xu hướng chứ không thay số liệu server Việt Nam.</li></ul>
 <p>Thấy tướng xếp sai hoặc số liệu lệch: <a href="/lien-he/">báo cho người duy trì</a>. Nguồn đầy đủ ở <a href="/gioi-thieu/">trang Giới thiệu</a>.</p>` }));
 writePage('lien-he', pageShell({ title: 'Liên hệ Bảng Tier Liên Quân: góp ý, báo sai số liệu, hợp tác', desc: 'Cách liên hệ Bảng Tier Liên Quân để góp ý, báo sai số liệu, đề nghị hợp tác hoặc báo lỗi bảo mật.', path: '/lien-he/', h1: 'Liên hệ', over: 'Về web',
