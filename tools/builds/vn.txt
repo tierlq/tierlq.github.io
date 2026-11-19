@@ -405,11 +405,11 @@ ENCH: Tháp quang minh: Sung mãn, Xuyên tâm, Thần quang | Rừng nguyên si
 
 ## aya@mid
 SRC: https://aov-builds.com/tuong/aya/
-ITEMS: Giày Phù Thủy | Trượng Bùng Nổ | Mặt Nạ Berith | Vương Miện Hecate | Trượng Hỗn Mang | Sách Thánh
-RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
+ITEMS: Giày Thuật Sĩ | Mặt Nạ Berith | Trượng Bùng Nổ | Vương Miện Hecate | Trượng Hỗn Mang | Sách Thánh
+RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Tốc đánh-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 SPELL: Suy Nhược / Ngất Ngư / Thanh Tẩy
-ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Thành khởi nguyên: Siêu hồi máu | Tháp quang minh: Thánh châu
-NOTE: Nguồn không có build riêng đi Giữa, ở đây dùng bộ Full phép cùng trang.
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Tháp quang minh: Thánh châu | Thành khởi nguyên: Mật ngữ
+NOTE: Theo clip Aya trên TikTok @bangtierlienquan: bộ Full phép xả dame, ngọc Full phép. Bộ 2 Giữa hỗ trợ của clip: Giày Phù Thuỷ, Mặt Nạ Berith, Sách Truy Hồn, Sách Thánh, Trượng Băng, Vương Miện Hecate (ngọc Toàn diện, tím Máu-Hồi máu-Tốc chạy).
 
 ## alice@mid
 SRC: https://aov-builds.com/tuong/alice/
@@ -949,11 +949,11 @@ ENCH: Tháp quang minh: Tương phản, Xuyên tâm, Thần quang | Vực hỗn 
 
 ## aya@sp
 SRC: https://aov-builds.com/tuong/aya/
-ITEMS: Liệt Hoả Mở Trói | Sách Truy Hồn | Mặt Nạ Berith | Trượng Băng | Trượng Hỗn Mang | Sách Thánh
+ITEMS: Liệt Hoả Hồi Huyết | Sách Truy Hồn | Trượng Băng | Mặt Nạ Berith | Trượng Hỗn Mang | Sách Thánh
 RUNES: Đỏ Công phép-Xuyên giáp phép x10 | Tím Máu-Hồi máu-Tốc chạy x10 | Xanh Tốc đánh-Xuyên giáp phép x10
 SPELL: Suy Nhược / Ngất Ngư / Thanh Tẩy
-ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Thành khởi nguyên: Siêu hồi máu | Tháp quang minh: Thánh châu
-NOTE: Nguồn không ghi ngọc và phép riêng cho bộ đồ này, ở đây dùng ngọc và phép của bộ Full phép cùng trang.
+ENCH: Vực hỗn mang: Ma Hỏa, Cường công, Ma tính | Tháp quang minh: Thánh châu | Thành khởi nguyên: Mật ngữ
+NOTE: Theo clip Aya trên TikTok @bangtierlienquan: bộ Trợ thủ thường, ngọc Toàn diện (trâu hơn). Bộ 2 Buff khiên (giáp ảo) của clip: Liệt Hoả Hồi Huyết, Giày Thuật Sĩ, Sách Truy Hồn, Xuyên Tâm Lệnh, Trượng Băng, Khiên Thánh Quang. Phép bổ trợ chưa có trong clip nên giữ như cũ.
 
 ## azzenka@mid
 SRC: https://aov-builds.com/tuong/azzenka/
