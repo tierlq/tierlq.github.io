@@ -10,7 +10,7 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Phong cách theo Bugatti 2026 (chủ web chọn 18/10/2026): nền đen tuyền, chữ tiêu đề in hoa giãn rộng, chữ phụ/nút kiểu đánh máy (JetBrains Mono), nút viên thuốc, khung ảnh/hộp bo góc nhẹ (8–12px), logo giữa thanh trên, hiện từ mờ sang nét khi cuộn, đường kẻ mảnh, chuyển động chậm. Sân khấu và đầu trang vẫn tràn mép, không bo.
 - Tên tướng không xuống dòng trên thẻ (chủ web yêu cầu). Tên dài trên điện thoại thu chữ nhẹ (lớp `.card.ln`).
 - (Đã bỏ phần lên/xuống bậc từ 11/11/2026, chủ web chỉ giữ dấu tăng/giảm sức mạnh.) Dấu trên ảnh tướng kiểu Prydwen (chủ web yêu cầu 26/10/2026): cột ô vuông nhỏ ở góc phải trên. Ô đặc xanh chữ V lên / đỏ chữ V xuống (hai chữ V khi đổi từ 2 bậc) = lên/xuống bậc so với lần cập nhật trước (`PREV_T`); ô tối có dấu + / − / ± = tăng / giảm / điều chỉnh sức mạnh ở bản Garena; ô vàng MỚI = tướng mới. Ô nổi cách mép 3px, bo 5px. Không đổi lại thành nhãn chữ "↑ Tăng".
-- Icon dùng một bộ nét mảnh (lưới 24, nét 1,6, đầu nét tròn, lớp `svg.i`); biểu tượng lớp tướng cũng nét mảnh (khiên, kiếm chéo, dao găm, sao bốn cánh, tâm ngắm, trái tim). Trợ thủ không dùng dấu + để khỏi lẫn với dấu tăng sức mạnh.
+- Icon dùng một bộ nét mảnh (lưới 24, nét 1,6, đầu nét tròn, lớp `svg.i`); biểu tượng lớp tướng cũng nét mảnh (khiên, kiếm chéo, dao găm, sao bốn cánh, tâm ngắm, trái tim). Trợ thủ không dùng dấu + để khỏi lẫn với dấu tăng sức mạnh. Vẽ lại 19/11/2026 (chủ web: "làm lại và tối ưu các icon cho chuẩn web chuyên nghiệp"): lớp tướng theo dáng bộ Lucide (ISC) cùng lưới 24 nét tròn, dao găm vẽ riêng cùng quy cách; dấu sức mạnh dùng mũi tên kiểu Lucide trên lưới 24; bỏ quầng sáng neon của dấu; MỚI dùng chữ đậm font thường (font đánh máy ép dấu tiếng Việt). Không thêm lại quầng sáng.
 - Hover chỉ đặt trong `@media (hover:hover)` (tránh nút "dính" màu sau khi chạm trên điện thoại).
 - Thanh dính (tìm kiếm, chọn đường) và hàng tên đường dùng nền đặc `var(--bg)`, không để trong suốt.
 - Thẻ tướng hiện ngay khi cuộn tới; không dùng lại hiệu ứng bật lên lần lượt (từng làm bảng mờ hơn 1 giây).
@@ -244,3 +244,11 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
   - Xoay ngang: bộ lọc dạng chip che kết quả tìm khi bàn phím mở (từ 31/10).
   - Cột Tà Thần dài hơn hẳn các cột khác trên máy tính (từ trước).
 - 14/11/2026: cuối bảng chi tiết thêm khối "Phụ kiện gợi ý" (nhãn "Liên kết tiếp thị", 2 món, câu giải thích hoa hồng), sau bộ chiêu và trước nút gửi bạn bè; không chen vào phần build hay điểm. Chủ web cho phép đặt, vì các chỗ cũ gần như không ai thấy.
+
+## 2026-11-19 (làm tay theo yêu cầu chủ web)
+- Làm lại bộ icon: 6 icon lớp tướng (`ICON` trong data.js) vẽ lại theo dáng Lucide, cùng lưới 24, nét 2 (chip 1,9, ô trên ảnh 2,2): khiên, kiếm chéo, dao găm (vẽ riêng), sao bốn cánh, tâm ngắm, trái tim. Kiếm chéo và dao găm cũ ở cỡ 12px trông như dấu X và vệt mờ.
+- Dấu tăng/giảm/điều chỉnh (`MKD`/`mkS` trong app.js) chuyển sang lưới 24, mũi tên có thân kiểu Lucide, nét 3 (≈1,5px ở cỡ 12px). Bỏ nền gradient + quầng sáng neon: trên ảnh tướng nền tối đặc 82% pha màu 18%, viền màu 70%; ngoài ảnh nền màu 14% viền 50% (nền sáng 18%/80%, chữ màu đậm).
+- Một thang cỡ: ô trên thẻ 20px (icon 12), bảng chi tiết 24px (icon 14), nhãn/số liệu 18px (icon 11), chip lọc và chú giải 20px (icon 12). Ô lớp tướng trên ảnh 19→20px, bo 6px, viền trắng 20%.
+- MỚI: chữ đậm font thường 9px thay font đánh máy (dấu Ớ bị ép). Chấm màu đường trong chip 7→8px.
+- Ảnh tier list tải về (`drawMarks` trong app.js) vẽ dấu theo kiểu mới: lưới 24, nền tối pha màu, không quầng sáng, MỚI chữ đậm font thường.
+- Kiểm tra: ảnh trước/sau ở 1440 tối/sáng và 390, thử vẽ dấu trên canvas; all.sh đạt.

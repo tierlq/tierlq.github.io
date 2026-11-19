@@ -56,14 +56,13 @@ HEROES.forEach(h=>{if(!(h.id in mine))mine[h.id]=h.tier});
 function initials(n){const w=n.replace(/[^\p{L}\s]/gu,"").trim().split(/\s+/);return (w.length>1?w[0][0]+w[1][0]:w[0].slice(0,2)).toUpperCase()}
 const P_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]),S_KEYS=new Set(["evita", "ishar", "tamyn", "ybneth", "taara", "ata", "omega", "max", "toro", "mina", "roxie", "baldum", "chaugnar", "thane", "ormarr", "arduin", "xeniel", "wiro", "arthur", "zuka", "florentino", "volkath", "ryoma", "maloch", "trieuvan", "airi", "yena", "veres", "qi", "bijan", "lubo", "omen", "richter", "errol", "allain", "edras", "biron", "boltbaron", "skud", "kilgroth", "superman", "amily", "charlotte", "astrid", "wonderwoman", "rourke", "dextra", "tachi", "yan", "zephys", "sinestrea", "billow", "butterfly", "murad", "ngokhong", "nakroth", "paine", "zill", "quillen", "kaine", "enzo", "keera", "kriknak", "aoi", "bright", "theflash", "gildur", "yue", "zata", "raz", "lorion", "azzenka", "iggy", "krixi", "veera", "natalya", "marja", "lauriel", "aleister", "tulen", "liliana", "heino", "flowborn-mid", "goverra", "kahlii", "mganga", "ilumia", "dieuthuyen", "bonnie", "ignis", "preyta", "jinna", "darcy", "sephera", "dirak", "violet", "hayate", "flowborn-ad", "moren", "elsu", "valhein", "slimz", "fennik", "stuart", "telannas", "capheny", "laville", "celica", "elandorr", "yorn", "lindis", "wisp", "thorne", "teeri", "erin", "alice", "dolia", "aya", "annette", "dyadia", "cresht", "grakk", "rouie", "krizzix", "arum", "lumburr", "helen", "teemee", "zip", "ming"]);
 const pKey=h=>{const k=h.key==="flowborn"?"flowborn-"+h.lane:h.key;return P_KEYS.has(k)?k:""};
-/* Dấu trên ảnh tướng (góc phải trên, kiểu Prydwen): ô đặc mũi tên = lên/xuống bậc so với lần cập nhật trước,
-   hình tròn kính tối có mũi tên ↑ / ↓ / ⇅ = tăng / giảm / điều chỉnh sức mạnh ở bản mới, MỚI = tướng mới.
-   Hai loại khác nhau cả hình (vuông / tròn) lẫn nét (chữ V / mũi tên có thân) để nhìn là phân biệt. */
-const mkS=(d,w=1.7)=>`<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
-// Đường vẽ (lưới 12): bậc = chữ V (hai chữ V khi đổi từ 2 bậc trở lên); sức mạnh = mũi tên có thân, nét đậm
-const MKD={up:"M3 7.6 6 4.6l3 3",up2:"M3 6 6 3l3 3M3 9.6l3-3 3 3",down:"M3 4.4l3 3 3-3",down2:"M3 2.4l3 3 3-3M3 6l3 3 3-3",
-  pu:"M6 9.6V2.6M2.8 5.8 6 2.6l3.2 3.2",pd:"M6 2.4v7M2.8 6.2 6 9.4l3.2-3.2",pm:"M4 9.6V2.6M2.1 4.5 4 2.6l1.9 1.9M8 2.4v7M6.1 7.5 8 9.4l1.9-1.9"};
-const MKW={up:2,up2:1.8,down:2,down2:1.8,pu:2,pd:2,pm:1.7};
+/* Dấu trên ảnh tướng (góc phải trên, kiểu Prydwen): ô vuông chữ V = lên/xuống bậc so với lần cập nhật trước (đang tắt),
+   hình tròn mũi tên ↑ / ↓ / ⇅ = tăng / giảm / điều chỉnh sức mạnh ở bản mới, viên thuốc MỚI = tướng mới.
+   Vẽ lại 19/11/2026: cùng lưới 24 với icon lớp tướng, mũi tên kiểu Lucide, nét đậm vừa để rõ ở cỡ 11–13px, không quầng sáng. */
+const mkS=(d,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+const MKD={up:"m6 15 6-6 6 6",up2:"m6 12 6-6 6 6M6 19l6-6 6 6",down:"m6 9 6 6 6-6",down2:"m6 5 6 6 6-6M6 12l6 6 6-6",
+  pu:"M12 19V5m-6 6 6-6 6 6",pd:"M12 5v14m6-6-6 6-6-6",pm:"M8 20V4M4 8l4-4 4 4M16 4v16m-4-4 4 4 4-4"};
+const MKW={up:3.2,up2:3,down:3.2,down2:3,pu:3,pd:3,pm:2.7};
 const MKI=Object.fromEntries(Object.entries(MKD).map(([k,d])=>[k,mkS(d,MKW[k])]));
 const ui=(d,extra="")=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${extra}<path d="${d}"/></svg>`;
 const moveN=h=>h.move?Math.abs(TIERS.indexOf(h.prev)-TIERS.indexOf(h.tier)):0;
@@ -774,21 +773,19 @@ const TCOL={S:"#d9b56c",A:"#b9a9ff",B:"#86d0c3",C:"#8ea3cc",D:"#7a797f"};
 const LCOL={top:"#e8805f",jg:"#5cc496",mid:"#a597ff",ad:"#e9b766",sp:"#6fb6ee"};
 const loadImg=src=>new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src});
 // Dấu lên/xuống bậc và tăng/giảm sức mạnh trên ảnh tải về: vẽ giống hệt dấu trên web (cùng đường vẽ SVG)
-const MKC={rise:[95,211,152],fall:[255,122,106],up:[95,211,152],down:[255,122,106],mix:[240,190,96],new:[217,181,108]};
-function drawMarks(c,h,x1,y,font){const S=19,ls=[];x1-=3;y+=3;
+const MKC={rise:[95,211,152],fall:[255,122,106],up:[95,211,152],down:[255,122,106],mix:[240,190,96],new:[226,190,112]};
+function drawMarks(c,h,x1,y,font){const S=20,ls=[];x1-=3;y+=3;
   if(h.move){const k=h.move+(moveN(h)>1?"2":"");ls.push([MKC[h.move==="up"?"rise":"fall"],MKD[k],0,0,MKW[k]])}
   if(h.trend==="new")ls.push([MKC.new,"MỚI",1,2]);else if(h.trend){const k="p"+h.trend[0];ls.push([MKC[h.trend],MKD[k],0,1,MKW[k]])}
-  ls.forEach(([[r,g,b],ic,txt,shape,lw])=>{c.save();c.font=`600 8.5px "JetBrains Mono",${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+10:S,x=x1-w,col=a=>`rgba(${r},${g},${b},${a})`;
-    const path=()=>{c.beginPath();if(shape===1)c.arc(x+S/2,y+S/2,S/2,0,Math.PI*2);else if(c.roundRect)c.roundRect(x,y,w,S,shape===2?S/2:5);else c.rect(x,y,w,S)};
-    // quầng sáng
-    c.shadowColor=col(.45);c.shadowBlur=10;path();c.fillStyle="rgba(8,9,13,.78)";c.fill();c.shadowBlur=0;c.shadowColor="transparent";
-    const gr=c.createRadialGradient(x+w/2,y,0,x+w/2,y,S*1.2);gr.addColorStop(0,col(.34));gr.addColorStop(.6,col(.06));gr.addColorStop(1,col(.06));
-    path();c.fillStyle=gr;c.fill();
-    c.beginPath();if(shape===1)c.arc(x+S/2,y+S/2,S/2-.5,0,Math.PI*2);else if(c.roundRect)c.roundRect(x+.5,y+.5,w-1,S-1,shape===2?S/2-.5:4.5);else c.rect(x+.5,y+.5,w-1,S-1);
-    c.strokeStyle=col(.85);c.lineWidth=1;c.stroke();
+  ls.forEach(([[r,g,b],ic,txt,shape,lw])=>{c.save();c.font=`700 9px ${font}`;const w=txt?Math.ceil(c.measureText(ic).width)+12:S,x=x1-w,col=a=>`rgba(${r},${g},${b},${a})`;
+    const path=(o=0)=>{c.beginPath();if(shape===1)c.arc(x+S/2,y+S/2,S/2-o,0,Math.PI*2);else if(c.roundRect)c.roundRect(x+o,y+o,w-2*o,S-2*o,shape===2?S/2-o:6-o);else c.rect(x+o,y+o,w-2*o,S-2*o)};
+    // giống .por .mk: nền tối đặc pha màu, viền màu 1px, bóng nhẹ, không quầng sáng
+    c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=2;c.shadowOffsetY=1;path();c.fillStyle="rgba(10,10,14,.82)";c.fill();c.shadowColor="transparent";
+    path();c.fillStyle=col(.18);c.fill();
+    path(.5);c.strokeStyle=col(.7);c.lineWidth=1;c.stroke();
     const fg=`rgb(${r},${g},${b})`;
     if(txt){c.fillStyle=fg;c.textAlign="center";c.textBaseline="middle";c.fillText(ic,x+w/2,y+S/2+.5)}
-    else{const gz=shape===1?12:11,k=gz/12;c.translate(x+(S-gz)/2,y+(S-gz)/2);c.scale(k,k);c.strokeStyle=fg;c.lineWidth=lw||1.7;c.lineCap=c.lineJoin="round";c.stroke(new Path2D(ic))}
+    else{const gz=12,k=gz/24;c.translate(x+(S-gz)/2,y+(S-gz)/2);c.scale(k,k);c.strokeStyle=fg;c.lineWidth=lw||3;c.lineCap=c.lineJoin="round";c.stroke(new Path2D(ic))}
     c.restore();y+=S+3})}
 async function exportImage(which){track("tai_anh",{bang:which==="mine"?"tu_xep":"meta"});
   const btn=which==="mine"?$("dlMine"):$("dlImg");btn.setAttribute("aria-busy","true");toast("Đang tạo ảnh…");
