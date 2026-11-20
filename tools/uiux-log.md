@@ -256,3 +256,16 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 ## 2026-11-19 tối (làm tay theo yêu cầu chủ web)
 - Bảng chi tiết, phần build: ô có nhiều bộ (Aya Giữa, Aya Trợ thủ) hiện hai nút "Bộ 1 / Bộ 2" kiểu gạch chân như thanh chế độ (`.bld-tab`, hai nút chia đều chiều ngang, tên bộ dưới nhãn "Bộ N"), bên dưới là khung của bộ đang chọn: một dòng mô tả (`.bld-desc`), 6 món đồ, bảng ngọc, phép bổ trợ, phù hiệu. Chọn bằng chạm hoặc phím ←/→, đổi chỉ bằng ẩn/hiện (không dựng lại, không chuyển động mới ngoài gạch chân trượt 0,4s như `.seg`, tắt khi giảm chuyển động). Chọn tab thay vì xếp chồng hai bộ để bảng không dài gấp đôi trên điện thoại.
 - Kiểm tra ảnh 390 và 1440: không tràn ngang, tên bộ không bị cắt.
+
+## 2026-11-21 (việc định kỳ: rà UI/UX điện thoại)
+- Đã thử bằng Playwright, thao tác chạm: iPhone 13, iPhone SE, Pixel 7, Android 360px, màn 320px, xoay ngang 844×390; sáng và tối. Các bước: tải trang, thiên hà, menu (mở, đóng ×, 3 mục "Nổi bật / Bảng tier / Cách xếp" từ đầu, giữa, cuối trang, ảnh thẻ menu), sân khấu (đổi tab, vuốt ngang, Xem chi tiết, nút Quay lại), thanh dính + hàng đường, chọn 5 đường, tìm có/không kết quả, bộ lọc, bảng chi tiết qua link (`#tuong-zata-mid`, `#tuong-aya-mid` có hai nút Bộ 1/Bộ 2 mới thêm 19/11, `#tuong-flowborn-ad`: cuộn hết bảng, hộp thông tin món đồ, đóng ×), Tự xếp (chọn tướng, chạm hàng tier để đặt, thanh báo, tải ảnh ra tệp), Số liệu, cuối trang, nút lên đầu trang, đổi sáng/tối.
+  Không lỗi JS, không ảnh 404, không tràn ngang, không phần tử ra ngoài màn, không chữ bị cắt; menu tới đúng mục; thanh dính sát mép trên (khi vuốt xuống thanh Meta/Tìm ẩn lên, hàng đường dính ở 0); hộp thông tin món đồ nằm trong màn hình; nút Bộ 1/Bộ 2 của Aya chạm được (cao ≥40px) và không cắt tên bộ ở 320px.
+- Sửa: **điện thoại xoay ngang, nút "Còn đi: <đường>" trong bảng chi tiết** (ví dụ Aya Giữa → "Trợ thủ · C") chỉ cao 30px: quy tắc `min-height:40px` chỉ nằm trong `@media (max-width:719px)`, mà xoay ngang rộng 844px. Thêm vào khối `@media (pointer:coarse)` (cạnh `.sp-b`). Đo lại: 40px ở cả dọc và ngang; máy tính không đổi.
+- Hiệu năng (measure.js, 3 lần, lúc máy rảnh): điện thoại LCP 380 ms, TBT 97 ms, bảng có thẻ 991 ms, mở bảng chi tiết 222 ms, 94 kB / 5 yêu cầu tới lúc bảng hiện (92 kB ngày 15/11; +2 kB do build hai bộ của Aya và bộ icon mới); máy tính LCP 80 ms. Chỉ sửa CSS nên không đổi.
+- Kiểm tra: `tools/check/all.sh` TẤT CẢ ĐẠT (1440/390: 5 slide, 181/45 thẻ, mở 181/181 bảng chi tiết). Không sửa JS nên không đổi `?v=`.
+- Đã xem rồi để lại:
+  - Menu điện thoại phủ kín màn hình nên không có "nền" để bấm đóng; đóng bằng × hoặc nút Quay lại (đúng thiết kế).
+  - iPhone SE / 320px, bảng Số liệu: nút tên cột "CHỌN", "CẤM" rộng 36px (cao 44px), vẫn trên mức tối thiểu 24px; không nới vì sẽ lấn chỗ tên tướng.
+  - Mở bảng chi tiết bằng link riêng (không qua chạm) thì nút × hiện viền focus vàng (do `focus()` khi chưa có thao tác nào); chỉ là viền, không che gì.
+  - Điện thoại: nút lên đầu trang (hiện khi vuốt ngược lên) che vài chữ cuối đoạn văn ở góc phải dưới (như các tuần trước).
+- Cần chủ web thử máy thật: xoay ngang mở một tướng có nhiều đường và chạm nút "Còn đi"; Zalo, Messenger, app TikTok (trình duyệt trong app); Chrome Android còn màn trắng/xanh không.
