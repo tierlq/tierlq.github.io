@@ -15,7 +15,8 @@ const ctx = {}; vm.createContext(ctx);
 for (const f of ['assets/data.js', 'assets/builds.js', 'assets/skills.js', 'assets/counters.js'])
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/^const /gm, 'var '), ctx);
 const { RANK, HEROES, LANES, CLASSES, TIERS, TNAME, PATCH, PREV_DATE, P, BUILDS, BITEM, BSPELL, BENCH, BARC, SKILLS, COUNTERS, CNSRC, STRWK } = ctx;
-const nfv = v => v.toFixed(2).replace('.', ',');   // 54.6 -> 54,60 (như hiển thị trong game)
+const nfv = v => v.toFixed(2).replace('.', ',');
+const dc = v => String(v).replace(/(\d)\.(\d)/g, '$1,$2');   // số thập phân kiểu Việt trong chữ hiển thị (4.46 -> 4,46)   // 54.6 -> 54,60 (như hiển thị trong game)
 const rankOf = h => RANK.d[h.key + '-' + h.lane] || (h.key === 'flowborn' ? null : RANK.d[h.key]);   // Flowborn có -ad và -mid
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -160,12 +161,12 @@ const { SRC, aogOf, prevOf, aogScore, proScore, RMS, rankScore } = ctx;
 const sc5 = v => v == null ? 'chưa có' : v.toFixed(1).replace('.', ',') + '/5';
 function whyHTML(h) {
   const a = aogOf(h.key, h.lane), pv = prevOf(h.key, h.lane), r = SRC.rpl[h.key], m = SRC.rm[h.key + '-' + h.lane] || SRC.rm[h.key], g = rankOf(h);
-  const wr = x => x[3] ? `, thắng ${x[0]}%${x[1] < 5 ? ' (chọn dưới 5% số trận nên chưa tính)' : ''}` : '';
+  const wr = x => x[3] ? `, thắng ${dc(x[0])}%${x[1] < 5 ? ' (chọn dưới 5% số trận nên chưa tính)' : ''}` : '';
   const giai = (x, n, t = '') => x ? `${x[3]} lượt chọn, ${x[4]} lượt cấm trong ${n} trận${t}${wr(x)}` : `không được chọn trong ${n} trận`;
   const rows = [
     ['ĐTDV mùa này', giai(a, SRC.aogGames, ` (đến ${SRC.aogTo}, chưa gồm các trận ngày 07/11)`), aogScore(a)],
     ['ĐTDV mùa trước', giai(pv, SRC.prevGames), aogScore(pv)],
-    ['RoV Pro League', r ? (r[1] + r[2] < 5 ? `ít xuất hiện (${(r[1] + r[2]).toFixed(1)}% chọn + cấm)` : `chọn ${r[1]}%, cấm ${r[2]}%${r[0] == null ? '' : ', thắng ' + r[0] + '%'}`) : 'chưa có dữ liệu', proScore(r)],
+    ['RoV Pro League', r ? (r[1] + r[2] < 5 ? `ít xuất hiện (${dc((r[1] + r[2]).toFixed(1))}% chọn + cấm)` : `chọn ${dc(r[1])}%, cấm ${dc(r[2])}%${r[0] == null ? '' : ', thắng ' + dc(r[0]) + '%'}`) : 'chưa có dữ liệu', proScore(r)],
     ['Tier list rank cộng đồng', m ? 'tier ' + m : 'chưa có dữ liệu', m ? RMS[m] : null],
     ['Game rank (Garena)', g ? `thắng ${nfv(g[0])}%, chọn ${nfv(g[1])}%, cấm ${nfv(g[2])}%` : 'chưa có dữ liệu', g ? rankScore(g) : null]];
   const end = h.floor === 'manual' ? `Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không lấy theo điểm tổng này.` : h.floor ? `Tier được nâng theo sàn số liệu ĐTDV (tướng được chọn hoặc cấm rất nhiều ở giải).` : `Tier ${h.tier} lấy theo điểm tổng này.`;
@@ -176,7 +177,7 @@ function whyHTML(h) {
 // Một bộ build (đồ, phép bổ trợ, ngọc, phù hiệu). Ô nhiều bộ: BUILDS[...] là bộ 1, các bộ thêm nằm ở .v (mỗi bộ có tên .t và mô tả .d)
 const setHTML = s => `<ol class="items">${s.i.map(id => `<li><a href="/trang-bi/#${id}">${esc(BITEM[id][0])}</a></li>`).join('')}</ol>
 <p><b>Phép bổ trợ:</b> ${s.s.map(x => `<a href="/phep-bo-tro/#${x}">${esc(BSPELL[x][0])}</a>`).join(' hoặc ')}</p>
-<p><b>Bảng ngọc:</b> ${s.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(BARC[a][1])})`).join('; ')}</p>
+<p><b>Bảng ngọc:</b> ${s.r.map(([a, n]) => `<a href="/bang-ngoc/#${a}">${esc(BARC[a][2])}</a> ×${n} (${esc(dc(BARC[a][1]))})`).join('; ')}</p>
 ${s.e && s.e.length ? `<p><b>Phù hiệu:</b> ${s.e.map(id => `<a href="/phu-hieu/#${id}">${esc(BENCH[id][0])}</a>`).join(', ')}</p>` : ''}`;
 for (const h of HEROES) {
   const L = LANES[h.lane], b = BUILDS[h.key + '@' + h.lane], sk = SKILLS[h.key === 'flowborn' ? 'flowborn-' + h.lane : h.key];
@@ -230,7 +231,7 @@ ${CSP}
 ${ban ? `<div class="ban"><img src="${ban}" alt="${esc(h.name)}" width="1386" height="852"></div>` : ''}
 <p class="over">${esc(L)}${h.sec ? ' · đường phụ' : ''} · ${esc(CLASSES[h.cls] || '')} · ${esc(season)}</p>
 <h1>${esc(h.name)} <span>tier ${h.tier}</span></h1>
-<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${h.score.toFixed(2)}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''}${h.floor === 'manual' ? ` Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không theo điểm tổng.` : h.floor ? ` Tier được nâng theo sàn số liệu ĐTDV (xem <a href="/phuong-phap/">Phương pháp</a>).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
+<p class="lead">${esc(h.name)} đi ${esc(L)} đang ở <b>tier ${h.tier} (${TNAME[h.tier]})</b>, hạng ${h.rank}/${h.laneN} trong đường ${esc(L)}, điểm tổng hợp ${dc(h.score.toFixed(2))}/5.${h.move ? ` ${h.move === 'up' ? 'Lên' : 'Xuống'} bậc từ tier ${h.prev} (so với ngày ${PREV_DATE}).` : ''}${h.floor === 'manual' ? ` Tier ${h.tier} do người biên tập <a href="/phuong-phap/#chinh-tay">chỉnh tay</a>, không theo điểm tổng.` : h.floor ? ` Tier được nâng theo sàn số liệu ĐTDV (xem <a href="/phuong-phap/">Phương pháp</a>).` : ''} Cập nhật ${upd}, bản ${PATCH}.</p>
 <a class="go" href="/#tuong-${h.id}">Xem chi tiết trên Bảng Tier →</a>
 ${whyHTML(h)}
 ${h.note ? `<h2>Bản ${PATCH}</h2><p>${esc(h.note)}</p><p><a href="${purl(curP)}">Xem mọi thay đổi của bản ${PATCH} →</a></p>` : ''}
@@ -288,7 +289,7 @@ writePage('ban-cap-nhat', pageShell({ title: 'Các bản cập nhật cân bằn
 
 // ---------- 3b. Tier list từng đường (duong/<slug>/): trang đích cho "tier list rừng liên quân"... ----------
 fs.rmSync(path.join(ROOT, 'duong'), { recursive: true, force: true });
-const rowL = h => `<li><a href="${url(h)}"><b>${esc(h.name)}</b></a>${h.sec ? '<span class="tb">đường phụ</span>' : ''}<span class="tb">hạng ${h.rank}/${h.laneN}</span><span class="tb">${h.score.toFixed(2)}/5</span>${h.floor === 'manual' ? '<span class="tb">chỉnh tay</span>' : ''}${h.move ? `<span class="tb">${h.move === 'up' ? '↑ lên' : '↓ xuống'} từ tier ${h.prev}</span>` : ''}${h.note ? `<p>Bản ${PATCH}: ${esc(strip(h.note))}</p>` : ''}</li>`;
+const rowL = h => `<li><a href="${url(h)}"><b>${esc(h.name)}</b></a>${h.sec ? '<span class="tb">đường phụ</span>' : ''}<span class="tb">hạng ${h.rank}/${h.laneN}</span><span class="tb">${dc(h.score.toFixed(2))}/5</span>${h.floor === 'manual' ? '<span class="tb">chỉnh tay</span>' : ''}${h.move ? `<span class="tb">${h.move === 'up' ? '↑ lên' : '↓ xuống'} từ tier ${h.prev}</span>` : ''}${h.note ? `<p>Bản ${PATCH}: ${esc(strip(h.note))}</p>` : ''}</li>`;
 for (const l of Object.keys(LANES)) {
   const L = LANES[l], a = HEROES.filter(h => h.lane === l).sort((x, y) => TO.indexOf(x.tier) - TO.indexOf(y.tier) || x.rank - y.rank);   // cùng cách đếm hạng/tổng như trang từng tướng (gồm đường phụ)
   const nSec = a.filter(h => h.sec).length, S = a.filter(h => h.tier === 'S'), Sm = S.filter(h => !h.sec), Ss = S.filter(h => h.sec), topN = Sm.length ? Sm : a.slice(0, 3);   // tier S ghi đường chính trước, đường phụ sau (khớp mục Hỏi nhanh)
@@ -352,7 +353,7 @@ const arcIds = Object.keys(BARC), ARCCOL = [['red', 'đỏ'], ['purple', 'tím']
 writePage('bang-ngoc', pageShell({ title: 'Bảng ngọc Liên Quân: chỉ số 30 viên ngọc đỏ, tím, xanh | Bảng Tier Liên Quân', desc: `${arcIds.length} viên ngọc Liên Quân ${season}: tên, chỉ số cấp III của ngọc đỏ, tím, xanh và số build tham khảo dùng từng viên.`, path: '/bang-ngoc/', h1: 'Bảng ngọc Liên Quân', over: `Tra cứu · ${season}`,
   body: `<p class="lead">Mỗi bảng ngọc gồm 30 viên, 10 viên mỗi màu đỏ, tím, xanh (đúng như các build tham khảo của web). Trang này liệt kê ${arcIds.length} loại ngọc cấp III, ${arcIds.length / 3} loại mỗi màu, kèm chỉ số và số build dùng loại đó; loại nhiều build đứng trước.</p>
 <p class="src">${REFNOTE} Tên ngọc theo trang <a href="https://lienquan.garena.vn/hoc-vien/bang-ngoc/" rel="noopener">Bảng ngọc của Học viện Garena</a> (đọc ngày 31/10/2026), chỉ số theo dữ liệu AoV-IndeX. Ngọc cấp I và II có chỉ số thấp hơn, xem ở Học viện. Hai loại ngọc tím Hút máu và Tỷ lệ chí mạng/Máu chưa được trang Học viện liệt kê ở cấp III nên tên theo cấp II của trang đó.</p>
-${ARCCOL.map(([c, cn]) => { const ids = arcIds.filter(id => BARC[id][0] === c).sort(byCountName(cArc, id => BARC[id][2])); return `<h2>Ngọc ${cn} (${ids.length})</h2><ul class="chg plain">${ids.map(id => `<li id="${id}"><img class="ic" src="/b/a-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BARC[id][2])}</b><span class="tb">${cArc[id] || 0} build</span><p>${esc(BARC[id][1])}</p></li>`).join('')}</ul>`; }).join('\n')}
+${ARCCOL.map(([c, cn]) => { const ids = arcIds.filter(id => BARC[id][0] === c).sort(byCountName(cArc, id => BARC[id][2])); return `<h2>Ngọc ${cn} (${ids.length})</h2><ul class="chg plain">${ids.map(id => `<li id="${id}"><img class="ic" src="/b/a-${id}.webp" alt="" width="40" height="40" loading="lazy"><b>${esc(BARC[id][2])}</b><span class="tb">${cArc[id] || 0} build</span><p>${esc(dc(BARC[id][1]))}</p></li>`).join('')}</ul>`; }).join('\n')}
 ${otherConcepts('/bang-ngoc/')}` }));
 const spellIds = Object.keys(BSPELL).sort(byCountName(cSpell, id => BSPELL[id][0]));
 writePage('phep-bo-tro', pageShell({ title: 'Phép bổ trợ Liên Quân: tác dụng từng phép | Bảng Tier Liên Quân', desc: `${spellIds.length} phép bổ trợ Liên Quân ${season}: ${spellIds.slice(0, 4).map(id => BSPELL[id][0]).join(', ')}... kèm tác dụng và số build tham khảo dùng phép đó.`, path: '/phep-bo-tro/', h1: 'Phép bổ trợ Liên Quân', over: `Tra cứu · ${season}`,

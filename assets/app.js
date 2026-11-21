@@ -183,7 +183,7 @@ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
     const h=HEROES.find(x=>x.id===c.dataset.id);if(!h)return;const a=aogOf(h.key,h.lane);hideTip();
     tipEl=document.createElement("div");tipEl.className="tip";
     tipEl.innerHTML=`<h4>${h.name}</h4><div class="r"><span>${LANES[h.lane]}${h.sec?" (phụ)":""} · ${CLASSES[h.cls]}</span><b style="color:var(--t-${tierOf(h).toLowerCase()})">${tierOf(h)==="X"?"Chưa xếp":"Tier "+tierOf(h)}</b></div>
-      <div class="r"><span>Điểm tổng · hạng trong đường</span><b>${h.score.toFixed(2)} · ${h.rank}/${h.laneN}</b></div>
+      <div class="r"><span>Điểm tổng · hạng trong đường</span><b>${dc(h.score.toFixed(2))} · ${h.rank}/${h.laneN}</b></div>
       <div class="r"><span>ĐTDV pick · cấm</span><b>${a?a[3]+" · "+a[4]:"0 · 0"}</b></div>
       <div class="hint">${mode==="meta"?"Bấm để xem chi tiết":"Bấm để chọn, rồi bấm vào hàng tier"}</div>`;
     document.body.appendChild(tipEl);const r=c.getBoundingClientRect(),tw=tipEl.offsetWidth,th=tipEl.offsetHeight;
@@ -196,9 +196,9 @@ function breakdown(h){
   const r=SRC.rpl[h.key],m=SRC.rm[h.key+"-"+h.lane]||SRC.rm[h.key],ps=proScore(r),a=aogOf(h.key,h.lane);
   const bar=(label,val,txt,cls="")=>`<div class="bd${cls?" "+cls:""}"><span>${label}</span><div class="bdbar"><i style="width:${val==null?0:val/5*100}%"></i></div><b>${txt}</b></div>`;
   let pro="Chưa có dữ liệu";
-  if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${(r[1]+r[2]).toFixed(1)}% pick+cấm)`:`Pick ${r[1]}% · Cấm ${r[2]}% · Thắng ${r[0]==null?"–":r[0]+"%"}`;
+  if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${dc((r[1]+r[2]).toFixed(1))}% pick+cấm)`:`Pick ${dc(r[1])}% · Cấm ${dc(r[2])}% · Thắng ${r[0]==null?"–":dc(r[0])+"%"}`;
   // Tỉ lệ thắng chỉ vào điểm khi tướng được chọn từ 5% số trận (aogScore trong data.js): dưới mức đó ghi rõ là mẫu nhỏ
-  const wrTxt=x=>x[3]?` · Thắng ${x[0]}%${x[1]<5?" (mẫu nhỏ, chọn dưới 5% số trận nên chưa tính vào điểm)":""}`:"";
+  const wrTxt=x=>x[3]?` · Thắng ${dc(x[0])}%${x[1]<5?" (mẫu nhỏ, chọn dưới 5% số trận nên chưa tính vào điểm)":""}`:"";
   const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận (đến ${SRC.aogTo}, chưa có các trận ngày 07/11)${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận (đến ${SRC.aogTo})`;
   return `<div class="bds">
     ${bar("ĐTDV mùa Đông",aogScore(a),aTxt)}
@@ -206,8 +206,8 @@ function breakdown(h){
     ${bar("RoV Pro League",ps,pro)}
     ${bar("Rank cộng đồng",m?RMS[m]:null,m?"Tier "+m:"Chưa có dữ liệu")}
     ${(()=>{const g=rankOf(h);return bar("Game rank",g?rankScore(g):null,g?rankTxt(g):"Chưa có dữ liệu","gr")})()}
-    <div class="bd total"><span>Điểm tổng</span><div class="bdbar"><i style="width:${h.score/5*100}%"></i></div><b>${h.score.toFixed(2)} / 5 · hạng ${h.rank}/${h.laneN} ở ${LANES[h.lane]}${h.sec?" (đường phụ: trừ 0,4, tối đa tier A)":""}</b></div>
-    ${h.floor==="manual"?`<p class="floor">Tier ${h.tier} do người biên tập điều chỉnh thủ công, không theo điểm tổng.</p>`:h.floor==="pickS"||h.floor==="pickA"?`<p class="floor">Được nâng lên tier ${h.tier} vì được chọn ở ${aogOf(h.key,h.lane)[1]}% số trận ĐTDV mùa Đông.</p>`:h.floor?`<p class="floor">Được nâng lên tier ${h.floor} vì xuất hiện (pick hoặc cấm) ở ${h.pres.toFixed(0)}% số trận ĐTDV mùa Đông.</p>`:""}
+    <div class="bd total"><span>Điểm tổng</span><div class="bdbar"><i style="width:${h.score/5*100}%"></i></div><b>${dc(h.score.toFixed(2))} / 5 · hạng ${h.rank}/${h.laneN} ở ${LANES[h.lane]}${h.sec?" (đường phụ: trừ 0,4, tối đa tier A)":""}</b></div>
+    ${h.floor==="manual"?`<p class="floor">Tier ${h.tier} do người biên tập điều chỉnh thủ công, không theo điểm tổng.</p>`:h.floor==="pickS"||h.floor==="pickA"?`<p class="floor">Được nâng lên tier ${h.tier} vì được chọn ở ${dc(aogOf(h.key,h.lane)[1])}% số trận ĐTDV mùa Đông.</p>`:h.floor?`<p class="floor">Được nâng lên tier ${h.floor} vì xuất hiện (pick hoặc cấm) ở ${h.pres.toFixed(0)}% số trận ĐTDV mùa Đông.</p>`:""}
     ${rankNote(h)}
   </div>`;
 }
@@ -215,6 +215,8 @@ function breakdown(h){
    Số theo tướng; Flowborn có hai khoá (-ad, -mid) như SRC.aog. Game không ghi số trận và ngày cập nhật của bảng */
 const rankOf=h=>typeof RANK!=="undefined"&&(RANK.d[h.key+"-"+h.lane]||(h.key==="flowborn"?null:RANK.d[h.key]))||null;
 const pc2=v=>v.toFixed(2).replace(".",",");
+// Số thập phân kiểu Việt (dấu phẩy) cho chữ hiển thị: 4.46 → 4,46, "Công phép +4.2" → "Công phép +4,2" (không đụng dữ liệu)
+function dc(v){return String(v).replace(/(\d)\.(\d)/g,"$1,$2")}
 function rankTxt(r){return [r[3]==null?"":`Bậc Garena T${r[3]}`,`Thắng ${pc2(r[0])}%`,`Chọn ${pc2(r[1])}%`,`Cấm ${pc2(r[2])}%`,r[4]?`số ngày ${r[4]}`:""].filter(Boolean).map(t=>`<i>${t}</i>`).join(" · ")}
 function rankNote(h){const r=rankOf(h);if(!r)return "";
   if(r[4])return `<p class="rk-n">Số trong game của Garena (${RANK.where}, ${RANK.filter}), ghi ngày ${r[4]}. Bảng ngày ${RANK.read.slice(0,5)} không có dòng của ${h.name} nên web giữ số lần đọc trước và vẫn tính vào điểm tổng; có số mới sẽ thay. Bậc T0–T4 do Garena xếp, khác tier S–D của web, không tính vào điểm. Game không ghi số trận.</p>`;
@@ -311,7 +313,7 @@ function bldSet(b){
       return `<li class="bi${jg?" jg":""}"><button type="button" class="bi-b" data-item="${id}" aria-describedby="itip"><span class="bi-ic"><img src="b/i-${ic}.webp" alt="" loading="lazy" decoding="async" width="56" height="56"><b>${k+1}</b></span><span class="bi-n">${vi}</span>${jg?"<em>Đồ rừng</em>":cat==="sup"?"<em>Đồ trợ thủ</em>":""}</button></li>`}).join("")}</ol>
     <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số. Tra cứu đầy đủ: <a href="/trang-bi/" target="_blank" rel="noopener">Trang bị</a> · <a href="/phu-hieu/" target="_blank" rel="noopener">Phù hiệu</a> · <a href="/bang-ngoc/" target="_blank" rel="noopener">Bảng ngọc</a> · <a href="/phep-bo-tro/" target="_blank" rel="noopener">Phép bổ trợ</a>.</p>`;
   // tên ngọc theo Học viện Garena (BARC[a][2], ví dụ "Đỏ III Công phép"), dữ liệu cũ thiếu tên thì ghi theo màu
-  const ar=b.r.map(([a,n])=>{const [c,t,vn]=BARC[a];return `<li><img src="b/a-${a}.webp" alt="" loading="lazy" width="30" height="30"><span><b>${vn?esc(vn):"Ngọc "+COLVI[c]} ×${n}</b>${t}</span></li>`}).join("");
+  const ar=b.r.map(([a,n])=>{const [c,t,vn]=BARC[a];return `<li><img src="b/a-${a}.webp" alt="" loading="lazy" width="30" height="30"><span><b>${vn?esc(vn):"Ngọc "+COLVI[c]} ×${n}</b>${dc(t)}</span></li>`}).join("");
   const sp=b.s.map(s=>`<li><button type="button" class="sp-b" data-spell="${s}" aria-describedby="itip"><img src="b/t-${s}.webp" alt="" loading="lazy" width="36" height="36"><span><b>${BSPELL[s][0]}</b>${(b.o||[]).includes(s)?"<em>Phương án thêm</em>":""}</span></button></li>`).join("");
   return `${items}
     <div class="bld-row"><div><h5>Bảng ngọc</h5><ul class="bld-ar">${ar}</ul></div><div><h5>Phép bổ trợ${b.s.length>1?" (chọn một)":""}</h5><ul class="bld-sp">${sp}</ul></div></div>${enchHTML(b)}`;
@@ -542,7 +544,7 @@ function buildStage(){
       <img class="bg" data-src="${sp||imgOf(h)}"${sp?` data-srcset="${sp} 960w, ${sp2(sp)} ${S2_W[sp.slice(2,-5)]||1386}w${s3Of(sp)}" sizes="(max-width:719px) 440px, (max-width:900px) 1040px, 100vw"`:""} alt="" decoding="async"${sp?"":' style="filter:blur(22px) brightness(.55)"'}>
       <div class="slide-c"><div class="over"><i></i>${LANES[l]} · Hạng ${h.rank}</div>
         <h3>${h.name}</h3>
-        <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${h.score.toFixed(2)}</b>Điểm / 5</span></div>
+        <div class="slide-meta"><span class="tier"><b>${h.tier}</b>Tier</span><span><b>${a?a[3]:0}</b>Pick ĐTDV</span><span><b>${a?a[4]:0}</b>Lượt cấm</span><span><b>${dc(h.score.toFixed(2))}</b>Điểm / 5</span></div>
         <div class="slide-acts"><button class="cta" data-open="${h.id}">Xem chi tiết<i></i></button>
           <div class="runners">${top.slice(1).map((x,j)=>`<button data-open="${x.id}" aria-label="${x.name}, hạng ${x.rank}, tier ${x.tier}"><img data-src="${imgOf(x)}" alt="" decoding="async"><small aria-hidden="true">${String(x.rank).padStart(2,"0")}</small>${x.name}</button>`).join("")}</div></div>
       </div></div>`}).join("");
