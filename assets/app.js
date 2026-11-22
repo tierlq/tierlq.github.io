@@ -199,7 +199,7 @@ function breakdown(h){
   if(r)pro=r[1]+r[2]<5?`Ít xuất hiện (${dc((r[1]+r[2]).toFixed(1))}% pick+cấm)`:`Pick ${dc(r[1])}% · Cấm ${dc(r[2])}% · Thắng ${r[0]==null?"–":dc(r[0])+"%"}`;
   // Tỉ lệ thắng chỉ vào điểm khi tướng được chọn từ 5% số trận (aogScore trong data.js): dưới mức đó ghi rõ là mẫu nhỏ
   const wrTxt=x=>x[3]?` · Thắng ${dc(x[0])}%${x[1]<5?" (mẫu nhỏ, chọn dưới 5% số trận nên chưa tính vào điểm)":""}`:"";
-  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận (cả mùa, đến chung kết ${SRC.aogTo})${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận (cả mùa, đến chung kết ${SRC.aogTo})`;
+  const aTxt=a?`${a[3]} pick · ${a[4]} cấm / ${SRC.aogGames} trận (${aogWhen()})${wrTxt(a)}`:`Không được chọn trong ${SRC.aogGames} trận (${aogWhen()})`;
   return `<div class="bds">
     ${bar("ĐTDV mùa Đông",aogScore(a),aTxt)}
     ${(()=>{const pv=prevOf(h.key,h.lane);return bar("Mùa trước",aogScore(pv),pv?`${pv[3]} pick · ${pv[4]} cấm / ${SRC.prevGames} trận${wrTxt(pv)}`:`Không được chọn trong ${SRC.prevGames} trận`)})()}
@@ -291,6 +291,8 @@ function enchHTML(b){if(!b.e||typeof BENCH==="undefined")return "";
   const subs=[...new Set(sub.map(br))],subBr=subs.length===1?"Phụ · "+subs[0]:"Phụ";
   const alt=b.el?`<p class="en-src">Nguồn build không ghi phù hiệu nên lấy theo <a href="${b.el}" target="_blank" rel="noopener">${BSRC[new URL(b.el).hostname]||new URL(b.el).hostname}</a>.</p>`:"";
   return `<div class="bld-en"><h5>Phù hiệu</h5><div class="en-row"><div class="en-g"><span class="en-br">${br(main[0])}</span><ul>${main.map(pick).join("")}</ul></div><div class="en-g sub"><span class="en-br">${subBr}</span><ul>${sub.map(pick).join("")}</ul></div></div>${alt}</div>`}
+/* Mốc số liệu ĐTDV: mùa đã xong thì "cả mùa, đến chung kết 07/11", đang diễn ra thì "cập nhật dd/mm" (tools/aog/update.js tự đổi) */
+function aogWhen(){return SRC.aogDone?`cả mùa, đến chung kết ${SRC.aogTo}`:`cập nhật ${SRC.aogTo}`}
 function buildHTML(h){
   if(typeof BUILDS==="undefined"){waitBuilds();return `<section class="bld" data-wait="${h.id}"><p class="bld-note">Đang tải build…</p></section>`}
   // Build riêng cho đường đang xem, nguồn tiếng Việt (server Việt Nam)
@@ -457,7 +459,7 @@ function renderStats(list){
     return `<td class="c-${k}"><b>${k==="n"?v:nf1(v)}</b>${k==="n"?"":delta(v,pv,true)}</td>`};
   const src=`<div class="seg st-src" role="group" aria-label="Nguồn số liệu"><button type="button" data-src="aog" aria-pressed="${!rank}">ĐTDV (giải)</button><button type="button" data-src="rank" aria-pressed="${rank}">Game rank</button></div>`;
   const nOld=rank?rows.filter(([,x])=>x.old).length:0,cap=rank?`<span>Game rank · Garena, ${RANK.filter} · ghi ${RANK.read}</span><span>Thắng, chọn, cấm có tính vào điểm tier, bậc T0–T4 do Garena xếp thì không · không ghi số trận · bấm tên cột để sắp xếp${nOld?` · * = ${nOld} tướng không có trong bảng ngày ${RANK.read.slice(0,5)}, giữ số ngày ${[...new Set(rows.filter(([,x])=>x.old).map(([,x])=>x.old))].join(", ")}`:""}</span>`
-    :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận · cả mùa, đến chung kết ${SRC.aogTo}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
+    :`<span>ĐTDV mùa Đông 2026 · ${SRC.aogGames} trận · ${aogWhen()}</span><span>Số nhỏ: so với mùa trước · bấm tên cột để sắp xếp${sortK==="wr"?" · tướng dưới 10 trận xếp sau":""}</span>`;
   board.innerHTML=`${src}<div class="st-cap">${cap}</div>
   <table class="stats${rank?" rk":""}"><thead><tr><th scope="col" class="c-hero">Tướng <small>${rows.length}</small></th>${cols.map(([k,l,t])=>`<th scope="col" class="c-${k}" aria-sort="${k===sortK?(sortD<0?"descending":"ascending"):"none"}"><button type="button" data-sort="${k}" title="${rank&&k==="wr"?"Tỉ lệ thắng game rank theo Garena":t}">${l}${k==="n"||k==="gt"?"":'<span class="pc"> %</span>'}${arrow(k)}</button></th>`).join("")}</tr></thead>
   <tbody>${rows.map(([h,s],i)=>{const im=imgOf(h);return `<tr data-id="${h.id}"${s.pres==null?' class="nodata"':""}><th scope="row" class="c-hero"><button type="button" class="st-h" data-id="${h.id}" aria-label="${h.name}, ${LANES[h.lane]}, tier ${h.tier}${s.pres==null?(rank?", chưa có số liệu game rank":", chưa có số liệu ĐTDV"):""}"><span class="st-i">${s.pres==null?"":i+1}</span><span class="st-p" style="--lc:var(--l-${h.lane})">${im?`<img src="${im}" alt="" width="36" height="36" loading="lazy" decoding="async">`:`<span>${initials(h.name)}</span>`}</span><span class="st-n"><b>${h.name}</b><small><i class="st-t" style="--tc:var(--t-${h.tier.toLowerCase()})">${h.tier}</i>${LANES[h.lane]}${h.sec?" · phụ":""}</small></span><span class="st-m">${h.move?mkMove(h.move,moveN(h)):""}${h.trend?mkTrend(h.trend):""}</span></button></th>${cols.map(([k])=>cell(h,s,k)).join("")}</tr>`}).join("")}</tbody></table>`;

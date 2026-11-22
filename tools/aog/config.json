@@ -1,0 +1,19 @@
+{
+  "wiki": "honorofkings",
+  "page": "Arena_of_Glory/2026/Winter/Statistics",
+  "userAgent": "tierlq-aog-sync/1.0 (https://tierlq.com/lien-he/; GitHub Actions, 1 request/day)",
+  "map": {
+    "Flowborn (Marksman)": "flowborn-ad",
+    "Flowborn (Mage)": "flowborn-mid",
+    "Riktor": "richter",
+    "Zanis": "trieuvan",
+    "Wukong": "ngokhong",
+    "Lu Bu": "lubo",
+    "Diao Chan": "dieuthuyen",
+    "Jinnar": "jinna",
+    "Terri": "teeri",
+    "Sinestra": "sinestrea",
+    "Wiro Sableng": "wiro"
+  },
+  "skip": ["Sikong Zhen"]
+}
