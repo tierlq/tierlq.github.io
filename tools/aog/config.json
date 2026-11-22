@@ -1,6 +1,7 @@
 {
   "wiki": "honorofkings",
   "page": "Arena_of_Glory/2026/Winter/Statistics",
+  "minGamesNewSeason": 40,
   "userAgent": "tierlq-aog-sync/1.0 (https://tierlq.com/lien-he/; GitHub Actions, 1 request/day)",
   "map": {
     "Flowborn (Marksman)": "flowborn-ad",
@@ -15,5 +16,7 @@
     "Sinestra": "sinestrea",
     "Wiro Sableng": "wiro"
   },
-  "skip": ["Sikong Zhen"]
+  "skip": [
+    "Sikong Zhen"
+  ]
 }
