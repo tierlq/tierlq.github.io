@@ -164,7 +164,7 @@ function whyHTML(h) {
   const wr = x => x[3] ? `, thắng ${dc(x[0])}%${x[1] < 5 ? ' (chọn dưới 5% số trận nên chưa tính)' : ''}` : '';
   const giai = (x, n, t = '') => x ? `${x[3]} lượt chọn, ${x[4]} lượt cấm trong ${n} trận${t}${wr(x)}` : `không được chọn trong ${n} trận`;
   const rows = [
-    ['ĐTDV mùa này', giai(a, SRC.aogGames, ` (đến ${SRC.aogTo}, chưa gồm các trận ngày 07/11)`), aogScore(a)],
+    ['ĐTDV mùa này', giai(a, SRC.aogGames, ` (cả mùa, đến chung kết ${SRC.aogTo})`), aogScore(a)],
     ['ĐTDV mùa trước', giai(pv, SRC.prevGames), aogScore(pv)],
     ['RoV Pro League', r ? (r[1] + r[2] < 5 ? `ít xuất hiện (${dc((r[1] + r[2]).toFixed(1))}% chọn + cấm)` : `chọn ${dc(r[1])}%, cấm ${dc(r[2])}%${r[0] == null ? '' : ', thắng ' + dc(r[0]) + '%'}`) : 'chưa có dữ liệu', proScore(r)],
     ['Tier list rank cộng đồng', m ? 'tier ' + m : 'chưa có dữ liệu', m ? RMS[m] : null],
@@ -379,7 +379,7 @@ const secList = HEROES.filter(h => h.sec).map(h => `${esc(h.name)} (${esc(LANES[
 writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Quân: công thức và nguồn | Bảng Tier Liên Quân', desc: 'Cách Bảng Tier Liên Quân xếp tier: nguồn ĐTDV, RoV Pro League và game rank, công thức tính điểm, ngưỡng từng tier và danh sách chỉnh tay công khai.', path: '/phuong-phap/', h1: 'Phương pháp xếp tier', over: `Cách làm · ${season}`,
   body: `<p class="lead">Tier trên Bảng Tier Liên Quân đến từ một công thức công khai, chạy trên số liệu giải đấu, số game rank và tier list rank cộng đồng, cộng một danh sách chỉnh tay của người biên tập cũng công khai. Trang này giải thích từng bước để bạn tự kiểm lại.</p>
 <h2>Năm nguồn số liệu</h2><ul class="items">
-<li><b>ĐTDV mùa hiện tại (36%):</b> ${ctx.SRC.aogGames} trận của Đấu Trường Danh Vọng (Arena of Glory) theo bảng thống kê Liquipedia (vòng bảng và playoffs đến ${ctx.SRC.aogTo}, chưa gồm các trận ngày 07/11), ưu tiên số trận được chọn.</li>
+<li><b>ĐTDV mùa hiện tại (36%):</b> ${ctx.SRC.aogGames} trận của Đấu Trường Danh Vọng (Arena of Glory) theo bảng thống kê Liquipedia (cả mùa: vòng bảng và playoffs, đến chung kết tổng ${ctx.SRC.aogTo}), ưu tiên số trận được chọn.</li>
 <li><b>ĐTDV mùa trước (13%):</b> ${ctx.SRC.prevGames} trận, cùng cách tính, trọng số nhẹ hơn vì đã qua nhiều bản cập nhật.</li>
 <li><b>RoV Pro League (11%):</b> giải đấu của server Thái Lan, lấy từ ROV META. Tướng ít xuất hiện chỉ được tính rất nhẹ.</li>
 <li><b>Tier list rank cộng đồng (18%):</b> người biên tập tổng hợp từ hai nhà sáng tạo nội dung (@darkiaov9126 và @blvkhanhhy), thêm bảng theo từng đường của @zena_sama (do tuyển thủ ANK WeiT và LiTing xếp, đăng 24/10/2026; có đường Tà Thần, Rừng, Giữa, Trợ thủ, chưa có Rồng; riêng đường Giữa theo bảng đăng 03/11/2026 của chính @zena_sama; từ 07/11/2026 tier của tướng có trong 4 bảng được ghim theo bảng, lùi một bậc: bậc cao nhất của bảng là S, bậc kế là A, rồi B, C, hai bậc thấp nhất là D) nên một tướng có thể có hai bậc ở hai đường. Đây là ý kiến, không phải số liệu.</li>
@@ -404,7 +404,7 @@ writePage('phuong-phap', pageShell({ title: 'Phương pháp xếp tier Liên Qu�
 <li>Mục "Khắc chế và hợp cặp" ở trang từng tướng. Đó là danh sách viết tay của <a href="https://rovmeta.com/" rel="noopener">ROV META</a> (server Thái, bản ${esc(CNSRC.patch)}), không phải tỉ lệ thắng và không vào điểm tier.</li>
 <li>Bản vá của Garena không tự đổi tier. Ghi chú bản vá hiện cạnh tướng; tier đổi khi có số liệu giải mới hoặc khi người biên tập chỉnh tay. Xem <a href="${purl(curP)}">thay đổi của bản ${PATCH}</a>.</li></ul>
 <h2>Giới hạn</h2><ul class="items">
-<li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này (tính đến ${ctx.SRC.aogTo}, chưa gồm các trận ngày 07/11); tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
+<li>ĐTDV là giải chuyên nghiệp với ${ctx.SRC.aogGames} trận mùa này (cả mùa, đến chung kết ${ctx.SRC.aogTo}); tướng ít xuất hiện có rất ít dữ liệu và rank thường có thể khác.</li>
 <li>Số liệu giải không tách theo đường nên tier ở đường phụ chỉ là ước tính.</li>
 <li>Số game rank ghi từ màn hình game nên không có số trận và ngày cập nhật của bảng; bảng này cập nhật theo người ghi, không tự động. Nó khác số giải đấu (ĐTDV) vì là số của người chơi rank.</li>
 <li>RoV Pro League là giải của server Thái Lan, tham khảo cho xu hướng chứ không thay số liệu server Việt Nam.</li></ul>
