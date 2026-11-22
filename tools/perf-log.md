@@ -221,3 +221,27 @@ So với 08/11: tải trước khi bảng hiện +7 kB (85 → 92 kB; data.js c�
 - Sau khi script tải sớm, đường găng giờ là đọc xong HTML (domInteractive ~480 ms) + chạy data.js/app.js (~210 ms CPU chậm). HTML 138 kB (34 kB nén) — phần dài cuối trang (mục lục 181 trang tướng, FAQ, Cách xếp) vẫn là ứng viên rút gọn nếu còn lớn thêm, phải giữ cho Google đọc được.
 - `icon-192.png` (3 kB) vẫn tải sớm; lợi quá nhỏ, để dành.
 - Không đo độ mượt khi cuộn tuần này vì không đổi gì ở phần cuộn (số 08/11 vẫn dùng được).
+
+## 2026-11-22 — việc định kỳ Chủ nhật (không đổi mã)
+Đo bằng `tools/perf` (measure.js, trung vị 5 lần, 2 lượt; bản 357c3d3 — có nhiều bộ build cho một ô, Aya 2 bộ). Không tính Google Fonts và Google Analytics (môi trường đo không vào được).
+
+| | Điện thoại (390px, CPU chậm 4×, 4G chậm) | Máy tính (1440px) |
+|---|---|---|
+| LCP / CLS | 424–444 ms / 0 | 128 ms / 0,008 |
+| TBT | 164–225 ms | 7 ms |
+| Bảng tier có thẻ | 1208–1247 ms | 453 ms |
+| Mở bảng chi tiết (measure.js) | 440–451 ms | 211 ms |
+| Tải tới lúc bảng hiện | 94 kB / 5 yêu cầu | 94 kB / 5 yêu cầu |
+| Tổng sau 3 giây | 146–151 kB / 15–16 yêu cầu | 458 kB / 18 yêu cầu |
+So với 15/11: tải trước khi bảng hiện +2 kB (92 → 94 kB, data.js/app.js lớn thêm do nhiều bộ build, số thập phân dấu phẩy); bảng có thẻ, LCP, TBT trong mức dao động.
+
+Soi "mở bảng chi tiết" (measure.js báo 440 ms, tuần trước 221 ms): đo thẳng trong trang thì `openModal` chạy đồng bộ 58–91 ms, khung hình vẽ xong ở 82–133 ms,
+chỉ có một tác vụ dài (chính lần mở). Phần còn lại là độ trễ vòng hỏi của Playwright `waitForSelector` khi CPU bị hãm 4×, không phải người xem chờ — không cần sửa.
+Lần sau so con số này nên dùng cách đo trong trang (performance.now quanh `openModal` + rAF), không dùng số của measure.js.
+
+Tác vụ dài lúc mở trang (điện thoại): bố cục HTML đầu 50–106 ms, data.js + app.js 168–187 ms, thiên hà 56–79 ms — giống các tuần trước, các hướng đã thử (01/11, 08/11) không làm lại.
+Thứ tự tải: HTML 34 kB nén (trong đó CSS nội tuyến 89 kB thô / 21,5 kB nén, mục lục 2,4 kB, FAQ + JSON-LD 3,6 kB), data.js 16,5 kB, app.js 38,6 kB cùng bắt đầu ở ~225 ms; `icon-192.png` 3 kB vẫn tải chung lúc (~15 ms băng thông 4G chậm, quá nhỏ để đo).
+Không thấy tối ưu nào có số đo chứng minh, nên tuần này không sửa mã. Không đo độ mượt khi cuộn (phần cuộn không đổi; số 08/11 vẫn dùng được).
+Ý tưởng để lần sau:
+- CSS nội tuyến 21,5 kB nén là phần lớn nhất của HTML trên đường găng. Có thể dò quy tắc CSS không dùng (CDP `CSS.startRuleUsageTracking` qua mọi chế độ, bảng chi tiết, menu, trang tối) — chỉ bỏ khi chắc chắn, phải so ảnh mọi trạng thái.
+- `icon-192.png` lazy: vẫn để dành.
