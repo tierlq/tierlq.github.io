@@ -3,7 +3,7 @@
 #  1. cú pháp mọi tệp assets/*.js
 #  2. sinh lại các trang (build.js) và kiểm build từng ô tướng (check.js)
 #  3. sửa assets/*.js mà chưa đổi ?v= trong index.html thì báo lỗi (quy tắc 6 trong CLAUDE.md)
-#  4. link nội bộ, neo, sitemap, title/description/canonical (links.js)
+#  4. link nội bộ, neo, sitemap, title/description/canonical (links.js); link trong dữ liệu là https:// an toàn (data.js)
 #  5. chức năng trên trình duyệt ở 1440px và 390px, mở mọi bảng chi tiết (smoke.js)
 set -u
 cd "$(dirname "$0")/../.."
@@ -25,6 +25,7 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
 fi
 step "Link và sitemap"
 node tools/check/links.js || fail=1
+node tools/check/data.js || fail=1
 step "Chức năng trên trình duyệt"
 NODE_PATH=$(npm root -g) node tools/check/smoke.js "$@" || fail=1
 echo
