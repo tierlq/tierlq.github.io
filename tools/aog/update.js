@@ -14,7 +14,8 @@ const { parseStats } = require('./parse.js');
 const ROOT = path.join(__dirname, '..', '..');
 const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
 const args = process.argv.slice(2), DRY = args.includes('--dry'), FILE = args.includes('--file') ? args[args.indexOf('--file') + 1] : null;
-const fail = m => { console.error('LỖI: ' + m); process.exit(1); };
+// lỗi in thêm dạng ::error:: để hiện ngay ở trang tóm tắt của lượt chạy trên GitHub (xem được không cần mở nhật ký)
+const fail = m => { console.error('LỖI: ' + m); if (process.env.GITHUB_ACTIONS) console.log('::error::' + String(m).split('\n')[0].slice(0, 300)); process.exit(1); };
 const out = (k, v) => { if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${k}=${v}\n`); };
 
 function load(js) {   // chạy data.js trong hộp kín, lấy SRC và HEROES (tier, điểm)
