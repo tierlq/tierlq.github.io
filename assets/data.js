@@ -731,7 +731,7 @@ const MANUAL={evita:"A",raz:"A",preyta:"A",aoi:"B",darcy:"A",zuka:"B",nakroth:"A
   // Chủ web yêu cầu 14/11/2026: Sephera Trợ thủ (ô mới) C; Triệu Vân Rừng B (đã B, ghi lại cho chắc)
   "sephera-sp":"C","trieuvan-jg":"B",
   // Chủ web yêu cầu 11/11/2026 20:18: Bolt Baron Rừng D (lần 20:14 hiểu sai chữ "thêm"; Rừng giữ D như 20:11); thêm ô Rồng cho Murad và Edras, ghim B
-  "murad-ad":"B","edras-ad":"B",
+  "murad-ad":"B","edras-ad":"A",
   // Chủ web yêu cầu 11/11/2026 20:16: Marja và Florentino Tà Thần A→S
   // Chủ web yêu cầu 11/11/2026 20:14 ("thêm murad và bolt baron lên B", hiểu là ô Rừng vì Tà Thần của cả hai đã B): Murad Rừng C→B, Bolt Baron Rừng D→B (đảo lại D của 20:11)
   // Chủ web yêu cầu 11/11/2026 20:13: Murad Tà Thần C→B
