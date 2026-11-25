@@ -97,12 +97,34 @@
   const yest = el("p", "dt-yest");
   root.append(tabs, intro, clue, form, count, win, board, yest);
 
+  // 3 ô chọn chế độ: mỗi ô có hình minh hoạ cách chơi, tên, một dòng mô tả và trạng thái hôm nay
+  const DESC = { co: "Đoán qua lớp, đường, tier", chieu: "Nhìn biểu tượng chiêu", anh: "Nhìn mảnh ảnh tướng" };
+  function tileArt(m) {
+    const a = el("span", "dt-art dt-art-" + m); a.setAttribute("aria-hidden", "true");
+    if (m === "co") ["ok", "part", "no", "ok", "no"].forEach(c => a.append(el("i", c)));
+    else if (m === "chieu") a.append(el("b", null, "?"));
+    else { const y = puzzle("anh", today - 1).t; a.style.backgroundImage = `url("${y.splash}")`; a.append(el("b", null, "?")); }
+    return a;
+  }
   function makeTabs() { tabs.textContent = ""; for (const [m, name] of MODES) {
     const b = el("button", "dt-tab"); b.type = "button"; b.setAttribute("role", "tab"); b.dataset.m = m;
-    b.append(el("span", null, name), el("i", "dt-done", "✓"));
+    b.append(tileArt(m), el("span", "dt-tn", name), el("span", "dt-td", DESC[m]), el("span", "dt-ts"));
     b.addEventListener("click", () => { if (m !== mode) { mode = m; history.replaceState(null, "", "#" + m); render(); } });
+    b.addEventListener("keydown", e => { if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return; const i = MODES.findIndex(([x]) => x === mode), n = MODES[(i + (e.key === "ArrowRight" ? 1 : MODES.length - 1)) % MODES.length][0]; mode = n; history.replaceState(null, "", "#" + n); render(); tabs.querySelector(`[data-m="${n}"]`).focus(); });
     tabs.append(b);
   } }
+  // dải chân dung với ô "?" ở giữa: gợi ý của chế độ Cổ điển (đúng rồi thì ô giữa hiện đáp án)
+  function stage(p, done) {
+    const r = rng(today * 13 + 5), pool = LIST.filter(t => t !== p.t), pick = [];
+    while (pick.length < 10) { const t = pool[Math.floor(r() * pool.length)]; if (!pick.includes(t)) pick.push(t); }
+    const box = el("div", "dt-stage"), row = el("div", "dt-row"); row.setAttribute("aria-hidden", "true");
+    pick.forEach((t, i) => { if (i === 5) row.append(el("span", "dt-gap")); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 64; im.height = 64; im.loading = "lazy"; row.append(im); });
+    const mys = el("div", "dt-mys" + (done ? " won" : ""));
+    if (done) { const im = el("img"); im.src = p.t.img; im.alt = p.t.name; im.width = 120; im.height = 120; mys.append(im); }
+    else { mys.append(el("b", null, "?")); mys.setAttribute("role", "img"); mys.setAttribute("aria-label", "Tướng bí ẩn"); }
+    box.append(row, mys);
+    return box;
+  }
 
   /* ---- gợi ý khi gõ ---- */
   let opts = [], sel = -1;
@@ -154,8 +176,12 @@
   /* ---- vẽ ---- */
   function render(fresh) {
     const p = puzzle(mode, today), g = guesses(mode), done = g.includes(p.t.key);
-    for (const b of tabs.children) { const on = b.dataset.m === mode; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", solved(b.dataset.m)); }
-    intro.textContent = { co: "Đoán tướng Liên Quân hôm nay. Mỗi lượt đoán, các ô cho biết tướng bạn chọn giống đáp án tới đâu.", chieu: "Chiêu này của tướng nào?", anh: "Ảnh này là của tướng nào? Mỗi lượt đoán sai, ảnh thu nhỏ để lộ thêm." }[mode];
+    for (const b of tabs.children) {
+      const m = b.dataset.m, on = m === mode, n = guesses(m).length, ok = solved(m);
+      b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", ok);
+      b.querySelector(".dt-ts").textContent = ok ? `✓ Đúng sau ${n} lượt` : n ? `Đang đoán · ${n} lượt` : "Chưa chơi";
+    }
+    intro.textContent = { co: "Gõ tên một tướng bất kỳ. Các ô màu cho biết tướng đó giống tướng bí ẩn ở điểm nào.", chieu: "Chiêu này của tướng nào? Sai 4 lượt sẽ hiện tên chiêu.", anh: "Ảnh này của tướng nào? Mỗi lượt sai, ảnh thu nhỏ để lộ thêm." }[mode];
     // gợi ý
     clue.textContent = ""; clue.className = "dt-clue dt-" + mode;
     if (mode === "chieu") {
@@ -168,6 +194,8 @@
       const slot = ["Nội tại", "Chiêu 1", "Chiêu 2", "Chiêu cuối"][p.slot] || "Chiêu " + p.slot;
       const hint = el("p", "dt-hint", done || g.length >= 4 ? `${slot}: ${p.skill[0]}` : `Sai ${4 - g.length} lượt nữa sẽ hiện tên chiêu`);
       clue.append(box, hint);
+    } else if (mode === "co") {
+      clue.append(stage(p, done), el("p", "dt-hint", done ? `Tướng bí ẩn hôm nay là ${p.t.name}` : `Tướng bí ẩn hôm nay · ${LIST.length} tướng có thể là đáp án`));
     } else if (mode === "anh") {
       const z = done ? 1 : Math.max(1.2, 6 - g.length * 0.7);
       const box = el("div", "dt-splash"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Một phần ảnh tướng cần đoán");
@@ -202,6 +230,16 @@
       const wrap = el("div", "dt-scroll"); wrap.append(tb); board.append(wrap);
       const legend = el("p", "dt-legend"); legend.innerHTML = '<span class="ok">Đúng</span><span class="part">Đúng một phần</span><span class="no">Sai</span><span>↑↓ Đáp án cao/thấp hơn (tier S, bậc T0 là cao nhất)</span>';
       board.append(legend);
+    } else if (mode === "co") {
+      // chưa đoán lượt nào: một lượt mẫu để thấy màu và mũi tên nghĩa là gì
+      const ex = el("div", "dt-ex"); ex.append(el("p", "dt-ex-t", "Một lượt đoán sẽ trông như thế này"));
+      const row = el("div", "dt-ex-row"); row.setAttribute("aria-hidden", "true");
+      [["Lớp", "Pháp sư", "ok", ""], ["Đường", "Giữa, Trợ thủ", "part", ""], ["Tier", "B", "no", "↑"], ["Bậc Garena", "T2", "ok", ""], ["Thắng rank", "49,5%", "no", "↓"]].forEach(([h, v, c, a]) => {
+        const cell = el("div", "dt-ex-c"); cell.append(el("span", "dt-ex-h", h)); const b = el("span", "dt-c " + c); b.append(el("span", null, v)); if (a) b.append(el("b", "dt-ar", a)); cell.append(b); row.append(cell);
+      });
+      const keys = el("ul", "dt-keys");
+      [["ok", "Xanh", "trùng với tướng bí ẩn"], ["part", "Cam", "trùng một phần, ví dụ cùng một trong hai đường"], ["no", "Đỏ", "khác hẳn"], ["ar", "↑ ↓", "tướng bí ẩn cao hơn hay thấp hơn (tier S và bậc T0 là cao nhất)"]].forEach(([c, n, d]) => { const li = el("li", c); li.append(el("b", null, n), document.createTextNode(" " + d)); keys.append(li); });
+      ex.append(row, keys); board.append(ex);
     } else if (g.length) {
       const ul = el("ul", "dt-wrong");
       g.slice().reverse().forEach(k => { const t = find(k), li = el("li", k === p.t.key ? "ok" : "no"); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 40; im.height = 40; li.append(im, el("span", null, t.name)); ul.append(li); });

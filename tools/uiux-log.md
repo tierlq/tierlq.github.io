@@ -281,3 +281,4 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 ## 25/11/2026 — Trang Đoán tướng hôm nay
 - Thêm `/doan-tuong/` (trò chơi mỗi ngày kiểu LoLdle) theo yêu cầu chủ web. Giữ phong cách web: tab chữ mono gạch chân, nút viên thuốc, ô nhập bo tròn cao 48px (vừa ngón tay), bảng ô màu xanh/cam/đỏ có chữ trắng và nhãn đọc màn hình (không chỉ dựa vào màu). Ô lật lần lượt 0,25 s, tắt khi bật giảm chuyển động. Đã xem ở 390px và 1440px: không tràn ngang.
 - Trang chủ: thêm dải mỏng "Đoán tướng hôm nay" cùng kiểu dải Phụ kiện, đặt ngay trên nó.
+- 22:30 cùng ngày, chủ web: "nhìn vào không biết mục nào như nào cả". Thay 3 tab chữ bằng 3 ô chế độ có hình minh hoạ (ô màu xanh/cam/đỏ; khung chiêu "?"; mảnh ảnh tướng của đề hôm qua), tên, mô tả một dòng, trạng thái hôm nay (Chưa chơi / Đang đoán / ✓ Đúng sau N lượt). Cổ điển có dải chân dung mờ với ô "?" viền vàng ở giữa (đúng rồi thì hiện chân dung đáp án) và một lượt đoán mẫu kèm chú giải màu khi chưa đoán lượt nào.
