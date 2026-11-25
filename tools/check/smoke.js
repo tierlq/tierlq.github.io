@@ -192,7 +192,8 @@ const errs = [], log = (...a) => console.log(...a);
     await p.goto(B + '/doan-tuong/', { waitUntil: 'load' });
     await p.evaluate(() => localStorage.clear()); await p.reload({ waitUntil: 'load' });
     await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-mode').length === 3, null, { timeout: 10000 });
-    const dtN = await p.evaluate(() => ({ n: __dt.names().length, keys: new Set(HEROES.map(h => h.key)).size, fb: __dt.names().filter(x => /Flowborn/.test(x)).length }));
+    const dtN = await p.evaluate(() => ({ noAttr: __dt.noAttr(), n: __dt.names().length, keys: new Set(HEROES.map(h => h.key)).size, fb: __dt.names().filter(x => /Flowborn/.test(x)).length }));
+    if (dtN.noAttr.length) bad(`Đoán tướng: thiếu giới tính/tầm đánh: ${dtN.noAttr.join(', ')} (thêm vào ATTR trong assets/game.js)`);
     if (dtN.n !== dtN.keys || dtN.fb !== 1) bad(`Đoán tướng: ${dtN.n} tướng (cần ${dtN.keys}), Flowborn ${dtN.fb} lần`);
     for (const m of ['co', 'chieu', 'anh']) {
       await p.click(`.dt-mode[data-m=${m}]`);

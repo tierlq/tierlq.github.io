@@ -1,7 +1,7 @@
 /* Đoán tướng hôm nay (/doan-tuong/) — trò chơi mỗi ngày kiểu LoLdle cho Liên Quân.
    Chạy sau assets/data.js (cần HEROES, RANK, CLASSES, LANES); bộ chiêu lấy từ assets/skills.js (tải khi cần).
    3 chế độ, mỗi chế độ một tướng riêng, cả nước cùng một đề, đổi lúc 0 giờ giờ Việt Nam:
-   - Cổ điển: đoán tên, mỗi lượt so 5 thuộc tính (lớp, đường, tier cao nhất trên web, bậc Garena, tỉ lệ thắng rank)
+   - Cổ điển: đoán tên, mỗi lượt so 6 thuộc tính như LoLdle (giới tính, lớp, đường, tầm đánh, tier cao nhất trên web, bậc Garena)
      xanh = trùng, cam = trùng một phần, đỏ = sai; mũi tên ↑/↓ = đáp án cao/thấp hơn.
    - Chiêu thức: biểu tượng một chiêu (ảnh Garena), sai 4 lượt thì hiện tên chiêu.
    - Ảnh tướng: một mảnh ảnh bìa phóng to, mỗi lượt sai thì thu nhỏ dần.
@@ -41,6 +41,12 @@
     t.page = "/tuong/" + (t.cells.find(c => !c.sec) || t.cells[0]).id + "/";
     t.q = strip(t.name);
   }
+  // Giới tính và tầm đánh (gợi ý kiểu LoLdle). Nguồn: wiki Arena of Valor trên Fandom (ô "Attackrange", đại từ trong phần Lore),
+  // đọc qua API ngày 25/11/2026; tướng wiki không ghi tầm đánh thì theo lớp chính (Pháp sư, Xạ thủ, Trợ thủ = đánh xa), không ghi giới tính
+  // thì theo người biên tập. M = cận chiến, R = đánh xa, B = cả hai; m = Nam, f = Nữ, x = Khác, o = tuỳ chọn (Flowborn). Sửa ở tools/game/thuoc-tinh.md.
+  const ATTR = "airi:Mf aleister:Rm alice:Rf allain:Mm amily:Mf annette:Rf aoi:Mf arduin:Mm arthur:Mm arum:Rf astrid:Mf ata:Mm aya:Rf azzenka:Rm baldum:Mm bijan:Mm billow:Mm biron:Mm boltbaron:Rm bonnie:Rf bright:Mm butterfly:Mf capheny:Rf celica:Rf charlotte:Mf chaugnar:Mm cresht:Mm darcy:Rm dextra:Mf dieuthuyen:Rf dirak:Rm dolia:Rf dyadia:Rf edras:Mm elandorr:Rm elsu:Rm enzo:Bm erin:Rf errol:Mm evita:Rf fennik:Rm florentino:Mm flowborn:Ro gildur:Rm goverra:Rf grakk:Mm hayate:Rm heino:Rm helen:Rf iggy:Rm ignis:Rm ilumia:Rf ishar:Rf jinna:Rm kahlii:Rf kaine:Mm keera:Mf kilgroth:Mm kriknak:Mm krixi:Rf krizzix:Rm lauriel:Rf laville:Rm liliana:Rf lindis:Rf lorion:Rm lubo:Mm lumburr:Mm maloch:Mm marja:Rf max:Mm mganga:Rm mina:Mf ming:Rm moren:Rm murad:Mm nakroth:Mm natalya:Rf ngokhong:Mm omega:Mm omen:Mm ormarr:Mm paine:Rm preyta:Rm qi:Mf quillen:Mm raz:Mm richter:Mm rouie:Rf rourke:Rm roxie:Mf ryoma:Mm sephera:Rf sinestrea:Mf skud:Mm slimz:Rm stuart:Rm superman:Mm taara:Mf tachi:Mm tamyn:Mm teemee:Mm teeri:Rf telannas:Rf thane:Mm theflash:Mm thorne:Rm toro:Mm trieuvan:Mm tulen:Rm valhein:Rm veera:Rf veres:Mf violet:Rf volkath:Mm wiro:Mm wisp:Rf wonderwoman:Mf xeniel:Mm yan:Mm ybneth:Mx yena:Mf yorn:Rm yue:Rf zata:Rm zephys:Mm zill:Rm zip:Mm zuka:Mm";
+  const GEN = { m: "Nam", f: "Nữ", x: "Khác", o: "Tuỳ chọn" }, RNG = { M: ["Cận chiến"], R: ["Đánh xa"], B: ["Cận chiến", "Đánh xa"] };
+  for (const tok of ATTR.split(" ")) { const [k, v] = tok.split(":"), t = byKey.get(k); if (t) { t.rng = new Set(RNG[v[0]]); t.gen = GEN[v[1]]; } }
   const find = k => byKey.get(k);
 
   /* ---- đề mỗi ngày ---- */
@@ -65,11 +71,12 @@
   // giá trị nhỏ hơn = mạnh hơn (tier S=0, bậc T0=0); mũi tên chỉ phía đáp án
   const ordCmp = (g, a, lowerIsHigher) => g == null || a == null ? ["no", ""] : g === a ? ["ok", ""] : ["no", (lowerIsHigher ? a < g : a > g) ? "↑" : "↓"];
   const COLS = [
+    ["Giới tính", (g, a) => [g.gen && g.gen === a.gen ? "ok" : "no", ""], g => g.gen || "–"],
     ["Lớp", (g, a) => [setCmp(g.cls, a.cls), ""], g => [...g.cls].map(c => CLASSES[c]).join(", ")],
     ["Đường", (g, a) => [setCmp(g.lanes, a.lanes), ""], g => [...g.lanes].map(l => LANES[l]).join(", ")],
+    ["Tầm đánh", (g, a) => [g.rng && a.rng ? setCmp(g.rng, a.rng) : "no", ""], g => g.rng ? [...g.rng].join(", ") : "–"],
     ["Tier", (g, a) => ordCmp(g.tier, a.tier, true), g => TIERS[g.tier] || "–"],
-    ["Bậc Garena", (g, a) => ordCmp(g.gr, a.gr, true), g => g.gr == null ? "–" : "T" + g.gr],
-    ["Thắng rank", (g, a) => g.wr == null || a.wr == null ? ["no", ""] : Math.abs(g.wr - a.wr) < 0.05 ? ["ok", ""] : ["no", a.wr > g.wr ? "↑" : "↓"], g => g.wr == null ? "–" : g.wr.toFixed(1).replace(".", ",") + "%"]
+    ["Bậc Garena", (g, a) => ordCmp(g.gr, a.gr, true), g => g.gr == null ? "–" : "T" + g.gr]
   ];
 
   /* ---- trạng thái ---- */
@@ -230,7 +237,7 @@
       legend.append(el("h2", "dt-pt dt-sm", "Chú thích màu"));
       const ul = el("ul", "dt-keys");
       [["ok", "", "Đúng"], ["part", "", "Một phần"], ["no", "", "Sai"], ["no up", "", "Cao hơn"], ["no down", "", "Thấp hơn"]].forEach(([c, , n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
-      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các lớp hoặc đường. Cao hơn / Thấp hơn: tướng bí ẩn có tier, bậc Garena hay tỉ lệ thắng cao hơn hoặc thấp hơn (tier S và bậc T0 là cao nhất)."));
+      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các lớp, đường hoặc tầm đánh. Cao hơn / Thấp hơn: tier hoặc bậc Garena của tướng bí ẩn cao hơn hay thấp hơn (tier S và bậc T0 là cao nhất)."));
     }
 
     // thắng
@@ -281,5 +288,5 @@
     const s = document.createElement("script"); s.src = "/assets/skills.js" + (V ? "?v=" + V : ""); s.onload = start; s.onerror = start; document.head.append(s);
   } else start();
   // cho smoke.js kiểm tra: đáp án hôm nay của từng chế độ
-  window.__dt = { answer: m => puzzle(m, today).t.key, names: () => LIST.map(t => t.name), keys: () => LIST.map(t => t.key) };
+  window.__dt = { answer: m => puzzle(m, today).t.key, names: () => LIST.map(t => t.name), keys: () => LIST.map(t => t.key), noAttr: () => LIST.filter(t => !t.gen || !t.rng).map(t => t.key) };
 })();
