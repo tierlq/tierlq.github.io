@@ -40,7 +40,7 @@ const AFFREL = 'sponsored nofollow noopener';
 const affFeat = (affItems.some(x => x.featured) ? affItems.filter(x => x.featured) : affItems).slice(0, 2);
 const affShort = n => n.replace(/\s*\(.*$/, '');
 const affBox = () => affItems.length ? `<aside class="aff" aria-label="Phụ kiện gợi ý, có liên kết tiếp thị"><p class="aff-t"><span class="aff-l">Liên kết tiếp thị</span>Phụ kiện cho người chơi trên điện thoại</p><ul>${affFeat.map(x => `<li><a href="${esc(x.url)}" rel="${AFFREL}" target="_blank"><b>${esc(affShort(x.name))}</b><span>Xem trên ${esc(x.shop)} →</span></a></li>`).join('')}</ul><p class="aff-s">Mua qua các liên kết này, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. <a href="/phu-kien/">Xem tất cả phụ kiện</a></p></aside>` : '';
-const NAVF = `<a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
+const NAVF = `<a href="/doan-tuong/">Đoán tướng</a> · <a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
 const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
 <html lang="vi">
 <head>
@@ -445,12 +445,29 @@ if (!/<!--AFFM-->[\s\S]*<!--\/AFFM-->/.test(idx2)) throw Error('index.html thi�
 const affTpl = `<!--AFFM--><template id="affTpl">${affBox()}</template><!--/AFFM-->`;
 fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML).replace(/<!--AFF-->[\s\S]*<!--\/AFF-->/, affStrip).replace(/<!--AFFM-->[\s\S]*<!--\/AFFM-->/, affTpl).replace(/<!--AOGSRC-->[\s\S]*?<!--\/AOGSRC-->/, `<!--AOGSRC-->${SRC.aogGames} trận (vòng bảng và playoffs, ${aogWhen}), ${Object.keys(SRC.aog).length} tướng của web có pick<!--/AOGSRC-->`));
 
+// ---------- Đoán tướng hôm nay (/doan-tuong/, luật chơi ở assets/game.js) ----------
+{
+  const gv = (index.match(/assets\/app\.js\?v=(\d+)/) || [])[1] || '';
+  const nHero = new Set(HEROES.map(h => h.key)).size;
+  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo gợi ý lớp, đường, tier, đoán qua chiêu thức và qua ảnh tướng. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày',
+    body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
+<h2>Cách chơi</h2>
+<ul>
+<li><b>Cổ điển</b>: gõ tên một tướng. Mỗi lượt, 5 ô so tướng bạn đoán với đáp án: lớp, đường, tier cao nhất trên Bảng Tier, bậc Garena (T0–T4, do Garena xếp trong game) và tỉ lệ thắng game rank. Xanh là trùng, cam là trùng một phần (ví dụ cùng một trong hai đường), đỏ là sai; mũi tên ↑ ↓ cho biết đáp án cao hay thấp hơn.</li>
+<li><b>Chiêu thức</b>: nhìn biểu tượng một chiêu để đoán tướng. Sai 4 lượt thì hiện tên chiêu.</li>
+<li><b>Ảnh tướng</b>: một mảnh ảnh tướng phóng to, mỗi lượt sai ảnh thu nhỏ lại để lộ thêm.</li>
+</ul>
+<p>Cả nước cùng một đề, đổi lúc 0 giờ (giờ Việt Nam). Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Số liệu tier và game rank lấy từ Bảng Tier ngày ${upd}, xem cách tính ở <a href="/phuong-phap/">Phương pháp</a>; ảnh chiêu thức lấy từ Học viện Garena.</p>
+<script defer src="/assets/data.js?v=${gv}"></script>
+<script defer src="/assets/game.js?v=${gv}"></script>` }));
+}
+
 // ---------- 5. sitemap ----------
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/phuong-phap/', iso, 'monthly', '0.5'], ...CONCEPTS.map(([u]) => [u, iso, 'weekly', '0.6']), ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/phuong-phap/', iso, 'monthly', '0.5'], ['/doan-tuong/', iso, 'daily', '0.6'], ...CONCEPTS.map(([u]) => [u, iso, 'weekly', '0.6']), ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);
-console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · ${articles.length} bài viết · ${4 + CONCEPTS.length + (affItems.length ? 1 : 0)} trang phụ (gồm ${CONCEPTS.length} trang tra cứu) · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + articles.length + 6 + CONCEPTS.length + (affItems.length ? 1 : 0)} link (cập nhật ${upd})`);
+console.log(`FAQ ${faq.length} câu · ${HEROES.length} trang tướng · ${patches.length} trang bản cập nhật · ${Object.keys(LANES).length} trang đường · ${articles.length} bài viết · ${4 + CONCEPTS.length + (affItems.length ? 1 : 0)} trang phụ (gồm ${CONCEPTS.length} trang tra cứu) · sitemap ${HEROES.length + 1 + patches.length + Object.keys(LANES).length + articles.length + 7 + CONCEPTS.length + (affItems.length ? 1 : 0)} link (cập nhật ${upd})`);

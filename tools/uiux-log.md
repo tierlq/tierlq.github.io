@@ -277,3 +277,7 @@ Mỗi mục: ngày, đã sửa gì và vì sao, đã kiểm tra gì, ý tưởng
 - Kiểm tra: `tools/check/all.sh` TẤT CẢ ĐẠT (1440/390: 5 slide, 181/45 thẻ, mở 181/181 bảng chi tiết, 385 ảnh). So ảnh trước/sau: chỉ khác chữ số (còn lại là nhiễu chuyển động). Đổi `?v=` cả ba script.
 - Đã xem rồi để lại: axe báo tương phản `.band .r1` khi mở menu ở 1440 sáng (chữ viền trang trí, `aria-hidden`, báo nhầm); link "Xem tất cả phụ kiện" cao 15px trên máy tính nhưng nằm trong câu (được miễn cỡ vùng chạm).
 - Để dành: mô tả món đồ/phù hiệu/phép (lấy từ avix-data) và ảnh tier list tải về vẫn có số dấu chấm ("1.5 giây"); điện thoại: nút lên đầu trang che vài chữ góc phải dưới khi vuốt ngược lên; cột Tà Thần dài hơn hẳn trên máy tính.
+
+## 25/11/2026 — Trang Đoán tướng hôm nay
+- Thêm `/doan-tuong/` (trò chơi mỗi ngày kiểu LoLdle) theo yêu cầu chủ web. Giữ phong cách web: tab chữ mono gạch chân, nút viên thuốc, ô nhập bo tròn cao 48px (vừa ngón tay), bảng ô màu xanh/cam/đỏ có chữ trắng và nhãn đọc màn hình (không chỉ dựa vào màu). Ô lật lần lượt 0,25 s, tắt khi bật giảm chuyển động. Đã xem ở 390px và 1440px: không tràn ngang.
+- Trang chủ: thêm dải mỏng "Đoán tướng hôm nay" cùng kiểu dải Phụ kiện, đặt ngay trên nó.
