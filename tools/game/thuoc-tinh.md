@@ -11,3 +11,7 @@ Nguồn (đọc 25/11/2026 qua API của wiki Arena of Valor trên Fandom, `aren
 - Wiki do cộng đồng viết, có thể sai. Có chỗ còn nghi: Arum, Paine, Bolt Baron (wiki ghi đánh xa), Liliana (wiki ghi đánh xa, dạng cáo đánh gần). Người chơi báo sai thì sửa thẳng trong `ATTR`, đổi `?v=`.
 
 Tướng mới: thêm một mục vào `ATTR`; `tools/check/smoke.js` báo lỗi nếu tướng nào thiếu.
+
+## Năm ra mắt (25/11/2026, chủ web: "bỏ bậc garena và thêm cho giống" LoLdle)
+Hằng `YEAR` trong `assets/game.js` (`key:<năm − 2000>`). Nguồn: bảng "Hero(es) release timeline" ở trang Heroes của wiki Arena of Valor (Fandom, cập nhật khoảng 20/11/2026), là ngày ra mắt bản quốc tế nên có thể lệch máy chủ Việt Nam vài tháng (VN thường có tướng sớm hơn). 20 tướng đầu (Chaugnar … Valhein) wiki ghi chung 2016. Dyadia (2026), Edras (2025), Tamyn (2026), Evita (2026), Flowborn (2026) wiki chưa ghi nên lấy ngày ra mắt AoV ở trang tướng trên Liquipedia (API, 25/11/2026). Celica không có ở cả hai nguồn nên để trống (ô hiện "–", luôn đỏ).
+Chưa làm "Vùng đất" và "Chủng loài"/"Tài nguyên" như LoLdle: wiki chỉ ghi nơi sinh cho khoảng 68/129 tướng, ô năng lượng (mana) ghi lẫn lộn.

@@ -1,7 +1,7 @@
 /* Đoán tướng hôm nay (/doan-tuong/) — trò chơi mỗi ngày kiểu LoLdle cho Liên Quân.
    Chạy sau assets/data.js (cần HEROES, RANK, CLASSES, LANES); bộ chiêu lấy từ assets/skills.js (tải khi cần).
    3 chế độ, mỗi chế độ một tướng riêng, cả nước cùng một đề, đổi lúc 0 giờ giờ Việt Nam:
-   - Cổ điển: đoán tên, mỗi lượt so 6 thuộc tính như LoLdle (giới tính, lớp, đường, tầm đánh, tier cao nhất trên web, bậc Garena)
+   - Cổ điển: đoán tên, mỗi lượt so 6 thuộc tính như LoLdle (giới tính, đường, lớp, tầm đánh, tier cao nhất trên web, năm ra mắt)
      xanh = trùng, cam = trùng một phần, đỏ = sai; mũi tên ↑/↓ = đáp án cao/thấp hơn.
    - Chiêu thức: biểu tượng một chiêu (ảnh Garena), sai 4 lượt thì hiện tên chiêu.
    - Ảnh tướng: một mảnh ảnh bìa phóng to, mỗi lượt sai thì thu nhỏ dần.
@@ -47,6 +47,10 @@
   const ATTR = "airi:Mf aleister:Rm alice:Rf allain:Mm amily:Mf annette:Rf aoi:Mf arduin:Mm arthur:Mm arum:Rf astrid:Mf ata:Mm aya:Rf azzenka:Rm baldum:Mm bijan:Mm billow:Mm biron:Mm boltbaron:Rm bonnie:Rf bright:Mm butterfly:Mf capheny:Rf celica:Rf charlotte:Mf chaugnar:Mm cresht:Mm darcy:Rm dextra:Mf dieuthuyen:Rf dirak:Rm dolia:Rf dyadia:Rf edras:Mm elandorr:Rm elsu:Rm enzo:Bm erin:Rf errol:Mm evita:Rf fennik:Rm florentino:Mm flowborn:Ro gildur:Rm goverra:Rf grakk:Mm hayate:Rm heino:Rm helen:Rf iggy:Rm ignis:Rm ilumia:Rf ishar:Rf jinna:Rm kahlii:Rf kaine:Mm keera:Mf kilgroth:Mm kriknak:Mm krixi:Rf krizzix:Rm lauriel:Rf laville:Rm liliana:Rf lindis:Rf lorion:Rm lubo:Mm lumburr:Mm maloch:Mm marja:Rf max:Mm mganga:Rm mina:Mf ming:Rm moren:Rm murad:Mm nakroth:Mm natalya:Rf ngokhong:Mm omega:Mm omen:Mm ormarr:Mm paine:Rm preyta:Rm qi:Mf quillen:Mm raz:Mm richter:Mm rouie:Rf rourke:Rm roxie:Mf ryoma:Mm sephera:Rf sinestrea:Mf skud:Mm slimz:Rm stuart:Rm superman:Mm taara:Mf tachi:Mm tamyn:Mm teemee:Mm teeri:Rf telannas:Rf thane:Mm theflash:Mm thorne:Rm toro:Mm trieuvan:Mm tulen:Rm valhein:Rm veera:Rf veres:Mf violet:Rf volkath:Mm wiro:Mm wisp:Rf wonderwoman:Mf xeniel:Mm yan:Mm ybneth:Mx yena:Mf yorn:Rm yue:Rf zata:Rm zephys:Mm zill:Rm zip:Mm zuka:Mm";
   const GEN = { m: "Nam", f: "Nữ", x: "Khác", o: "Tuỳ chọn" }, RNG = { M: ["Cận chiến"], R: ["Đánh xa"], B: ["Cận chiến", "Đánh xa"] };
   for (const tok of ATTR.split(" ")) { const [k, v] = tok.split(":"), t = byKey.get(k); if (t) { t.rng = new Set(RNG[v[0]]); t.gen = GEN[v[1]]; } }
+  // Năm ra mắt (bản quốc tế): bảng "Hero(es) release timeline" ở trang Heroes của wiki Arena of Valor (Fandom), đọc 25/11/2026;
+  // Dyadia, Edras, Tamyn, Evita, Flowborn lấy ngày ra mắt AoV ở Liquipedia (wiki Fandom chưa ghi). Celica chưa có nguồn nên để trống.
+  const YEAR = "airi:17 aleister:17 alice:16 allain:20 amily:18 annette:18 aoi:21 arduin:17 arthur:17 arum:18 astrid:17 ata:20 aya:21 azzenka:16 baldum:18 bijan:23 billow:25 biron:24 boltbaron:24 bonnie:23 bright:20 butterfly:16 capheny:19 charlotte:24 chaugnar:16 cresht:17 darcy:19 dextra:20 dieuthuyen:17 dirak:19 dolia:24 dyadia:26 edras:25 elandorr:19 elsu:18 enzo:19 erin:24 errol:19 evita:26 fennik:17 florentino:19 flowborn:26 gildur:16 goverra:25 grakk:17 hayate:19 heino:25 helen:22 iggy:21 ignis:17 ilumia:17 ishar:19 jinna:17 kahlii:16 kaine:23 keera:20 kilgroth:17 kriknak:17 krixi:16 krizzix:19 lauriel:17 laville:20 liliana:18 lindis:18 lorion:20 lubo:16 lumburr:17 maloch:17 marja:18 max:18 mganga:16 mina:16 ming:23 moren:17 murad:17 nakroth:17 natalya:17 ngokhong:17 omega:16 omen:18 ormarr:16 paine:20 preyta:17 qi:19 quillen:18 raz:17 richter:18 rouie:20 rourke:18 roxie:18 ryoma:17 sephera:18 sinestrea:20 skud:17 slimz:17 stuart:23 superman:17 taara:16 tachi:21 tamyn:26 teemee:18 teeri:22 telannas:17 thane:16 theflash:18 thorne:20 toro:16 trieuvan:16 tulen:18 valhein:16 veera:16 veres:19 violet:17 volkath:19 wiro:18 wisp:18 wonderwoman:17 xeniel:17 yan:22 ybneth:18 yena:19 yorn:16 yue:22 zata:20 zephys:16 zill:17 zip:19 zuka:17";
+  for (const tok of YEAR.split(" ")) { const [k, v] = tok.split(":"), t = byKey.get(k); if (t) t.year = 2000 + +v; }
   const find = k => byKey.get(k);
 
   /* ---- đề mỗi ngày ---- */
@@ -72,11 +76,11 @@
   const ordCmp = (g, a, lowerIsHigher) => g == null || a == null ? ["no", ""] : g === a ? ["ok", ""] : ["no", (lowerIsHigher ? a < g : a > g) ? "↑" : "↓"];
   const COLS = [
     ["Giới tính", (g, a) => [g.gen && g.gen === a.gen ? "ok" : "no", ""], g => g.gen || "–"],
-    ["Lớp", (g, a) => [setCmp(g.cls, a.cls), ""], g => [...g.cls].map(c => CLASSES[c]).join(", ")],
     ["Đường", (g, a) => [setCmp(g.lanes, a.lanes), ""], g => [...g.lanes].map(l => LANES[l]).join(", ")],
+    ["Lớp", (g, a) => [setCmp(g.cls, a.cls), ""], g => [...g.cls].map(c => CLASSES[c]).join(", ")],
     ["Tầm đánh", (g, a) => [g.rng && a.rng ? setCmp(g.rng, a.rng) : "no", ""], g => g.rng ? [...g.rng].join(", ") : "–"],
     ["Tier", (g, a) => ordCmp(g.tier, a.tier, true), g => TIERS[g.tier] || "–"],
-    ["Bậc Garena", (g, a) => ordCmp(g.gr, a.gr, true), g => g.gr == null ? "–" : "T" + g.gr]
+    ["Năm ra mắt", (g, a) => ordCmp(g.year, a.year, false), g => g.year || "–"]
   ];
 
   /* ---- trạng thái ---- */
@@ -237,7 +241,7 @@
       legend.append(el("h2", "dt-pt dt-sm", "Chú thích màu"));
       const ul = el("ul", "dt-keys");
       [["ok", "", "Đúng"], ["part", "", "Một phần"], ["no", "", "Sai"], ["no up", "", "Cao hơn"], ["no down", "", "Thấp hơn"]].forEach(([c, , n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
-      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các lớp, đường hoặc tầm đánh. Cao hơn / Thấp hơn: tier hoặc bậc Garena của tướng bí ẩn cao hơn hay thấp hơn (tier S và bậc T0 là cao nhất)."));
+      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các đường, lớp hoặc tầm đánh. Cao hơn: tướng bí ẩn có tier cao hơn (S là cao nhất) hoặc ra mắt muộn hơn. Thấp hơn: tier thấp hơn hoặc ra mắt sớm hơn."));
     }
 
     // thắng
