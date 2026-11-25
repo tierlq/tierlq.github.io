@@ -191,18 +191,18 @@ const errs = [], log = (...a) => console.log(...a);
     // Đoán tướng hôm nay: đoán sai một lượt rồi đúng ở cả 3 chế độ, tải lại vẫn giữ kết quả
     await p.goto(B + '/doan-tuong/', { waitUntil: 'load' });
     await p.evaluate(() => localStorage.clear()); await p.reload({ waitUntil: 'load' });
-    await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-tab').length === 3, null, { timeout: 10000 });
+    await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-mode').length === 3, null, { timeout: 10000 });
     const dtN = await p.evaluate(() => ({ n: __dt.names().length, keys: new Set(HEROES.map(h => h.key)).size, fb: __dt.names().filter(x => /Flowborn/.test(x)).length }));
     if (dtN.n !== dtN.keys || dtN.fb !== 1) bad(`Đoán tướng: ${dtN.n} tướng (cần ${dtN.keys}), Flowborn ${dtN.fb} lần`);
     for (const m of ['co', 'chieu', 'anh']) {
-      await p.click(`.dt-tab[data-m=${m}]`);
+      await p.click(`.dt-mode[data-m=${m}]`);
       const [ans, wrong] = await p.evaluate(m => { const a = __dt.answer(m); return [__dt.names()[__dt.keys().indexOf(a)], __dt.names().find((x, i) => __dt.keys()[i] !== a)]; }, m);
       for (const name of [wrong, ans]) { await p.fill('#dtIn', name); await p.waitForTimeout(80); await p.keyboard.press('Enter'); await p.waitForTimeout(150); }
       const st = await p.evaluate(() => ({ win: !document.querySelector('.dt-win').hidden, rows: document.querySelectorAll('.dt-grid tbody tr, .dt-wrong li').length, form: !document.querySelector('.dt-form').hidden }));
       if (!st.win || st.rows !== 2 || st.form) bad(`Đoán tướng ${m}: thắng ${st.win}, ${st.rows} lượt (cần 2), ô nhập còn hiện ${st.form}`);
     }
-    await p.reload({ waitUntil: 'load' }); await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-tab').length === 3);
-    if (await p.evaluate(() => document.querySelectorAll('.dt-tab.ok').length !== 3)) bad('Đoán tướng: tải lại mất kết quả đã đoán');
+    await p.reload({ waitUntil: 'load' }); await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-mode').length === 3);
+    if (await p.evaluate(() => document.querySelectorAll('.dt-mode.ok').length !== 3)) bad('Đoán tướng: tải lại mất kết quả đã đoán');
     if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad('/doan-tuong/ tràn ngang');
     log(`[${vp}] Đoán tướng: ${dtN.n} tướng, thắng đủ 3 chế độ`);
     await ctx.close();

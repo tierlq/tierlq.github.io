@@ -79,52 +79,46 @@
   const keyOf = m => m + ":" + today;
   const guesses = m => store.get(keyOf(m), []).filter(find);
   const solved = m => { const p = puzzle(m, today); return guesses(m).includes(p.t.key); };
+  const go = m => { mode = m; history.replaceState(null, "", "#" + m); render(); };
 
-  /* ---- khung trang ---- */
+  /* ---- khung trang (bố cục kiểu LoLdle: hàng biểu tượng chế độ, khung gợi ý, ô nhập, bảng ô vuông, chú thích màu) ---- */
+  document.body.classList.add("dtg");
+  // nền: ảnh bìa một tướng (không phải đáp án), mờ dần xuống nền đen
+  const bgT = LIST[Math.floor(rng(today * 3 + 1)() * LIST.length)];
+  const bg = el("div", "dt-bg"); bg.setAttribute("aria-hidden", "true");
+  const bgi = el("img"); bgi.alt = ""; bgi.decoding = "async"; bgi.src = "/s/" + (bgT.key === "flowborn" ? "flowborn-ad" : bgT.key) + ".webp"; bg.append(bgi);
+  document.body.prepend(bg);
+
   root.textContent = "";
-  const tabs = el("div", "dt-tabs"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Chế độ chơi");
-  const intro = el("p", "dt-intro");
-  const clue = el("div", "dt-clue");
+  const tabs = el("div", "dt-modes"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Chế độ chơi");
+  const panel = el("section", "dt-panel");
   const form = el("form", "dt-form"); form.setAttribute("autocomplete", "off");
   const lab = el("label", "dt-sr", "Nhập tên tướng"); lab.htmlFor = "dtIn";
   const inp = el("input"); inp.id = "dtIn"; inp.type = "text"; inp.placeholder = "Gõ tên tướng…"; inp.setAttribute("role", "combobox"); inp.setAttribute("aria-autocomplete", "list"); inp.setAttribute("aria-controls", "dtList"); inp.setAttribute("aria-expanded", "false"); inp.spellcheck = false;
-  const btn = el("button", "dt-go", "Đoán"); btn.type = "submit";
+  const btn = el("button", "dt-go"); btn.type = "submit"; btn.setAttribute("aria-label", "Đoán"); btn.append(el("span", null, "▶"));
   const list = el("ul", "dt-list"); list.id = "dtList"; list.setAttribute("role", "listbox"); list.hidden = true;
   form.append(lab, inp, btn, list);
   const count = el("p", "dt-count");
+  const win = el("section", "dt-panel dt-win"); win.hidden = true; win.setAttribute("role", "status");
   const board = el("div", "dt-board");
-  const win = el("div", "dt-win"); win.hidden = true; win.setAttribute("role", "status");
+  const legend = el("section", "dt-panel dt-legend");
   const yest = el("p", "dt-yest");
-  root.append(tabs, intro, clue, form, count, win, board, yest);
+  root.append(tabs, panel, form, count, win, board, legend, yest);
 
-  // 3 ô chọn chế độ: mỗi ô có hình minh hoạ cách chơi, tên, một dòng mô tả và trạng thái hôm nay
-  const DESC = { co: "Đoán qua lớp, đường, tier", chieu: "Nhìn biểu tượng chiêu", anh: "Nhìn mảnh ảnh tướng" };
-  function tileArt(m) {
-    const a = el("span", "dt-art dt-art-" + m); a.setAttribute("aria-hidden", "true");
-    if (m === "co") ["ok", "part", "no", "ok", "no"].forEach(c => a.append(el("i", c)));
-    else if (m === "chieu") a.append(el("b", null, "?"));
-    else { const y = puzzle("anh", today - 1).t; a.style.backgroundImage = `url("${y.splash}")`; a.append(el("b", null, "?")); }
-    return a;
-  }
+  // biểu tượng chế độ: vòng tròn có hình, tên bên dưới, dấu ✓ khi đã đoán đúng
+  const ICON = {
+    co: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".55"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+    chieu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+    anh: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m6 17 4-5 3 3 2-2 3 4z"/><circle cx="15.5" cy="9" r="1.6"/></svg>'
+  };
   function makeTabs() { tabs.textContent = ""; for (const [m, name] of MODES) {
-    const b = el("button", "dt-tab"); b.type = "button"; b.setAttribute("role", "tab"); b.dataset.m = m;
-    b.append(tileArt(m), el("span", "dt-tn", name), el("span", "dt-td", DESC[m]), el("span", "dt-ts"));
-    b.addEventListener("click", () => { if (m !== mode) { mode = m; history.replaceState(null, "", "#" + m); render(); } });
-    b.addEventListener("keydown", e => { if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return; const i = MODES.findIndex(([x]) => x === mode), n = MODES[(i + (e.key === "ArrowRight" ? 1 : MODES.length - 1)) % MODES.length][0]; mode = n; history.replaceState(null, "", "#" + n); render(); tabs.querySelector(`[data-m="${n}"]`).focus(); });
+    const b = el("button", "dt-mode"); b.type = "button"; b.setAttribute("role", "tab"); b.dataset.m = m;
+    const ring = el("span", "dt-ring"); ring.innerHTML = ICON[m]; ring.append(el("i", "dt-tick", "✓"));
+    b.append(ring, el("span", "dt-mn", name));
+    b.addEventListener("click", () => { if (m !== mode) go(m); });
+    b.addEventListener("keydown", e => { if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return; const i = MODES.findIndex(([x]) => x === mode); go(MODES[(i + (e.key === "ArrowRight" ? 1 : MODES.length - 1)) % MODES.length][0]); tabs.querySelector(`[data-m="${mode}"]`).focus(); });
     tabs.append(b);
   } }
-  // dải chân dung với ô "?" ở giữa: gợi ý của chế độ Cổ điển (đúng rồi thì ô giữa hiện đáp án)
-  function stage(p, done) {
-    const r = rng(today * 13 + 5), pool = LIST.filter(t => t !== p.t), pick = [];
-    while (pick.length < 10) { const t = pool[Math.floor(r() * pool.length)]; if (!pick.includes(t)) pick.push(t); }
-    const box = el("div", "dt-stage"), row = el("div", "dt-row"); row.setAttribute("aria-hidden", "true");
-    pick.forEach((t, i) => { if (i === 5) row.append(el("span", "dt-gap")); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 64; im.height = 64; im.loading = "lazy"; row.append(im); });
-    const mys = el("div", "dt-mys" + (done ? " won" : ""));
-    if (done) { const im = el("img"); im.src = p.t.img; im.alt = p.t.name; im.width = 120; im.height = 120; mys.append(im); }
-    else { mys.append(el("b", null, "?")); mys.setAttribute("role", "img"); mys.setAttribute("aria-label", "Tướng bí ẩn"); }
-    box.append(row, mys);
-    return box;
-  }
 
   /* ---- gợi ý khi gõ ---- */
   let opts = [], sel = -1;
@@ -134,7 +128,7 @@
     list.textContent = ""; sel = opts.length ? 0 : -1;
     opts.forEach((t, i) => {
       const li = el("li"); li.setAttribute("role", "option"); li.id = "dtO" + i; li.setAttribute("aria-selected", i === sel);
-      const im = el("img"); im.src = t.img; im.alt = ""; im.width = 36; im.height = 36; im.loading = "lazy";
+      const im = el("img"); im.src = t.img; im.alt = ""; im.width = 40; im.height = 40; im.loading = "lazy";
       li.append(im, el("span", null, t.name));
       li.addEventListener("mousedown", e => { e.preventDefault(); guess(t); });
       list.append(li);
@@ -174,94 +168,90 @@
   }
 
   /* ---- vẽ ---- */
+  const ARIA = { ok: "đúng", part: "đúng một phần", no: "sai" };
   function render(fresh) {
     const p = puzzle(mode, today), g = guesses(mode), done = g.includes(p.t.key);
-    for (const b of tabs.children) {
-      const m = b.dataset.m, on = m === mode, n = guesses(m).length, ok = solved(m);
-      b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", ok);
-      b.querySelector(".dt-ts").textContent = ok ? `✓ Đúng sau ${n} lượt` : n ? `Đang đoán · ${n} lượt` : "Chưa chơi";
-    }
-    intro.textContent = { co: "Gõ tên một tướng bất kỳ. Các ô màu cho biết tướng đó giống tướng bí ẩn ở điểm nào.", chieu: "Chiêu này của tướng nào? Sai 4 lượt sẽ hiện tên chiêu.", anh: "Ảnh này của tướng nào? Mỗi lượt sai, ảnh thu nhỏ để lộ thêm." }[mode];
-    // gợi ý
-    clue.textContent = ""; clue.className = "dt-clue dt-" + mode;
-    if (mode === "chieu") {
-      const box = el("div", "dt-skill");
-      box.setAttribute("role", "img"); box.setAttribute("aria-label", "Biểu tượng chiêu cần đoán");
-      const im = el("img"); im.alt = ""; im.referrerPolicy = "no-referrer"; im.width = 96; im.height = 96;
+    for (const b of tabs.children) { const on = b.dataset.m === mode; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", solved(b.dataset.m)); }
+
+    // khung gợi ý
+    panel.textContent = ""; panel.className = "dt-panel dt-clue dt-" + mode;
+    const title = { co: "Đoán tướng Liên Quân hôm nay!", chieu: "Chiêu này của tướng nào?", anh: "Ảnh này của tướng nào?" }[mode];
+    panel.append(el("h2", "dt-pt", title));
+    if (mode === "co") {
+      panel.append(el("p", "dt-ps", "Gõ tên một tướng bất kỳ để bắt đầu. Mỗi ô màu cho biết tướng bạn đoán giống tướng bí ẩn ở điểm nào."));
+    } else if (mode === "chieu") {
+      const box = el("div", "dt-skill"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Biểu tượng chiêu cần đoán");
+      const im = el("img"); im.alt = ""; im.referrerPolicy = "no-referrer"; im.width = 104; im.height = 104;
       im.addEventListener("error", () => { box.textContent = "?"; box.classList.add("dt-noimg"); });
-      im.src = SKU + p.skill[1];
-      box.append(im);
+      im.src = SKU + p.skill[1]; box.append(im);
       const slot = ["Nội tại", "Chiêu 1", "Chiêu 2", "Chiêu cuối"][p.slot] || "Chiêu " + p.slot;
-      const hint = el("p", "dt-hint", done || g.length >= 4 ? `${slot}: ${p.skill[0]}` : `Sai ${4 - g.length} lượt nữa sẽ hiện tên chiêu`);
-      clue.append(box, hint);
-    } else if (mode === "co") {
-      clue.append(stage(p, done), el("p", "dt-hint", done ? `Tướng bí ẩn hôm nay là ${p.t.name}` : `Tướng bí ẩn hôm nay · ${LIST.length} tướng có thể là đáp án`));
-    } else if (mode === "anh") {
+      panel.append(box, el("p", "dt-ps", done || g.length >= 4 ? `${slot}: ${p.skill[0]}` : `Sai thêm ${4 - g.length} lượt sẽ hiện tên chiêu`));
+    } else {
       const z = done ? 1 : Math.max(1.2, 6 - g.length * 0.7);
       const box = el("div", "dt-splash"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Một phần ảnh tướng cần đoán");
       const im = el("img"); im.src = p.t.splash; im.alt = ""; im.decoding = "async";
       im.style.transformOrigin = p.x + "% " + p.y + "%"; im.style.transform = "scale(" + z + ")";
-      box.append(im); clue.append(box);
+      box.append(im);
+      panel.append(box, el("p", "dt-ps", done ? "Ảnh đầy đủ" : "Mỗi lượt sai, ảnh thu nhỏ để lộ thêm"));
     }
     form.hidden = done;
-    count.textContent = g.length ? `${g.length} lượt đoán` : "";
-    // bảng lượt đoán (mới nhất ở trên)
+    count.textContent = g.length && !done ? `Đã đoán ${g.length} lượt` : "";
+
+    // các lượt đoán, mới nhất ở trên
     board.textContent = "";
     if (mode === "co" && g.length) {
-      const tb = el("table", "dt-grid"); const cap = el("caption", "dt-sr", "Các lượt đoán, mới nhất ở trên"); tb.append(cap);
+      const tb = el("table", "dt-grid"); tb.append(el("caption", "dt-sr", "Các lượt đoán, mới nhất ở trên"));
       const hr = el("tr"); hr.append(el("th", null, "Tướng")); COLS.forEach(([n]) => hr.append(el("th", null, n)));
       const th = el("thead"); th.append(hr); tb.append(th);
       const tbody = el("tbody");
       g.slice().reverse().forEach((k, i) => {
         const t = find(k), tr = el("tr");
-        const c0 = el("td", "dt-h"); const im = el("img"); im.src = t.img; im.alt = t.name; im.title = t.name; im.width = 48; im.height = 48; c0.append(im); tr.append(c0);
+        const c0 = el("td", "dt-h"); const im = el("img"); im.src = t.img; im.alt = t.name; im.title = t.name; im.width = 64; im.height = 64; c0.append(im); tr.append(c0);
         COLS.forEach(([n, cmp, show], j) => {
-          const [st, ar] = cmp(t, p.t), td = el("td", "dt-c " + st);
+          const [st, ar] = cmp(t, p.t), td = el("td", "dt-c " + st + (ar === "↑" ? " up" : ar === "↓" ? " down" : ""));
           td.append(el("span", null, show(t)));
-          if (ar) td.append(el("b", "dt-ar", ar));
-          td.setAttribute("aria-label", `${n}: ${show(t)}, ${{ ok: "đúng", part: "đúng một phần", no: "sai" }[st]}${ar === "↑" ? ", đáp án cao hơn" : ar === "↓" ? ", đáp án thấp hơn" : ""}`);
-          if (i === 0 && fresh) td.style.animationDelay = (j * 0.25) + "s";
-          if (i === 0 && fresh) td.classList.add("flip");
+          td.setAttribute("aria-label", `${n}: ${show(t)}, ${ARIA[st]}${ar === "↑" ? ", tướng bí ẩn cao hơn" : ar === "↓" ? ", tướng bí ẩn thấp hơn" : ""}`);
+          if (i === 0 && fresh) { td.classList.add("flip"); td.style.animationDelay = (j * 0.3) + "s"; }
           tr.append(td);
         });
         tbody.append(tr);
       });
       tb.append(tbody);
       const wrap = el("div", "dt-scroll"); wrap.append(tb); board.append(wrap);
-      const legend = el("p", "dt-legend"); legend.innerHTML = '<span class="ok">Đúng</span><span class="part">Đúng một phần</span><span class="no">Sai</span><span>↑↓ Đáp án cao/thấp hơn (tier S, bậc T0 là cao nhất)</span>';
-      board.append(legend);
-    } else if (mode === "co") {
-      // chưa đoán lượt nào: một lượt mẫu để thấy màu và mũi tên nghĩa là gì
-      const ex = el("div", "dt-ex"); ex.append(el("p", "dt-ex-t", "Một lượt đoán sẽ trông như thế này"));
-      const row = el("div", "dt-ex-row"); row.setAttribute("aria-hidden", "true");
-      [["Lớp", "Pháp sư", "ok", ""], ["Đường", "Giữa, Trợ thủ", "part", ""], ["Tier", "B", "no", "↑"], ["Bậc Garena", "T2", "ok", ""], ["Thắng rank", "49,5%", "no", "↓"]].forEach(([h, v, c, a]) => {
-        const cell = el("div", "dt-ex-c"); cell.append(el("span", "dt-ex-h", h)); const b = el("span", "dt-c " + c); b.append(el("span", null, v)); if (a) b.append(el("b", "dt-ar", a)); cell.append(b); row.append(cell);
-      });
-      const keys = el("ul", "dt-keys");
-      [["ok", "Xanh", "trùng với tướng bí ẩn"], ["part", "Cam", "trùng một phần, ví dụ cùng một trong hai đường"], ["no", "Đỏ", "khác hẳn"], ["ar", "↑ ↓", "tướng bí ẩn cao hơn hay thấp hơn (tier S và bậc T0 là cao nhất)"]].forEach(([c, n, d]) => { const li = el("li", c); li.append(el("b", null, n), document.createTextNode(" " + d)); keys.append(li); });
-      ex.append(row, keys); board.append(ex);
     } else if (g.length) {
       const ul = el("ul", "dt-wrong");
-      g.slice().reverse().forEach(k => { const t = find(k), li = el("li", k === p.t.key ? "ok" : "no"); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 40; im.height = 40; li.append(im, el("span", null, t.name)); ul.append(li); });
+      g.slice().reverse().forEach(k => { const t = find(k), li = el("li", k === p.t.key ? "ok" : "no"); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 44; im.height = 44; li.append(im, el("span", null, t.name)); ul.append(li); });
       board.append(ul);
     }
+
+    // chú thích màu (chế độ Cổ điển)
+    legend.hidden = mode !== "co"; legend.textContent = "";
+    if (mode === "co") {
+      legend.append(el("h2", "dt-pt dt-sm", "Chú thích màu"));
+      const ul = el("ul", "dt-keys");
+      [["ok", "", "Đúng"], ["part", "", "Một phần"], ["no", "", "Sai"], ["no up", "", "Cao hơn"], ["no down", "", "Thấp hơn"]].forEach(([c, , n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
+      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các lớp hoặc đường. Cao hơn / Thấp hơn: tướng bí ẩn có tier, bậc Garena hay tỉ lệ thắng cao hơn hoặc thấp hơn (tier S và bậc T0 là cao nhất)."));
+    }
+
     // thắng
     win.hidden = !done; win.textContent = "";
     if (done) {
       const st = store.get("streak:" + mode, { n: 0, best: 0 });
-      const head = el("div", "dt-win-h"); const im = el("img"); im.src = p.t.img; im.alt = ""; im.width = 64; im.height = 64;
-      const tx = el("div"); tx.append(el("p", "dt-win-t", `Đúng rồi: ${p.t.name}`), el("p", "dt-win-s", `${g.length} lượt · chuỗi ${st.n || 1} ngày` + ((st.best || 0) > (st.n || 1) ? ` (dài nhất ${st.best})` : "")));
+      win.append(el("p", "dt-gg", "Chính xác!"));
+      const head = el("div", "dt-win-h"); const im = el("img"); im.src = p.t.img; im.alt = ""; im.width = 72; im.height = 72;
+      const tx = el("div"); tx.append(el("p", "dt-win-l", "Bạn đã đoán ra"), el("p", "dt-win-t", p.t.name));
       head.append(im, tx); win.append(head);
+      win.append(el("p", "dt-win-s", `Số lượt: ${g.length} · Chuỗi ngày đúng: ${st.n || 1}` + ((st.best || 0) > (st.n || 1) ? ` (dài nhất ${st.best})` : "")));
       const row = el("div", "dt-win-b");
-      const a = el("a", "dt-btn", "Xem tier, lên đồ →"); a.href = p.t.page;
+      const a = el("a", "dt-btn", "Xem tier, lên đồ"); a.href = p.t.page;
       const sh = el("button", "dt-btn dt-share", "Chia sẻ kết quả"); sh.type = "button"; sh.addEventListener("click", () => share(p, g));
-      row.append(a, sh); win.append(row);
+      row.append(sh, a); win.append(row);
       const nx = el("p", "dt-next"); win.append(nx); tick(nx);
       const other = MODES.find(([m]) => !solved(m));
-      if (other) { const ob = el("button", "dt-btn dt-more", `Chơi tiếp: ${other[1]}`); ob.type = "button"; ob.addEventListener("click", () => { mode = other[0]; history.replaceState(null, "", "#" + mode); render(); window.scrollTo({ top: 0, behavior: "smooth" }); }); win.append(ob); }
+      if (other) { const ob = el("button", "dt-btn dt-more", `Chơi tiếp: ${other[1]}`); ob.type = "button"; ob.addEventListener("click", () => { go(other[0]); window.scrollTo({ top: 0, behavior: "smooth" }); }); win.append(ob); }
     }
     yest.textContent = `Đề #${num(today)}`;
-    if (num(today - 1) >= 1) { const y = puzzle(mode, today - 1).t; yest.append(` · Hôm qua là `); const ya = el("a", null, y.name); ya.href = y.page; yest.append(ya); }
+    if (num(today - 1) >= 1) { const y = puzzle(mode, today - 1).t; yest.append(" · Tướng hôm qua là "); const ya = el("a", null, y.name); ya.href = y.page; yest.append(ya); }
   }
 
   let timer = 0;
@@ -273,9 +263,7 @@
 
   function share(p, g) {
     const name = MODES.find(([m]) => m === mode)[1];
-    let lines = "";
-    if (mode === "co") lines = g.map(k => COLS.map(([, cmp]) => ({ ok: "🟩", part: "🟧", no: "🟥" })[cmp(find(k), p.t)[0]]).join("")).join("\n");
-    else lines = g.map(k => k === p.t.key ? "🟩" : "🟥").join("");
+    const lines = mode === "co" ? g.map(k => COLS.map(([, cmp]) => ({ ok: "🟩", part: "🟧", no: "🟥" })[cmp(find(k), p.t)[0]]).join("")).join("\n") : g.map(k => k === p.t.key ? "🟩" : "🟥").join("");
     const url = location.origin + "/doan-tuong/?utm_source=chia_se&utm_medium=doan_tuong";
     const text = `Đoán tướng Liên Quân #${num(today)} · ${name} · ${g.length} lượt\n${lines}\n${url}`;
     track("doan_tuong_chia_se", { che_do: mode });
@@ -284,8 +272,7 @@
   }
   function toast(t) { const n = el("p", "dt-toast", t); n.setAttribute("role", "status"); document.body.append(n); setTimeout(() => n.remove(), 2600); }
 
-  // Chiêu thức cần skills.js: tải một lần (cùng số ?v= với game.js), rồi vẽ
-  // skills.js không tải được thì bỏ chế độ Chiêu thức thay vì báo lỗi
+  // Chiêu thức cần skills.js: tải một lần (cùng số ?v= với game.js); không tải được thì bỏ chế độ này
   function start() {
     if (typeof SKILLS === "undefined") { MODES = MODES.filter(([m]) => m !== "chieu"); if (mode === "chieu") mode = "co"; }
     makeTabs(); render();

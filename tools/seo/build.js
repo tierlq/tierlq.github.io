@@ -40,8 +40,10 @@ const AFFREL = 'sponsored nofollow noopener';
 const affFeat = (affItems.some(x => x.featured) ? affItems.filter(x => x.featured) : affItems).slice(0, 2);
 const affShort = n => n.replace(/\s*\(.*$/, '');
 const affBox = () => affItems.length ? `<aside class="aff" aria-label="Phụ kiện gợi ý, có liên kết tiếp thị"><p class="aff-t"><span class="aff-l">Liên kết tiếp thị</span>Phụ kiện cho người chơi trên điện thoại</p><ul>${affFeat.map(x => `<li><a href="${esc(x.url)}" rel="${AFFREL}" target="_blank"><b>${esc(affShort(x.name))}</b><span>Xem trên ${esc(x.shop)} →</span></a></li>`).join('')}</ul><p class="aff-s">Mua qua các liên kết này, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. <a href="/phu-kien/">Xem tất cả phụ kiện</a></p></aside>` : '';
+// số ?v= của index.html: dùng cho page.css, game.css, data.js, game.js để trình duyệt tải bản mới khi đổi
+const VER = (index.match(/assets\/app\.js\?v=(\d+)/) || [])[1] || '';
 const NAVF = `<a href="/doan-tuong/">Đoán tướng</a> · <a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
-const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [] }) => `<!doctype html>
+const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [], css = '', bodyCls = '' }) => `<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -63,9 +65,9 @@ ${CSP0}
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: h1, item: SITE + pth }] })}</script>
 ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n')}
-<link rel="stylesheet" href="/assets/page.css">
+<link rel="stylesheet" href="/assets/page.css?v=${VER}">${css ? `\n<link rel="stylesheet" href="${css}?v=${VER}">` : ''}
 </head>
-<body>
+<body${bodyCls ? ` class="${bodyCls}"` : ''}>
 <header><a class="home" href="/">Tier · Liên Quân</a></header>
 <main>
 <p class="over">${esc(over)}</p>
@@ -225,7 +227,7 @@ ${CSP}
 <meta property="og:url" content="${SITE}${url(h)}"><meta property="og:image" content="${img}"><meta property="og:locale" content="vi_VN">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
-<link rel="stylesheet" href="/assets/page.css">
+<link rel="stylesheet" href="/assets/page.css?v=${VER}">
 </head>
 <body>
 <header><a class="home" href="/">Tier · Liên Quân</a></header>
@@ -447,9 +449,9 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 
 // ---------- Đoán tướng hôm nay (/doan-tuong/, luật chơi ở assets/game.js) ----------
 {
-  const gv = (index.match(/assets\/app\.js\?v=(\d+)/) || [])[1] || '';
+  const gv = VER;
   const nHero = new Set(HEROES.map(h => h.key)).size;
-  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo gợi ý lớp, đường, tier, đoán qua chiêu thức và qua ảnh tướng. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày',
+  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo gợi ý lớp, đường, tier, đoán qua chiêu thức và qua ảnh tướng. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày', css: '/assets/game.css', bodyCls: 'dtg',
     body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
 <h2>Cách chơi</h2>
 <ul>
