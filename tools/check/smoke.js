@@ -193,7 +193,8 @@ const errs = [], log = (...a) => console.log(...a);
     await p.evaluate(() => localStorage.clear()); await p.reload({ waitUntil: 'load' });
     await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-mode').length === 3, null, { timeout: 10000 });
     const dtN = await p.evaluate(() => ({ noAttr: __dt.noAttr(), n: __dt.names().length, keys: new Set(HEROES.map(h => h.key)).size, fb: __dt.names().filter(x => /Flowborn/.test(x)).length }));
-    if (await p.evaluate(() => { const k = (document.querySelector('.dt-bg img').getAttribute('src').match(/\/s\/([a-z-]+)\.webp/) || [])[1]; return ['co', 'chieu', 'anh'].some(m => __dt.answer(m) === k || (k === 'flowborn-ad' && __dt.answer(m) === 'flowborn')); })) bad('Đoán tướng: ảnh nền trùng đáp án');
+    await p.waitForSelector('.dt-bg img.on', { state: 'attached', timeout: 5000 }).catch(() => bad('Đoán tướng: ảnh nền không hiện'));
+    if (await p.evaluate(() => { const k = (document.querySelector('.dt-bg img.on').getAttribute('src').match(/\/s\/([a-z-]+)\.webp/) || [])[1]; return ['co', 'chieu', 'anh'].some(m => __dt.answer(m) === k || (k === 'flowborn-ad' && __dt.answer(m) === 'flowborn')); })) bad('Đoán tướng: ảnh nền trùng đáp án');
     if (dtN.noAttr.length) bad(`Đoán tướng: thiếu giới tính/tầm đánh: ${dtN.noAttr.join(', ')} (thêm vào ATTR trong assets/game.js)`);
     if (dtN.n !== dtN.keys || dtN.fb !== 1) bad(`Đoán tướng: ${dtN.n} tướng (cần ${dtN.keys}), Flowborn ${dtN.fb} lần`);
     for (const m of ['co', 'chieu', 'anh']) {

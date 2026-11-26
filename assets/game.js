@@ -113,24 +113,32 @@
   function nextRound() {
     const old = cur(mode).t.key; let o;
     do { o = { s: newSeed(), g: [] }; } while (puzzleSeed(mode, o.s).t.key === old);
-    store.set("lt:" + mode, o); bgSeed = o.s; setBg(); render(); inp.focus({ preventScroll: true });
+    store.set("lt:" + mode, o); bgSeed = o.s; setBg(true); render(); inp.focus({ preventScroll: true });
   }
 
   /* ---- khung trang (bố cục kiểu LoLdle: hàng biểu tượng chế độ, khung gợi ý, ô nhập, bảng ô vuông, chú thích màu) ---- */
   document.body.classList.add("dtg");
   // nền: ảnh bìa một tướng, mờ dần xuống nền đen. Không bao giờ là đáp án đang đoán ở chế độ nào (kể cả Chơi liên tục),
-  // để nền không lộ đáp án Ảnh tướng. Đề hôm nay: cố định cả ngày; Chơi liên tục: đổi mỗi khi sang tướng mới (không tự đổi theo thời gian).
+  // để nền không lộ đáp án Ảnh tướng. Tự đổi 30 giây một lần (26/11, chủ web đồng ý): hai ảnh chồng nhau, ảnh mới tải xong mới
+  // mờ dần sang (chỉ đổi độ trong, không biến đổi 3D); dừng khi tab ẩn; tắt hẳn khi máy bật giảm chuyển động. Sang tướng mới ở
+  // Chơi liên tục cũng đổi nền.
   const bg = el("div", "dt-bg"); bg.setAttribute("aria-hidden", "true");
-  const bgi = el("img"); bgi.alt = ""; bgi.decoding = "async"; bg.append(bgi);
+  const bgA = [el("img"), el("img")]; bgA.forEach(i => { i.alt = ""; i.decoding = "async"; bg.append(i); });
   document.body.prepend(bg);
-  let bgSeed = today * 3 + 1;
-  function setBg() {
+  let bgOn = 0, bgSeed = today * 3 + 1;
+  const bgSrc = t => "/s/" + (t.key === "flowborn" ? "flowborn-ad" : t.key) + ".webp";
+  function setBg(random) {
     let ans = new Set();
     try { ans = new Set(MODES.flatMap(([m]) => [puzzle(m, today).t.key, puzzleSeed(m, lt(m).s).t.key])); } catch (e) {}
-    const pool = LIST.filter(t => !ans.has(t.key)), t = pool[Math.floor(rng(bgSeed)() * pool.length)];
-    const src = "/s/" + (t.key === "flowborn" ? "flowborn-ad" : t.key) + ".webp";
-    if (bgi.getAttribute("src") !== src) bgi.src = src;
+    const curSrc = bgA[bgOn].getAttribute("src");
+    const pool = LIST.filter(t => !ans.has(t.key) && bgSrc(t) !== curSrc);
+    const t = pool[Math.floor((random ? Math.random() : rng(bgSeed)()) * pool.length)];
+    const nxt = bgA[1 - bgOn];
+    nxt.onload = () => { nxt.classList.add("on"); bgA[bgOn].classList.remove("on"); bgOn = 1 - bgOn; };
+    nxt.src = bgSrc(t);
   }
+  const calm = matchMedia("(prefers-reduced-motion: reduce)");
+  setInterval(() => { if (!document.hidden && !calm.matches) setBg(true); }, 30000);
 
   root.textContent = "";
   const tabs = el("div", "dt-modes"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Chế độ chơi");
