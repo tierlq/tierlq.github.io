@@ -113,16 +113,24 @@
   function nextRound() {
     const old = cur(mode).t.key; let o;
     do { o = { s: newSeed(), g: [] }; } while (puzzleSeed(mode, o.s).t.key === old);
-    store.set("lt:" + mode, o); render(); inp.focus({ preventScroll: true });
+    store.set("lt:" + mode, o); bgSeed = o.s; setBg(); render(); inp.focus({ preventScroll: true });
   }
 
   /* ---- khung trang (bố cục kiểu LoLdle: hàng biểu tượng chế độ, khung gợi ý, ô nhập, bảng ô vuông, chú thích màu) ---- */
   document.body.classList.add("dtg");
-  // nền: ảnh bìa một tướng (không phải đáp án), mờ dần xuống nền đen
-  const bgT = LIST[Math.floor(rng(today * 3 + 1)() * LIST.length)];
+  // nền: ảnh bìa một tướng, mờ dần xuống nền đen. Không bao giờ là đáp án đang đoán ở chế độ nào (kể cả Chơi liên tục),
+  // để nền không lộ đáp án Ảnh tướng. Đề hôm nay: cố định cả ngày; Chơi liên tục: đổi mỗi khi sang tướng mới (không tự đổi theo thời gian).
   const bg = el("div", "dt-bg"); bg.setAttribute("aria-hidden", "true");
-  const bgi = el("img"); bgi.alt = ""; bgi.decoding = "async"; bgi.src = "/s/" + (bgT.key === "flowborn" ? "flowborn-ad" : bgT.key) + ".webp"; bg.append(bgi);
+  const bgi = el("img"); bgi.alt = ""; bgi.decoding = "async"; bg.append(bgi);
   document.body.prepend(bg);
+  let bgSeed = today * 3 + 1;
+  function setBg() {
+    let ans = new Set();
+    try { ans = new Set(MODES.flatMap(([m]) => [puzzle(m, today).t.key, puzzleSeed(m, lt(m).s).t.key])); } catch (e) {}
+    const pool = LIST.filter(t => !ans.has(t.key)), t = pool[Math.floor(rng(bgSeed)() * pool.length)];
+    const src = "/s/" + (t.key === "flowborn" ? "flowborn-ad" : t.key) + ".webp";
+    if (bgi.getAttribute("src") !== src) bgi.src = src;
+  }
 
   root.textContent = "";
   const tabs = el("div", "dt-modes"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Chế độ chơi");
@@ -338,7 +346,7 @@
   // Chiêu thức cần skills.js: tải một lần (cùng số ?v= với game.js); không tải được thì bỏ chế độ này
   function start() {
     if (typeof SKILLS === "undefined") { MODES = MODES.filter(([m]) => m !== "chieu"); if (mode === "chieu") mode = "co"; }
-    makeTabs(); render();
+    makeTabs(); setBg(); render();
   }
   if (typeof SKILLS === "undefined") {
     const s = document.createElement("script"); s.src = "/assets/skills.js" + (V ? "?v=" + V : ""); s.onload = start; s.onerror = start; document.head.append(s);
