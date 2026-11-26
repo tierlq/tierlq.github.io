@@ -113,7 +113,7 @@
   function nextRound() {
     const old = cur(mode).t.key; let o;
     do { o = { s: newSeed(), g: [] }; } while (puzzleSeed(mode, o.s).t.key === old);
-    store.set("lt:" + mode, o); bgSeed = o.s; setBg(true); render(); inp.focus({ preventScroll: true });
+    store.set("lt:" + mode, o); bgClash() && setBg(true); render(); inp.focus({ preventScroll: true });
   }
 
   /* ---- khung trang (bố cục kiểu LoLdle: hàng biểu tượng chế độ, khung gợi ý, ô nhập, bảng ô vuông, chú thích màu) ---- */
@@ -121,7 +121,7 @@
   // nền: ảnh bìa một tướng, mờ dần xuống nền đen. Không bao giờ là đáp án đang đoán ở chế độ nào (kể cả Chơi liên tục),
   // để nền không lộ đáp án Ảnh tướng. Tự đổi 30 giây một lần (26/11, chủ web đồng ý): hai ảnh chồng nhau, ảnh mới tải xong mới
   // mờ dần sang (chỉ đổi độ trong, không biến đổi 3D); dừng khi tab ẩn; tắt hẳn khi máy bật giảm chuyển động. Sang tướng mới ở
-  // Chơi liên tục cũng đổi nền.
+  // Chơi liên tục KHÔNG đổi nền (chủ web 26/11), trừ khi nền trùng đáp án mới.
   const bg = el("div", "dt-bg"); bg.setAttribute("aria-hidden", "true");
   const bgA = [el("img"), el("img")]; bgA.forEach(i => { i.alt = ""; i.decoding = "async"; bg.append(i); });
   document.body.prepend(bg);
@@ -137,6 +137,8 @@
     nxt.onload = () => { nxt.classList.add("on"); bgA[bgOn].classList.remove("on"); bgOn = 1 - bgOn; };
     nxt.src = bgSrc(t);
   }
+  // sang tướng mới ở Chơi liên tục: giữ nền, chỉ đổi khi nền trùng đúng tướng vừa ra (để không lộ đáp án)
+  const bgClash = () => { const k = bgA[bgOn].getAttribute("src"); return MODES.some(([m]) => bgSrc(cur(m).t) === k); };
   const calm = matchMedia("(prefers-reduced-motion: reduce)");
   setInterval(() => { if (!document.hidden && !calm.matches) setBg(true); }, 30000);
 
