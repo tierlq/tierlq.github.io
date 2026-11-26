@@ -1,7 +1,7 @@
 /* Đoán tướng hôm nay (/doan-tuong/) — trò chơi mỗi ngày kiểu LoLdle cho Liên Quân.
    Chạy sau assets/data.js (cần HEROES, RANK, CLASSES, LANES); bộ chiêu lấy từ assets/skills.js (tải khi cần).
    3 chế độ, mỗi chế độ một tướng riêng, cả nước cùng một đề, đổi lúc 0 giờ giờ Việt Nam:
-   - Cổ điển: đoán tên, mỗi lượt so 6 thuộc tính như LoLdle (giới tính, đường, lớp, tầm đánh, tier cao nhất trên web, năm ra mắt)
+   - Cổ điển: đoán tên, mỗi lượt so 7 thuộc tính như LoLdle (giới tính, đường, lớp, tầm đánh, phe, tier cao nhất trên web, năm ra mắt)
      xanh = trùng, cam = trùng một phần, đỏ = sai; mũi tên ↑/↓ = đáp án cao/thấp hơn.
    - Chiêu thức: biểu tượng một chiêu (ảnh Garena), sai 4 lượt thì hiện tên chiêu.
    - Ảnh tướng: một mảnh ảnh bìa phóng to, mỗi lượt sai thì thu nhỏ dần.
@@ -51,6 +51,12 @@
   // Dyadia, Edras, Tamyn, Evita, Flowborn lấy ngày ra mắt AoV ở Liquipedia (wiki Fandom chưa ghi). Celica chưa có nguồn nên để trống.
   const YEAR = "airi:17 aleister:17 alice:16 allain:20 amily:18 annette:18 aoi:21 arduin:17 arthur:17 arum:18 astrid:17 ata:20 aya:21 azzenka:16 baldum:18 bijan:23 billow:25 biron:24 boltbaron:24 bonnie:23 bright:20 butterfly:16 capheny:19 charlotte:24 chaugnar:16 cresht:17 darcy:19 dextra:20 dieuthuyen:17 dirak:19 dolia:24 dyadia:26 edras:25 elandorr:19 elsu:18 enzo:19 erin:24 errol:19 evita:26 fennik:17 florentino:19 flowborn:26 gildur:16 goverra:25 grakk:17 hayate:19 heino:25 helen:22 iggy:21 ignis:17 ilumia:17 ishar:19 jinna:17 kahlii:16 kaine:23 keera:20 kilgroth:17 kriknak:17 krixi:16 krizzix:19 lauriel:17 laville:20 liliana:18 lindis:18 lorion:20 lubo:16 lumburr:17 maloch:17 marja:18 max:18 mganga:16 mina:16 ming:23 moren:17 murad:17 nakroth:17 natalya:17 ngokhong:17 omega:16 omen:18 ormarr:16 paine:20 preyta:17 qi:19 quillen:18 raz:17 richter:18 rouie:20 rourke:18 roxie:18 ryoma:17 sephera:18 sinestrea:20 skud:17 slimz:17 stuart:23 superman:17 taara:16 tachi:21 tamyn:26 teemee:18 teeri:22 telannas:17 thane:16 theflash:18 thorne:20 toro:16 trieuvan:16 tulen:18 valhein:16 veera:16 veres:19 violet:17 volkath:19 wiro:18 wisp:18 wonderwoman:17 xeniel:17 yan:22 ybneth:18 yena:19 yorn:16 yue:22 zata:20 zephys:16 zill:17 zip:19 zuka:17";
   for (const tok of YEAR.split(" ")) { const [k, v] = tok.split(":"), t = byKey.get(k); if (t) t.year = 2000 + +v; }
+  // Phe (như ô Region(s) của LoLdle): tham số "phe" trong hộp thông tin từng tướng ở Wiki Liên Quân Mobile tiếng Việt
+  // (arenaofvalor.fandom.com/vi, đọc qua API 25/11/2026, chủ web chỉ nguồn). Bỏ chú thích (từng), (lữ khách)…; thành bang Mildar,
+  // Bodrene, Losane gộp vào Tân liên hiệp; "Không" = không thuộc phe nào (tướng DC, Omega); Flowborn wiki không ghi nên "Chưa rõ".
+  const PHE = "airi:S aleister:VQ alice:NQ allain:H amily:H annette:C aoi:S arduin:VN arthur:O arum:R astrid:N ata:TC aya:R azzenka:EV baldum:R bijan:E billow:T biron:T boltbaron:G bonnie:T bright:QO butterfly:N capheny:TH celica:T charlotte:U chaugnar:R cresht:R darcy:C dextra:H dieuthuyen:G dirak:C dolia:U dyadia:R edras:Q elandorr:RC elsu:T enzo:Q erin:R errol:N evita:V fennik:R florentino:N flowborn:U gildur:Q goverra:T grakk:V hayate:VS heino:C helen:R iggy:N ignis:Q ilumia:Q ishar:C jinna:Q kahlii:VQ kaine:T keera:C kilgroth:R kriknak:V krixi:R krizzix:R lauriel:Q laville:Q liliana:CQ lindis:R lorion:C lubo:G lumburr:R maloch:VQ marja:VQ max:T mganga:V mina:V ming:G moren:T murad:E nakroth:VN natalya:V ngokhong:Q omega:KQ omen:V ormarr:N paine:C preyta:VQ qi:G quillen:H raz:NV richter:N rouie:Q rourke:TN roxie:T ryoma:GS sephera:C sinestrea:H skud:V slimz:RT stuart:TH superman:K taara:VQ tachi:S tamyn:Q teemee:R teeri:QT telannas:R thane:N theflash:K thorne:HT toro:R trieuvan:G tulen:Q valhein:T veera:VQ veres:H violet:T volkath:VQ wiro:U wisp:T wonderwoman:K xeniel:Q yan:G ybneth:R yena:E yorn:Q yue:G zata:Q zephys:V zill:R zip:V zuka:R";
+  const PHEN = { S: "Sương mù", V: "Hỗn mang", Q: "Quang minh", N: "Norman", H: "Ám hoàng", C: "Carano", O: "Okka", R: "Nguyên sinh", E: "Helios", T: "Tân liên hiệp", G: "Rồng", K: "Không", U: "Chưa rõ" };
+  for (const tok of PHE.split(" ")) { const [k, v] = tok.split(":"), t = byKey.get(k); if (t) t.phe = new Set([...v].map(c => PHEN[c])); }
   const find = k => byKey.get(k);
 
   /* ---- đề mỗi ngày ---- */
@@ -79,6 +85,7 @@
     ["Đường", (g, a) => [setCmp(g.lanes, a.lanes), ""], g => [...g.lanes].map(l => LANES[l]).join(", ")],
     ["Lớp", (g, a) => [setCmp(g.cls, a.cls), ""], g => [...g.cls].map(c => CLASSES[c]).join(", ")],
     ["Tầm đánh", (g, a) => [g.rng && a.rng ? setCmp(g.rng, a.rng) : "no", ""], g => g.rng ? [...g.rng].join(", ") : "–"],
+    ["Phe", (g, a) => [g.phe && a.phe ? setCmp(g.phe, a.phe) : "no", ""], g => g.phe ? [...g.phe].join(", ") : "–"],
     ["Tier", (g, a) => ordCmp(g.tier, a.tier, true), g => TIERS[g.tier] || "–"],
     ["Năm ra mắt", (g, a) => ordCmp(g.year, a.year, false), g => g.year || "–"]
   ];
@@ -241,7 +248,7 @@
       legend.append(el("h2", "dt-pt dt-sm", "Chú thích màu"));
       const ul = el("ul", "dt-keys");
       [["ok", "", "Đúng"], ["part", "", "Một phần"], ["no", "", "Sai"], ["no up", "", "Cao hơn"], ["no down", "", "Thấp hơn"]].forEach(([c, , n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
-      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các đường, lớp hoặc tầm đánh. Cao hơn: tướng bí ẩn có tier cao hơn (S là cao nhất) hoặc ra mắt muộn hơn. Thấp hơn: tier thấp hơn hoặc ra mắt sớm hơn."));
+      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các đường, lớp, tầm đánh hoặc phe. Cao hơn: tướng bí ẩn có tier cao hơn (S là cao nhất) hoặc ra mắt muộn hơn. Thấp hơn: tier thấp hơn hoặc ra mắt sớm hơn."));
     }
 
     // thắng
@@ -292,5 +299,5 @@
     const s = document.createElement("script"); s.src = "/assets/skills.js" + (V ? "?v=" + V : ""); s.onload = start; s.onerror = start; document.head.append(s);
   } else start();
   // cho smoke.js kiểm tra: đáp án hôm nay của từng chế độ
-  window.__dt = { answer: m => puzzle(m, today).t.key, names: () => LIST.map(t => t.name), keys: () => LIST.map(t => t.key), noAttr: () => LIST.filter(t => !t.gen || !t.rng).map(t => t.key) };
+  window.__dt = { answer: m => puzzle(m, today).t.key, names: () => LIST.map(t => t.name), keys: () => LIST.map(t => t.key), noAttr: () => LIST.filter(t => !t.gen || !t.rng || !t.phe).map(t => t.key) };
 })();

@@ -451,15 +451,15 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 {
   const gv = VER;
   const nHero = new Set(HEROES.map(h => h.key)).size;
-  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, tầm đánh, năm ra mắt, đoán qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày', css: '/assets/game.css', bodyCls: 'dtg',
+  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày', css: '/assets/game.css', bodyCls: 'dtg',
     body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
 <h2>Cách chơi</h2>
 <ul>
-<li><b>Cổ điển</b>: gõ tên một tướng. Mỗi lượt, 6 ô so tướng bạn đoán với tướng bí ẩn, giống LoLdle: giới tính, đường, lớp, tầm đánh (cận chiến hay đánh xa), tier cao nhất trên Bảng Tier và năm ra mắt. Xanh là trùng, cam là trùng một phần (ví dụ cùng một trong hai đường), đỏ là sai; tam giác trong ô cho biết tướng bí ẩn có tier cao hơn hay thấp hơn, ra mắt muộn hơn hay sớm hơn.</li>
+<li><b>Cổ điển</b>: gõ tên một tướng. Mỗi lượt, 7 ô so tướng bạn đoán với tướng bí ẩn, giống LoLdle: giới tính, đường, lớp, tầm đánh (cận chiến hay đánh xa), phe (Vương quốc Norman, Tháp quang minh, Vực hỗn mang…), tier cao nhất trên Bảng Tier và năm ra mắt. Xanh là trùng, cam là trùng một phần (ví dụ cùng một trong hai đường), đỏ là sai; tam giác trong ô cho biết tướng bí ẩn có tier cao hơn hay thấp hơn, ra mắt muộn hơn hay sớm hơn.</li>
 <li><b>Chiêu thức</b>: nhìn biểu tượng một chiêu để đoán tướng. Sai 4 lượt thì hiện tên chiêu.</li>
 <li><b>Ảnh tướng</b>: một mảnh ảnh tướng phóng to, mỗi lượt sai ảnh thu nhỏ lại để lộ thêm.</li>
 </ul>
-<p>Cả nước cùng một đề, đổi lúc 0 giờ (giờ Việt Nam). Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Tier lấy từ Bảng Tier ngày ${upd} (cách tính ở <a href="/phuong-phap/">Phương pháp</a>); giới tính, tầm đánh và năm ra mắt (bản quốc tế) theo wiki Arena of Valor và Liquipedia, người biên tập bổ sung chỗ wiki thiếu; ảnh chiêu thức lấy từ Học viện Garena.</p>
+<p>Cả nước cùng một đề, đổi lúc 0 giờ (giờ Việt Nam). Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Tier lấy từ Bảng Tier ngày ${upd} (cách tính ở <a href="/phuong-phap/">Phương pháp</a>); phe theo Wiki Liên Quân Mobile tiếng Việt; giới tính, tầm đánh và năm ra mắt (bản quốc tế) theo wiki Arena of Valor và Liquipedia, người biên tập bổ sung chỗ wiki thiếu; ảnh chiêu thức lấy từ Học viện Garena.</p>
 <script defer src="/assets/data.js?v=${gv}"></script>
 <script defer src="/assets/game.js?v=${gv}"></script>` }));
 }

@@ -100,12 +100,13 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dtg main>h2{margin-top:48px}
 
 @media (max-width:420px){
-  .dt-grid{border-spacing:4px}
-  .dt-grid th{width:50px;font-size:10.5px}
-  .dt-h img{width:50px;height:50px}
-  .dt-c{width:50px;height:50px;font-size:10px}
-  .dt-c.up::before,.dt-c.down::before{border-left-width:20px;border-right-width:20px}
-  .dt-c.up::before{border-bottom-width:30px}.dt-c.down::before{border-top-width:30px}
+  .dt-grid{border-spacing:3px}
+  .dt-grid th{width:43px;font-size:9.5px}
+  .dt-h img{width:43px;height:43px}
+  .dt-c{width:43px;height:43px;padding:1px;font-size:8.8px;line-height:1.15;letter-spacing:-.01em}
+  .dt-c.up::before,.dt-c.down::before{border-left-width:17px;border-right-width:17px}
+  .dt-c.up::before{border-bottom-width:26px}.dt-c.down::before{border-top-width:26px}
+  .dt-scroll{margin:0 -16px;padding:0 4px 4px}
   .dt-panel{padding:16px 14px 14px}
 }
 @media (hover:hover){.dt-mode:hover .dt-ring{border-color:var(--gold)}.dt-list li:hover{background:rgba(226,194,125,.16)}.dt-btn:hover{border-color:var(--gold)}}
