@@ -223,13 +223,22 @@ const errs = [], log = (...a) => console.log(...a);
     if (!(await p.evaluate(() => /^1\s*ngày liên tiếp/.test(document.querySelector('.dt-streak')?.textContent.replace(/^\D*/, '') || '')))) bad('Đoán tướng: huy hiệu chuỗi ngày không hiện 1 sau khi đoán đúng');
     if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad('/doan-tuong/ tràn ngang');
     log(`[${vp}] Đoán tướng: ${dtN.n} tướng, thắng đủ 3 chế độ`);
+    // mỗi cách chơi có trang riêng: mở đúng cách chơi, tiêu đề theo cách chơi, đổi cách chơi thì đổi địa chỉ; có nút khoe chuỗi
+    for (const [u, m, h] of [['/doan-tuong/ky-nang/', 'chieu', 'Đoán tướng qua kỹ năng'], ['/doan-tuong/hinh-anh/', 'anh', 'Đoán tướng qua hình ảnh']]) {
+      const q = await ctx.newPage(); await q.goto(B + u, { waitUntil: 'load' }); await q.waitForFunction(() => window.__dt);
+      const st = await q.evaluate(() => ({ on: document.querySelector('.dt-mode[aria-selected="true"], .dt-mode.on')?.dataset.m, h1: document.querySelector('main > h1').textContent, og: document.querySelector('meta[property="og:image"]').content }));
+      await q.click('.dt-mode[data-m=co]'); const back = await q.evaluate(() => [location.pathname, document.querySelector('main > h1').textContent]);
+      if (st.on !== m || st.h1 !== h || !/og-doan-tuong\.jpg$/.test(st.og) || back[0] !== '/doan-tuong/' || back[1] !== 'Đoán tướng Liên Quân') bad(`Đoán tướng: trang ${u} sai ${JSON.stringify({ st, back })}`);
+      await q.close();
+    }
     // Chơi liên tục: đoán đúng → nút Tướng tiếp theo đổi đề; Bỏ qua → hiện đáp án
     await p.click('.dt-kb[data-k=lt]'); await p.click('.dt-mode[data-m=co]');
-    if (!(await p.evaluate(() => __dt.endless() && location.hash === '#lt-co'))) bad('Đoán tướng: không chuyển được sang Chơi liên tục');
+    if (!(await p.evaluate(() => __dt.endless() && location.hash === '#lt' && location.pathname === '/doan-tuong/'))) bad('Đoán tướng: không chuyển được sang Chơi liên tục');
     const lt1 = await p.evaluate(() => { const a = __dt.answer('co'); return [a, __dt.names()[__dt.keys().indexOf(a)], __dt.names().find((x, i) => __dt.keys()[i] !== a)]; });
     for (const name of [lt1[2], lt1[1]]) { await p.fill('#dtIn', name); await p.waitForTimeout(80); await p.keyboard.press('Enter'); await p.waitForTimeout(150); }
     if (!(await p.$('.dt-win:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: đoán đúng mà không có nút Tướng tiếp theo');
     const stLt = await p.evaluate(() => document.querySelector('.dt-streak b')?.textContent);
+    if (!(await p.evaluate(() => [...document.querySelectorAll('.dt-win .dt-more')].some(b => /^Khoe chuỗi 1 tướng$/.test(b.textContent))))) bad('Đoán tướng liên tục: thiếu nút Khoe chuỗi');
     if (stLt !== '1') bad(`Đoán tướng liên tục: huy hiệu chuỗi ${stLt} (cần 1 sau một tướng đúng)`);
     await p.click('.dt-nextbtn'); await p.waitForTimeout(150);
     const lt2 = await p.evaluate(() => ({ a: __dt.answer('co'), rows: document.querySelectorAll('.dt-grid tbody tr').length, form: !document.querySelector('.dt-form').hidden }));

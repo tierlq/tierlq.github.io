@@ -43,7 +43,7 @@ const affBox = () => affItems.length ? `<aside class="aff" aria-label="Phụ ki�
 // số ?v= của index.html: dùng cho page.css, game.css, data.js, game.js để trình duyệt tải bản mới khi đổi
 const VER = (index.match(/assets\/app\.js\?v=(\d+)/) || [])[1] || '';
 const NAVF = `<a href="/doan-tuong/">Đoán tướng</a> · <a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
-const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [], css = '', bodyCls = '', nav = '' }) => `<!doctype html>
+const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [], css = '', bodyCls = '', nav = '', img = '/og.jpg' }) => `<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -60,8 +60,8 @@ ${CSP0}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="${og}"><meta property="og:site_name" content="Bảng Tier Liên Quân">
 <meta property="og:title" content="${esc(h1)}"><meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${SITE}${pth}"><meta property="og:image" content="${SITE}/og.jpg"><meta property="og:locale" content="vi_VN">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="${SITE}${pth}"><meta property="og:image" content="${SITE}${img}"><meta property="og:locale" content="vi_VN">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${SITE}${img}">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Bảng Tier Liên Quân', item: SITE + '/' }, { '@type': 'ListItem', position: 2, name: h1, item: SITE + pth }] })}</script>
 ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n')}
@@ -140,6 +140,9 @@ const faq = [
   ['Tra giá và tác dụng trang bị, bảng ngọc, phù hiệu, phép bổ trợ ở đâu?',
    'Mỗi tướng có build riêng theo đường trong bảng chi tiết. Muốn tra từng món thì xem trang Trang bị, Phù hiệu, Bảng ngọc và Phép bổ trợ: giá, chỉ số, nội tại hoặc tác dụng, kèm số build tham khảo dùng món đó.',
    '<a href="/trang-bi/">Trang bị</a> · <a href="/phu-hieu/">Phù hiệu</a> · <a href="/bang-ngoc/">Bảng ngọc</a> · <a href="/phep-bo-tro/">Phép bổ trợ</a>'],
+  ['Có trò chơi đoán tướng Liên Quân không?',
+   'Có. Trang Đoán tướng có đề mới mỗi ngày lúc 0 giờ, kiểu LoLdle, với ba cách chơi: Cổ điển (so giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt), đoán qua kỹ năng và đoán qua hình ảnh, cùng chế độ Chơi liên tục không giới hạn số tướng. Không cần tài khoản.',
+   '<a href="/doan-tuong/">Đoán tướng hôm nay</a> · <a href="/doan-tuong/ky-nang/">Đoán qua kỹ năng</a> · <a href="/doan-tuong/hinh-anh/">Đoán qua hình ảnh</a>'],
   ['Bảng tier cập nhật khi nào?',
    `Lần cập nhật gần nhất ngày ${upd}, theo bản ${PATCH} của Garena. Bảng được cập nhật sau mỗi bản cân bằng tướng và khoảng 2 tuần một lần theo số liệu giải.`, ''],
 ];
@@ -249,7 +252,8 @@ ${sw ? `<h2>Điểm mạnh, điểm yếu của ${esc(h.name)}</h2>
 ${cn ? `<h2>Khắc chế và hợp cặp với ${esc(h.name)}</h2>
 ${cnRow('Bị khắc chế bởi', cn[0])}${cnRow(`${h.name} khắc chế`, cn[1])}${cnRow('Hợp cặp', cn[2])}<p class="src">Theo danh sách viết tay của <a href="${CNSRC.base}${esc(cn[3])}" rel="noopener">${esc(CNSRC.name)}</a> (server Thái, bản ${esc(CNSRC.patch)}, đọc ngày ${esc(CNSRC.read)}), không phải tỉ lệ thắng; server Việt Nam có thể lệch.</p>` : ''}
 ${sk ? `<h2>Bộ chiêu thức</h2><dl class="sk">${sk[1].map(([n, , s], k) => `<dt>${['Nội tại', 'Chiêu 1', 'Chiêu 2', 'Chiêu cuối'][k] || 'Chiêu'}${n ? ' · ' + esc(n) : ''}</dt><dd>${esc(s || '')}</dd>`).join('')}</dl>
-<p class="src">Tóm tắt từ <a href="https://lienquan.garena.vn/hoc-vien/tuong-skin/d/${esc(sk[0])}/" rel="noopener">Học viện Garena</a>.</p>` : ''}
+<p class="src">Tóm tắt từ <a href="https://lienquan.garena.vn/hoc-vien/tuong-skin/d/${esc(sk[0])}/" rel="noopener">Học viện Garena</a>.</p>
+<p>Nhớ hết bộ chiêu chưa? Thử <a href="/doan-tuong/ky-nang/">đoán tướng Liên Quân qua kỹ năng</a>: nhìn biểu tượng một chiêu, đoán của tướng nào, đề mới mỗi ngày.</p>` : ''}
 ${others.length ? `<h2>${esc(h.name)} ở đường khác</h2><ul class="links">${others.map(x => `<li><a href="${url(x)}">${esc(LANES[x.lane])}${x.sec ? ' (phụ)' : ''} · tier ${x.tier}</a></li>`).join('')}</ul>` : ''}
 ${peers.length ? `<h2>Cùng tier ${h.tier} ở ${esc(L)}</h2><ul class="links">${peers.map(x => `<li><a href="${url(x)}">${esc(x.name)}</a></li>`).join('')}</ul>` : ''}
 <p><a href="${lurl(h.lane)}">Xem cả tier list ${esc(L)} →</a></p>
@@ -448,28 +452,83 @@ const affTpl = `<!--AFFM--><template id="affTpl">${affBox()}</template><!--/AFFM
 fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\s\S]*<!--\/HEROLINKS-->/, dirHTML).replace(/<!--AFF-->[\s\S]*<!--\/AFF-->/, affStrip).replace(/<!--AFFM-->[\s\S]*<!--\/AFFM-->/, affTpl).replace(/<!--AOGSRC-->[\s\S]*?<!--\/AOGSRC-->/, `<!--AOGSRC-->${SRC.aogGames} trận (vòng bảng và playoffs, ${aogWhen}), ${Object.keys(SRC.aog).length} tướng của web có pick<!--/AOGSRC-->`));
 
 // ---------- Đoán tướng hôm nay (/doan-tuong/, luật chơi ở assets/game.js) ----------
+// 27/11/2026 (chủ web: "có cách nào chỉnh sửa web để phần game được đề xuất nhiều hơn"): mỗi cách chơi một trang riêng để Google có trang
+// cho từng kiểu tìm "đoán tướng liên quân qua kỹ năng / qua hình ảnh"; cùng game.js, data-mode chọn cách chơi lúc mở; ảnh chia sẻ riêng.
+const GAMEP = [
+  ['doan-tuong', 'co', 'Đoán tướng Liên Quân'],
+  ['doan-tuong/ky-nang', 'chieu', 'Đoán tướng qua kỹ năng'],
+  ['doan-tuong/hinh-anh', 'anh', 'Đoán tướng qua hình ảnh'],
+];
 {
   const gv = VER;
   const nHero = new Set(HEROES.map(h => h.key)).size;
-  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng Liên Quân', over: 'Trò chơi đoán tướng', css: '/assets/game.css', bodyCls: 'dtg', nav: '<nav class="dt-sw" aria-label="Chọn mục"><a href="/">Bảng tier</a><a href="/doan-tuong/" aria-current="page">Đoán tướng</a></nav>',
-    body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
+  const others = cur => `<h2>Các cách chơi khác</h2>
+<ul class="links">${GAMEP.filter(([d]) => d !== cur).map(([d, , n]) => `<li><a href="/${d}/">${esc(n)}</a></li>`).join('')}<li><a href="/doan-tuong/#lt">Chơi liên tục, không giới hạn số tướng</a></li></ul>`;
+  const src = `Tier lấy từ Bảng Tier ngày ${upd} (cách tính ở <a href="/phuong-phap/">Phương pháp</a>); phe theo Wiki Liên Quân Mobile tiếng Việt; giới tính, tầm đánh và năm ra mắt (bản quốc tế) theo wiki Arena of Valor và Liquipedia, người biên tập bổ sung chỗ wiki thiếu; ảnh chiêu thức lấy từ Học viện Garena.`;
+  const scripts = `<script defer src="/assets/data.js?v=${gv}"></script>
+<script defer src="/assets/game.js?v=${gv}"></script>`;
+  const nav = cur => `<nav class="dt-sw" aria-label="Chọn mục"><a href="/">Bảng tier</a><a href="/doan-tuong/"${cur ? ' aria-current="page"' : ''}>Đoán tướng</a></nav>`;
+  const gfaq = [
+    ['Đoán tướng Liên Quân là trò gì?', `Trò chơi đoán tướng mỗi ngày kiểu LoLdle (game đoán tướng của Liên Minh Huyền Thoại), làm cho Liên Quân Mobile: cả nước cùng một tướng bí ẩn, gõ tên tướng để đoán, mỗi lượt có gợi ý để đoán gần hơn. Có ${nHero} tướng.`],
+    ['Đề mới lúc mấy giờ?', 'Lúc 0 giờ mỗi ngày theo giờ Việt Nam. Trang có đồng hồ đếm ngược tới đề mới và cho biết tướng của đề hôm qua.'],
+    ['Có mấy cách chơi?', 'Ba cách: Cổ điển (so giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt), đoán qua kỹ năng (biểu tượng một chiêu) và đoán qua hình ảnh (một mảnh ảnh tướng). Mỗi cách có đề riêng mỗi ngày, và đều có chế độ Chơi liên tục.'],
+    ['Chơi liên tục khác đề hôm nay thế nào?', 'Đề hôm nay mỗi cách chơi chỉ có một tướng. Chơi liên tục ra tướng ngẫu nhiên, đoán xong bấm "Tướng tiếp theo" để chơi tiếp không giới hạn; web đếm chuỗi đoán đúng liên tiếp và kỷ lục.'],
+    ['Có cần tài khoản không?', 'Không. Kết quả, chuỗi ngày đúng và kỷ lục lưu trên trình duyệt của bạn; xoá dữ liệu trình duyệt hoặc đổi máy thì mất.'],
+  ];
+  const body = {
+    co: `<div id="dt" class="dt" data-mode="co" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
+<p>Trò chơi đoán tướng Liên Quân mỗi ngày, giống LoLdle của Liên Minh Huyền Thoại: cả nước cùng một tướng bí ẩn, đề mới lúc 0 giờ. Có ba cách chơi, mỗi cách một đề, và chế độ Chơi liên tục để đoán bao nhiêu tướng tùy thích.</p>
 <h2>Cách chơi</h2>
 <ul>
 <li><b>Cổ điển</b>: gõ tên một tướng. Mỗi lượt, 7 ô so tướng bạn đoán với tướng bí ẩn, giống LoLdle: giới tính, đường, lớp, tầm đánh (cận chiến hay đánh xa), phe (Vương quốc Norman, Tháp quang minh, Vực hỗn mang…), tier cao nhất trên Bảng Tier và năm ra mắt. Xanh là trùng, cam là trùng một phần (ví dụ cùng một trong hai đường), đỏ là sai; tam giác trong ô cho biết tướng bí ẩn có tier cao hơn hay thấp hơn, ra mắt muộn hơn hay sớm hơn.</li>
-<li><b>Chiêu thức</b>: nhìn biểu tượng một chiêu để đoán tướng. Sai 4 lượt thì hiện tên chiêu.</li>
-<li><b>Ảnh tướng</b>: một mảnh ảnh tướng phóng to, mỗi lượt sai ảnh thu nhỏ lại để lộ thêm.</li>
+<li><b><a href="/doan-tuong/ky-nang/">Đoán qua kỹ năng</a></b>: nhìn biểu tượng một chiêu để đoán tướng. Sai 4 lượt thì hiện tên chiêu.</li>
+<li><b><a href="/doan-tuong/hinh-anh/">Đoán qua hình ảnh</a></b>: một mảnh ảnh tướng phóng to, mỗi lượt sai ảnh thu nhỏ lại để lộ thêm.</li>
 <li><b>Chơi liên tục</b>: bấm nút "Chơi liên tục" để đoán bao nhiêu tướng tùy thích, không phải chờ đề ngày mai. Đúng xong bấm "Tướng tiếp theo"; bí quá thì "Bỏ qua, xem đáp án". Web đếm chuỗi đoán đúng liên tiếp và kỷ lục của bạn.</li>
 </ul>
-<p>Cả nước cùng một đề, đổi lúc 0 giờ (giờ Việt Nam). Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Tier lấy từ Bảng Tier ngày ${upd} (cách tính ở <a href="/phuong-phap/">Phương pháp</a>); phe theo Wiki Liên Quân Mobile tiếng Việt; giới tính, tầm đánh và năm ra mắt (bản quốc tế) theo wiki Arena of Valor và Liquipedia, người biên tập bổ sung chỗ wiki thiếu; ảnh chiêu thức lấy từ Học viện Garena.</p>
-<script defer src="/assets/data.js?v=${gv}"></script>
-<script defer src="/assets/game.js?v=${gv}"></script>` }));
+<p>Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Đoán xong bấm "Chia sẻ kết quả" để gửi hàng ô màu cho bạn bè qua Zalo, Messenger mà không lộ đáp án. ${src}</p>
+<h2>Hỏi nhanh</h2>
+${gfaq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n')}
+${others('doan-tuong')}`,
+    chieu: `<div id="dt" class="dt" data-mode="chieu" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
+<p>Nhìn biểu tượng một kỹ năng, đoán xem đó là chiêu của tướng Liên Quân nào. Cả nước cùng một đề, đổi lúc 0 giờ; muốn luyện thêm thì bật Chơi liên tục.</p>
+<h2>Cách chơi đoán tướng qua kỹ năng</h2>
+<ul>
+<li>Đề là biểu tượng một chiêu bất kỳ của tướng bí ẩn: nội tại, chiêu 1, chiêu 2 hoặc chiêu cuối.</li>
+<li>Gõ tên tướng (không dấu cũng được, ví dụ "trieu van") rồi chọn trong danh sách gợi ý. Đoán sai thì tướng đó hiện ô đỏ trong danh sách lượt đã đoán.</li>
+<li>Sai 4 lượt, web hiện tên chiêu và chiêu đó là nội tại hay chiêu mấy để bạn đoán dễ hơn.</li>
+<li>Đoán đúng thì xem được tier, cách lên đồ và cả bộ chiêu của tướng đó trên Bảng Tier.</li>
+</ul>
+<p>Mẹo: để ý màu và hình trên biểu tượng (lửa, băng, sấm, vũ khí…). Muốn ôn thì bấm vào tướng trên <a href="/">Bảng Tier</a>, mục "Bộ chiêu thức" có biểu tượng và tóm tắt từng chiêu. ${src}</p>
+${others('doan-tuong/ky-nang')}`,
+    anh: `<div id="dt" class="dt" data-mode="anh" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
+<p>Một góc ảnh tướng Liên Quân được phóng thật to, bạn đoán xem là tướng nào. Mỗi lượt đoán sai ảnh thu nhỏ lại để lộ thêm. Đề mới lúc 0 giờ, có Chơi liên tục.</p>
+<h2>Cách chơi đoán tướng qua hình ảnh</h2>
+<ul>
+<li>Lượt đầu ảnh phóng to khoảng 6 lần quanh một điểm bất kỳ, chỉ thấy màu sắc, áo giáp, vũ khí hoặc một phần gương mặt.</li>
+<li>Gõ tên tướng (không dấu cũng được) rồi chọn trong danh sách gợi ý. Mỗi lần sai ảnh thu nhỏ bớt, lộ thêm xung quanh.</li>
+<li>Đoán đúng thì hiện ảnh đầy đủ, kèm nút xem tier và cách lên đồ của tướng đó.</li>
+</ul>
+<p>Mẹo: để ý màu chủ đạo và chất liệu (kim loại, lông vũ, lửa…), rồi thu hẹp theo vũ khí. ${src}</p>
+${others('doan-tuong/hinh-anh')}`,
+  };
+  const meta = {
+    co: { title: 'Đoán tướng Liên Quân hôm nay: game đoán tướng mỗi ngày kiểu LoLdle', desc: `Game đoán tướng Liên Quân mỗi ngày kiểu LoLdle: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua kỹ năng và qua hình ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, over: 'Trò chơi đoán tướng' },
+    chieu: { title: 'Đoán tướng Liên Quân qua kỹ năng: đề mới mỗi ngày', desc: `Nhìn biểu tượng một chiêu, đoán đó là tướng nào trong ${nHero} tướng Liên Quân. Sai 4 lượt hiện tên chiêu. Đề mới lúc 0 giờ, có chế độ chơi liên tục.`, over: 'Trò chơi đoán tướng Liên Quân' },
+    anh: { title: 'Đoán tướng Liên Quân qua hình ảnh: đề mới mỗi ngày', desc: `Một mảnh ảnh tướng Liên Quân phóng to, mỗi lượt đoán sai ảnh thu nhỏ để lộ thêm. ${nHero} tướng, đề mới lúc 0 giờ, có chế độ chơi liên tục.`, over: 'Trò chơi đoán tướng Liên Quân' },
+  };
+  for (const [dir, m, h1] of GAMEP) {
+    const M = meta[m], pth = `/${dir}/`;
+    const ld = [{ '@context': 'https://schema.org', '@type': 'WebApplication', name: h1, url: SITE + pth, description: M.desc, inLanguage: 'vi', applicationCategory: 'GameApplication', operatingSystem: 'Web', isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'VND' } }];
+    if (m === 'co') ld.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: gfaq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
+    writePage(dir, pageShell({ title: M.title + ' | Bảng Tier Liên Quân', desc: M.desc, path: pth, h1, over: M.over, css: '/assets/game.css', bodyCls: 'dtg', nav: nav(true), img: '/og-doan-tuong.jpg', ld, body: body[m] + '\n' + scripts }));
+  }
 }
 
 // ---------- 5. sitemap ----------
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/phuong-phap/', iso, 'monthly', '0.5'], ['/doan-tuong/', iso, 'daily', '0.6'], ...CONCEPTS.map(([u]) => [u, iso, 'weekly', '0.6']), ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+${[...Object.keys(LANES).map(l => [lurl(l), iso, 'weekly', '0.8']), ...patches.map(p => [purl(p), pIso(p), 'monthly', '0.7']),['/ban-cap-nhat/', iso, 'weekly', '0.7'], ...articles.map(a => [aurl(a), a.date, 'monthly', '0.7']), ['/bai-viet/', articles[0] ? articles[0].date : iso, 'weekly', '0.6'], ['/gioi-thieu/', iso, 'monthly', '0.4'], ['/phuong-phap/', iso, 'monthly', '0.5'], ['/doan-tuong/', iso, 'daily', '0.7'], ['/doan-tuong/ky-nang/', iso, 'daily', '0.6'], ['/doan-tuong/hinh-anh/', iso, 'daily', '0.6'], ...CONCEPTS.map(([u]) => [u, iso, 'weekly', '0.6']), ...(affItems.length ? [['/phu-kien/', iso, 'monthly', '0.3']] : []), ['/lien-he/', iso, 'yearly', '0.3'], ['/quyen-rieng-tu/', iso, 'yearly', '0.3']].map(([u, m, c, pr]) => `  <url><loc>${SITE}${u}</loc><lastmod>${m}</lastmod><changefreq>${c}</changefreq><priority>${pr}</priority></url>`).join('\n')}
 ${HEROES.map(h => `  <url><loc>${SITE}${url(h)}</loc><lastmod>${iso}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('\n')}
 </urlset>
 `);

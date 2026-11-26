@@ -93,11 +93,16 @@
   ];
 
   /* ---- trạng thái ---- */
-  let MODES = [["co", "Cổ điển"], ["chieu", "Chiêu thức"], ["anh", "Ảnh tướng"]];
+  let MODES = [["co", "Cổ điển"], ["chieu", "Kỹ năng"], ["anh", "Hình ảnh"]];
   // địa chỉ: #co, #chieu, #anh (đề hôm nay) hoặc #lt-co, #lt-chieu, #lt-anh (chơi liên tục)
-  const H0 = location.hash.slice(1);
-  let endless = H0.startsWith("lt-");
-  let mode = (H0.replace(/^lt-/, "") in { co: 1, chieu: 1, anh: 1 }) ? H0.replace(/^lt-/, "") : "co";
+  // mỗi cách chơi có trang riêng (để Google có trang cho từng kiểu tìm); đổi cách chơi thì đổi địa chỉ, không tải lại trang
+  const PAGE = { co: "/doan-tuong/", chieu: "/doan-tuong/ky-nang/", anh: "/doan-tuong/hinh-anh/" };
+  const H1 = { co: "Đoán tướng Liên Quân", chieu: "Đoán tướng qua kỹ năng", anh: "Đoán tướng qua hình ảnh" };
+  // địa chỉ cũ #co, #chieu, #anh, #lt-co… vẫn hiểu; #lt = chơi liên tục ở cách chơi của trang
+  const H0 = location.hash.slice(1), HM = H0.replace(/^lt-?/, "");
+  let endless = H0 === "lt" || H0.startsWith("lt-");
+  const MOK = { co: 1, chieu: 1, anh: 1 };
+  let mode = HM in MOK ? HM : (root.dataset.mode in MOK ? root.dataset.mode : "co");
   const today = dayNow();
   const keyOf = m => m + ":" + today;
   const newSeed = () => (Math.random() * 2147483647) | 0;
@@ -109,7 +114,8 @@
   const setGuesses = (m, g) => { if (endless) { const o = lt(m); o.g = g; store.set("lt:" + m, o); } else store.set(keyOf(m), g); };
   const gaveUp = m => endless && !!lt(m).x;
   const solved = m => guesses(m).includes(cur(m).t.key);
-  const go = m => { legendOpen = null; mode = m; history.replaceState(null, "", "#" + (endless ? "lt-" : "") + m); render(); };
+  const syncUrl = () => { try { history.replaceState(null, "", PAGE[mode] + location.search + (endless ? "#lt" : "")); } catch (e) {} };
+  const go = m => { legendOpen = null; mode = m; syncUrl(); render(); };
   function nextRound() {
     const old = cur(mode).t.key; let o;
     do { o = { s: newSeed(), g: [] }; } while (puzzleSeed(mode, o.s).t.key === old);
@@ -271,6 +277,7 @@
     const p = cur(mode), g = guesses(mode), won = g.includes(p.t.key), lost = gaveUp(mode), done = won || lost;
     document.body.classList.toggle("dt-lt", endless);
     if (overEl) overEl.textContent = endless ? "Chơi liên tục" : `Đề hôm nay #${num(today)}`;
+    const h1 = document.querySelector("main > h1"); if (h1) h1.textContent = H1[mode];
     for (const b of kind.children) b.setAttribute("aria-pressed", String((b.dataset.k === "lt") === endless));
     for (const b of tabs.children) { const on = b.dataset.m === mode; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", !endless && solved(b.dataset.m)); }
 
@@ -356,6 +363,7 @@
       const nb = el("button", "dt-btn dt-share dt-nextbtn", "Tướng tiếp theo ▶"); nb.type = "button"; nb.addEventListener("click", () => { track("doan_tuong_tiep", { che_do: mode }); nextRound(); });
       const a = el("a", "dt-btn", "Xem tier, lên đồ"); a.href = p.t.page;
       const row = el("div", "dt-win-b"); row.append(nb, a); win.append(row);
+      if (won && lst.run >= 1) { const sb = el("button", "dt-btn dt-more", `Khoe chuỗi ${lst.run} tướng`); sb.type = "button"; sb.addEventListener("click", () => shareRun(lst)); win.append(sb); }
       if (fresh) setTimeout(() => nb.focus({ preventScroll: true }), 50);
     } else if (done) {
       const st = store.get("streak:" + mode, { n: 0, best: 0 });
@@ -388,18 +396,26 @@
   function share(p, g) {
     const name = MODES.find(([m]) => m === mode)[1];
     const lines = mode === "co" ? g.map(k => COLS.map(([, cmp]) => ({ ok: "🟩", part: "🟧", no: "🟥" })[cmp(find(k), p.t)[0]]).join("")).join("\n") : g.map(k => k === p.t.key ? "🟩" : "🟥").join("");
-    const url = location.origin + "/doan-tuong/?utm_source=chia_se&utm_medium=doan_tuong";
+    const url = location.origin + PAGE[mode] + "?utm_source=chia_se&utm_medium=doan_tuong";
     const text = `Đoán tướng Liên Quân #${num(today)} · ${name} · ${g.length} lượt\n${lines}\n${url}`;
     track("doan_tuong_chia_se", { che_do: mode });
     if (navigator.share) { navigator.share({ text }).catch(() => {}); return; }
     (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast("Đã chép kết quả, dán vào Zalo/Messenger để khoe")).catch(() => toast("Không chép được, hãy chụp màn hình"));
+  }
+  // Chơi liên tục: khoe chuỗi đúng liên tiếp (không lộ tướng vừa đoán)
+  function shareRun(st) {
+    const name = MODES.find(([m]) => m === mode)[1];
+    const text = `Đoán tướng Liên Quân · Chơi liên tục · ${name}\n🔥 Đúng ${st.run} tướng liên tiếp (kỷ lục ${st.best})\nThử phá kỷ lục của mình: ${location.origin + PAGE[mode]}?utm_source=chia_se&utm_medium=doan_tuong#lt`;
+    track("doan_tuong_chia_se", { che_do: mode, chuoi: st.run });
+    if (navigator.share) { navigator.share({ text }).catch(() => {}); return; }
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast("Đã chép, dán vào Zalo/Messenger để khoe chuỗi")).catch(() => toast("Không chép được, hãy chụp màn hình"));
   }
   function toast(t) { const n = el("p", "dt-toast", t); n.setAttribute("role", "status"); document.body.append(n); setTimeout(() => n.remove(), 2600); }
 
   // Chiêu thức cần skills.js: tải một lần (cùng số ?v= với game.js); không tải được thì bỏ chế độ này
   function start() {
     if (typeof SKILLS === "undefined") { MODES = MODES.filter(([m]) => m !== "chieu"); if (mode === "chieu") mode = "co"; }
-    makeTabs(); setBg(); render();
+    makeTabs(); setBg(); syncUrl(); render();
   }
   if (typeof SKILLS === "undefined") {
     const s = document.createElement("script"); s.src = "/assets/skills.js" + (V ? "?v=" + V : ""); s.onload = start; s.onerror = start; document.head.append(s);

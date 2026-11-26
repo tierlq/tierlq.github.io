@@ -188,3 +188,4 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-st-r{display:inline-flex;align-items:center;gap:8px}
 .dt-st-h{font-size:12px;color:#8d8a82}
 @media (max-width:420px){.dt-streak{font-size:12.5px;padding:6px 14px 6px 10px}}
+.dtg .dt + p{margin-top:44px}
