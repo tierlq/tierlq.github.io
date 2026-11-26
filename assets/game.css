@@ -121,7 +121,7 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
   .dt-scroll{margin:0 -16px;padding:0 4px 4px}
   .dt-panel{padding:16px 14px 14px}
 }
-@media (hover:hover){.dt-kb:hover{color:var(--fg)}.dt-kb[aria-pressed="true"]:hover{color:#1a1405}.dt-skip:hover{color:var(--fg)}.dt-mode:hover .dt-ring{border-color:var(--gold)}.dt-list li:hover{background:rgba(226,194,125,.16)}.dt-btn:hover{border-color:var(--gold)}}
+@media (hover:hover){.dt-kb:hover{color:var(--fg)}.dt-kb[aria-pressed="true"]:hover{color:#1a1405}.dt-skip:hover{color:var(--fg)}.dt-mode:hover .dt-ring{border-color:var(--gold)}.dt-btn:hover{border-color:var(--gold)}}
 @media (prefers-reduced-motion:reduce){.dt-bg img{transition:none}.dt-c.flip{animation:none}.dt-splash img,.dt-ring{transition:none}}
 
 /* 26/11: phân cấp lại (góp ý chủ web): khung phụ viền vàng mờ, ô nhập nổi nhất; chú thích gập được; nút về Bảng Tier */
@@ -159,3 +159,12 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
   .dt-ar{font-size:9px;margin-top:1px}
   .dt-long{display:none}.dt-short{display:inline}
 }
+
+/* danh sách gợi ý tên, góp ý 26/11 12:17: luôn nằm trên khung bên dưới, một dòng sáng, thanh cuộn mảnh, tô chữ khớp */
+.dt-form{z-index:50}
+.dt-list{scrollbar-width:thin;scrollbar-color:rgba(226,194,125,.45) transparent}
+.dt-list::-webkit-scrollbar{width:6px}
+.dt-list::-webkit-scrollbar-track{background:transparent}
+.dt-list::-webkit-scrollbar-thumb{background:rgba(226,194,125,.45);border-radius:3px}
+.dt-list li[aria-selected="true"]{background:rgba(226,194,125,.2);box-shadow:inset 3px 0 0 var(--gold)}
+.dt-list mark{background:none;color:var(--gold);font-weight:700}

@@ -197,6 +197,15 @@ const errs = [], log = (...a) => console.log(...a);
     if (await p.evaluate(() => { const k = (document.querySelector('.dt-bg img.on').getAttribute('src').match(/\/s\/([a-z-]+)\.webp/) || [])[1]; return ['co', 'chieu', 'anh'].some(m => __dt.answer(m) === k || (k === 'flowborn-ad' && __dt.answer(m) === 'flowborn')); })) bad('Đoán tướng: ảnh nền trùng đáp án');
     if (dtN.noAttr.length) bad(`Đoán tướng: thiếu giới tính/tầm đánh: ${dtN.noAttr.join(', ')} (thêm vào ATTR trong assets/game.js)`);
     if (dtN.n !== dtN.keys || dtN.fb !== 1) bad(`Đoán tướng: ${dtN.n} tướng (cần ${dtN.keys}), Flowborn ${dtN.fb} lần`);
+    // danh sách gợi ý: tô chữ khớp, di chuột vào dòng 3 thì chỉ dòng 3 sáng, danh sách nằm trên các khung bên dưới
+    await p.fill('#dtIn', 's'); await p.waitForTimeout(80);
+    if (vp === '1440') { const bx = await p.locator('.dt-list li').nth(2).boundingBox(); await p.mouse.move(bx.x + 20, bx.y + 10); }
+    const dd = await p.evaluate(() => { const li = [...document.querySelectorAll('.dt-list li')], L = document.querySelector('.dt-list').getBoundingClientRect();
+      return { on: li.map(l => l.getAttribute('aria-selected')).filter(x => x === 'true').length, marks: document.querySelectorAll('.dt-list mark').length, n: li.length,
+        cover: li.filter(l => { const r = l.getBoundingClientRect(); return r.top >= L.top && r.bottom <= L.bottom && r.bottom <= innerHeight && !document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)?.closest('.dt-list'); }).length,
+        third: li[2]?.getAttribute('aria-selected') }; });
+    if (dd.on !== 1 || dd.marks !== dd.n || dd.cover || (vp === '1440' && dd.third !== 'true')) bad(`Đoán tướng: danh sách gợi ý lỗi ${JSON.stringify(dd)}`);
+    await p.fill('#dtIn', '');
     for (const m of ['co', 'chieu', 'anh']) {
       await p.click(`.dt-mode[data-m=${m}]`);
       const [ans, wrong] = await p.evaluate(m => { const a = __dt.answer(m); return [__dt.names()[__dt.keys().indexOf(a)], __dt.names().find((x, i) => __dt.keys()[i] !== a)]; }, m);

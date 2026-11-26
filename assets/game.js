@@ -190,6 +190,16 @@
 
   /* ---- gợi ý khi gõ ---- */
   let opts = [], sel = -1, legendOpen = null;
+  // tô vàng phần tên khớp chữ đã gõ (so sánh không dấu, bỏ ký tự lạ như ' hay khoảng trắng)
+  function hiName(name, q) {
+    const sp = el("span"), pos = [];
+    [...name].forEach((ch, i) => { if (strip(ch)) pos.push(i); });
+    const k = strip(name).indexOf(q), chars = [...name];
+    if (!q || k < 0) { sp.textContent = name; return sp; }
+    const a = pos[k], b = pos[k + q.length - 1] + 1;
+    sp.append(chars.slice(0, a).join(""), el("mark", null, chars.slice(a, b).join("")), chars.slice(b).join(""));
+    return sp;
+  }
   function suggest() {
     const q = strip(inp.value), used = new Set(guesses(mode));
     opts = q ? LIST.filter(t => !used.has(t.key) && t.q.includes(q)).sort((a, b) => (b.q.startsWith(q) - a.q.startsWith(q)) || (a.q < b.q ? -1 : 1)).slice(0, 8) : [];
@@ -197,14 +207,16 @@
     opts.forEach((t, i) => {
       const li = el("li"); li.setAttribute("role", "option"); li.id = "dtO" + i; li.setAttribute("aria-selected", i === sel);
       const im = el("img"); im.src = t.img; im.alt = ""; im.width = 40; im.height = 40; im.loading = "lazy";
-      li.append(im, el("span", null, t.name));
+      li.append(im, hiName(t.name, q));
       li.addEventListener("mousedown", e => { e.preventDefault(); guess(t); });
+      // di chuột chỉ đổi dòng đang chọn, nên lúc nào cũng chỉ một dòng sáng và Enter chốt đúng dòng đó
+      li.addEventListener("mouseenter", () => { if (sel !== i) { sel = i; mark(); } });
       list.append(li);
     });
     list.hidden = !opts.length; inp.setAttribute("aria-expanded", String(!list.hidden));
     inp.setAttribute("aria-activedescendant", sel >= 0 ? "dtO" + sel : "");
   }
-  function mark() { [...list.children].forEach((li, i) => li.setAttribute("aria-selected", i === sel)); inp.setAttribute("aria-activedescendant", sel >= 0 ? "dtO" + sel : ""); }
+  function mark() { [...list.children].forEach((li, i) => li.setAttribute("aria-selected", i === sel)); list.children[sel]?.scrollIntoView({ block: "nearest" }); inp.setAttribute("aria-activedescendant", sel >= 0 ? "dtO" + sel : ""); }
   inp.addEventListener("input", suggest);
   inp.addEventListener("keydown", e => {
     if (list.hidden) return;
