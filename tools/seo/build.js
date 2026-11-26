@@ -451,7 +451,7 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 {
   const gv = VER;
   const nHero = new Set(HEROES.map(h => h.key)).size;
-  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng hôm nay', over: 'Trò chơi mỗi ngày', css: '/assets/game.css', bodyCls: 'dtg',
+  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng Liên Quân', over: 'Trò chơi đoán tướng', css: '/assets/game.css', bodyCls: 'dtg',
     body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
 <h2>Cách chơi</h2>
 <ul>

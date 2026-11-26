@@ -109,7 +109,7 @@
   const setGuesses = (m, g) => { if (endless) { const o = lt(m); o.g = g; store.set("lt:" + m, o); } else store.set(keyOf(m), g); };
   const gaveUp = m => endless && !!lt(m).x;
   const solved = m => guesses(m).includes(cur(m).t.key);
-  const go = m => { mode = m; history.replaceState(null, "", "#" + (endless ? "lt-" : "") + m); render(); };
+  const go = m => { legendOpen = null; mode = m; history.replaceState(null, "", "#" + (endless ? "lt-" : "") + m); render(); };
   function nextRound() {
     const old = cur(mode).t.key; let o;
     do { o = { s: newSeed(), g: [] }; } while (puzzleSeed(mode, o.s).t.key === old);
@@ -156,6 +156,7 @@
   const board = el("div", "dt-board");
   const legend = el("section", "dt-panel dt-legend");
   const yest = el("p", "dt-yest");
+  const overEl = document.querySelector("main > .over");
   // công tắc Hôm nay / Liên tục
   const kind = el("div", "dt-kind"); kind.setAttribute("role", "group"); kind.setAttribute("aria-label", "Kiểu chơi");
   [["day", "Đề hôm nay"], ["lt", "Chơi liên tục"]].forEach(([k, n]) => {
@@ -164,7 +165,12 @@
     kind.append(b);
   });
   const skip = el("button", "dt-skip", "Bỏ qua, xem đáp án"); skip.type = "button";
-  skip.addEventListener("click", () => { const o = lt(mode); if (o.x || solved(mode)) return; o.x = true; store.set("lt:" + mode, o); const st = ltStat(mode); st.run = 0; store.set("ltstat:" + mode, st); track("doan_tuong_bo_qua", { che_do: mode, so_luot: o.g.length }); render(); });
+  // bấm 2 lần mới bỏ qua (lần đầu đổi chữ để hỏi lại, 4 giây không bấm thì trở về), tránh lỡ tay mất chuỗi
+  let skipArm = 0;
+  skip.addEventListener("click", () => {
+    if (!skipArm) { skip.textContent = "Chắc chưa? Bấm lần nữa để xem đáp án"; skip.classList.add("armed"); skipArm = setTimeout(() => { skipArm = 0; skip.textContent = "Bỏ qua, xem đáp án"; skip.classList.remove("armed"); }, 4000); return; }
+    clearTimeout(skipArm); skipArm = 0; skip.textContent = "Bỏ qua, xem đáp án"; skip.classList.remove("armed");
+    const o = lt(mode); if (o.x || solved(mode)) return; o.x = true; store.set("lt:" + mode, o); const st = ltStat(mode); st.run = 0; store.set("ltstat:" + mode, st); track("doan_tuong_bo_qua", { che_do: mode, so_luot: o.g.length }); render(); });
   root.append(kind, tabs, panel, form, count, skip, win, board, legend, yest);
 
   // biểu tượng chế độ: vòng tròn có hình, tên bên dưới, dấu ✓ khi đã đoán đúng
@@ -183,7 +189,7 @@
   } }
 
   /* ---- gợi ý khi gõ ---- */
-  let opts = [], sel = -1;
+  let opts = [], sel = -1, legendOpen = null;
   function suggest() {
     const q = strip(inp.value), used = new Set(guesses(mode));
     opts = q ? LIST.filter(t => !used.has(t.key) && t.q.includes(q)).sort((a, b) => (b.q.startsWith(q) - a.q.startsWith(q)) || (a.q < b.q ? -1 : 1)).slice(0, 8) : [];
@@ -237,6 +243,7 @@
   function render(fresh) {
     const p = cur(mode), g = guesses(mode), won = g.includes(p.t.key), lost = gaveUp(mode), done = won || lost;
     document.body.classList.toggle("dt-lt", endless);
+    if (overEl) overEl.textContent = endless ? "Chơi liên tục" : `Đề hôm nay #${num(today)}`;
     for (const b of kind.children) b.setAttribute("aria-pressed", String((b.dataset.k === "lt") === endless));
     for (const b of tabs.children) { const on = b.dataset.m === mode; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle("ok", !endless && solved(b.dataset.m)); }
 
@@ -245,7 +252,7 @@
     const title = { co: endless ? "Chơi liên tục: đoán tướng bí ẩn!" : "Đoán tướng Liên Quân hôm nay!", chieu: "Chiêu này của tướng nào?", anh: "Ảnh này của tướng nào?" }[mode];
     panel.append(el("h2", "dt-pt", title));
     if (mode === "co") {
-      panel.append(el("p", "dt-ps", "Gõ tên một tướng bất kỳ để bắt đầu. Mỗi ô màu cho biết tướng bạn đoán giống tướng bí ẩn ở điểm nào."));
+      panel.append(el("p", "dt-ps", "Gõ tên tướng bất kỳ để bắt đầu. Màu các ô cho biết tướng bạn đoán giống tướng bí\u00a0ẩn tới\u00a0đâu."));
     } else if (mode === "chieu") {
       const box = el("div", "dt-skill"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Biểu tượng chiêu cần đoán");
       const im = el("img"); im.alt = ""; im.referrerPolicy = "no-referrer"; im.width = 104; im.height = 104;
@@ -264,7 +271,7 @@
     form.hidden = done;
     const lst = ltStat(mode);
     count.textContent = endless ? (done ? "" : `Chuỗi đúng liên tiếp: ${lst.run}` + (g.length ? ` · Lượt này: ${g.length}` : "")) : (g.length && !done ? `Đã đoán ${g.length} lượt` : "");
-    skip.hidden = !endless || done;
+    skip.hidden = !endless || done || !g.length;
 
     // các lượt đoán, mới nhất ở trên
     board.textContent = "";
@@ -293,13 +300,18 @@
       board.append(ul);
     }
 
-    // chú thích màu (chế độ Cổ điển)
+    // chú thích màu (chế độ Cổ điển): mở sẵn khi chưa đoán, tự thu gọn từ lượt đầu (bấm tiêu đề để mở lại)
     legend.hidden = mode !== "co"; legend.textContent = "";
     if (mode === "co") {
-      legend.append(el("h2", "dt-pt dt-sm", "Chú thích màu"));
+      const d = el("details"); d.open = legendOpen ?? !g.length;
+      // chỉ nhớ khi người chơi tự bấm (sự kiện toggle cũng chạy khi gán d.open ở trên)
+      const sm = el("summary", "dt-pt dt-sm"); sm.append(el("span", "dt-q", "?"), document.createTextNode(" Chú thích màu"));
       const ul = el("ul", "dt-keys");
-      [["ok", "", "Đúng"], ["part", "", "Một phần"], ["no", "", "Sai"], ["no up", "", "Cao hơn"], ["no down", "", "Thấp hơn"]].forEach(([c, , n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
-      legend.append(ul, el("p", "dt-ps dt-small", "Một phần: trùng một trong các đường, lớp, tầm đánh hoặc phe. Cao hơn: tướng bí ẩn có tier cao hơn (S là cao nhất) hoặc ra mắt muộn hơn. Thấp hơn: tier thấp hơn hoặc ra mắt sớm hơn."));
+      [["ok", "Đúng"], ["part", "Một phần"], ["no", "Sai"], ["no up", "Cao hơn"], ["no down", "Thấp hơn"]].forEach(([c, n]) => { const li = el("li"); li.append(el("span", "dt-c " + c), el("span", "dt-kn", n)); ul.append(li); });
+      const ex = el("ul", "dt-why");
+      [["Một phần", "trùng một trong các đường, lớp, tầm đánh hoặc phe"], ["▲ Cao hơn", "tướng bí ẩn có tier cao hơn (S cao nhất) hoặc ra mắt muộn hơn"], ["▼ Thấp hơn", "tier thấp hơn hoặc ra mắt sớm hơn"]].forEach(([b, t]) => { const li = el("li"); li.append(el("b", null, b), document.createTextNode(": " + t)); ex.append(li); });
+      sm.addEventListener("click", () => { legendOpen = !d.open; });
+      d.append(sm, ul, ex); legend.append(d);
     }
 
     // liên tục: đúng hoặc bỏ qua thì hiện đáp án và nút sang tướng tiếp theo
