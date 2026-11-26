@@ -31,15 +31,46 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tierlq.com/og.jpg">
 <style>:root{--sat:0px;padding-bottom:env(safe-area-inset-bottom,0px)}@media (display-mode:standalone){:root{--sat:env(safe-area-inset-top,0px);padding-top:var(--sat)}}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html.framed body{display:none!important}.framed-go{display:block;margin:40vh auto 0;width:max-content;padding:14px 22px;border:1px solid currentColor;font:14px system-ui,sans-serif;color:inherit;text-decoration:none}
+
+/* Trò chơi Đoán tướng trên trang chủ (26/11/2026, chủ web: "làm sao nó là một phần lớn ngang với tier luôn") */
+.hero-game{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border:1px solid rgba(243,242,239,.7);color:#f3f2ef;background:rgba(0,0,0,.35);text-decoration:none;font:400 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;transition:border-color .3s,background .3s}
+.hero-links a.hl-game{color:#e9cf8f}
+.game .gm{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gm-m{position:relative;display:flex;flex-direction:column;gap:14px;min-height:190px;padding:22px 20px 18px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);color:var(--fg);text-decoration:none;transition:border-color .2s}
+.gm-i{display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;border:2px solid var(--accent);color:var(--accent)}
+.gm-i svg{width:24px;height:24px;fill:currentColor}
+.gm-t{display:flex;flex-direction:column;gap:6px}
+.gm-t b{font:400 1.15rem var(--f-display);letter-spacing:.06em;text-transform:uppercase}
+.gm-t small{font-size:13.5px;line-height:1.45;color:var(--muted)}
+.gm-s{margin-top:auto;font:normal 400 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.gm-s.on{color:var(--fg)}
+.gm-s.ok{color:#4cc472}
+.gm-m.ok{border-color:rgba(76,196,114,.55)}
+.gm-f{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:20px}
+.gm-go i{transform:rotate(-90deg)}
+.gm-left{font:400 12px var(--f-mono);letter-spacing:.06em;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (hover:hover){.hero-game:hover{border-color:#fff;background:rgba(0,0,0,.55)}.gm-m:hover{border-color:var(--accent)}}
+@media (max-width:760px){
+  .hero-acts>.hero-go,.hero-acts>.hero-game{flex:1 1 40%}
+  .hero-acts>.hero-about{flex-basis:100%}
+  .hero-game{min-height:48px;font-size:12px;letter-spacing:.12em;padding:0 10px}
+  .game .gm{grid-template-columns:1fr;gap:10px}
+  .gm-m{display:grid;grid-template-columns:48px 1fr;grid-template-rows:auto auto;column-gap:14px;row-gap:6px;min-height:0;padding:16px}
+  .gm-i{width:48px;height:48px;grid-row:1/3}
+  .gm-i svg{width:20px;height:20px}
+  .gm-s{margin:0;grid-column:2}
+  .gm-f .gm-go,.gm-f .gm-lt{flex:1 1 40%;justify-content:center}
+  .gm-left{flex-basis:100%;text-align:center}
+}
 </style>
 <title>Bảng Tier Liên Quân</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611261235"></script>
-<script defer src="assets/data.js?v=202611261235"></script>
-<script defer src="assets/app.js?v=202611261235"></script>
+<script defer src="assets/boot.js?v=202611261335"></script>
+<script defer src="assets/data.js?v=202611261335"></script>
+<script defer src="assets/app.js?v=202611261335"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -1147,7 +1178,7 @@ body.picking .instbar{display:none}
       <div class="brand">Tier · Liên Quân</div>
       <div class="hero-l1"><button class="menu-b" id="menuBtn" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false"><i aria-hidden="true"></i>Menu</button>
       <nav class="hero-links" aria-label="Mục trên trang">
-        <a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a href="#method">Cách xếp</a>
+        <a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a class="hl-game" href="/doan-tuong/">Đoán tướng</a><a href="#method">Cách xếp</a>
       </nav></div>
       <button class="theme" id="themeBtn" aria-label="Đổi giao diện sáng/tối" title="Đổi giao diện sáng/tối"></button>
     </div>
@@ -1159,7 +1190,7 @@ body.picking .instbar{display:none}
       <div class="hero-l">
         <a class="hero-upd" id="heroUpd" href="#logTitle" hidden></a>
         <p class="hero-sub">Mỗi hạt sáng là một lượt chọn hoặc cấm ở ĐTDV mùa Đông. <span class="dk">Rê chuột hoặc chạm</span><span class="mb">Chạm vào thiên hà</span> để khuấy động.</p>
-        <div class="hero-acts"><a class="hero-go" href="#boardTitle">Xem bảng tier<i aria-hidden="true"></i></a><button class="hero-about" id="aboutBtn" aria-expanded="false" aria-controls="about">Cách đọc bảng</button></div>
+        <div class="hero-acts"><a class="hero-go" href="#boardTitle">Xem bảng tier<i aria-hidden="true"></i></a><a class="hero-game" href="/doan-tuong/">Chơi đoán tướng</a><button class="hero-about" id="aboutBtn" aria-expanded="false" aria-controls="about">Cách đọc bảng</button></div>
       </div>
       <a class="scrollcue" href="#spotTitle"><span></span>Khám phá</a>
     </div>
@@ -1248,6 +1279,12 @@ body.picking .instbar{display:none}
   <div class="scroller"><div class="board" id="board" aria-live="polite"></div></div>
   <noscript><p style="padding:40px 0;color:var(--muted)">Bật JavaScript để xem bảng tier.</p></noscript>
   </div>
+
+  <section class="sec game" id="game" aria-labelledby="gameTitle">
+    <div class="sec-h"><div><span class="over" id="gmOver">Trò chơi mỗi ngày</span><h2 id="gameTitle">Đoán tướng hôm nay</h2></div><p>Cả nước cùng một đề, đổi lúc 0 giờ. Ba cách đoán, chia sẻ kết quả ô màu cho bạn bè, hoặc chơi liên tục không giới hạn.</p></div>
+    <div class="gm"><a class="gm-m" href="/doan-tuong/#co"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".55"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><span class="gm-t"><b>Cổ điển</b><small>Gõ tên tướng, xem trùng giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt</small></span><em class="gm-s" data-gm="co">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/#chieu"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="gm-t"><b>Chiêu thức</b><small>Nhìn biểu tượng một chiêu, đoán của tướng nào</small></span><em class="gm-s" data-gm="chieu">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/#anh"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m6 17 4-5 3 3 2-2 3 4z"/><circle cx="15.5" cy="9" r="1.6"/></svg></span><span class="gm-t"><b>Ảnh tướng</b><small>Một mảnh ảnh phóng to, mỗi lượt sai lộ thêm</small></span><em class="gm-s" data-gm="anh">Chưa chơi</em></a></div>
+    <div class="gm-f"><a class="hero-go gm-go" href="/doan-tuong/">Chơi đề hôm nay<i aria-hidden="true"></i></a><a class="cta gm-lt" href="/doan-tuong/#lt-co">Chơi liên tục</a><span class="gm-left" id="gmLeft"></span></div>
+  </section>
 
   <div class="band" id="band" aria-hidden="true">
     <div class="band-row r1">Meta Liên Quân · Mùa S4 2026 · Meta Liên Quân · Mùa S4 2026 · Meta Liên Quân · Mùa S4 2026 ·</div>
@@ -1342,7 +1379,6 @@ body.picking .instbar{display:none}
   </section>
   <!--/HEROLINKS-->
   <!--AFFM--><template id="affTpl"><aside class="aff" aria-label="Phụ kiện gợi ý, có liên kết tiếp thị"><p class="aff-t"><span class="aff-l">Liên kết tiếp thị</span>Phụ kiện cho người chơi trên điện thoại</p><ul><li><a href="https://s.shopee.vn/9pfVXgABQa" rel="sponsored nofollow noopener" target="_blank"><b>Găng tay chơi game MEMO V7</b><span>Xem trên Shopee →</span></a></li><li><a href="https://s.shopee.vn/AUvCL0Vl1V" rel="sponsored nofollow noopener" target="_blank"><b>Quạt tản nhiệt điện thoại MEMO G6</b><span>Xem trên Shopee →</span></a></li></ul><p class="aff-s">Mua qua các liên kết này, người duy trì web có thể nhận hoa hồng, giá bạn trả không đổi. <a href="/phu-kien/">Xem tất cả phụ kiện</a></p></aside></template><!--/AFFM-->
-  <section class="social aff-strip dt-strip" aria-label="Trò chơi Đoán tướng"><div><span class="over">Trò chơi mỗi ngày</span><h2>Đoán tướng hôm nay</h2><p>Đoán tướng qua gợi ý lớp, đường, tier, qua chiêu thức và qua ảnh. Đề mới lúc 0 giờ, chia sẻ kết quả cho bạn bè.</p></div><a class="tt-go" href="/doan-tuong/">Chơi ngay <i>→</i></a></section>
   <!--AFF--><section class="social aff-strip" aria-label="Phụ kiện chơi Liên Quân"><div><span class="over">Gợi ý · liên kết tiếp thị</span><h2>Phụ kiện chơi trên điện thoại</h2><p>Găng tay, quạt tản nhiệt chọn theo lượt bán trên Shopee. Có liên kết tiếp thị, giá bạn trả không đổi.</p></div><a class="tt-go" href="/phu-kien/">Xem phụ kiện <i>→</i></a></section><!--/AFF-->
   <section class="social" aria-label="Kênh TikTok">
     <div><span class="over">Theo dõi</span><h2>Clip tier từng tướng trên TikTok</h2><p>Mỗi clip một tướng: vì sao mạnh, lên đồ thế nào, khắc chế ra sao.</p></div>
@@ -1361,7 +1397,7 @@ body.picking .instbar{display:none}
   <aside class="menu-p">
     <button class="menu-x" data-close aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6.5 6.5 11 11m0-11-11 11"/></svg></button>
     <div class="menu-c">
-      <nav class="menu-l" aria-label="Menu"><span class="over">Trên trang</span><a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a href="#method">Cách xếp và nguồn</a><span class="over menu-sub">Tra cứu</span><a class="menu-s" href="/trang-bi/">Trang bị</a><a class="menu-s" href="/phu-hieu/">Phù hiệu</a><a class="menu-s" href="/bang-ngoc/">Bảng ngọc</a><a class="menu-s" href="/phep-bo-tro/">Phép bổ trợ</a><a class="menu-s" href="/phuong-phap/">Phương pháp</a><a class="menu-s" href="/phu-kien/">Phụ kiện</a><span class="over menu-sub">Giải trí</span><a class="menu-s" href="/doan-tuong/">Đoán tướng hôm nay</a><a class="menu-tt" href="https://www.tiktok.com/@bangtierlienquan" target="_blank" rel="noopener" data-tt><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z"/></svg>TikTok</a></nav>
+      <nav class="menu-l" aria-label="Menu"><span class="over">Trên trang</span><a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a href="#method">Cách xếp và nguồn</a><span class="over menu-sub">Trò chơi</span><a href="/doan-tuong/">Đoán tướng</a><span class="over menu-sub">Tra cứu</span><a class="menu-s" href="/trang-bi/">Trang bị</a><a class="menu-s" href="/phu-hieu/">Phù hiệu</a><a class="menu-s" href="/bang-ngoc/">Bảng ngọc</a><a class="menu-s" href="/phep-bo-tro/">Phép bổ trợ</a><a class="menu-s" href="/phuong-phap/">Phương pháp</a><a class="menu-s" href="/phu-kien/">Phụ kiện</a><a class="menu-tt" href="https://www.tiktok.com/@bangtierlienquan" target="_blank" rel="noopener" data-tt><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z"/></svg>TikTok</a></nav>
       <div class="menu-g"><span class="over">Mạnh nhất mỗi đường</span><div class="menu-cards" id="menuCards"></div></div>
     </div>
   </aside>

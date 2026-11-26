@@ -58,6 +58,7 @@ for (const f of pages) {
     if (!fs.existsSync(target)) { errs.push(`${me}: link hỏng ${u}`); continue; }
     if (hash && target.endsWith('.html') && ids[target]) {
       if (rel(target) === '/' && /^tuong-/.test(hash)) continue; // app.js mở bảng chi tiết
+      if (rel(target) === '/doan-tuong/' && /^(lt-)?(co|chieu|anh)$/.test(hash)) continue; // game.js chọn cách chơi theo #
       if (!ids[target].has(decodeURIComponent(hash))) errs.push(`${me}: neo #${hash} không có trên ${rel(target)}`);
     }
   }

@@ -43,7 +43,7 @@ const affBox = () => affItems.length ? `<aside class="aff" aria-label="Phụ ki�
 // số ?v= của index.html: dùng cho page.css, game.css, data.js, game.js để trình duyệt tải bản mới khi đổi
 const VER = (index.match(/assets\/app\.js\?v=(\d+)/) || [])[1] || '';
 const NAVF = `<a href="/doan-tuong/">Đoán tướng</a> · <a href="/gioi-thieu/">Giới thiệu</a> · <a href="/phuong-phap/">Phương pháp</a> · <a href="/ban-cap-nhat/">Bản cập nhật</a> · <a href="/bai-viet/">Bài viết</a>${affItems.length ? ' · <a href="/phu-kien/">Phụ kiện</a>' : ''} · <a href="/lien-he/">Liên hệ</a> · <a href="/quyen-rieng-tu/">Quyền riêng tư</a>`;
-const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [], css = '', bodyCls = '' }) => `<!doctype html>
+const pageShell = ({ title, desc, path: pth, h1, over, body, og = 'website', ld = [], css = '', bodyCls = '', nav = '' }) => `<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -68,7 +68,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
 <link rel="stylesheet" href="/assets/page.css?v=${VER}">${css ? `\n<link rel="stylesheet" href="${css}?v=${VER}">` : ''}
 </head>
 <body${bodyCls ? ` class="${bodyCls}"` : ''}>
-<header><a class="home" href="/">Tier · Liên Quân</a></header>
+<header><a class="home" href="/">Tier · Liên Quân</a>${nav}</header>
 <main>
 <p class="over">${esc(over)}</p>
 <h1>${esc(h1)}</h1>
@@ -451,7 +451,7 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), idx2.replace(/<!--HEROLINKS-->[\
 {
   const gv = VER;
   const nHero = new Set(HEROES.map(h => h.key)).size;
-  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng Liên Quân', over: 'Trò chơi đoán tướng', css: '/assets/game.css', bodyCls: 'dtg',
+  writePage('doan-tuong', pageShell({ title: 'Đoán tướng Liên Quân hôm nay: trò chơi đoán tướng mỗi ngày | Bảng Tier Liên Quân', desc: `Trò chơi đoán tướng Liên Quân mỗi ngày: đoán theo giới tính, đường, lớp, phe, năm ra mắt, qua chiêu và qua ảnh. ${nHero} tướng, đề mới lúc 0 giờ.`, path: '/doan-tuong/', h1: 'Đoán tướng Liên Quân', over: 'Trò chơi đoán tướng', css: '/assets/game.css', bodyCls: 'dtg', nav: '<nav class="dt-sw" aria-label="Chọn mục"><a href="/">Bảng tier</a><a href="/doan-tuong/" aria-current="page">Đoán tướng</a></nav>',
     body: `<div id="dt" class="dt" aria-live="polite"><p>Đang tải trò chơi… Cần bật JavaScript để chơi.</p></div>
 <h2>Cách chơi</h2>
 <ul>

@@ -246,6 +246,7 @@
       const st = store.get("streak:" + mode, { last: null, n: 0, best: 0 });
       st.n = st.last === today - 1 ? st.n + 1 : st.last === today ? st.n : 1; st.last = today; st.best = Math.max(st.best || 0, st.n);
       store.set("streak:" + mode, st);
+      store.set("won:" + mode + ":" + today, g.length); // trang chủ đọc để hiện "Đúng sau N lượt"
     }
     render(true);
   }

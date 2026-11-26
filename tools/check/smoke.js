@@ -188,6 +188,11 @@ const errs = [], log = (...a) => console.log(...a);
       await p.goto(B + u, { waitUntil: 'load' }); // chờ CSS áp xong mới đo, đo sớm sẽ báo tràn nhầm
       if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad(`${u} tràn ngang`);
     }
+    // trang chủ có lối vào Đoán tướng ngang bảng tier: nút ở đầu trang, mục lớn 3 cách chơi, menu
+    { const hp = await ctx.newPage(); await hp.goto(B + '/', { waitUntil: 'load' });
+      const gm = await hp.evaluate(() => ({ hero: !!document.querySelector('.hero-acts a.hero-game[href="/doan-tuong/"]'), cards: document.querySelectorAll('#game .gm-m').length, menu: !!document.querySelector('.menu-l a[href="/doan-tuong/"]'), left: /Đề mới sau \d\d:\d\d:\d\d/.test(document.getElementById('gmLeft')?.textContent || ''), num: /Đề #\d+/.test(document.getElementById('gmOver')?.textContent || '') }));
+      if (!gm.hero || gm.cards !== 3 || !gm.menu || !gm.left || !gm.num) bad(`Trang chủ: lối vào Đoán tướng thiếu ${JSON.stringify(gm)}`);
+      await hp.close(); }
     // Đoán tướng hôm nay: đoán sai một lượt rồi đúng ở cả 3 chế độ, tải lại vẫn giữ kết quả
     await p.goto(B + '/doan-tuong/', { waitUntil: 'load' });
     await p.evaluate(() => localStorage.clear()); await p.reload({ waitUntil: 'load' });

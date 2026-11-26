@@ -974,3 +974,22 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
 buildFilters();buildStage();paintPP();setMode(mode);  // measure() để ResizeObserver gọi sau lần bố cục đầu (gọi ngay ở đây bắt trình duyệt bố cục cả trang giữa lúc chạy JS)
 openFromHash();
 requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(()=>fitNames());
+
+/* Mục Đoán tướng trên trang chủ: số đề, tiến độ từng cách chơi (đọc localStorage của game.js), đếm ngược đề mới */
+(() => {
+  const box = document.getElementById("game"); if (!box) return;
+  const day = Math.floor((Date.now() + 7 * 36e5) / 864e5), n = day - Date.UTC(2026, 10, 25) / 864e5 + 1;
+  const get = k => { try { return JSON.parse(localStorage.getItem("dt:" + k)); } catch (e) { return null; } };
+  const over = document.getElementById("gmOver"); if (over) over.textContent = `Trò chơi mỗi ngày · Đề #${n}`;
+  box.querySelectorAll("[data-gm]").forEach(e => {
+    const m = e.dataset.gm, won = get(`won:${m}:${day}`), g = get(`${m}:${day}`);
+    if (won) { e.textContent = `Đã đoán đúng sau ${won} lượt`; e.classList.add("ok"); e.closest(".gm-m").classList.add("ok"); }
+    else if (Array.isArray(g) && g.length) { e.textContent = `Đang đoán · ${g.length} lượt`; e.classList.add("on"); }
+  });
+  const left = document.getElementById("gmLeft");
+  const tick = () => { const s = Math.max(0, Math.floor(((day + 1) * 864e5 - 7 * 36e5 - Date.now()) / 1000)), p = x => String(x).padStart(2, "0");
+    left.textContent = `Đề mới sau ${p(Math.floor(s / 3600))}:${p(Math.floor(s / 60) % 60)}:${p(s % 60)}`; };
+  if (left) { tick(); setInterval(() => { if (!document.hidden) tick(); }, 1000); }
+  box.addEventListener("click", e => { const a = e.target.closest("a"); if (a && typeof track === "function") track("mo_doan_tuong", { cho: "trang_chu", link: a.getAttribute("href") }); });
+  document.querySelector(".hero-game")?.addEventListener("click", () => { if (typeof track === "function") track("mo_doan_tuong", { cho: "dau_trang", link: "/doan-tuong/" }); });
+})();
