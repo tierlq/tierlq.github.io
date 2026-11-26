@@ -985,6 +985,8 @@ requestAnimationFrame(()=>fitNames());document.fonts&&document.fonts.ready.then(
     const m = e.dataset.gm, won = get(`won:${m}:${day}`), g = get(`${m}:${day}`);
     if (won) { e.textContent = `Đã đoán đúng sau ${won} lượt`; e.classList.add("ok"); e.closest(".gm-m").classList.add("ok"); }
     else if (Array.isArray(g) && g.length) { e.textContent = `Đang đoán · ${g.length} lượt`; e.classList.add("on"); }
+    const st = get(`streak:${m}`); // chuỗi ngày còn sống nếu ngày đúng gần nhất là hôm nay hoặc hôm qua
+    if (st && st.n > 0 && (st.last === day || st.last === day - 1)) e.textContent += ` · chuỗi ${st.n} ngày`;
   });
   const left = document.getElementById("gmLeft");
   const tick = () => { const s = Math.max(0, Math.floor(((day + 1) * 864e5 - 7 * 36e5 - Date.now()) / 1000)), p = x => String(x).padStart(2, "0");

@@ -220,6 +220,7 @@ const errs = [], log = (...a) => console.log(...a);
     }
     await p.reload({ waitUntil: 'load' }); await p.waitForFunction(() => window.__dt && document.querySelectorAll('.dt-mode').length === 3);
     if (await p.evaluate(() => document.querySelectorAll('.dt-mode.ok').length !== 3)) bad('Đoán tướng: tải lại mất kết quả đã đoán');
+    if (!(await p.evaluate(() => /^1\s*ngày liên tiếp/.test(document.querySelector('.dt-streak')?.textContent.replace(/^\D*/, '') || '')))) bad('Đoán tướng: huy hiệu chuỗi ngày không hiện 1 sau khi đoán đúng');
     if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad('/doan-tuong/ tràn ngang');
     log(`[${vp}] Đoán tướng: ${dtN.n} tướng, thắng đủ 3 chế độ`);
     // Chơi liên tục: đoán đúng → nút Tướng tiếp theo đổi đề; Bỏ qua → hiện đáp án
@@ -228,6 +229,8 @@ const errs = [], log = (...a) => console.log(...a);
     const lt1 = await p.evaluate(() => { const a = __dt.answer('co'); return [a, __dt.names()[__dt.keys().indexOf(a)], __dt.names().find((x, i) => __dt.keys()[i] !== a)]; });
     for (const name of [lt1[2], lt1[1]]) { await p.fill('#dtIn', name); await p.waitForTimeout(80); await p.keyboard.press('Enter'); await p.waitForTimeout(150); }
     if (!(await p.$('.dt-win:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: đoán đúng mà không có nút Tướng tiếp theo');
+    const stLt = await p.evaluate(() => document.querySelector('.dt-streak b')?.textContent);
+    if (stLt !== '1') bad(`Đoán tướng liên tục: huy hiệu chuỗi ${stLt} (cần 1 sau một tướng đúng)`);
     await p.click('.dt-nextbtn'); await p.waitForTimeout(150);
     const lt2 = await p.evaluate(() => ({ a: __dt.answer('co'), rows: document.querySelectorAll('.dt-grid tbody tr').length, form: !document.querySelector('.dt-form').hidden }));
     if (lt2.a === lt1[0] || lt2.rows || !lt2.form) bad(`Đoán tướng liên tục: sang tướng mới lỗi (cùng đáp án ${lt2.a === lt1[0]}, ${lt2.rows} lượt cũ, ô nhập ${lt2.form})`);
@@ -237,6 +240,7 @@ const errs = [], log = (...a) => console.log(...a);
     if (await p.$('.dt-win.dt-lose:not([hidden])')) bad('Đoán tướng liên tục: bấm Bỏ qua một lần đã mất lượt (phải hỏi lại)');
     await p.click('.dt-skip'); await p.waitForTimeout(100);
     if (!(await p.$('.dt-win.dt-lose:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: Bỏ qua không hiện đáp án');
+    if (await p.evaluate(() => document.querySelector('.dt-streak b')?.textContent) !== '0') bad('Đoán tướng liên tục: Bỏ qua mà chuỗi không về 0');
     await p.click('.dt-kb[data-k=day]');
     if (await p.evaluate(() => __dt.endless() || document.querySelectorAll('.dt-mode.ok').length !== 3)) bad('Đoán tướng: quay lại Đề hôm nay mất kết quả');
     log(`[${vp}] Đoán tướng: chơi liên tục, sang tướng mới, bỏ qua đều chạy`);

@@ -171,7 +171,21 @@
     if (!skipArm) { skip.textContent = "Chắc chưa? Bấm lần nữa để xem đáp án"; skip.classList.add("armed"); skipArm = setTimeout(() => { skipArm = 0; skip.textContent = "Bỏ qua, xem đáp án"; skip.classList.remove("armed"); }, 4000); return; }
     clearTimeout(skipArm); skipArm = 0; skip.textContent = "Bỏ qua, xem đáp án"; skip.classList.remove("armed");
     const o = lt(mode); if (o.x || solved(mode)) return; o.x = true; store.set("lt:" + mode, o); const st = ltStat(mode); st.run = 0; store.set("ltstat:" + mode, st); track("doan_tuong_bo_qua", { che_do: mode, so_luot: o.g.length }); render(); });
-  root.append(kind, tabs, panel, form, count, skip, win, board, legend, yest);
+  // chuỗi: luôn hiện dưới hàng chế độ, ở cả Đề hôm nay (chuỗi ngày) và Chơi liên tục (chuỗi đúng liên tiếp)
+  const streakEl = el("div", "dt-streak"); streakEl.setAttribute("aria-live", "polite");
+  const FLAME = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5-1.6 5.3-2.9 7.6C7.8 12 8 14 9.2 15.2 8 15 7 13.9 6.8 12.6 5.6 14 5 15.6 5 17a7 7 0 0 0 14 0c0-4.2-3-6.2-4.3-9.3-.5 1.7-1.3 2.6-2.4 3.1C13 8.5 13.4 5 12 2z"/></svg>';
+  const dayStreak = m => { const st = store.get("streak:" + m, { last: null, n: 0, best: 0 }); const alive = st.last === today || st.last === today - 1; return { n: alive ? st.n || 0 : 0, best: Math.max(st.best || 0, st.n || 0), today: st.last === today }; };
+  function drawStreak() {
+    let n, best, unit, hint;
+    if (endless) { const st = ltStat(mode); n = st.run; best = st.best; unit = "tướng"; hint = n ? "đoán đúng liên tiếp, bỏ qua là về 0" : "đoán đúng liên tiếp để tăng chuỗi"; }
+    else { const st = dayStreak(mode); n = st.n; best = st.best; unit = "ngày"; hint = st.today ? "đã giữ chuỗi hôm nay" : n ? "đoán đúng đề hôm nay để giữ chuỗi" : "đoán đúng mỗi ngày để tăng chuỗi"; }
+    const row = el("span", "dt-st-r"); row.innerHTML = FLAME;
+    row.append(el("b", null, String(n)), el("span", "dt-st-u", `${unit} liên tiếp`), el("span", "dt-st-b", `Kỷ lục ${best}`));
+    streakEl.classList.toggle("on", n > 0);
+    streakEl.textContent = ""; streakEl.append(row, el("span", "dt-st-h", hint));
+    streakEl.setAttribute("aria-label", `Chuỗi ${n} ${unit} liên tiếp, kỷ lục ${best}, ${hint}`);
+  }
+  root.append(kind, tabs, streakEl, panel, form, count, skip, win, board, legend, yest);
 
   // biểu tượng chế độ: vòng tròn có hình, tên bên dưới, dấu ✓ khi đã đoán đúng
   const ICON = {
@@ -282,8 +296,8 @@
       panel.append(box, el("p", "dt-ps", done ? "Ảnh đầy đủ" : "Mỗi lượt sai, ảnh thu nhỏ để lộ thêm"));
     }
     form.hidden = done;
-    const lst = ltStat(mode);
-    count.textContent = endless ? (done ? "" : `Chuỗi đúng liên tiếp: ${lst.run}` + (g.length ? ` · Lượt này: ${g.length}` : "")) : (g.length && !done ? `Đã đoán ${g.length} lượt` : "");
+    const lst = ltStat(mode); drawStreak();
+    count.textContent = done ? "" : g.length ? `Đã đoán ${g.length} lượt` : "";
     skip.hidden = !endless || done || !g.length;
 
     // các lượt đoán, mới nhất ở trên

@@ -176,3 +176,15 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-sw a[aria-current]{background:linear-gradient(180deg,#e9cf8f,#b48f45);color:#1a1405;font-weight:600}
 @media (max-width:420px){.dtg header .home{font-size:10.5px;letter-spacing:.14em;white-space:nowrap}.dtg header .home::before{margin-right:.4em}.dt-sw a{padding:0 11px;font-size:12.5px}}
 @media (hover:hover){.dt-sw a:not([aria-current]):hover{color:var(--fg)}}
+
+/* chuỗi (26/11 13:21): huy hiệu dưới hàng chế độ, ở cả Đề hôm nay và Chơi liên tục */
+.dt-streak{display:inline-flex;flex-direction:column;align-items:center;gap:3px;margin:0 auto 14px;padding:7px 18px;border:1px solid rgba(226,194,125,.3);border-radius:22px;background:rgba(8,11,19,.75);font-size:13px;color:var(--muted)}
+.dt-streak svg{width:18px;height:18px;fill:#6b6658;flex:none}
+.dt-streak b{font-size:1.15rem;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.dt-streak.on{border-color:rgba(242,153,74,.6);box-shadow:0 0 16px rgba(242,153,74,.18)}
+.dt-streak.on svg{fill:#f2994a}
+.dt-streak.on b{color:#ffc27a}
+.dt-st-b{padding-left:10px;border-left:1px solid rgba(255,255,255,.15)}
+.dt-st-r{display:inline-flex;align-items:center;gap:8px}
+.dt-st-h{font-size:12px;color:#8d8a82}
+@media (max-width:420px){.dt-streak{font-size:12.5px;padding:6px 14px 6px 10px}}
