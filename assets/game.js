@@ -113,6 +113,10 @@
   const guesses = m => (endless ? lt(m).g : store.get(keyOf(m), [])).filter(find);
   const setGuesses = (m, g) => { if (endless) { const o = lt(m); o.g = g; store.set("lt:" + m, o); } else store.set(keyOf(m), g); };
   const gaveUp = m => endless && !!lt(m).x;
+  // gợi ý mở dần (kiểu LoLdle): đủ số lượt sai thì nút gợi ý mở khoá, người chơi tự bấm mới xem; lưu theo đề (Chơi liên tục lưu trong lt)
+  const CLUES = { co: [[5, "Kỹ năng", "skill"], [8, "Chữ cái đầu", "letter"]], chieu: [[7, "Lớp", "cls"]], anh: [[5, "Lớp", "cls"], [8, "Chữ cái đầu", "letter"]] };
+  const clueGet = m => { const v = endless ? lt(m).c : store.get("clue:" + m + ":" + today, []); return Array.isArray(v) ? v : []; };
+  const clueSet = (m, v) => { if (endless) { const o = lt(m); o.c = v; store.set("lt:" + m, o); } else store.set("clue:" + m + ":" + today, v); };
   const solved = m => guesses(m).includes(cur(m).t.key);
   const syncUrl = () => { try { history.replaceState(null, "", PAGE[mode] + location.search + (endless ? "#lt" : "")); } catch (e) {} };
   const go = m => { legendOpen = null; mode = m; syncUrl(); render(); };
@@ -237,7 +241,14 @@
     inp.setAttribute("aria-activedescendant", sel >= 0 ? "dtO" + sel : "");
   }
   function mark() { [...list.children].forEach((li, i) => li.setAttribute("aria-selected", i === sel)); list.children[sel]?.scrollIntoView({ block: "nearest" }); inp.setAttribute("aria-activedescendant", sel >= 0 ? "dtO" + sel : ""); }
-  inp.addEventListener("input", suggest);
+  function fitList() {
+    const vv = window.visualViewport; if (!vv || list.hidden) { list.style.maxHeight = ""; return; }
+    let room = vv.offsetTop + vv.height - inp.getBoundingClientRect().bottom - 10;
+    if (room < 150 && vv.height < window.innerHeight - 80) { window.scrollBy(0, 150 - room); room = 150; }
+    list.style.maxHeight = Math.max(120, Math.min(360, room)) + "px";
+  }
+  inp.addEventListener("input", () => { suggest(); fitList(); });
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", fitList);
   inp.addEventListener("keydown", e => {
     if (list.hidden) return;
     if (e.key === "ArrowDown") { e.preventDefault(); sel = (sel + 1) % opts.length; mark(); }
@@ -271,6 +282,17 @@
     render(true);
   }
 
+  function clueShow(p, name, kind) {
+    const box = el("div", "dt-hint on");
+    if (kind === "skill") {
+      const sk = (skillsOf(p.t) || [0, []])[1].map((x, i) => [x, i]).filter(([x]) => x[1]).pop();
+      if (sk) { const im = el("img"); im.alt = ""; im.referrerPolicy = "no-referrer"; im.width = 34; im.height = 34; im.src = SKU + sk[0][1]; im.addEventListener("error", () => { box.textContent = `Lớp: ${[...p.t.cls].map(c => CLASSES[c]).join(", ")}`; }); box.append(im, el("span", null, `${["Nội tại", "Chiêu 1", "Chiêu 2", "Chiêu cuối"][sk[1]] || "Chiêu"} của tướng bí ẩn`)); return box; }
+      kind = "cls"; name = "Lớp";
+    }
+    box.append(el("span", null, kind === "letter" ? `Tên bắt đầu bằng chữ ${[...p.t.name][0].toUpperCase()}` : `${name}: ${[...p.t.cls].map(c => CLASSES[c]).join(", ")}`));
+    return box;
+  }
+
   /* ---- vẽ ---- */
   const ARIA = { ok: "đúng", part: "đúng một phần", no: "sai" };
   function render(fresh) {
@@ -290,10 +312,12 @@
     } else if (mode === "chieu") {
       const box = el("div", "dt-skill"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Biểu tượng chiêu cần đoán");
       const im = el("img"); im.alt = ""; im.referrerPolicy = "no-referrer"; im.width = 104; im.height = 104;
-      im.addEventListener("error", () => { box.textContent = "?"; box.classList.add("dt-noimg"); });
-      im.src = SKU + p.skill[1]; box.append(im);
       const slot = ["Nội tại", "Chiêu 1", "Chiêu 2", "Chiêu cuối"][p.slot] || "Chiêu " + p.slot;
-      panel.append(box, el("p", "dt-ps", done || g.length >= 4 ? `${slot}: ${p.skill[0]}` : `Sai thêm ${4 - g.length} lượt sẽ hiện tên chiêu`));
+      const ps = el("p", "dt-ps", done || g.length >= 4 ? `${slot}: ${p.skill[0]}` : `Sai thêm ${4 - g.length} lượt sẽ hiện tên chiêu`);
+      // ảnh chiêu ở máy chủ Garena không tải được thì hiện luôn tên chiêu để vẫn chơi được
+      im.addEventListener("error", () => { box.textContent = "?"; box.classList.add("dt-noimg"); ps.textContent = `Không tải được ảnh chiêu. ${slot}: ${p.skill[0]}`; });
+      im.src = SKU + p.skill[1]; box.append(im);
+      panel.append(box, ps);
     } else {
       const z = done ? 1 : Math.max(1.2, 6 - g.length * 0.7);
       const box = el("div", "dt-splash"); box.setAttribute("role", "img"); box.setAttribute("aria-label", "Một phần ảnh tướng cần đoán");
@@ -301,6 +325,19 @@
       im.style.transformOrigin = p.x + "% " + p.y + "%"; im.style.transform = "scale(" + z + ")";
       box.append(im);
       panel.append(box, el("p", "dt-ps", done ? "Ảnh đầy đủ" : "Mỗi lượt sai, ảnh thu nhỏ để lộ thêm"));
+    }
+    // hàng gợi ý: khoá thì ghi còn mấy lượt; mở rồi thì bấm để xem; đã xem thì hiện luôn
+    const used = clueGet(mode), wrong = g.filter(k => k !== p.t.key).length;
+    if (!done && CLUES[mode]) {
+      const row = el("div", "dt-hints");
+      CLUES[mode].forEach(([need, name, kind], i) => {
+        if (used.includes(i)) { row.append(clueShow(p, name, kind)); return; }
+        const b = el("button", "dt-hint", wrong >= need ? `💡 Gợi ý: ${name}` : `🔒 ${name} · sau ${need - wrong} lượt`); b.type = "button";
+        b.disabled = wrong < need;
+        b.addEventListener("click", () => { const v = clueGet(mode); if (!v.includes(i)) v.push(i); clueSet(mode, v); track("doan_tuong_goi_y", { che_do: mode, goi_y: kind, so_luot: g.length, kieu: endless ? "lien_tuc" : "hom_nay" }); render(); });
+        row.append(b);
+      });
+      panel.append(row);
     }
     form.hidden = done;
     const lst = ltStat(mode); drawStreak();
@@ -376,6 +413,7 @@
       const a = el("a", "dt-btn", "Xem tier, lên đồ"); a.href = p.t.page;
       const sh = el("button", "dt-btn dt-share", "Chia sẻ kết quả"); sh.type = "button"; sh.addEventListener("click", () => share(p, g));
       row.append(sh, a); win.append(row);
+      win.append(statsEl(mode, g.length));
       const nx = el("p", "dt-next"); win.append(nx); tick(nx);
       const other = MODES.find(([m]) => !solved(m));
       if (other) { const ob = el("button", "dt-btn dt-more", `Chơi tiếp: ${other[1]}`); ob.type = "button"; ob.addEventListener("click", () => { go(other[0]); window.scrollTo({ top: 0, behavior: "smooth" }); }); win.append(ob); }
@@ -384,6 +422,31 @@
     yest.hidden = endless;
     yest.textContent = `Đề #${num(today)}`;
     if (num(today - 1) >= 1) { const y = puzzle(mode, today - 1).t; yest.append(" · Tướng hôm qua là "); const ya = el("a", null, y.name); ya.href = y.page; yest.append(ya); }
+  }
+
+  // thống kê các đề ngày của một chế độ: số đề đã chơi, số đề đúng, phân bố số lượt
+  function dayStats(m) {
+    const B = [[1, 3, "1–3"], [4, 6, "4–6"], [7, 9, "7–9"], [10, 1e9, "10+"]], cnt = B.map(() => 0);
+    let played = 0, won = 0, turns = 0;
+    for (let d = EPOCH; d <= today; d++) {
+      const gg = store.get(m + ":" + d, []); if (!Array.isArray(gg) || !gg.length) continue;
+      played++;
+      let ans; try { ans = puzzle(m, d).t.key; } catch (e) { continue; }
+      const k = gg.indexOf(ans); if (k < 0) continue;
+      won++; turns += k + 1; cnt[B.findIndex(([a, b]) => k + 1 >= a && k + 1 <= b)]++;
+    }
+    return { played, won, avg: won ? turns / won : 0, B, cnt };
+  }
+  function statsEl(m, mine) {
+    const st = dayStats(m), box = el("div", "dt-stats");
+    box.append(el("p", "dt-st-t", `Thống kê của bạn: đã chơi ${st.played} đề · đúng ${st.won} · trung bình ${st.avg.toFixed(1).replace(".", ",")} lượt`));
+    const mx = Math.max(1, ...st.cnt), bars = el("div", "dt-bars"); bars.setAttribute("role", "img");
+    bars.setAttribute("aria-label", "Số đề đúng theo số lượt: " + st.B.map(([, , n], i) => `${n} lượt: ${st.cnt[i]}`).join(", "));
+    st.B.forEach(([a, b, n], i) => {
+      const r = el("div", "dt-bar" + (mine >= a && mine <= b ? " me" : "")); r.append(el("span", "dt-bl", n));
+      const f = el("span", "dt-bf"); f.style.width = Math.max(8, st.cnt[i] / mx * 100) + "%"; f.textContent = st.cnt[i]; r.append(f); bars.append(r);
+    });
+    box.append(bars); return box;
   }
 
   let timer = 0;
@@ -397,7 +460,8 @@
     const name = MODES.find(([m]) => m === mode)[1];
     const lines = mode === "co" ? g.map(k => COLS.map(([, cmp]) => ({ ok: "🟩", part: "🟧", no: "🟥" })[cmp(find(k), p.t)[0]]).join("")).join("\n") : g.map(k => k === p.t.key ? "🟩" : "🟥").join("");
     const url = location.origin + PAGE[mode] + "?utm_source=chia_se&utm_medium=doan_tuong";
-    const text = `Đoán tướng Liên Quân #${num(today)} · ${name} · ${g.length} lượt\n${lines}\n${url}`;
+    const nh = clueGet(mode).length;
+    const text = `Đoán tướng Liên Quân #${num(today)} · ${name} · ${g.length} lượt${nh ? ` · ${nh} gợi ý` : ""}\n${lines}\n${url}`;
     track("doan_tuong_chia_se", { che_do: mode });
     if (navigator.share) { navigator.share({ text }).catch(() => {}); return; }
     (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast("Đã chép kết quả, dán vào Zalo/Messenger để khoe")).catch(() => toast("Không chép được, hãy chụp màn hình"));

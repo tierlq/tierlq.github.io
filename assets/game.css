@@ -189,3 +189,18 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-st-h{font-size:12px;color:#8d8a82}
 @media (max-width:420px){.dt-streak{font-size:12.5px;padding:6px 14px 6px 10px}}
 .dtg .dt + p{margin-top:44px}
+
+/* gợi ý mở dần + thống kê (27/11/2026) */
+.dt-hints{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+.dt-hint{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:6px 14px;border:1px solid rgba(226,194,125,.55);border-radius:999px;background:rgba(226,194,125,.08);color:var(--fg);font:inherit;font-size:13.5px;cursor:pointer}
+.dt-hint:disabled{cursor:default;border-color:rgba(255,255,255,.14);background:none;color:#8d8a82}
+.dt-hint.on{cursor:default;border-color:var(--gold);background:rgba(226,194,125,.16)}
+.dt-hint img{width:34px;height:34px;border-radius:6px;border:1px solid rgba(226,194,125,.5)}
+@media (hover:hover){.dt-hint:not(:disabled):not(.on):hover{background:rgba(226,194,125,.2)}}
+.dt-stats{margin:16px auto 0;max-width:340px;text-align:left}
+.dt-st-t{margin:0 0 8px;font-size:13px;color:var(--muted);text-align:center}
+.dt-bars{display:grid;gap:5px}
+.dt-bar{display:grid;grid-template-columns:38px 1fr;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.dt-bl{text-align:right;font-variant-numeric:tabular-nums}
+.dt-bf{display:block;min-width:22px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.14);color:var(--fg);text-align:right;font-variant-numeric:tabular-nums;box-sizing:border-box}
+.dt-bar.me .dt-bf{background:#4cc472;color:#06150b;font-weight:700}

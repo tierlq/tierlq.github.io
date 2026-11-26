@@ -473,6 +473,7 @@ const GAMEP = [
     ['Đề mới lúc mấy giờ?', 'Lúc 0 giờ mỗi ngày theo giờ Việt Nam. Trang có đồng hồ đếm ngược tới đề mới và cho biết tướng của đề hôm qua.'],
     ['Có mấy cách chơi?', 'Ba cách: Cổ điển (so giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt), đoán qua kỹ năng (biểu tượng một chiêu) và đoán qua hình ảnh (một mảnh ảnh tướng). Mỗi cách có đề riêng mỗi ngày, và đều có chế độ Chơi liên tục.'],
     ['Chơi liên tục khác đề hôm nay thế nào?', 'Đề hôm nay mỗi cách chơi chỉ có một tướng. Chơi liên tục ra tướng ngẫu nhiên, đoán xong bấm "Tướng tiếp theo" để chơi tiếp không giới hạn; web đếm chuỗi đoán đúng liên tiếp và kỷ lục.'],
+    ['Đoán mãi không ra thì sao?', 'Sau vài lượt sai sẽ mở gợi ý: một chiêu của tướng, lớp tướng, chữ cái đầu của tên (tùy cách chơi). Vẫn không ra thì sang ngày mai trang cho biết tướng của đề hôm qua; ở Chơi liên tục có nút Bỏ qua để xem đáp án.'],
     ['Có cần tài khoản không?', 'Không. Kết quả, chuỗi ngày đúng và kỷ lục lưu trên trình duyệt của bạn; xoá dữ liệu trình duyệt hoặc đổi máy thì mất.'],
   ];
   const body = {
@@ -483,6 +484,7 @@ const GAMEP = [
 <li><b>Cổ điển</b>: gõ tên một tướng. Mỗi lượt, 7 ô so tướng bạn đoán với tướng bí ẩn, giống LoLdle: giới tính, đường, lớp, tầm đánh (cận chiến hay đánh xa), phe (Vương quốc Norman, Tháp quang minh, Vực hỗn mang…), tier cao nhất trên Bảng Tier và năm ra mắt. Xanh là trùng, cam là trùng một phần (ví dụ cùng một trong hai đường), đỏ là sai; tam giác trong ô cho biết tướng bí ẩn có tier cao hơn hay thấp hơn, ra mắt muộn hơn hay sớm hơn.</li>
 <li><b><a href="/doan-tuong/ky-nang/">Đoán qua kỹ năng</a></b>: nhìn biểu tượng một chiêu để đoán tướng. Sai 4 lượt thì hiện tên chiêu.</li>
 <li><b><a href="/doan-tuong/hinh-anh/">Đoán qua hình ảnh</a></b>: một mảnh ảnh tướng phóng to, mỗi lượt sai ảnh thu nhỏ lại để lộ thêm.</li>
+<li><b>Gợi ý</b>: bí quá thì dùng gợi ý mở dần. Cổ điển: sai 5 lượt mở gợi ý một chiêu của tướng bí ẩn, sai 8 lượt mở chữ cái đầu của tên. Kỹ năng: sai 7 lượt mở lớp tướng. Hình ảnh: sai 5 lượt mở lớp, 8 lượt mở chữ cái đầu. Gợi ý chỉ hiện khi bạn bấm, và kết quả chia sẻ ghi số gợi ý đã dùng.</li>
 <li><b>Chơi liên tục</b>: bấm nút "Chơi liên tục" để đoán bao nhiêu tướng tùy thích, không phải chờ đề ngày mai. Đúng xong bấm "Tướng tiếp theo"; bí quá thì "Bỏ qua, xem đáp án". Web đếm chuỗi đoán đúng liên tiếp và kỷ lục của bạn.</li>
 </ul>
 <p>Kết quả và chuỗi ngày đúng lưu trên máy của bạn, không cần tài khoản. Đoán xong bấm "Chia sẻ kết quả" để gửi hàng ô màu cho bạn bè qua Zalo, Messenger mà không lộ đáp án. ${src}</p>
@@ -496,6 +498,7 @@ ${others('doan-tuong')}`,
 <li>Đề là biểu tượng một chiêu bất kỳ của tướng bí ẩn: nội tại, chiêu 1, chiêu 2 hoặc chiêu cuối.</li>
 <li>Gõ tên tướng (không dấu cũng được, ví dụ "trieu van") rồi chọn trong danh sách gợi ý. Đoán sai thì tướng đó hiện ô đỏ trong danh sách lượt đã đoán.</li>
 <li>Sai 4 lượt, web hiện tên chiêu và chiêu đó là nội tại hay chiêu mấy để bạn đoán dễ hơn.</li>
+<li>Sai 7 lượt thì mở được gợi ý lớp tướng (đấu sĩ, pháp sư…).</li>
 <li>Đoán đúng thì xem được tier, cách lên đồ và cả bộ chiêu của tướng đó trên Bảng Tier.</li>
 </ul>
 <p>Mẹo: để ý màu và hình trên biểu tượng (lửa, băng, sấm, vũ khí…). Muốn ôn thì bấm vào tướng trên <a href="/">Bảng Tier</a>, mục "Bộ chiêu thức" có biểu tượng và tóm tắt từng chiêu. ${src}</p>
@@ -506,6 +509,7 @@ ${others('doan-tuong/ky-nang')}`,
 <ul>
 <li>Lượt đầu ảnh phóng to khoảng 6 lần quanh một điểm bất kỳ, chỉ thấy màu sắc, áo giáp, vũ khí hoặc một phần gương mặt.</li>
 <li>Gõ tên tướng (không dấu cũng được) rồi chọn trong danh sách gợi ý. Mỗi lần sai ảnh thu nhỏ bớt, lộ thêm xung quanh.</li>
+<li>Sai 5 lượt mở được gợi ý lớp tướng, sai 8 lượt mở chữ cái đầu của tên.</li>
 <li>Đoán đúng thì hiện ảnh đầy đủ, kèm nút xem tier và cách lên đồ của tướng đó.</li>
 </ul>
 <p>Mẹo: để ý màu chủ đạo và chất liệu (kim loại, lông vũ, lửa…), rồi thu hẹp theo vũ khí. ${src}</p>
