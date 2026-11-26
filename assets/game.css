@@ -15,6 +15,16 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt [hidden]{display:none!important}
 .dt-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* công tắc Đề hôm nay / Chơi liên tục */
+.dt-kind{display:inline-flex;margin:18px auto 0;padding:3px;border:2px solid rgba(226,194,125,.45);border-radius:999px;background:rgba(8,11,19,.8)}
+.dt-kb{min-height:40px;padding:0 16px;border:0;border-radius:999px;background:none;color:var(--muted);font:600 14px/1 inherit;font-family:inherit;cursor:pointer}
+.dt-kb[aria-pressed="true"]{background:linear-gradient(180deg,#e9cf8f,#b48f45);color:#1a1405}
+.dt-kb:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.dt-skip{display:block;margin:-6px auto 14px;padding:8px 12px;border:0;background:none;color:var(--muted);font:500 13.5px inherit;font-family:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.dt-lose{border-color:#d0503f}
+.dt-lose .dt-gg{color:#f19a8c;text-shadow:none}
+.dt-nextbtn{min-width:200px;font-size:15px}
+
 /* hàng biểu tượng chế độ */
 .dt-modes{display:flex;justify-content:center;gap:clamp(14px,5vw,32px);margin:22px 0 20px}
 .dt-mode{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;border:0;background:none;color:var(--muted);font:500 13px/1.2 inherit;font-family:inherit;cursor:pointer}
@@ -109,5 +119,5 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
   .dt-scroll{margin:0 -16px;padding:0 4px 4px}
   .dt-panel{padding:16px 14px 14px}
 }
-@media (hover:hover){.dt-mode:hover .dt-ring{border-color:var(--gold)}.dt-list li:hover{background:rgba(226,194,125,.16)}.dt-btn:hover{border-color:var(--gold)}}
+@media (hover:hover){.dt-kb:hover{color:var(--fg)}.dt-kb[aria-pressed="true"]:hover{color:#1a1405}.dt-skip:hover{color:var(--fg)}.dt-mode:hover .dt-ring{border-color:var(--gold)}.dt-list li:hover{background:rgba(226,194,125,.16)}.dt-btn:hover{border-color:var(--gold)}}
 @media (prefers-reduced-motion:reduce){.dt-c.flip{animation:none}.dt-splash img,.dt-ring{transition:none}}

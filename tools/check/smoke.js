@@ -206,6 +206,20 @@ const errs = [], log = (...a) => console.log(...a);
     if (await p.evaluate(() => document.querySelectorAll('.dt-mode.ok').length !== 3)) bad('Đoán tướng: tải lại mất kết quả đã đoán');
     if (await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)) bad('/doan-tuong/ tràn ngang');
     log(`[${vp}] Đoán tướng: ${dtN.n} tướng, thắng đủ 3 chế độ`);
+    // Chơi liên tục: đoán đúng → nút Tướng tiếp theo đổi đề; Bỏ qua → hiện đáp án
+    await p.click('.dt-kb[data-k=lt]'); await p.click('.dt-mode[data-m=co]');
+    if (!(await p.evaluate(() => __dt.endless() && location.hash === '#lt-co'))) bad('Đoán tướng: không chuyển được sang Chơi liên tục');
+    const lt1 = await p.evaluate(() => { const a = __dt.answer('co'); return [a, __dt.names()[__dt.keys().indexOf(a)], __dt.names().find((x, i) => __dt.keys()[i] !== a)]; });
+    for (const name of [lt1[2], lt1[1]]) { await p.fill('#dtIn', name); await p.waitForTimeout(80); await p.keyboard.press('Enter'); await p.waitForTimeout(150); }
+    if (!(await p.$('.dt-win:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: đoán đúng mà không có nút Tướng tiếp theo');
+    await p.click('.dt-nextbtn'); await p.waitForTimeout(150);
+    const lt2 = await p.evaluate(() => ({ a: __dt.answer('co'), rows: document.querySelectorAll('.dt-grid tbody tr').length, form: !document.querySelector('.dt-form').hidden }));
+    if (lt2.a === lt1[0] || lt2.rows || !lt2.form) bad(`Đoán tướng liên tục: sang tướng mới lỗi (cùng đáp án ${lt2.a === lt1[0]}, ${lt2.rows} lượt cũ, ô nhập ${lt2.form})`);
+    await p.click('.dt-skip'); await p.waitForTimeout(100);
+    if (!(await p.$('.dt-win.dt-lose:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: Bỏ qua không hiện đáp án');
+    await p.click('.dt-kb[data-k=day]');
+    if (await p.evaluate(() => __dt.endless() || document.querySelectorAll('.dt-mode.ok').length !== 3)) bad('Đoán tướng: quay lại Đề hôm nay mất kết quả');
+    log(`[${vp}] Đoán tướng: chơi liên tục, sang tướng mới, bỏ qua đều chạy`);
     await ctx.close();
   }
   await b.close(); srv.close();
