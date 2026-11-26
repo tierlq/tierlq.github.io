@@ -37,9 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611261345"></script>
-<script defer src="assets/data.js?v=202611261345"></script>
-<script defer src="assets/app.js?v=202611261345"></script>
+<script defer src="assets/boot.js?v=202611261355"></script>
+<script defer src="assets/data.js?v=202611261355"></script>
+<script defer src="assets/app.js?v=202611261355"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -50,7 +50,7 @@
   --l-top:#e8805f; --l-jg:#5cc496; --l-mid:#a597ff; --l-ad:#e9b766; --l-sp:#6fb6ee;
   --up:#5fd398; --down:#ff7466; --new:#d9b56c; --veil:rgba(0,0,0,.72); --shadow:0 30px 80px -20px rgba(0,0,0,.9);
   --f-display:"Lexend Exa","Be Vietnam Pro",system-ui,sans-serif; --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --track:.22em; --barh:61px; --gy:68%; --ease:cubic-bezier(.22,.8,.18,1);
+  --track:.22em; --barh:61px; --gy:71%; --ease:cubic-bezier(.22,.8,.18,1);
   color-scheme:only dark;
 }
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
@@ -1184,6 +1184,22 @@ body.picking .instbar{display:none}
   .hero-acts>.hero-go,.hero-acts>.hero-game{font-size:11px;letter-spacing:.04em;padding:0 6px;gap:6px}
   .hero-game svg{display:none}
 }
+
+/* Đầu trang máy tính (26/11/2026 13:47, góp ý giao diện): thanh trên đối xứng qua logo (trái: Menu, Nổi bật, Bảng tier · phải: Đoán tướng,
+   Cách xếp & nguồn, nút sáng/tối); chữ phụ đề tách khỏi dải hạt; thẻ bản cập nhật + mô tả có nền tối; "Khám phá" rõ hơn */
+.hero-r1{grid-column:3;grid-row:1;justify-self:end;display:flex;align-items:center;gap:clamp(16px,3vw,40px)}
+.hero-r1 .theme{justify-self:auto}
+@media (min-width:720px){
+  .hero-c{padding-top:clamp(24px,6.5vh,86px)}
+  .hero h1 em{text-shadow:0 0 14px rgba(0,0,0,.9),0 0 28px rgba(0,0,0,.7)}
+  .hero-l{position:relative;isolation:isolate}
+  .hero-l::before{content:"";position:absolute;inset:-40px -60px -20px -40px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 60% 62% at 34% 55%,rgba(0,0,0,.68),rgba(0,0,0,.3) 62%,transparent 82%)}
+  .hero-sub{max-width:38ch;text-wrap:balance}
+  .scrollcue{color:rgba(243,242,239,.78)}
+  .scrollcue span{height:56px;background:rgba(255,255,255,.28)}
+  .scrollcue span::after{background:#e7cf9a;box-shadow:0 0 8px rgba(231,207,154,.8)}
+}
+@media (min-width:720px) and (hover:hover){.hero-upd{background:rgba(0,0,0,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}.scrollcue:hover{color:#fff}}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1198,9 +1214,10 @@ body.picking .instbar{display:none}
       <div class="brand">Tier · Liên Quân</div>
       <div class="hero-l1"><button class="menu-b" id="menuBtn" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false"><i aria-hidden="true"></i>Menu</button>
       <nav class="hero-links" aria-label="Mục trên trang">
-        <a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a><a class="hl-game" href="/doan-tuong/">Đoán tướng</a><a href="#method">Cách xếp</a>
+        <a href="#spotTitle">Nổi bật</a><a href="#boardTitle">Bảng tier</a>
       </nav></div>
-      <button class="theme" id="themeBtn" aria-label="Đổi giao diện sáng/tối" title="Đổi giao diện sáng/tối"></button>
+      <div class="hero-r1"><nav class="hero-links" aria-label="Trò chơi và nguồn"><a class="hl-game" href="/doan-tuong/">Đoán tướng</a><a href="#method">Cách xếp &amp; nguồn</a></nav>
+      <button class="theme" id="themeBtn" aria-label="Đổi giao diện sáng/tối" title="Đổi giao diện sáng/tối"></button></div>
     </div>
     <div class="hero-c">
       <div class="over"><span>Mùa S4 2026</span><span class="sep"> · </span><span>Bản Vết Nứt Thời Không</span></div>

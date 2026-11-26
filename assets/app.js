@@ -594,7 +594,7 @@ paintTheme();
 /* ===== Thiên hà hạt (WebGL) =====
    Khởi tạo sau khung hình đầu tiên (tạo hạt, dịch shader, đo khung): trang hiện ra trước, thiên hà hiện ngay sau đó */
 // Tâm thiên hà (--gy, cũng là tâm quầng nền CSS): ResizeObserver đo ngay sau lần bố cục đầu, trước khi vẽ, nên quầng nền đứng đúng chỗ từ khung đầu
-const gSmall=matchMedia("(max-width:719px)").matches;let gOff=gSmall?-0.12:-0.36;
+const gSmall=matchMedia("(max-width:719px)").matches;let gOff=gSmall?-0.12:-0.42;
 (function(){let lastGy=gSmall?"43.5%":"68.0%";const hero=$("hero"),hc=hero.querySelector(".hero-c"),hf=hero.querySelector(".hero-foot");
   function center(){if(gSmall){const h=hero.offsetHeight||1,a=hc.offsetTop+hc.offsetHeight,b=hf.offsetTop;gOff=b-a>60?1-2*((a+b)/2/h):-0.12}
     const v=((1-gOff)*50).toFixed(1)+"%";if(v!==lastGy){lastGy=v;hero.style.setProperty("--gy",v)}}
@@ -678,7 +678,7 @@ function galaxy(){
     const sc0=Math.min(1,Math.max(0,scrollY/heroH));scS=scS<0||reduce.matches?sc0:scS+(sc0-scS)*Math.min(1,dt*7);const sc=scS;   // nghiêng/phóng theo cuộn có làm mượt
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uTime,t);gl.uniform1f(uTilt,0.36+sc*0.55+Math.max(-1,Math.min(1,my))*0.05*stir);gl.uniform1f(uAsp,W/H);gl.uniform1f(uDpr,dpr);
-    gl.uniform1f(uOff,gOff);gl.uniform2f(uMouse,mx,my);gl.uniform1f(uStir,stir);gl.uniform1f(uZoom,(small?0.56:0.95)*(1+sc*0.25));
+    gl.uniform1f(uOff,gOff);gl.uniform2f(uMouse,mx,my);gl.uniform1f(uStir,stir);gl.uniform1f(uZoom,(small?0.56:0.84)*(1+sc*0.25));
     gl.drawArrays(gl.POINTS,0,nMain());gl.drawArrays(gl.POINTS,N,nHaze());
     if(!cv.classList.contains("on"))cv.classList.add("on");
   }
