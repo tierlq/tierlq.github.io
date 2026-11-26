@@ -277,15 +277,16 @@
     board.textContent = "";
     if (mode === "co" && g.length) {
       const tb = el("table", "dt-grid"); tb.append(el("caption", "dt-sr", "Các lượt đoán, mới nhất ở trên"));
-      const hr = el("tr"); hr.append(el("th", null, "Tướng")); COLS.forEach(([n]) => hr.append(el("th", null, n)));
+      const hr = el("tr"); hr.append(el("th", null, "Tướng")); COLS.forEach(([n]) => { const h = el("th"); if (n === "Năm ra mắt") { h.append(el("span", "dt-long", n), el("span", "dt-short", "Năm")); h.setAttribute("aria-label", n); } else h.textContent = n; hr.append(h); });
       const th = el("thead"); th.append(hr); tb.append(th);
       const tbody = el("tbody");
       g.slice().reverse().forEach((k, i) => {
         const t = find(k), tr = el("tr");
-        const c0 = el("td", "dt-h"); const im = el("img"); im.src = t.img; im.alt = t.name; im.title = t.name; im.width = 64; im.height = 64; c0.append(im); tr.append(c0);
+        const c0 = el("td", "dt-h"); const im = el("img"); im.src = t.img; im.alt = t.name; im.title = t.name; im.width = 64; im.height = 64; c0.append(im, el("span", "dt-nm", t.name)); tr.append(c0);
         COLS.forEach(([n, cmp, show], j) => {
           const [st, ar] = cmp(t, p.t), td = el("td", "dt-c " + st + (ar === "↑" ? " up" : ar === "↓" ? " down" : ""));
           td.append(el("span", null, show(t)));
+          if (ar === "↑" || ar === "↓") td.append(el("b", "dt-ar", ar === "↑" ? "▲" : "▼"));
           td.setAttribute("aria-label", `${n}: ${show(t)}, ${ARIA[st]}${ar === "↑" ? ", tướng bí ẩn cao hơn" : ar === "↓" ? ", tướng bí ẩn thấp hơn" : ""}`);
           if (i === 0 && fresh) { td.classList.add("flip"); td.style.animationDelay = (j * 0.3) + "s"; }
           tr.append(td);
@@ -293,7 +294,10 @@
         tbody.append(tr);
       });
       tb.append(tbody);
-      const wrap = el("div", "dt-scroll"); wrap.append(tb); board.append(wrap);
+      const wrap = el("div", "dt-scroll"), box = el("div", "dt-sbox"); wrap.append(tb); box.append(wrap); board.append(box);
+      // còn cột bị khuất bên phải thì hiện vệt mờ ở mép phải
+      const edge = () => box.classList.toggle("more", wrap.scrollLeft + wrap.clientWidth < wrap.scrollWidth - 2);
+      wrap.addEventListener("scroll", edge, { passive: true }); requestAnimationFrame(edge);
     } else if (g.length) {
       const ul = el("ul", "dt-wrong");
       g.slice().reverse().forEach(k => { const t = find(k), li = el("li", k === p.t.key ? "ok" : "no"); const im = el("img"); im.src = t.img; im.alt = ""; im.width = 44; im.height = 44; li.append(im, el("span", null, t.name)); ul.append(li); });

@@ -140,3 +140,22 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-skip.armed{color:#f19a8c;text-decoration-color:#f19a8c}
 .dtg header .home::before{content:"←";letter-spacing:0;margin-right:.6em}
 @media (prefers-reduced-motion:reduce){.dt-legend summary::after{transition:none}}
+
+/* bảng kết quả, góp ý 26/11 12:13: ô ảnh cùng cỡ ô chữ, tên tướng dưới ảnh, mũi tên rõ, viền sáng mảnh */
+.dt-grid td{box-sizing:border-box;width:64px;height:64px}
+.dt-h{position:relative;padding:0;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.dt-h img{width:100%;height:100%;object-fit:cover;border:0}
+.dt-nm{position:absolute;left:0;right:0;bottom:0;padding:10px 2px 2px;background:linear-gradient(transparent,rgba(0,0,0,.85) 55%);color:#fff;font-size:9.5px;font-weight:600;line-height:1.1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt-c{box-shadow:inset 0 0 0 1px rgba(255,255,255,.15),inset 0 -10px 18px rgba(0,0,0,.18)}
+.dt-c.up::before,.dt-c.down::before{opacity:.26}
+.dt-ar{position:relative;display:block;margin-top:2px;font-size:12px;line-height:1;color:#fff}
+.dt-keys .dt-ar{display:none}
+.dt-short{display:none}
+.dt-sbox{position:relative}
+.dt-sbox.more::after{content:"";position:absolute;top:0;right:0;bottom:4px;width:28px;pointer-events:none;background:linear-gradient(90deg,transparent,#05070c)}
+@media (max-width:420px){
+  .dt-grid td{width:43px;height:43px}
+  .dt-nm{font-size:7.5px;padding:8px 1px 1px}
+  .dt-ar{font-size:9px;margin-top:1px}
+  .dt-long{display:none}.dt-short{display:inline}
+}
