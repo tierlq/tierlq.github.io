@@ -331,7 +331,7 @@
     }
     // hàng gợi ý: khoá thì ghi còn mấy lượt; mở rồi thì bấm để xem; đã xem thì hiện luôn
     const used = clueGet(mode), wrong = g.filter(k => k !== p.t.key).length;
-    if (!done && CLUES[mode]) {
+    if (!done && CLUES[mode] && g.length) { // lúc chưa đoán thì chưa hiện hàng gợi ý (đỡ chiếm chỗ, Gemini vòng 2)
       const row = el("div", "dt-hints");
       CLUES[mode].forEach(([need, name, kind], i) => {
         if (used.includes(i)) { row.append(clueShow(p, name, kind)); return; }

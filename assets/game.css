@@ -248,3 +248,20 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
   .dt-grid tr>:nth-child(8){width:38px}
   .dt-grid td{height:44px}
 }
+
+/* màn 360–374px: bảng thu nhỏ thêm cho vừa 8 cột không cuộn ngang; hai nút gợi ý vẫn một hàng */
+@media (max-width:374px){
+  .dt-grid{border-spacing:2px}
+  .dt-c{font-size:9.2px}
+  .dt-grid tr>:nth-child(1){width:38px}
+  .dt-grid tr>:nth-child(2){width:30px}
+  .dt-grid tr>:nth-child(3){width:46px}
+  .dt-grid tr>:nth-child(4){width:42px}
+  .dt-grid tr>:nth-child(5){width:40px}
+  .dt-grid tr>:nth-child(6){width:48px}
+  .dt-grid tr>:nth-child(7){width:28px}
+  .dt-grid tr>:nth-child(8){width:34px}
+  .dt-hint{padding:5px 10px;font-size:12px}
+}
+/* Hình ảnh trên điện thoại: khung ảnh dẹt hơn (2:1) để ô nhập lên cao hơn */
+@media (max-width:719px){.dt-splash{aspect-ratio:2/1;margin-top:10px}}

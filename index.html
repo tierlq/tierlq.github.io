@@ -37,9 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611271135"></script>
-<script defer src="assets/data.js?v=202611271135"></script>
-<script defer src="assets/app.js?v=202611271135"></script>
+<script defer src="assets/boot.js?v=202611271150"></script>
+<script defer src="assets/data.js?v=202611271150"></script>
+<script defer src="assets/app.js?v=202611271150"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -1206,6 +1206,8 @@ body.picking .instbar{display:none}
 .gm-go{background:linear-gradient(180deg,#e9cf8f,#b48f45);color:#1a1405;border-color:#c9a45c}
 .gm-go i{filter:none}
 @media (max-width:760px){.gm-m::after{top:50%;transform:translateY(-50%)}.gm-m{padding-right:36px}}
+
+.gm-sq{display:flex;gap:4px;margin-top:4px}.gm-sq i{width:16px;height:16px;border-radius:3px;background:#cc4040}.gm-sq i.ok{background:#4cc472}.gm-sq i.pa{background:#e89236}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1325,7 +1327,7 @@ body.picking .instbar{display:none}
 
   <section class="sec game" id="game" aria-labelledby="gameTitle">
     <div class="sec-h"><div><span class="over" id="gmOver">Trò chơi mỗi ngày</span><h2 id="gameTitle">Đoán tướng hôm nay</h2></div><p>Cả nước cùng một đề, đổi lúc 0 giờ. Ba cách đoán, chia sẻ kết quả ô màu cho bạn bè, hoặc chơi liên tục không giới hạn.</p></div>
-    <div class="gm"><a class="gm-m" href="/doan-tuong/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".55"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><span class="gm-t"><b>Cổ điển</b><small>Gõ tên tướng, xem trùng giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt</small></span><em class="gm-s" data-gm="co">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/ky-nang/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="gm-t"><b>Qua kỹ năng</b><small>Nhìn biểu tượng một chiêu, đoán của tướng nào</small></span><em class="gm-s" data-gm="chieu">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/hinh-anh/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m6 17 4-5 3 3 2-2 3 4z"/><circle cx="15.5" cy="9" r="1.6"/></svg></span><span class="gm-t"><b>Qua hình ảnh</b><small>Một mảnh ảnh phóng to, mỗi lượt sai lộ thêm</small></span><em class="gm-s" data-gm="anh">Chưa chơi</em></a></div>
+    <div class="gm"><a class="gm-m" href="/doan-tuong/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".55"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><span class="gm-t"><b>Cổ điển</b><small>Gõ tên tướng, xem trùng giới tính, đường, lớp, tầm đánh, phe, tier, năm ra mắt</small><span class="gm-sq" aria-hidden="true"><i class="ok"></i><i class="pa"></i><i class="no"></i><i class="ok"></i><i class="no"></i><i class="ok"></i><i class="pa"></i></span></span><em class="gm-s" data-gm="co">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/ky-nang/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="gm-t"><b>Qua kỹ năng</b><small>Nhìn biểu tượng một chiêu, đoán của tướng nào</small></span><em class="gm-s" data-gm="chieu">Chưa chơi</em></a><a class="gm-m" href="/doan-tuong/hinh-anh/"><span class="gm-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m6 17 4-5 3 3 2-2 3 4z"/><circle cx="15.5" cy="9" r="1.6"/></svg></span><span class="gm-t"><b>Qua hình ảnh</b><small>Một mảnh ảnh phóng to, mỗi lượt sai lộ thêm</small></span><em class="gm-s" data-gm="anh">Chưa chơi</em></a></div>
     <div class="gm-f"><a class="hero-go gm-go" href="/doan-tuong/">Chơi đề hôm nay<i aria-hidden="true"></i></a><a class="cta gm-lt" href="/doan-tuong/#lt">Chơi liên tục</a><span class="gm-left" id="gmLeft"></span></div>
   </section>
 
