@@ -6,7 +6,7 @@ html.framed body{display:none!important}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
 header,main,footer{max-width:760px;margin:0 auto;padding:0 20px}
 header{padding-top:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}
-.home{color:var(--fg);text-decoration:none;font:500 12px ui-monospace,Menlo,monospace;letter-spacing:.3em;text-transform:uppercase}
+.home{color:var(--fg);text-decoration:none;font:500 12px ui-monospace,Menlo,monospace;letter-spacing:.3em;text-transform:uppercase;display:inline-block;padding:14px 0;margin:-14px 0}
 .ban{margin:0 -20px;aspect-ratio:16/8;overflow:hidden;background:#000}
 .ban img{width:100%;height:100%;object-fit:cover;object-position:60% 30%;display:block}
 .over{margin:24px 0 4px;font:400 12px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}

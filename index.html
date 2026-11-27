@@ -37,9 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611272210"></script>
-<script defer src="assets/data.js?v=202611272210"></script>
-<script defer src="assets/app.js?v=202611272210"></script>
+<script defer src="assets/boot.js?v=202611280611"></script>
+<script defer src="assets/data.js?v=202611280611"></script>
+<script defer src="assets/app.js?v=202611280611"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -1220,7 +1220,7 @@ body.picking .instbar{display:none}
   /* hàng công cụ: Meta/Tự xếp/Số liệu một hàng, ô tìm rộng + Lọc hàng dưới */
   .bar .row1{flex-wrap:wrap;row-gap:8px;padding-top:6px}
   .bar .seg{flex:1 1 calc(100% - 76px)}
-  .bar .search{flex:1 1 auto;min-width:0}
+  .bar .search{flex:1 1 120px;min-width:0}            /* nền 120px: không theo bề rộng tự nhiên của ô nhập, để nút Lọc không rớt xuống hàng riêng ở 320px */
   /* nhãn tier đi theo khi cuộn qua hàng dài; chữ tên bậc không chạm mép */
   .tl{align-self:stretch}
   .tli{position:sticky;top:64px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
@@ -1262,6 +1262,7 @@ body.picking .instbar{display:none}
 .menu-l a.menu-upd{display:flex;align-items:baseline;gap:12px}
 .menu-upd em{font:400 11px var(--f-mono);letter-spacing:.08em;font-style:normal;color:var(--muted)}
 .menu-upd em:empty{display:none}
+@media (min-width:720px) and (pointer:coarse){.menu-l a{padding:10px 0}.menu-l a.menu-s{padding:12px 0}}   /* điện thoại xoay ngang: mục menu 37 → ≥40px */
 @media (min-width:720px) and (max-width:1100px){.menu-c{grid-template-columns:250px 1fr;gap:24px}.menu-l a{font-size:1.08rem}.menu-l a.menu-s{font-size:.9rem}.menu-card small{letter-spacing:.06em;font-size:9.5px}}
 </style>
 

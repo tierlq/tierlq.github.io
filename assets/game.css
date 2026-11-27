@@ -129,7 +129,7 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-form input{border-color:var(--gold);box-shadow:0 0 0 3px rgba(226,194,125,.12),0 0 22px rgba(226,194,125,.22)}
 .dt-form input:focus{box-shadow:0 0 0 3px rgba(226,194,125,.3),0 0 26px rgba(226,194,125,.35)}
 .dt-legend{padding:12px 16px}
-.dt-legend summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:36px;margin:0}
+.dt-legend summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;margin:0}
 .dt-legend summary::-webkit-details-marker{display:none}
 .dt-legend summary::after{content:"▾";font-size:.8em;color:var(--muted);transition:transform .2s}
 .dt-legend details[open] summary::after{transform:rotate(180deg)}
@@ -172,9 +172,12 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 /* công tắc Bảng tier | Đoán tướng ở đầu trang (game ngang hàng bảng tier) */
 .dtg header{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .dt-sw{display:flex;padding:3px;border:1px solid rgba(226,194,125,.45);border-radius:999px;background:rgba(8,11,19,.7)}
-.dt-sw a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
+.dt-sw a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
 .dt-sw a[aria-current]{background:linear-gradient(180deg,#e9cf8f,#b48f45);color:#1a1405;font-weight:600}
 @media (max-width:420px){.dtg header .home{font-size:10.5px;letter-spacing:.14em;white-space:nowrap}.dtg header .home::before{margin-right:.4em}.dt-sw a{padding:0 11px;font-size:12.5px}}
+/* máy 320px: công tắc Bảng tier | Đoán tướng tràn 22px ra ngoài màn */
+@media (max-width:374px){.dtg header{padding-left:16px;padding-right:16px;gap:8px}.dtg header .home{font-size:10px;letter-spacing:.08em}.dt-sw a{padding:0 9px;font-size:12px}}
+@media (max-width:319px){.dtg header{flex-wrap:wrap;justify-content:center;row-gap:10px}}   /* màn gập 280px: công tắc xuống hàng dưới */
 @media (hover:hover){.dt-sw a:not([aria-current]):hover{color:var(--fg)}}
 
 /* chuỗi (26/11 13:21): huy hiệu dưới hàng chế độ, ở cả Đề hôm nay và Chơi liên tục */
@@ -251,6 +254,7 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 
 /* màn 360–374px: bảng thu nhỏ thêm cho vừa 8 cột không cuộn ngang; hai nút gợi ý vẫn một hàng */
 @media (max-width:374px){
+  .dt-streak{font-size:11.5px;padding:6px 11px 6px 9px}.dt-st-r{gap:6px}.dt-st-u,.dt-st-b{white-space:nowrap}.dt-st-b{padding-left:8px}   /* huy hiệu chuỗi một dòng ở 320px */
   .dt-grid{border-spacing:2px}
   .dt-c{font-size:9.2px}
   .dt-grid tr>:nth-child(1){width:38px}
