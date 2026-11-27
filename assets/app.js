@@ -135,7 +135,7 @@ function render(){
   rows.forEach(t=>{
     const inTier=list.filter(h=>tierOf(h)===t);
     if(mode==="meta"&&!inTier.length&&(q||F.cls.size||F.trend.size))return;
-    html+=`<div class="trow${mode==="mine"&&selected?" target":""}" data-t="${t}"><div class="tl" aria-label="Tier ${t==="X"?"chưa xếp":t}, ${inTier.length} tướng"><span class="L">${t==="X"?"–":t}</span><small>${t==="X"?"Chưa xếp":TNAME[t]}</small><em>${TDESC[t]}</em><span class="cnt">${inTier.length} tướng</span></div>`;
+    html+=`<div class="trow${mode==="mine"&&selected?" target":""}" data-t="${t}"><div class="tl" aria-label="Tier ${t==="X"?"chưa xếp":t}, ${inTier.length} tướng"><div class="tli"><span class="L">${t==="X"?"–":t}</span><small>${t==="X"?"Chưa xếp":TNAME[t]}</small><em>${TDESC[t]}</em><span class="cnt">${inTier.length} tướng</span></div></div>`;
     lanes.forEach(l=>{
       const items=inTier.filter(h=>h.lane===l);
       html+=`<div class="cell" data-t="${t}">${items.map(h=>`<button class="card${selected===h.id?" sel":""}${q?" hit":""}${h.name.length>10?" ln":""}" data-id="${h.id}" data-t="${tierOf(h)}" style="${vtOn?`view-transition-name:c-${h.id.replace(/[^a-z0-9-]/g,"")};`:""}--d:${(h.score*7)%4}" aria-label="${h.name}, ${LANES[h.lane]}${h.sec?" (đường phụ)":""}, tier ${tierOf(h)}${h.move?", "+moveTxt(h).toLowerCase():""}${TR[h.trend]?", "+TR[h.trend][2].toLowerCase()+" ở bản mới":""}" ${mode==="mine"?'draggable="true"':""}>${portrait(h).replace('</div>',tierOf(h)==="S"?'<span class="sweep"></span></div>':'</div>')}<span class="nm">${h.name}</span></button>`).join("")||'<span class="none" aria-hidden="true">—</span>'}</div>`;
@@ -313,12 +313,13 @@ function buildHTML(h){
 function bldSet(b){
   const items=`<ol class="bld-items">${b.i.map((id,k)=>{const [vi,cat,ic,en]=BITEM[id],jg=cat==="jg";
       return `<li class="bi${jg?" jg":""}"><button type="button" class="bi-b" data-item="${id}" aria-describedby="itip"><span class="bi-ic"><img src="b/i-${ic}.webp" alt="" loading="lazy" decoding="async" width="56" height="56"><b>${k+1}</b></span><span class="bi-n">${vi}</span>${jg?"<em>Đồ rừng</em>":cat==="sup"?"<em>Đồ trợ thủ</em>":""}</button></li>`}).join("")}</ol>
-    <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số. Tra cứu đầy đủ: <a href="/trang-bi/" target="_blank" rel="noopener">Trang bị</a> · <a href="/phu-hieu/" target="_blank" rel="noopener">Phù hiệu</a> · <a href="/bang-ngoc/" target="_blank" rel="noopener">Bảng ngọc</a> · <a href="/phep-bo-tro/" target="_blank" rel="noopener">Phép bổ trợ</a>.</p>`;
+`;
   // tên ngọc theo Học viện Garena (BARC[a][2], ví dụ "Đỏ III Công phép"), dữ liệu cũ thiếu tên thì ghi theo màu
   const ar=b.r.map(([a,n])=>{const [c,t,vn]=BARC[a];return `<li><img src="b/a-${a}.webp" alt="" loading="lazy" width="30" height="30"><span><b>${vn?esc(vn):"Ngọc "+COLVI[c]} ×${n}</b>${dc(t)}</span></li>`}).join("");
   const sp=b.s.map(s=>`<li><button type="button" class="sp-b" data-spell="${s}" aria-describedby="itip"><img src="b/t-${s}.webp" alt="" loading="lazy" width="36" height="36"><span><b>${BSPELL[s][0]}</b>${(b.o||[]).includes(s)?"<em>Phương án thêm</em>":""}</span></button></li>`).join("");
   return `${items}
-    <div class="bld-row"><div><h5>Bảng ngọc</h5><ul class="bld-ar">${ar}</ul></div><div><h5>Phép bổ trợ${b.s.length>1?" (chọn một)":""}</h5><ul class="bld-sp">${sp}</ul></div></div>${enchHTML(b)}`;
+    <div class="bld-row"><div><h5>Bảng ngọc</h5><ul class="bld-ar">${ar}</ul></div><div><h5>Phép bổ trợ${b.s.length>1?" (chọn một)":""}</h5><ul class="bld-sp">${sp}</ul></div></div>${enchHTML(b)}
+    <p class="bld-hint">${mq.matches?"Chạm":"Trỏ hoặc bấm"} vào món đồ, phép bổ trợ hay phù hiệu để xem chỉ số. Tra cứu đầy đủ: <a href="/trang-bi/" target="_blank" rel="noopener">Trang bị</a> · <a href="/phu-hieu/" target="_blank" rel="noopener">Phù hiệu</a> · <a href="/bang-ngoc/" target="_blank" rel="noopener">Bảng ngọc</a> · <a href="/phep-bo-tro/" target="_blank" rel="noopener">Phép bổ trợ</a>.</p>`;
 }
 /* Chọn bộ build (chạm hoặc phím ←/→/Home/End trên nút bộ); chỉ đổi phần hiện, không dựng lại bảng */
 (function boTabs(){
@@ -718,7 +719,9 @@ function fitNames(root){(root||document).querySelectorAll(".slide-c h3,.modal h3
 document.querySelectorAll(".lgm[data-mk]").forEach(el=>{const k=el.dataset.mk;el.innerHTML=k==="rise"?mkMove("up"):k==="fall"?mkMove("down"):mkTrend(k)});
 /* Chú giải luôn hiện */
 $("legendStrip").innerHTML=`<div class="ls-t">${TIERS.map(t=>`<span class="ls-tier" style="--tc:var(--t-${t.toLowerCase()})"><b>${t}</b>${TNAME[t]}</span>`).join("")}</div>
-  <div class="ls-b"><span>${mkTrend("up")}Tăng sức mạnh</span><span>${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span>${mkTrend("mix")}Điều chỉnh</span>`:""}<span>${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div>`;
+  <details class="ls-d" id="lsD"><summary>Ký hiệu trên ảnh tướng</summary><div class="ls-b"><span class="dup">${mkTrend("up")}Tăng sức mạnh</span><span class="dup">${mkTrend("down")}Giảm sức mạnh</span>${HEROES.some(h=>h.trend==="mix")?`<span class="dup">${mkTrend("mix")}Điều chỉnh</span>`:""}<span class="dup">${mkTrend("new")}Tướng mới</span><span><i class="lg sec">PHỤ</i>Đường phụ</span></div></details>`;
+/* máy tính: luôn mở (không có nút gập); điện thoại: gập sẵn, bấm "Ký hiệu trên ảnh tướng" để mở (góp ý Gemini 27/11) */
+{const d=$("lsD"),wide=matchMedia("(min-width:720px)");const f=()=>{if(wide.matches)d.open=true};f();wide.addEventListener("change",f)}
 
 /* ===== Hiệu ứng cuộn ===== */
 const seenRows=new Set();
