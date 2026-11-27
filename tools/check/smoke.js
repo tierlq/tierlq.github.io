@@ -249,7 +249,8 @@ const errs = [], log = (...a) => console.log(...a);
     for (const name of [lt1[2], lt1[1]]) { await p.fill('#dtIn', name); await p.waitForTimeout(80); await p.keyboard.press('Enter'); await p.waitForTimeout(150); }
     if (!(await p.$('.dt-win:not([hidden]) .dt-nextbtn'))) bad('Đoán tướng liên tục: đoán đúng mà không có nút Tướng tiếp theo');
     const stLt = await p.evaluate(() => document.querySelector('.dt-streak b')?.textContent);
-    if (!(await p.evaluate(() => [...document.querySelectorAll('.dt-win .dt-more')].some(b => /^Khoe chuỗi 1 tướng$/.test(b.textContent))))) bad('Đoán tướng liên tục: thiếu nút Khoe chuỗi');
+    // nút Khoe chuỗi chỉ hiện từ chuỗi 2 (chuỗi 1 nghe gượng); Tướng tiếp theo rộng cả khung
+    if (await p.evaluate(() => [...document.querySelectorAll('.dt-win .dt-btn')].some(b => /Khoe chuỗi/.test(b.textContent)) || !document.querySelector('.dt-win .dt-nextbtn.dt-wide'))) bad('Đoán tướng liên tục: nút khung thắng sai');
     if (stLt !== '1') bad(`Đoán tướng liên tục: huy hiệu chuỗi ${stLt} (cần 1 sau một tướng đúng)`);
     await p.click('.dt-nextbtn'); await p.waitForTimeout(150);
     const lt2 = await p.evaluate(() => ({ a: __dt.answer('co'), rows: document.querySelectorAll('.dt-grid tbody tr').length, form: !document.querySelector('.dt-form').hidden }));

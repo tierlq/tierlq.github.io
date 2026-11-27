@@ -204,3 +204,47 @@ body.dtg{--bg:#05070c;--fg:#f3efe4;--muted:#b4b1a8;--line:rgba(231,207,154,.22);
 .dt-bl{text-align:right;font-variant-numeric:tabular-nums}
 .dt-bf{display:block;min-width:22px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.14);color:var(--fg);text-align:right;font-variant-numeric:tabular-nums;box-sizing:border-box}
 .dt-bar.me .dt-bf{background:#4cc472;color:#06150b;font-weight:700}
+
+/* góp ý Gemini 27/11/2026 (đã kiểm chứng từng ý, xem tools/uiux-log.md) */
+/* bỏ tam giác mờ nền ô Cao hơn/Thấp hơn: chỉ giữ mũi tên ▲/▼ dưới chữ, chú thích cũng vậy */
+.dt-c.up::before,.dt-c.down::before{content:none}
+.dt-keys .dt-c{display:flex;align-items:center;justify-content:center}
+.dt-keys .dt-ar{display:block;margin:0;font-size:15px}
+/* huy hiệu chuỗi một dòng */
+.dt-streak{padding:6px 16px;gap:2px}
+/* gợi ý đã mở khoá phải nổi hẳn so với nút còn khoá */
+.dt-hint:not(:disabled):not(.on){border-color:var(--gold);background:linear-gradient(180deg,rgba(233,207,143,.32),rgba(180,143,69,.22));color:#fbe9bd;font-weight:600;box-shadow:0 0 12px rgba(226,194,125,.25)}
+/* nút khung thắng: cùng một cột rộng tối đa 440px */
+.dt-acts{display:flex;flex-direction:column;gap:8px;max-width:440px;margin:14px auto 0}
+.dt-acts .dt-win-b{flex-wrap:nowrap;margin:0}
+.dt-win-b.dt-acts{flex-direction:row;margin-top:14px}
+.dt-acts .dt-win-b>.dt-btn,.dt-win-b.dt-acts>.dt-btn{flex:1 1 0;min-width:0;padding:0 10px}
+.dt-wide{width:100%}
+.dt-gold{border-color:var(--gold);color:#fbe9bd;background:rgba(226,194,125,.12)}
+.dt-win.dt-late{animation:dtin .35s 2.4s both}
+@keyframes dtin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dt-win.dt-late{animation:none}}
+/* tiêu đề: máy tính một dòng; điện thoại nhỏ lại cho ô nhập lên cao hơn */
+@media (min-width:720px){.dtg main>h1{white-space:nowrap;font-size:clamp(2rem,4.2vw,3.2rem)}}
+@media (max-width:719px){
+  .dtg main>h1{font-size:clamp(1.4rem,6.6vw,2rem)}
+  .dt-modes{margin-bottom:10px}
+  .dt-ring{width:52px;height:52px}
+  .dt-hints{gap:6px;margin-top:10px}
+  .dt-hint{min-height:36px;padding:5px 12px;font-size:12.5px}
+}
+/* bảng điện thoại: cột rộng hẹp theo nội dung để chữ to hơn (Giới tính, Tier, Năm hẹp; Đường, Phe rộng) */
+@media (max-width:420px){
+  .dt-grid{border-spacing:3px}
+  .dt-grid td,.dt-grid th{width:auto}
+  .dt-c{font-size:9.8px;line-height:1.12;padding:1px 2px}
+  .dt-grid tr>:nth-child(1){width:42px}
+  .dt-grid tr>:nth-child(2){width:33px}
+  .dt-grid tr>:nth-child(3){width:50px}
+  .dt-grid tr>:nth-child(4){width:46px}
+  .dt-grid tr>:nth-child(5){width:44px}
+  .dt-grid tr>:nth-child(6){width:52px}
+  .dt-grid tr>:nth-child(7){width:30px}
+  .dt-grid tr>:nth-child(8){width:38px}
+  .dt-grid td{height:44px}
+}
