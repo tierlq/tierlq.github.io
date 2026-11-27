@@ -311,3 +311,17 @@ Chủ web: "giờ làm vậy với trang chủ đi" (gửi Gemini, tự xét đ�
 Bác bỏ / giữ nguyên:
 - "Chữ 'chuột để xem nhanh' bị cắt" ở máy tính: do ảnh ghép khi chụp, trang hiện đủ câu.
 - Đổi thiết kế sân khấu, bỏ tự chuyển 7s, làm gradient tối hơn: thuộc mục Đã chốt (sân khấu tràn mép, tự chuyển 7s), không đổi.
+
+## 27/11/2026 tối — Góp ý (chủ web dán từ Gemini) cho MENU
+Chủ web: "đọc phần này thấy phần nào đúng thì sửa". Chụp menu 390px và 1440px trước khi nhận.
+Đã làm (ý đúng):
+- Máy tính: lưới 2 cột 5 thẻ để trống góc phải dưới → thêm thẻ thứ 6 "Toàn bộ bảng tier ›" (5 đường · số ô tướng · bản vá), bấm thì đóng menu và cuộn tới bảng tier (`data-board`).
+- Thẻ tướng: bỏ "Hạng 1" (tiêu đề đã nói mạnh nhất mỗi đường), thay bằng chấm màu đường + "Tier S · 4,52 điểm"; lớp tối đáy thẻ đậm hơn (0,9) để chữ không chìm trên ảnh sáng (Billow, Y'bneth). Không dùng backdrop-filter (lỗi đồ hoạ Chrome Android).
+- Điện thoại: 5 thẻ chồng dọc làm menu dài ~1.810px → hàng thẻ vuốt ngang (cuộn bắt điểm), menu còn ~1.070px.
+- "Cách xếp và nguồn" → "Cách xếp & nguồn"; mục Tra cứu "Phương pháp" → "Công thức chấm điểm" để không trông trùng nhau. Cột chữ máy tính rộng 300px để ít xuống dòng.
+- Đoán tướng có nhãn vàng "Đề mới mỗi ngày".
+- TikTok: biểu tượng chuyển ra sau chữ để chữ thẳng lề với Phụ kiện.
+Bác bỏ / không làm:
+- Nhãn nhóm (Trên trang, Tra cứu…) "chìm": màu đã là #9b9a9f, đúng khoảng Gemini đề xuất.
+- Trạng thái trang hiện tại: menu chỉ có ở trang chủ, các mục là neo trong trang hoặc trang khác, không có "trang đang mở" để tô.
+- Biểu tượng riêng từng đường: dùng chấm màu đường sẵn có của web thay vì vẽ thêm bộ biểu tượng.

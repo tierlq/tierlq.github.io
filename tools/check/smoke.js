@@ -192,6 +192,13 @@ const errs = [], log = (...a) => console.log(...a);
     { const hp = await ctx.newPage(); await hp.goto(B + '/', { waitUntil: 'load' });
       const gm = await hp.evaluate(() => ({ hero: !!document.querySelector('.hero-acts a.hero-game[href="/doan-tuong/"]'), cards: document.querySelectorAll('#game .gm-m').length, menu: !!document.querySelector('.menu-l a[href="/doan-tuong/"]'), left: /Đề mới sau \d\d:\d\d:\d\d/.test(document.getElementById('gmLeft')?.textContent || ''), num: /Đề #\d+/.test(document.getElementById('gmOver')?.textContent || '') }));
       if (!gm.hero || gm.cards !== 3 || !gm.menu || !gm.left || !gm.num) bad(`Trang chủ: lối vào Đoán tướng thiếu ${JSON.stringify(gm)}`);
+      // menu: 5 thẻ tướng đầu đường + thẻ "Toàn bộ bảng tier" đưa tới bảng tier và đóng menu
+      await hp.click('#menuBtn'); await hp.waitForTimeout(700);
+      const mc = await hp.evaluate(() => ({ n: document.querySelectorAll('#menuCards .menu-card[data-open]').length, all: !!document.querySelector('#menuCards [data-board]'), tier: [...document.querySelectorAll('#menuCards .menu-card[data-open] small')].every(x => /Tier [SABCD]/.test(x.textContent)) }));
+      if (mc.n !== 5 || !mc.all || !mc.tier) bad(`Menu: thẻ tướng sai ${JSON.stringify(mc)}`);
+      await hp.click('#menuCards [data-board]'); await hp.waitForTimeout(1500);
+      const mo = await hp.evaluate(() => ({ closed: !document.getElementById('menu').classList.contains('open'), top: Math.round(document.getElementById('boardTitle').getBoundingClientRect().top), h: innerHeight }));
+      if (!mo.closed || mo.top < -5 || mo.top > mo.h) bad(`Menu: thẻ Toàn bộ bảng tier không đưa tới bảng ${JSON.stringify(mo)}`);
       await hp.close(); }
     // Đoán tướng hôm nay: đoán sai một lượt rồi đúng ở cả 3 chế độ, tải lại vẫn giữ kết quả
     await p.goto(B + '/doan-tuong/', { waitUntil: 'load' });
