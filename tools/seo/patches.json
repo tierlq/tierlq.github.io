@@ -1,5 +1,43 @@
 [
  {
+  "date": "26/11",
+  "year": 2026,
+  "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",
+  "url": "https://lienquan.garena.vn/dieu-chinh-giua-mua-pb-vet-nut-thoi-khong-26-11-2026/",
+  "changes": [
+   {
+    "id": "rouie-sp",
+    "trend": "up",
+    "note": "Tăng sức mạnh: chiêu 3 thêm lá chắn cho đồng đội trong phạm vi, chặn 300 (+150/cấp, +0,45 SMPT) sát thương, kéo dài 8s."
+   },
+   {
+    "id": "valhein-ad",
+    "trend": "mix",
+    "note": "Điều chỉnh cơ chế nội tại: dấu ấn giảm dần từng tầng cộng dồn, cứ 1s mất một tầng (Garena không ghi số khác)."
+   },
+   {
+    "id": "yena-top",
+    "trend": "up",
+    "note": "Tăng sức mạnh: lá chắn gốc của nội tại thành 280 (+140/cấp tướng, +1,8 công vật lý), trước là 200 (+100/cấp tướng, +1,4); chiêu 2 dạng Viên đao sát thương gốc thành 140 (+28/cấp, +0,75 công vật lý), trước là 130 (+20/cấp, +0,68); dạng Song loan đao hồi chiêu thành 12s (−0,4s/cấp), trước là 12s."
+   },
+   {
+    "id": "ignis-mid",
+    "trend": "up",
+    "note": "Tăng sức mạnh: hồi máu gốc của nội tại thành 95 (+7/cấp tướng, +0,15 SMPT), trước là 90 (+6/cấp tướng, +0,14); sát thương gốc chiêu 1 thành 425 (+85/cấp, +0,7 SMPT), trước là 425 (+50/cấp, +0,6)."
+   },
+   {
+    "id": "aoi-jg",
+    "trend": "up",
+    "note": "Tăng sức mạnh: sát thương thêm của nội tại thành 90 (+10/cấp tướng, +0,5 công vật lý cộng thêm), trước là 60 (+10/cấp tướng, +0,45)."
+   },
+   {
+    "id": "preyta-mid",
+    "trend": "down",
+    "note": "Giảm sức mạnh: sát thương nổ dấu ấn của nội tại còn 180 (+13/cấp tướng, +0,3 SMPT), trước là 210 (+15/cấp tướng, +0,4); sát thương kéo dài của dấu ấn còn 12 (+1/cấp tướng, +0,025 SMPT), trước là 16 (+1/cấp tướng, +0,03)."
+   }
+  ]
+ },
+ {
   "date": "17/11",
   "year": 2026,
   "title": "Điều chỉnh giữa mùa Vết Nứt Thời Không",

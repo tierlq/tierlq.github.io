@@ -595,17 +595,16 @@ const TIERS=["S","A","B","C","D"];
 const TNAME={S:"Rất mạnh",A:"Mạnh",B:"Ổn",C:"Tình huống",D:"Yếu"};
 const GROUPS={S:["Đỉnh meta","nên cấm hoặc chọn sớm"],A:["Meta","lựa chọn an toàn khi leo rank"],C:["Ngoài meta","cần đội hình phù hợp"],D:["Ít được dùng","đang yếu ở bản hiện tại"]};
 const TR={up:["+ Tăng","up","Được tăng sức mạnh"],down:["− Giảm","down","Bị giảm sức mạnh"],mix:["± Chỉnh","mix","Điều chỉnh"],new:["Mới","new","Tướng mới / làm lại"]};
-// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 17/11/2026 (lienquan.garena.vn)
+// Bản cập nhật gần nhất: Điều chỉnh giữa mùa Vết Nứt Thời Không 26/11/2026 (lienquan.garena.vn, đăng 25/11)
 // key: [xu hướng, ghi chú, true nếu phần báo VN đã chỉnh theo bản này]; key có thể kèm đường (flowborn-ad)
-const PATCH="17/11";
+const PATCH="26/11";
 const P={
- butterfly:["mix","Làm lại một số kỹ năng: chiêu 1 bỏ hiệu ứng tăng 25% sát thương lên mỗi mục tiêu trúng đích, thêm đao ảnh gây 80 (+16/cấp, +0,25 công vật lý); chiêu 2 bỏ hiệu ứng tăng tỉ lệ chí mạng, mục tiêu đầu chịu 50 (+10/cấp, +0,15 công vật lý) sát thương phép chắc chắn chí mạng (trước là 100, +20/cấp, +0,3 sát thương vật lý), ba đòn đánh cường hóa thêm 20 (+4/cấp, +0,3 công vật lý) sát thương phép chí mạng; chiêu 3 hồi máu mỗi lần gây sát thương lên mục tiêu bị đánh dấu, 20% khi đánh tướng và 10% với mục tiêu khác (trước là 35% khi dấu kết thúc hoặc mục tiêu bị hạ)."],
- arduin:["up","Tăng sức mạnh: nội tại hồi 180 (+13/cấp, +0,05 máu cộng thêm) máu, trước là 4% máu tối đa; sát thương chuẩn chiêu 2 thành 150 (+30/cấp, +0,5 công vật lý cộng thêm), trước là 125 (+25/cấp); sát thương gốc chiêu 3 thành 300 (+150/cấp, +1,5 công vật lý), trước là 300 (+125/cấp, +1,2)."],
- grakk:["up","Tăng sức mạnh: sát thương gốc của nội tại thành 55 (+4/cấp, +0,2 SMPT, +0,02 máu tối đa), trước là 40; sát thương kích nổ thành 225 (+16/cấp, +0,8 SMPT, +0,08 máu tối đa), trước là 160; sát thương gốc chiêu 1 thành 180 (+36/cấp, +0,55 SMPT), trước là 150 (+30/cấp, +0,5)."],
- dirak:["up","Tăng sức mạnh: hồi chiêu 2 còn 10s (−0,4s/cấp), trước là 12,5s (−0,5s/cấp)."],
- richter:["mix","Điều chỉnh: hồi chiêu 1 thành 8s (−0,3s/cấp), sát thương lướt chặt thành 75 (+15/cấp, +0,5 công vật lý), trước là 20 (+20/cấp, +0,4), sát thương chém thành 150 (+30/cấp, +1,0), trước là 50 (+50/cấp); chiêu 3 sát thương gốc còn 50 (+25/cấp, +0,2 công vật lý), trước là 60 (+30/cấp, +0,13), sát thương nổ còn 300 (+150/cấp, +1,2), trước là 330 (+165/cấp, +1,0)."],
- fennik:["up","Tăng sức mạnh: sát thương gốc và sát thương nổ của chiêu 1 cùng thành 125 (+25/cấp, +0,75 công vật lý), trước là 90 (+18/cấp, +0,65)."],
- dyadia:["down","Giảm sức mạnh: sát thương gốc của nội tại còn 140–280 (+1,0 công vật lý, +0,25 SMPT), trước là 150–300 (+1,0, +0,3); sát thương kéo dài của chiêu 2 còn 540 (+108/cấp, +1,0 SMPT), trước là 640 (+128/cấp, +0,95)."]
+ rouie:["up","Tăng sức mạnh: chiêu 3 thêm lá chắn cho đồng đội trong phạm vi, chặn 300 (+150/cấp, +0,45 SMPT) sát thương, kéo dài 8s."],
+ valhein:["mix","Điều chỉnh cơ chế nội tại: dấu ấn giảm dần từng tầng cộng dồn, cứ 1s mất một tầng (Garena không ghi số khác)."],
+ yena:["up","Tăng sức mạnh: lá chắn gốc của nội tại thành 280 (+140/cấp tướng, +1,8 công vật lý), trước là 200 (+100/cấp tướng, +1,4); chiêu 2 dạng Viên đao sát thương gốc thành 140 (+28/cấp, +0,75 công vật lý), trước là 130 (+20/cấp, +0,68); dạng Song loan đao hồi chiêu thành 12s (−0,4s/cấp), trước là 12s."],
+ ignis:["up","Tăng sức mạnh: hồi máu gốc của nội tại thành 95 (+7/cấp tướng, +0,15 SMPT), trước là 90 (+6/cấp tướng, +0,14); sát thương gốc chiêu 1 thành 425 (+85/cấp, +0,7 SMPT), trước là 425 (+50/cấp, +0,6)."],
+ aoi:["up","Tăng sức mạnh: sát thương thêm của nội tại thành 90 (+10/cấp tướng, +0,5 công vật lý cộng thêm), trước là 60 (+10/cấp tướng, +0,45)."],
+ preyta:["down","Giảm sức mạnh: sát thương nổ dấu ấn của nội tại còn 180 (+13/cấp tướng, +0,3 SMPT), trước là 210 (+15/cấp tướng, +0,4); sát thương kéo dài của dấu ấn còn 12 (+1/cấp tướng, +0,025 SMPT), trước là 16 (+1/cấp tướng, +0,03)."]
 };
 // đường|lớp|tier: danh sách
 const RAW=[
