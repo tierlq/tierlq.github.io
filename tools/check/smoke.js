@@ -225,14 +225,14 @@ const errs = [], log = (...a) => console.log(...a);
     log(`[${vp}] Đoán tướng: ${dtN.n} tướng, thắng đủ 3 chế độ`);
     // thắng đề hôm nay thì có thống kê của bạn (đã chơi, đúng, phân bố số lượt)
     if (!(await p.evaluate(() => /đã chơi \d+ đề · đúng \d+/.test(document.querySelector('.dt-win .dt-stats')?.textContent || '') && document.querySelectorAll('.dt-win .dt-bar').length === 4))) bad('Đoán tướng: khung thắng thiếu thống kê');
-    // gợi ý mở dần: Cổ điển sai 5 lượt thì nút Gợi ý: Kỹ năng mở khoá, bấm thì hiện gợi ý, nút sau còn khoá
+    // gợi ý mở dần: lúc 0 lượt chưa có hàng gợi ý; Cổ điển sai 5 lượt thì nút Gợi ý: Kỹ năng mở khoá, bấm thì hiện gợi ý, nút sau còn khoá
     { const q = await ctx.newPage(); await q.goto(B + '/doan-tuong/#lt', { waitUntil: 'load' }); await q.waitForFunction(() => window.__dt);
       const w5 = await q.evaluate(() => { const a = __dt.answer('co'); return __dt.names().filter((x, i) => __dt.keys()[i] !== a).slice(0, 5); });
       const h0 = await q.$$eval('.dt-hint', l => l.map(x => x.disabled));
       for (const n of w5) { await q.fill('#dtIn', n); await q.keyboard.press('Enter'); await q.waitForTimeout(60); }
       const h1 = await q.$$eval('.dt-hint', l => l.map(x => x.disabled));
       await q.click('.dt-hint:not([disabled])'); const h2 = await q.$$eval('.dt-hint', l => l.map(x => x.className));
-      if (JSON.stringify(h0) !== '[true,true]' || JSON.stringify(h1) !== '[false,true]' || !h2[0].includes('on')) bad(`Đoán tướng: gợi ý mở dần sai ${JSON.stringify({ h0, h1, h2 })}`);
+      if (JSON.stringify(h0) !== '[]' || JSON.stringify(h1) !== '[false,true]' || !h2[0].includes('on')) bad(`Đoán tướng: gợi ý mở dần sai ${JSON.stringify({ h0, h1, h2 })}`);
       await q.close(); }
     // mỗi cách chơi có trang riêng: mở đúng cách chơi, tiêu đề theo cách chơi, đổi cách chơi thì đổi địa chỉ; có nút khoe chuỗi
     for (const [u, m, h] of [['/doan-tuong/ky-nang/', 'chieu', 'Đoán tướng qua kỹ năng'], ['/doan-tuong/hinh-anh/', 'anh', 'Đoán tướng qua hình ảnh']]) {
