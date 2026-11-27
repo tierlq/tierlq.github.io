@@ -325,3 +325,11 @@ Bác bỏ / không làm:
 - Nhãn nhóm (Trên trang, Tra cứu…) "chìm": màu đã là #9b9a9f, đúng khoảng Gemini đề xuất.
 - Trạng thái trang hiện tại: menu chỉ có ở trang chủ, các mục là neo trong trang hoặc trang khác, không có "trang đang mở" để tô.
 - Biểu tượng riêng từng đường: dùng chấm màu đường sẵn có của web thay vì vẽ thêm bộ biểu tượng.
+
+## 27/11/2026 22:1x — Tự rà menu điều hướng (chủ web: "tự xem menu điều hướng và chỉnh sửa lại giao diện sao cho hợp lí")
+Chụp menu ở 390/360 (tối, sáng), 820 (máy tính bảng), 1440 (tối, sáng) và thanh dính khi cuộn sâu vào bảng.
+- **Lỗi lớn nhất: chỉ có một nút Menu, nằm ở đầu trang.** Cuộn xuống bảng tier (trang dài >12.000px trên điện thoại) là không mở được menu. Thêm nút Menu (`#menuBtn2`, `.bar-menu`) ở đầu thanh dính: máy tính "≡ MENU" trước Meta/Tự xếp/Số liệu (luôn thấy khi dính); điện thoại nút tròn 44px cạnh Meta/Tự xếp/Số liệu (hàng này hiện lại khi cuộn ngược lên, như trước). Cả hai nút cùng mở một menu, `aria-expanded` đồng bộ, đóng thì trả focus về đúng nút đã mở và không nhảy trang. Hàng công cụ điện thoại có thêm 6px phía trên để nút tròn không chạm mép màn khi dính.
+- Menu "Trên trang" thêm "Bản cập nhật" (tới mục Thay đổi theo bản, kèm ngày bản lấy từ `PATCH`), theo đúng thứ tự trên trang: Bảng tier, Nổi bật, Bản cập nhật, Cách xếp & nguồn.
+- Máy tính bảng (720–1100px): cột chữ 300px làm các thẻ tướng hẹp, chữ "Tà Thần · Tier S · 4,52 điểm" xuống 2 dòng → cột chữ 250px, chữ mục nhỏ hơn (1,08rem), chữ nhỏ trên thẻ giãn ít hơn.
+- Thẻ "Toàn bộ bảng tier" bỏ "5 đường" cho dòng nhỏ khỏi xuống dòng.
+- `smoke.js`: cuộn sâu vào bảng, cuộn ngược lên, nút Menu trong thanh dính phải hiện, mở được menu, có ngày bản, đóng không nhảy trang. Lưu ý: bấm bằng `page.click` sẽ tự cuộn nút vào khung nhìn (nút nằm trong thanh dính) làm lệch phép đo, nên bấm theo toạ độ bằng `mouse.click`.

@@ -953,20 +953,21 @@ const INST=(()=>{const bar=$("instbar");if(!bar)return null;
     bar.hidden=false;document.body.classList.add("inst");track("cai_dat_hien",{})}}})();
 
 /* ===== Menu (bảng trượt từ trái, kiểu Bugatti) ===== */
-(function menu(){const m=$("menu"),btn=$("menuBtn");if(!m||!btn)return;let t=0;
+(function menu(){const m=$("menu"),btn0=$("menuBtn"),btns=[btn0,$("menuBtn2")].filter(Boolean);if(!m||!btn0)return;let t=0,btn=btn0;
+  {const mp=$("menuPatch");if(mp&&typeof PATCH!=="undefined")mp.textContent=PATCH}
   let built=0;const cards=()=>{if(built)return;built=1;$("menuCards").innerHTML=Object.keys(LANES).map(l=>{const h=laneTop(l)[0];if(!h)return"";const sp=splOf(h)||imgOf(h);
     return `<button class="menu-card" data-open="${h.id}"><img src="${sp}" alt="" decoding="async"><span><small><i class="d" style="background:var(--l-${l})"></i>${LANES[l]} · Tier ${h.tier} · ${dc(h.score.toFixed(2))} điểm</small><b>${h.name}</b></span></button>`}).join("")
     /* ô thứ 6 (góp ý Gemini 27/11): lưới 2 cột 5 thẻ để trống một góc → thẻ dẫn tới cả bảng tier */
-    +`<button class="menu-card menu-all" data-board><span><small>5 đường · ${HEROES.length} ô tướng${typeof PATCH!=="undefined"?" · bản "+PATCH:""}</small><b>Toàn bộ bảng tier <em aria-hidden="true">›</em></b></span></button>`;};
+    +`<button class="menu-card menu-all" data-board><span><small>${HEROES.length} ô tướng${typeof PATCH!=="undefined"?" · bản "+PATCH:""}</small><b>Toàn bộ bảng tier <em aria-hidden="true">›</em></b></span></button>`;};
   let keepY=0;const B=document.body.style;
   const lock=()=>{keepY=scrollY;B.position="fixed";B.top=-keepY+"px";B.left="0";B.right="0";B.width="100%"};
   const unlock=()=>{if(B.position!=="fixed")return;B.position=B.top=B.left=B.right=B.width="";scrollTo({top:keepY,behavior:"instant"})};
-  const open=()=>{cards();clearTimeout(t);m.hidden=false;lock();btn.setAttribute("aria-expanded","true");BACK.push("menu",()=>shut(false));
+  const open=e=>{btn=(e&&e.currentTarget)||btn0;cards();clearTimeout(t);m.hidden=false;lock();btns.forEach(b=>b.setAttribute("aria-expanded","true"));BACK.push("menu",()=>shut(false));
     requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.add("open")));m.querySelector(".menu-x").focus()};
-  const shut=back=>{m.classList.remove("open");unlock();btn.setAttribute("aria-expanded","false");
+  const shut=back=>{m.classList.remove("open");unlock();btns.forEach(b=>b.setAttribute("aria-expanded","false"));
     t=setTimeout(()=>{m.hidden=true},reduce.matches?0:550);if(back)btn.focus({preventScroll:true})};
   const close=back=>{shut(back);BACK.pop("menu")};
-  btn.onclick=open;btn.addEventListener("pointerdown",cards,{passive:true});if(!mq.matches)setTimeout(cards,4000);
+  btns.forEach(b=>{b.onclick=open;b.addEventListener("pointerdown",cards,{passive:true})});if(!mq.matches)setTimeout(cards,4000);
   m.addEventListener("click",e=>{const c=e.target.closest("[data-close]");if(c)return close(true);
     const a=e.target.closest(".menu-l a");if(a){if(/^\//.test(a.getAttribute("href")||""))return;if(a.hasAttribute("data-tt")){shut(false);const i=BACK.st.map(x=>x[0]).lastIndexOf("menu");if(i>=0)BACK.st.splice(i,1);return}close(false);const id=(a.getAttribute("href")||"").replace(/^#/,""),el=id&&document.getElementById(id);
       if(el&&!a.hasAttribute("data-tt")){e.preventDefault();requestAnimationFrame(()=>goTo(el,id==="spotTitle"?24:null))}return}

@@ -37,9 +37,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" id="fontcss" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@200;300;400;500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-<script defer src="assets/boot.js?v=202611272201"></script>
-<script defer src="assets/data.js?v=202611272201"></script>
-<script defer src="assets/app.js?v=202611272201"></script>
+<script defer src="assets/boot.js?v=202611272210"></script>
+<script defer src="assets/data.js?v=202611272210"></script>
+<script defer src="assets/app.js?v=202611272210"></script>
 <style>
 /* Layout: hero toàn màn hình (thiên hà) → sân khấu "mạnh nhất mỗi đường" kiểu trình chiếu → thanh công cụ dính → lưới tier × đường.
    Tinh thần xe sang: đen tuyền, chữ in hoa giãn rộng, góc vuông, đường kẻ mảnh, chuyển động chậm */
@@ -1218,8 +1218,8 @@ body.picking .instbar{display:none}
   .ls-d>summary::after{content:"+";font-size:15px;color:var(--fg)}
   .ls-d[open]>summary::after{content:"−"}
   /* hàng công cụ: Meta/Tự xếp/Số liệu một hàng, ô tìm rộng + Lọc hàng dưới */
-  .bar .row1{flex-wrap:wrap;row-gap:8px}
-  .bar .seg{flex:1 1 100%}
+  .bar .row1{flex-wrap:wrap;row-gap:8px;padding-top:6px}
+  .bar .seg{flex:1 1 calc(100% - 76px)}
   .bar .search{flex:1 1 auto;min-width:0}
   /* nhãn tier đi theo khi cuộn qua hàng dài; chữ tên bậc không chạm mép */
   .tl{align-self:stretch}
@@ -1253,6 +1253,16 @@ body.picking .instbar{display:none}
   .menu-card{flex:0 0 80%;aspect-ratio:16/10;scroll-snap-align:start}
   .menu-all{flex-basis:56%}
 }
+
+/* nút Menu trong thanh dính (27/11/2026): trước đây chỉ có ở đầu trang, cuộn xuống bảng là mất lối vào menu */
+.bar-menu{display:inline-flex;align-items:center;gap:10px;align-self:center;flex:none;min-height:40px;padding:0;background:none;border:0;color:var(--fg);cursor:pointer;font:400 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
+.bar-menu i{width:18px;height:7px;border-top:1px solid currentColor;border-bottom:1px solid currentColor}
+@media (hover:hover){.bar-menu:hover{opacity:.7}}
+@media (max-width:719px){.bar-menu{width:44px;height:44px;justify-content:center;border:1px solid var(--line-2);border-radius:50%}.bar-menu span{display:none}}
+.menu-l a.menu-upd{display:flex;align-items:baseline;gap:12px}
+.menu-upd em{font:400 11px var(--f-mono);letter-spacing:.08em;font-style:normal;color:var(--muted)}
+.menu-upd em:empty{display:none}
+@media (min-width:720px) and (max-width:1100px){.menu-c{grid-template-columns:250px 1fr;gap:24px}.menu-l a{font-size:1.08rem}.menu-l a.menu-s{font-size:.9rem}.menu-card small{letter-spacing:.06em;font-size:9.5px}}
 </style>
 
 <div class="sprog" aria-hidden="true"><i id="sprog"></i></div>
@@ -1330,6 +1340,7 @@ body.picking .instbar{display:none}
   <div class="boardwrap">
   <div class="bar" id="bar">
     <div class="row1">
+      <button class="bar-menu" id="menuBtn2" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" aria-label="Mở menu"><i aria-hidden="true"></i><span aria-hidden="true">Menu</span></button>
       <div class="seg" role="group" aria-label="Chế độ">
         <button id="m-meta" aria-pressed="true">Meta<span class="long"> hiện tại</span></button>
         <button id="m-mine" aria-pressed="false">Tự xếp</button>
@@ -1489,7 +1500,7 @@ body.picking .instbar{display:none}
   <aside class="menu-p">
     <button class="menu-x" data-close aria-label="Đóng menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6.5 6.5 11 11m0-11-11 11"/></svg></button>
     <div class="menu-c">
-      <nav class="menu-l" aria-label="Menu"><span class="over">Trên trang</span><a href="#boardTitle">Bảng tier</a><a href="#spotTitle">Nổi bật</a><a href="#method">Cách xếp &amp; nguồn</a><span class="over menu-sub">Trò chơi</span><a class="menu-game" href="/doan-tuong/">Đoán tướng<em>Đề mới mỗi ngày</em></a><span class="over menu-sub">Tra cứu</span><a class="menu-s" href="/trang-bi/">Trang bị</a><a class="menu-s" href="/phu-hieu/">Phù hiệu</a><a class="menu-s" href="/bang-ngoc/">Bảng ngọc</a><a class="menu-s" href="/phep-bo-tro/">Phép bổ trợ</a><a class="menu-s" href="/phuong-phap/">Công thức chấm điểm</a><span class="over menu-sub">Khác</span><a class="menu-s" href="/phu-kien/">Phụ kiện</a><a class="menu-tt menu-s" href="https://www.tiktok.com/@bangtierlienquan" target="_blank" rel="noopener" data-tt>TikTok<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z"/></svg></a></nav>
+      <nav class="menu-l" aria-label="Menu"><span class="over">Trên trang</span><a href="#boardTitle">Bảng tier</a><a href="#spotTitle">Nổi bật</a><a class="menu-upd" href="#logTitle">Bản cập nhật<em id="menuPatch"></em></a><a href="#method">Cách xếp &amp; nguồn</a><span class="over menu-sub">Trò chơi</span><a class="menu-game" href="/doan-tuong/">Đoán tướng<em>Đề mới mỗi ngày</em></a><span class="over menu-sub">Tra cứu</span><a class="menu-s" href="/trang-bi/">Trang bị</a><a class="menu-s" href="/phu-hieu/">Phù hiệu</a><a class="menu-s" href="/bang-ngoc/">Bảng ngọc</a><a class="menu-s" href="/phep-bo-tro/">Phép bổ trợ</a><a class="menu-s" href="/phuong-phap/">Công thức chấm điểm</a><span class="over menu-sub">Khác</span><a class="menu-s" href="/phu-kien/">Phụ kiện</a><a class="menu-tt menu-s" href="https://www.tiktok.com/@bangtierlienquan" target="_blank" rel="noopener" data-tt>TikTok<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z"/></svg></a></nav>
       <div class="menu-g"><span class="over">Mạnh nhất mỗi đường</span><div class="menu-cards" id="menuCards"></div></div>
     </div>
   </aside>

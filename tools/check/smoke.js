@@ -199,6 +199,18 @@ const errs = [], log = (...a) => console.log(...a);
       await hp.click('#menuCards [data-board]'); await hp.waitForTimeout(1500);
       const mo = await hp.evaluate(() => ({ closed: !document.getElementById('menu').classList.contains('open'), top: Math.round(document.getElementById('boardTitle').getBoundingClientRect().top), h: innerHeight }));
       if (!mo.closed || mo.top < -5 || mo.top > mo.h) bad(`Menu: thẻ Toàn bộ bảng tier không đưa tới bảng ${JSON.stringify(mo)}`);
+      // nút Menu trong thanh dính: cuộn sâu vào bảng vẫn mở được menu, đóng lại không nhảy trang
+      await hp.evaluate(() => scrollTo(0, document.getElementById('board').getBoundingClientRect().top + scrollY + 1500)); await hp.waitForTimeout(600);
+      await hp.evaluate(() => scrollBy(0, -200)); await hp.waitForTimeout(600);
+      const y0 = await hp.evaluate(() => scrollY);
+      // bấm đúng toạ độ như người dùng (hp.click tự cuộn phần tử vào khung nhìn, làm lệch phép đo)
+      const r2 = await hp.evaluate(() => { const r = document.getElementById('menuBtn2').getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2, r.top]; });
+      if (r2[2] < 0) bad(`Menu: nút trong thanh dính không hiện khi cuộn ngược lên (top ${r2[2]})`);
+      await hp.mouse.click(r2[0], r2[1]); await hp.waitForTimeout(700);
+      const m2 = await hp.evaluate(() => ({ open: document.getElementById('menu').classList.contains('open'), patch: document.getElementById('menuPatch').textContent }));
+      await hp.click('#menu .menu-x'); await hp.waitForTimeout(700);
+      const y1 = await hp.evaluate(() => scrollY);
+      if (!m2.open || !/^\d\d\/\d\d$/.test(m2.patch) || Math.abs(y1 - y0) > 4) bad(`Menu: nút trong thanh dính lỗi ${JSON.stringify({ ...m2, y0, y1 })}`);
       await hp.close(); }
     // Đoán tướng hôm nay: đoán sai một lượt rồi đúng ở cả 3 chế độ, tải lại vẫn giữ kết quả
     await p.goto(B + '/doan-tuong/', { waitUntil: 'load' });
