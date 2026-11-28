@@ -60,6 +60,7 @@ const errs = [], log = (...a) => console.log(...a);
         if (!m.querySelector('.bld-sp li')) out.bad.push(h.id + ': không có phép bổ trợ');
         if (![...m.querySelectorAll('.bld-ar b')].every(b => /^(Đỏ|Tím|Xanh) III .+ ×\d+$/.test(b.textContent))) out.bad.push(h.id + ': ngọc thiếu tên Việt');
         if (!m.querySelector('.bld-hint a[href="/bang-ngoc/"]')) out.bad.push(h.id + ': gợi ý build thiếu link Bảng ngọc');
+        { const hn = m.querySelector('.bld-pane:not([hidden]) .bld-hint, .bld > .bld-hint'), prev = hn && hn.previousElementSibling; if (hn && prev && hn.getBoundingClientRect().top < prev.getBoundingClientRect().bottom + 4) out.bad.push(h.id + ': dòng gợi ý build đè lên phù hiệu/ngọc phía trên'); }
         { const b2 = m.querySelector('#mshare2'); if (!b2) out.bad.push(h.id + ': thiếu nút Gửi tướng này cho bạn bè'); else if (b2.getBoundingClientRect().height > 80) out.bad.push(h.id + ': nút Gửi tướng quá cao (biểu tượng không có cỡ)'); }
         { // nhiều bộ build: nút chọn bộ, mỗi bộ một khung riêng; ô một bộ thì không có nút
           const bb = BUILDS[h.key + '@' + h.lane], nset = bb ? 1 + (bb.v || []).length : 1, tabs = [...m.querySelectorAll('.bld-tab')], panes = [...m.querySelectorAll('.bld-pane')];

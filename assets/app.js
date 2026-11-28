@@ -340,10 +340,10 @@ function showItip(el,pin){const t=itipEl(),id=el.dataset.item,sp=el.dataset.spel
   if(id&&typeof BITEM!=="undefined"){const [vi,cat]=BITEM[id],f=(typeof BINFO!=="undefined"&&BINFO[id])||{s:[],n:[]};
     const tag=cat==="jg"?"Đồ rừng · cần Trừng Trị":cat==="sup"?"Đồ trợ thủ":"";
     html=`<div class="it-h"><b>${esc(vi)}</b>${f.p?`<span class="it-p">${f.p.toLocaleString("vi-VN")} vàng</span>`:""}</div>${tag?`<p class="it-tag">${tag}</p>`:""}
-      ${f.s.length?`<ul class="it-s">${f.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
-      ${f.n.length?`<ul class="it-n">${f.n.map(([n,d])=>`<li><b>${esc(n)}:</b> ${esc(d)}</li>`).join("")}</ul>`:""}`}
-  else if(sp&&typeof BSPELL!=="undefined"){const [n,d]=BSPELL[sp];html=`<div class="it-h"><b>${esc(n)}</b><span class="it-p">Phép bổ trợ</span></div><p class="it-d">${esc(d)}</p>`}
-  else if(en&&typeof BENCH!=="undefined"&&BENCH[en]){const [n,c,l,d]=BENCH[en];html=`<div class="it-h"><b>${esc(n)}</b><span class="it-p">Cấp ${ROM[l]}</span></div><p class="it-tag">Phù hiệu · ${esc(BENCHB[c])}</p><p class="it-d">${esc(d)}</p>`}
+      ${f.s.length?`<ul class="it-s">${f.s.map(x=>`<li>${esc(dc(x))}</li>`).join("")}</ul>`:""}
+      ${f.n.length?`<ul class="it-n">${f.n.map(([n,d])=>`<li><b>${esc(n)}:</b> ${esc(dc(d))}</li>`).join("")}</ul>`:""}`}
+  else if(sp&&typeof BSPELL!=="undefined"){const [n,d]=BSPELL[sp];html=`<div class="it-h"><b>${esc(n)}</b><span class="it-p">Phép bổ trợ</span></div><p class="it-d">${esc(dc(d))}</p>`}
+  else if(en&&typeof BENCH!=="undefined"&&BENCH[en]){const [n,c,l,d]=BENCH[en];html=`<div class="it-h"><b>${esc(n)}</b><span class="it-p">Cấp ${ROM[l]}</span></div><p class="it-tag">Phù hiệu · ${esc(BENCHB[c])}</p><p class="it-d">${esc(dc(d))}</p>`}
   if(!html)return;
   t.innerHTML=html;t.hidden=false;itipFor=el;itipPin=!!pin;el.setAttribute("aria-expanded","true");
   // đặt hộp ngay dưới (hoặc trên) món đồ, không tràn khỏi màn hình
